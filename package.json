@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "eslint-plugin-prettier": "^5.5.0",
+    "husky": "^9.1.7",
     "postcss-scss": "^4.0.9",
     "postcss-styled-syntax": "^0.7.1",
     "prettier": "^3.5.3",
