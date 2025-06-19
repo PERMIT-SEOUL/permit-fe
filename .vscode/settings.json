@@ -3,5 +3,36 @@
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "eslint.runtime": "node",
+  "eslint.useFlatConfig": true,
+  "stylelint.enable": true,
+  "stylelint.validate": ["css", "scss", "sass"],
+  "stylelint.snippet": ["css", "scss", "sass"],
+  "css.validate": false,
+  "scss.validate": false,
+  "sass.validate": false,
+  "[css]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "explicit"
+    },
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[scss]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "explicit"
+    },
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[sass]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "explicit"
+    },
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  }
 }

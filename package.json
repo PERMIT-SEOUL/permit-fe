@@ -4,12 +4,19 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "ticket": "turbo --filter=ticket",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "eslint-plugin-prettier": "^5.5.0",
+    "postcss-scss": "^4.0.9",
+    "postcss-styled-syntax": "^0.7.1",
     "prettier": "^3.5.3",
+    "stylelint": "^16.20.0",
+    "stylelint-config-standard": "^38.0.0",
+    "stylelint-order": "^7.0.0",
     "turbo": "^2.5.3",
     "typescript": "5.8.2"
   },
