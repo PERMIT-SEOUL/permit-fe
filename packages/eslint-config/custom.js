@@ -10,16 +10,13 @@ export const config = [
       prettier: pluginPrettier,
       "simple-import-sort": pluginSimpleImportSort,
       turbo: pluginTurbo,
-      "react-refresh": pluginReactRefresh,
+      "react-refresh": pluginReactRefresh
     },
     rules: {
       "turbo/no-undeclared-env-vars": "warn",
       "prettier/prettier": ["error", { endOfLine: "auto" }],
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        { argsIgnorePattern: "^_" },
-      ],
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
       "simple-import-sort/imports": [
         "error",
         {
@@ -29,11 +26,12 @@ export const config = [
             ["^@permit/", "^@shared/", "^@/"],
             ["^\\u0000"],
             ["^\\."],
-            ["^.+\\.css$"],
-          ],
-        },
+            ["^.+\\.css$"]
+          ]
+        }
       ],
       "simple-import-sort/exports": "error",
-    },
-  },
+      "comma-dangle": ["warn", "never"]
+    }
+  }
 ];
