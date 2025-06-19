@@ -2,7 +2,7 @@ import { type JSX } from "react";
 
 export function Code({
   children,
-  className,
+  className
 }: {
   children: React.ReactNode;
   className?: string;

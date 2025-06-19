@@ -30,7 +30,8 @@ export const config = [
           ]
         }
       ],
-      "simple-import-sort/exports": "error"
+      "simple-import-sort/exports": "error",
+      "comma-dangle": ["warn", "never"]
     }
   }
 ];

@@ -1,7 +1,4 @@
-import {
-  defaultShouldDehydrateQuery,
-  QueryClient,
-} from "@tanstack/react-query";
+import { defaultShouldDehydrateQuery, QueryClient } from "@tanstack/react-query";
 
 // TODO: 공통 패키지의 util 로 분리하기
 const isServer = typeof window === "undefined";
@@ -19,13 +16,12 @@ function makeQueryClient() {
         retryOnMount: true,
         throwOnError: true,
         staleTime: 1 * 2_000,
-        gcTime: Infinity,
+        gcTime: Infinity
       },
       dehydrate: {
         // include pending queries in dehydration
         shouldDehydrateQuery: (query) =>
-          defaultShouldDehydrateQuery(query) ||
-          query.state.status === "pending",
+          defaultShouldDehydrateQuery(query) || query.state.status === "pending",
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         shouldRedactErrors: (error) => {
           // We should not catch Next.js server errors
@@ -34,12 +30,12 @@ function makeQueryClient() {
           // Next.js also automatically redacts errors for us
           // with better digests.
           return false;
-        },
+        }
       },
       mutations: {
-        throwOnError: false,
-      },
-    },
+        throwOnError: false
+      }
+    }
   });
 }
 
