@@ -16,6 +16,8 @@ export const QueryClientProviders = ({
   //       render if it suspends and there is no boundary
   const queryClient = getQueryClient();
 
+  console.log("push test");
+
   return (
     <QueryClientProvider client={queryClient}>
       {children}
