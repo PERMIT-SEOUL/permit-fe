@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { QueryClientProviders } from "@/lib/queryClient/clientBoundary/QueryClientProvider";
+
 import "../styles/normalize.css";
 
 export const metadata: Metadata = {
@@ -14,7 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <QueryClientProviders>{children}</QueryClientProviders>
+      </body>
     </html>
   );
 }
