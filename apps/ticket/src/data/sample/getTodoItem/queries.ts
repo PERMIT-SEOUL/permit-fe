@@ -21,6 +21,6 @@ export const sampleOptions = (): SampleOptions<SampleResponse> => {
     queryKey: ["sample"],
     queryFn: () => {
       return fetch("https://jsonplaceholder.typicode.com/todos/1").then((res) => res.json());
-    }
+    },
   };
 };

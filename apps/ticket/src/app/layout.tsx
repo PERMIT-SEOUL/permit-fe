@@ -6,11 +6,11 @@ import "../styles/normalize.css";
 
 export const metadata: Metadata = {
   title: "Permit",
-  description: "Permit Ticket"
+  description: "Permit Ticket",
 };
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {

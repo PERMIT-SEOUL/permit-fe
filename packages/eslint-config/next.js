@@ -6,6 +6,7 @@ import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
 import { config as baseConfig } from "./base.js";
+import { config as customConfig } from "./custom.js";
 
 /**
  * A custom ESLint configuration for libraries that use Next.js.
@@ -43,7 +44,7 @@ export const nextJsConfig = [
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
-      "react/react-in-jsx-scope": "off",
     },
   },
+  ...customConfig,
 ];

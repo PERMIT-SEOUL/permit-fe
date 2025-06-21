@@ -16,7 +16,7 @@ function makeQueryClient() {
         retryOnMount: true,
         throwOnError: true,
         staleTime: 1 * 2_000,
-        gcTime: Infinity
+        gcTime: Infinity,
       },
       dehydrate: {
         // include pending queries in dehydration
@@ -30,12 +30,12 @@ function makeQueryClient() {
           // Next.js also automatically redacts errors for us
           // with better digests.
           return false;
-        }
+        },
       },
       mutations: {
-        throwOnError: false
-      }
-    }
+        throwOnError: false,
+      },
+    },
   });
 }
 
@@ -51,6 +51,7 @@ export function getQueryClient() {
     // suspends during the initial render. This may not be needed if we
     // have a suspense boundary BELOW the creation of the query client
     if (!browserQueryClient) browserQueryClient = makeQueryClient();
+
     return browserQueryClient;
   }
 }

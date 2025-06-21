@@ -16,7 +16,7 @@ interface WithSuspenseOptions {
  */
 export const WithSuspense = <P extends object>(
   Component: ComponentType<P>,
-  options?: WithSuspenseOptions
+  options?: WithSuspenseOptions,
 ) => {
   const defaultFallback = options?.fallback || <></>;
 
