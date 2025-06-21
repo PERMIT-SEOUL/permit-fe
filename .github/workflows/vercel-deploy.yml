@@ -1,0 +1,61 @@
+name: Synchronize to repo deploy
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  sync-main:
+    name: Sync main to production repo
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PERMIT_TICKET_DEPLOY_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - name: Add remote-url for main
+        run: |
+          git remote add production-repo https://pepperdad:${{ secrets.PERMIT_TICKET_DEPLOY_TOKEN }}@github.com/pepperdad/permit-fe
+          git config user.name pepperdad
+          git config user.email becomegoodguy@gmail.com
+
+      - name: Push changes to production-repo for main
+        run: |
+          git push -f production-repo main
+
+      - name: Clean up for main
+        run: |
+          git remote remove production-repo
+
+  sync-develop:
+    name: Sync develop to development repo
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PERMIT_TICKET_DEPLOY_TOKEN }}
+          fetch-depth: 0
+          ref: develop
+
+      - name: Add remote-url for develop
+        run: |
+          git remote add development-repo https://pepperdad:${{ secrets.PERMIT_TICKET_DEPLOY_TOKEN }}@github.com/pepperdad/permit-fe
+          git config user.name pepperdad
+          git config user.email becomegoodguy@gmail.com
+
+      - name: Push changes to development-repo for develop
+        run: |
+          git push -f development-repo develop
+
+      - name: Clean up for develop
+        run: |
+          git remote remove development-repo
