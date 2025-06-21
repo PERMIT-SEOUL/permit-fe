@@ -21,7 +21,7 @@ jobs:
 
       - name: Add remote-url for main
         run: |
-          git remote add production-repo https://pepperdad:${{ secrets.PERMIT_TICKET_DEPLOY_TOKEN }}@github.com/pepperdad/permit-fe
+          git remote add production-repo https://pepperdad:${{ secrets.PERMIT_TICKET_DEPLOY_TOKEN }}@github.com/pepperdad/permit-ticket
           git config user.name pepperdad
           git config user.email becomegoodguy@gmail.com
 
@@ -48,7 +48,7 @@ jobs:
 
       - name: Add remote-url for develop
         run: |
-          git remote add development-repo https://pepperdad:${{ secrets.PERMIT_TICKET_DEPLOY_TOKEN }}@github.com/pepperdad/permit-fe
+          git remote add development-repo https://pepperdad:${{ secrets.PERMIT_TICKET_DEPLOY_TOKEN }}@github.com/pepperdad/permit-ticket
           git config user.name pepperdad
           git config user.email becomegoodguy@gmail.com
 
