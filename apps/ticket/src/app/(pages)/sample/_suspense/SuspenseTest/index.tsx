@@ -18,6 +18,6 @@ export const SuspenseTest = WithSuspense(
     );
   },
   {
-    fallback: <div>SuspenseTest Loading...</div>
-  }
+    fallback: <div>SuspenseTest Loading...</div>,
+  },
 );
