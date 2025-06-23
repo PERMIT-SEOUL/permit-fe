@@ -2,6 +2,6 @@
 export default {
   singleQuote: false,
   tabWidth: 2,
-  trailingComma: "none",
-  printWidth: 100
+  trailingComma: "all",
+  printWidth: 100,
 };
