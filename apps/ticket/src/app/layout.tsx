@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { QueryClientProviders } from "@/lib/queryClient/clientBoundary/QueryClientProvider";
+import { GlobalErrorBoundary } from "@/shared/clientBoundary/ErrorBoundary/GlobalErrorBoundary";
 
 import "../styles/normalize.css";
 
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <QueryClientProviders>{children}</QueryClientProviders>
+        <GlobalErrorBoundary>
+          <QueryClientProviders>{children}</QueryClientProviders>
+        </GlobalErrorBoundary>
       </body>
     </html>
   );
