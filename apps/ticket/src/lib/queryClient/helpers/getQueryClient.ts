@@ -14,6 +14,7 @@ function makeQueryClient() {
           return !isServer && isServerPrefetchError ? count < 1 : false;
         },
         retryOnMount: true,
+        refetchOnWindowFocus: false,
         throwOnError: true,
         staleTime: 1 * 2_000,
         gcTime: Infinity,
