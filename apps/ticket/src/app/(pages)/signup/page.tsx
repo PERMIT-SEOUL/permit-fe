@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
@@ -14,16 +13,13 @@ const cx = classNames.bind(styles);
 const REDIRECT_URI = "http://localhost:3000/auth";
 
 export default function SignupPage() {
-  const searchParams = useSearchParams();
-  const code = searchParams.get("code");
-
   const [formData, setFormData] = useState({
     userName: "",
     userAge: 0,
     userSex: "MALE" as "MALE" | "FEMALE",
     userEmail: "",
-    socialType: "KAKAO" as "GOOGLE" | "KAKAO",
-    authorizationCode: code as string,
+    socialType: "KAKAO" as "GOOGLE" | "KAKAO", // TODO: 로컬 스토리지에서 꺼내는 작업 추가
+    authorizationCode: "", // TODO: 응답 토큰 store 에서 꺼내는 작업 추가
     redirectUrl: REDIRECT_URI,
   });
 
