@@ -10,7 +10,7 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-const REDIRECT_URI = "http://localhost:3000/auth";
+const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ export default function SignupPage() {
     userEmail: "",
     socialType: "KAKAO" as "GOOGLE" | "KAKAO", // TODO: 로컬 스토리지에서 꺼내는 작업 추가
     authorizationCode: "", // TODO: 응답 토큰 store 에서 꺼내는 작업 추가
-    redirectUrl: REDIRECT_URI,
+    redirectUrl: REDIRECT_URI || "",
   });
 
   const { mutateAsync, isPending } = useMutation({
