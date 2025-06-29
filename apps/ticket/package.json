@@ -12,14 +12,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sentry/nextjs": "^9.33.0",
     "@tanstack/react-query": "^5.80.10",
     "@tanstack/react-query-devtools": "^5.80.10",
     "axios": "^1.10.0",
     "classnames": "^2.5.1",
+    "import-in-the-middle": "^1.14.2",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-error-boundary": "^6.0.0"
+    "react-error-boundary": "^6.0.0",
+    "require-in-the-middle": "^7.5.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
