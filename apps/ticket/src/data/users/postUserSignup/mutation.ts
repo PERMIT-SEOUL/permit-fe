@@ -1,5 +1,6 @@
 import { UseMutationOptions } from "@tanstack/react-query";
 
+import { API_URL } from "@/data/constants";
 import { instance } from "@/lib/axios";
 
 type SignupRequest = {
@@ -28,7 +29,7 @@ export type SignupMutationOptions<TData> = Omit<
 export const signupMutationOptions = (): SignupMutationOptions<SignupResponse> => {
   return {
     mutationFn: async (params: SignupRequest) => {
-      const { data } = await instance.post<SignupResponse>("/users/signup", params);
+      const { data } = await instance.post<SignupResponse>(API_URL.SIGNUP, params);
 
       return data;
     },
