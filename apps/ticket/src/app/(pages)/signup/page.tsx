@@ -9,6 +9,7 @@ import { signupMutationOptions } from "@/data/users/postUserSignup/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { PAGE_URL } from "@/shared/constants/pageUrl";
 import { SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
+import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
 import styles from "./index.module.scss";
 
@@ -18,7 +19,7 @@ export default function SignupPage() {
   const router = useRouter();
 
   const token = safeLocalStorage.get(TOKEN_KEY);
-  const socialType = safeLocalStorage.get(SOCIAL_LOGIN_TYPE_KEY) as "KAKAO" | "GOOGLE";
+  const socialType = safeLocalStorage.get(SOCIAL_LOGIN_TYPE_KEY) as SocialLoginType;
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -57,7 +58,7 @@ export default function SignupPage() {
       safeLocalStorage.remove(TOKEN_KEY);
       safeLocalStorage.remove(SOCIAL_LOGIN_TYPE_KEY);
 
-      // redirect 로직 구체적으로 추가
+      // TODO: redirect 로직 구체적으로 추가
       router.replace(PAGE_URL.HOME);
     } catch (error) {
       alert("회원가입에 실패했습니다.");
