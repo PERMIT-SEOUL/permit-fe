@@ -1,0 +1,11 @@
+export const ENVIRONMENT = {
+  PRODUCTION: "production",
+  DEVELOPMENT: "development",
+  LOCAL: "local",
+} as const;
+
+export const CURRENT_ENV = process.env.NEXT_PUBLIC_ENV || ENVIRONMENT.DEVELOPMENT;
+
+export const IS_PRODUCTION = CURRENT_ENV === ENVIRONMENT.PRODUCTION;
+export const IS_DEVELOPMENT = CURRENT_ENV === ENVIRONMENT.DEVELOPMENT;
+export const IS_LOCAL = CURRENT_ENV === ENVIRONMENT.LOCAL;
