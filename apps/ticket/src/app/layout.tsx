@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { QueryClientProviders } from "@/lib/queryClient/clientBoundary/QueryClientProvider";
 import { GlobalErrorBoundary } from "@/shared/clientBoundary/ErrorBoundary/GlobalErrorBoundary";
 
-import "../styles/normalize.css";
+import "../styles/reset.css";
 
 export const metadata: Metadata = {
   title: "Permit",
