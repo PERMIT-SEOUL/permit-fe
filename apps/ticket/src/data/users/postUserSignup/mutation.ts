@@ -2,20 +2,20 @@ import { UseMutationOptions } from "@tanstack/react-query";
 
 import { API_URL } from "@/data/constants";
 import { instance } from "@/lib/axios";
+import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
 type SignupRequest = {
   userName: string;
   userAge: number;
   userSex: "MALE" | "FEMALE";
-  socialType: "GOOGLE" | "KAKAO";
-  authorizationCode: string;
-  redirectUrl: string;
+  socialType: SocialLoginType;
+  socialAccessToken: string;
   userEmail: string;
 };
 
 type SignupResponse = {
   code: number;
-  data: object | null;
+  data: null;
 };
 
 export type SignupMutationOptions<TData> = Omit<

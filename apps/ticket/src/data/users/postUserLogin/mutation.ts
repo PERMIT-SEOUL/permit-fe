@@ -2,17 +2,17 @@ import { UseMutationOptions } from "@tanstack/react-query";
 
 import { API_URL } from "@/data/constants";
 import { instance } from "@/lib/axios";
+import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
 type LoginRequest = {
-  socialType: "GOOGLE" | "KAKAO";
+  socialType: SocialLoginType;
   authorizationCode: string;
   redirectUrl: string;
 };
 
-// TODO: 타입 수정
 type LoginResponse = {
   code: number;
-  data: object | null;
+  data: null;
 };
 
 export type LoginMutationOptions<TData> = Omit<
