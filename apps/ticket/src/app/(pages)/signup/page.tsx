@@ -1,37 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { signupMutationOptions } from "@/data/users/postUserSignup/mutation";
+import { safeLocalStorage } from "@/lib/storage";
+import { PAGE_URL } from "@/shared/constants/pageUrl";
+import { SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
+import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-const REDIRECT_URI = "http://localhost:3000/auth";
-
 export default function SignupPage() {
+  const router = useRouter();
+
+  const token = safeLocalStorage.get(TOKEN_KEY);
+  const socialType = safeLocalStorage.get(SOCIAL_LOGIN_TYPE_KEY) as SocialLoginType;
+
   const [formData, setFormData] = useState({
     userName: "",
     userAge: 0,
     userSex: "MALE" as "MALE" | "FEMALE",
     userEmail: "",
-    socialType: "KAKAO" as "GOOGLE" | "KAKAO", // TODO: 로컬 스토리지에서 꺼내는 작업 추가
-    authorizationCode: "", // TODO: 응답 토큰 store 에서 꺼내는 작업 추가
-    redirectUrl: REDIRECT_URI,
+    socialType: socialType,
+    socialAccessToken: token || "",
   });
 
   const { mutateAsync, isPending } = useMutation({
     ...signupMutationOptions(),
-    onError: (error) => {
-      alert("회원가입에 실패했습니다.");
-      console.error("회원가입 실패:", error);
-    },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({
@@ -40,7 +43,7 @@ export default function SignupPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSignup = async (e: FormEvent) => {
     e.preventDefault();
 
     const submitData = {
@@ -48,14 +51,26 @@ export default function SignupPage() {
       userAge: formData.userAge,
     };
 
-    mutateAsync(submitData);
+    try {
+      await mutateAsync(submitData);
+
+      // signup API 요청에 필요한 정보 제거
+      safeLocalStorage.remove(TOKEN_KEY);
+      safeLocalStorage.remove(SOCIAL_LOGIN_TYPE_KEY);
+
+      // TODO: redirect 로직 구체적으로 추가
+      router.replace(PAGE_URL.HOME);
+    } catch (error) {
+      alert("회원가입에 실패했습니다.");
+      console.error("회원가입 실패:", error);
+    }
   };
 
   return (
     <div className={cx("container")}>
       <h1 className={cx("title")}>회원가입</h1>
 
-      <form onSubmit={handleSubmit} className={cx("form")}>
+      <form onSubmit={handleSignup} className={cx("form")}>
         <div className={cx("fieldGroup")}>
           <label htmlFor="userName" className={cx("label")}>
             이름

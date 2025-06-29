@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:dev": "cp .env.development .env.local && next build && rm .env.local",
+    "build:prod": "cp .env.production .env.local && next build && rm .env.local",
     "start": "next start",
     "lint": "next lint"
   },

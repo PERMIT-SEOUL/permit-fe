@@ -1,3 +1,4 @@
 export const API_URL = {
-  SIGNUP: "/users/signup",
+  SIGNUP: "/api/users/signup",
+  LOGIN: "/api/users/login",
 } as const;

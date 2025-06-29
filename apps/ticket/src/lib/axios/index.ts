@@ -24,6 +24,11 @@ instance.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError) => {
     // TODO: 에러 로깅 등 추가
-    return Promise.reject(error);
+
+    if (error.status === 500) {
+      alert("서버에러 발생. 관리자에게 문의해주세요.");
+    }
+
+    return Promise.reject(error.response?.data);
   },
 );
