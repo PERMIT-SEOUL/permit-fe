@@ -1,6 +1,7 @@
 import { safeLocalStorage } from "@/lib/storage";
+import { SOCIAL_LOGIN_TYPE_KEY } from "@/shared/constants/storage";
 
-import { GOOGLE_CLIENT_ID, KAKAO_REST_API_KEY, REDIRECT_URI } from "./constants";
+import { GOOGLE_LOGIN_URL, KAKAO_LOGIN_URL } from "./constants";
 import { SOCIAL_LOGIN_TYPE, SocialLoginType } from "./types";
 
 export const useOAuth = () => {
@@ -11,17 +12,15 @@ export const useOAuth = () => {
       googleLogin();
     }
 
-    safeLocalStorage.set("socialType", socialType);
+    safeLocalStorage.set(SOCIAL_LOGIN_TYPE_KEY, socialType);
   };
 
   const kakaoLogin = () => {
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
-    window.location.href = kakaoURL;
+    window.location.href = KAKAO_LOGIN_URL;
   };
 
   const googleLogin = () => {
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=email+profile`;
+    window.location.href = GOOGLE_LOGIN_URL;
   };
 
   return { handleLogin };
