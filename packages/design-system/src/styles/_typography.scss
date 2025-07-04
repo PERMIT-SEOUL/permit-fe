@@ -1,67 +1,68 @@
 @use "./variables" as *;
+@use "./functions" as *;
 
 // Title Shortcuts
 @mixin title-bold-32 {
-  @include get-typography("title-32", "bold");
+  @include get-typography("title32", "bold");
 }
 
 @mixin title-bold-24 {
-  @include get-typography("title-24", "bold");
+  @include get-typography("title24", "bold");
 }
 
 @mixin title-extra-20 {
-  @include get-typography("title-20", "extrabold");
+  @include get-typography("title20", "extrabold");
 }
 
 @mixin title-bold-20 {
-  @include get-typography("title-20", "bold");
+  @include get-typography("title20", "bold");
 }
 
 @mixin title-bold-18 {
-  @include get-typography("title-18", "bold");
+  @include get-typography("title18", "bold");
 }
 
 @mixin title-med-18 {
-  @include get-typography("title-18", "medium");
+  @include get-typography("title18", "medium");
 }
 
 @mixin title-reg-18 {
-  @include get-typography("title-18", "regular");
+  @include get-typography("title18", "regular");
 }
 
 // Body Shortcuts
 @mixin body-bold-16 {
-  @include get-typography("body-16", "bold");
+  @include get-typography("body16", "bold");
 }
 
 @mixin body-med-16 {
-  @include get-typography("body-16", "medium");
+  @include get-typography("body16", "medium");
 }
 
 @mixin body-reg-16 {
-  @include get-typography("body-16", "regular");
+  @include get-typography("body16", "regular");
 }
 
 @mixin body-bold-14 {
-  @include get-typography("body-14", "bold");
+  @include get-typography("body14", "bold");
 }
 
 @mixin body-med-14 {
-  @include get-typography("body-14", "medium");
+  @include get-typography("body14", "medium");
 }
 
 @mixin body-reg-14 {
-  @include get-typography("body-14", "regular", "gray-900", $font-family-pretendard);
+  @include get-typography("body14", "regular", "gray-900", $font-family-pretendard);
 }
 
 @mixin body-bold-12 {
-  @include get-typography("body-12", "bold");
+  @include get-typography("body12", "bold");
 }
 
 @mixin body-med-12 {
-  @include get-typography("body-12", "medium");
+  @include get-typography("body12", "medium");
 }
 
 @mixin body-reg-12 {
-  @include get-typography("body-12", "regular");
+  @include get-typography("body12", "regular");
 } 
