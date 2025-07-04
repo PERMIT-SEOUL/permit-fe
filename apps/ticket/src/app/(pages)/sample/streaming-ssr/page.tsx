@@ -1,8 +1,10 @@
+"use client";
+
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 
-import { SuspenseTest } from "./_suspense/SuspenseTest";
+import { SuspenseTest } from "../_suspense/SuspenseTest";
 
-export default function Sample() {
+export default function StreamingSSRPage() {
   const qc = getQueryClient();
 
   return (
