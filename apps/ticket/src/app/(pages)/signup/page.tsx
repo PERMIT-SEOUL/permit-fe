@@ -2,10 +2,9 @@
 
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
-import { signupMutationOptions } from "@/data/users/postUserSignup/mutation";
+import { useSignupMutation } from "@/data/users/postUserSignup/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { PAGE_URL } from "@/shared/constants/pageUrl";
 import { SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
@@ -30,9 +29,7 @@ export default function SignupPage() {
     socialAccessToken: token || "",
   });
 
-  const { mutateAsync, isPending } = useMutation({
-    ...signupMutationOptions(),
-  });
+  const { mutateAsync, isPending } = useSignupMutation();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
