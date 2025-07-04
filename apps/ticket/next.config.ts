@@ -4,6 +4,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 const nextConfig: NextConfig = {
   async rewrites() {
     // 요청 경로를 다른 경로에 매핑
+    // TODO: 확인
     return [
       {
         source: "/sample",

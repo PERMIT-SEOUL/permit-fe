@@ -1,4 +1,4 @@
-import { UseMutationOptions } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 
 import { API_URL } from "@/data/constants";
 import { instance } from "@/lib/axios";
@@ -19,16 +19,16 @@ export type LoginMutationOptions<TData> = Omit<
   UseMutationOptions<TData, Error, LoginRequest>,
   "mutationFn"
 > & {
-  mutationFn: (params: LoginRequest) => Promise<TData>;
   onSuccess?: (data: TData) => void;
 };
 
-export const loginMutationOptions = (): LoginMutationOptions<LoginResponse> => {
-  return {
+export const useLoginMutation = (options?: LoginMutationOptions<LoginResponse>) => {
+  return useMutation({
     mutationFn: async (params: LoginRequest) => {
       const { data } = await instance.post<LoginResponse>(API_URL.LOGIN, params);
 
       return data;
     },
-  };
+    ...options,
+  });
 };
