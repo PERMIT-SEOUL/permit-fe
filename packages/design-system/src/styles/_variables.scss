@@ -1,13 +1,26 @@
 // Typography
-$font-family-en: 'Roboto', sans-serif;
-$font-family-ko: 'Pretendard', sans-serif;
-$font-family-base: $font-family-ko;
+$font-family-roboto: 'Roboto', sans-serif;
+$font-family-pretendard: 'Pretendard', sans-serif;
+$font-family-base: $font-family-roboto;
 
 // Font Weights
-$font-weight-regular: 400;
-$font-weight-medium: 500;
-$font-weight-bold: 700;
-$font-weight-extrabold: 800;
+$font-weights: (
+  "regular": 400,
+  "medium": 500,
+  "bold": 700,
+  "extrabold": 800
+);
+
+// Font Sizes
+$font-sizes: (
+  "title-32": 32px,
+  "title-24": 24px,
+  "title-20": 20px,
+  "title-18": 18px,
+  "body-16": 16px,
+  "body-14": 14px,
+  "body-12": 12px
+);
 
 // Colors - Grayscale
 $black: #000;
