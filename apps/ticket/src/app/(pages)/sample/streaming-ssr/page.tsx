@@ -1,5 +1,3 @@
-"use client";
-
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 
 import { SuspenseTest } from "../_suspense/SuspenseTest";
