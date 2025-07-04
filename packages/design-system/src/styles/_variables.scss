@@ -11,6 +11,12 @@ $font-weights: (
   "extrabold": 800
 );
 
+// Font Variables
+$regular: map-get($font-weights, "regular");
+$medium: map-get($font-weights, "medium");
+$bold: map-get($font-weights, "bold");
+$extrabold: map-get($font-weights, "extrabold");
+
 // Font Sizes
 $font-sizes: (
   "title-32": 32px,
@@ -21,6 +27,20 @@ $font-sizes: (
   "body-14": 14px,
   "body-12": 12px
 );
+
+// Title Variables
+$title-32: map-get($font-sizes, "title-32");
+$title-24: map-get($font-sizes, "title-24");
+$title-20: map-get($font-sizes, "title-20");
+$title-18: map-get($font-sizes, "title-18");
+
+// Body Variables
+$body-16: map-get($font-sizes, "body-16");
+$body-14: map-get($font-sizes, "body-14");
+$body-12: map-get($font-sizes, "body-12");
+
+// Line Heights
+$line-height-auto: 1.6; // 160%
 
 // Colors - Grayscale
 $black: #000;
@@ -35,20 +55,6 @@ $gray-200: #D4D4D4;
 $gray-100: #E5E5E5;
 $gray-50: #F5F5F5;
 $gray-25: #FAFAFA;
-
-// Font Sizes - Title
-$title-32: 32px;
-$title-24: 24px;
-$title-20: 20px;
-$title-18: 18px;
-
-// Font Sizes - Body
-$body-16: 16px;
-$body-14: 14px;
-$body-12: 12px;
-
-// Line Heights
-$line-height-auto: 1.6; // 160%
 
 // Spacing
 $spacing-1: 4px;
