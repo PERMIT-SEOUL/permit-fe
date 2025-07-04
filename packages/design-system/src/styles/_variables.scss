@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // Typography
 $font-family-roboto: 'Roboto', sans-serif;
 $font-family-pretendard: 'Pretendard', sans-serif;
@@ -12,10 +14,10 @@ $font-weights: (
 );
 
 // Font Variables
-$regular: map-get($font-weights, "regular");
-$medium: map-get($font-weights, "medium");
-$bold: map-get($font-weights, "bold");
-$extrabold: map-get($font-weights, "extrabold");
+$regular: map.get($font-weights, "regular");
+$medium: map.get($font-weights, "medium");
+$bold: map.get($font-weights, "bold");
+$extrabold: map.get($font-weights, "extrabold");
 
 // Font Sizes
 $font-sizes: (
@@ -29,15 +31,15 @@ $font-sizes: (
 );
 
 // Title Variables
-$title-32: map-get($font-sizes, "title32");
-$title-24: map-get($font-sizes, "title24");
-$title-20: map-get($font-sizes, "title20");
-$title-18: map-get($font-sizes, "title18");
+$title-32: map.get($font-sizes, "title32");
+$title-24: map.get($font-sizes, "title24");
+$title-20: map.get($font-sizes, "title20");
+$title-18: map.get($font-sizes, "title18");
 
 // Body Variables
-$body-16: map-get($font-sizes, "body16");
-$body-14: map-get($font-sizes, "body14");
-$body-12: map-get($font-sizes, "body12");
+$body-16: map.get($font-sizes, "body16");
+$body-14: map.get($font-sizes, "body14");
+$body-12: map.get($font-sizes, "body12");
 
 // Line Heights
 $line-height-auto: 1.6; // 160%
@@ -64,19 +66,19 @@ $colors: (
 );
 
 // Colors Variables
-$black: map-get($colors, "black");
-$white: map-get($colors, "white");
-$red: map-get($colors, "red");
-$gray-900: map-get($colors, "gray900");
-$gray-800: map-get($colors, "gray800");
-$gray-700: map-get($colors, "gray700");
-$gray-600: map-get($colors, "gray600");
-$gray-500: map-get($colors, "gray500");
-$gray-400: map-get($colors, "gray400");
-$gray-300: map-get($colors, "gray300");
-$gray-200: map-get($colors, "gray200");
-$gray-150: map-get($colors, "gray150");
-$gray-100: map-get($colors, "gray100");
+$black: map.get($colors, "black");
+$white: map.get($colors, "white");
+$red: map.get($colors, "red");
+$gray-900: map.get($colors, "gray900");
+$gray-800: map.get($colors, "gray800");
+$gray-700: map.get($colors, "gray700");
+$gray-600: map.get($colors, "gray600");
+$gray-500: map.get($colors, "gray500");
+$gray-400: map.get($colors, "gray400");
+$gray-300: map.get($colors, "gray300");
+$gray-200: map.get($colors, "gray200");
+$gray-150: map.get($colors, "gray150");
+$gray-100: map.get($colors, "gray100");
 
 
 // Spacing
