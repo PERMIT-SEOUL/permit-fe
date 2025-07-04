@@ -18,6 +18,7 @@
     "stylelint": "^16.20.0",
     "stylelint-config-standard": "^38.0.0",
     "stylelint-order": "^7.0.0",
+    "stylelint-scss": "^6.12.1",
     "turbo": "^2.5.3",
     "typescript": "5.8.2"
   },
