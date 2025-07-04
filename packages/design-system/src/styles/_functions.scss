@@ -1,0 +1,22 @@
+@use "sass:map";
+@use "./variables" as *;
+
+// Typography Functions
+@mixin get-typography($size-key, $weight: $regular, $color: $black, $font-family: $font-family-base) {
+    color: map-get($colors, $color);
+    font-weight: map-get($font-weights, $weight);
+    font-size: map-get($font-sizes, $size-key);
+    font-family: $font-family;
+    line-height: $line-height-auto;
+  }
+  
+
+// Color Functions
+@function get-color($color-name, $shade: null) {
+  @if $shade {
+    @return map.get(map.get($colors, $color-name), $shade);
+  }
+
+  @return map.get($colors, $color-name);
+}
+

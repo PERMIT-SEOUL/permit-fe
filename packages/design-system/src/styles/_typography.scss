@@ -1,75 +1,67 @@
 @use "./variables" as *;
 
-// Typography Mixins
-@mixin font($size-key, $weight: "regular", $font-family: $font-family-base) {
-  font-weight: map-get($font-weights, $weight);
-  font-size: map-get($font-sizes, $size-key);
-  font-family: $font-family-base;
-  line-height: $line-height-auto;
-}
-
 // Title Shortcuts
 @mixin title-bold-32 {
-  @include font("title-32", "bold");
+  @include get-typography("title-32", "bold");
 }
 
 @mixin title-bold-24 {
-  @include font("title-24", "bold");
+  @include get-typography("title-24", "bold");
 }
 
 @mixin title-extra-20 {
-  @include font("title-20", "extrabold");
+  @include get-typography("title-20", "extrabold");
 }
 
 @mixin title-bold-20 {
-  @include font("title-20", "bold");
+  @include get-typography("title-20", "bold");
 }
 
 @mixin title-bold-18 {
-  @include font("title-18", "bold");
+  @include get-typography("title-18", "bold");
 }
 
 @mixin title-med-18 {
-  @include font("title-18", "medium");
+  @include get-typography("title-18", "medium");
 }
 
 @mixin title-reg-18 {
-  @include font("title-18", "regular");
+  @include get-typography("title-18", "regular");
 }
 
 // Body Shortcuts
 @mixin body-bold-16 {
-  @include font("body-16", "bold");
+  @include get-typography("body-16", "bold");
 }
 
 @mixin body-med-16 {
-  @include font("body-16", "medium");
+  @include get-typography("body-16", "medium");
 }
 
 @mixin body-reg-16 {
-  @include font("body-16", "regular");
+  @include get-typography("body-16", "regular");
 }
 
 @mixin body-bold-14 {
-  @include font("body-14", "bold");
+  @include get-typography("body-14", "bold");
 }
 
 @mixin body-med-14 {
-  @include font("body-14", "medium");
+  @include get-typography("body-14", "medium");
 }
 
 @mixin body-reg-14 {
-  @include font("body-14", "regular", $font-family-pretendard);
+  @include get-typography("body-14", "regular", "gray-900", $font-family-pretendard);
 }
 
 @mixin body-bold-12 {
-  @include font("body-12", "bold");
+  @include get-typography("body-12", "bold");
 }
 
 @mixin body-med-12 {
-  @include font("body-12", "medium");
+  @include get-typography("body-12", "medium");
 }
 
 @mixin body-reg-12 {
-  @include font("body-12", "regular");
+  @include get-typography("body-12", "regular");
 } 
