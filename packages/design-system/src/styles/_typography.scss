@@ -1,0 +1,115 @@
+@use "./variables" as *;
+
+// Title Mixins
+@mixin title-bold-32 {
+  font-weight: $font-weight-bold;
+  font-size: $title-32;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin title-bold-24 {
+  font-weight: $font-weight-bold;
+  font-size: $title-24;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin title-extra-20 {
+  font-weight: $font-weight-extrabold;
+  font-size: $title-20;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin title-bold-20 {
+  font-weight: $font-weight-bold;
+  font-size: $title-20;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin title-bold-18 {
+  font-weight: $font-weight-bold;
+  font-size: $title-18;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin title-med-18 {
+  font-weight: $font-weight-medium;
+  font-size: $title-18;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin title-reg-18 {
+  font-weight: $font-weight-regular;
+  font-size: $title-18;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+// Body Mixins
+@mixin body-bold-16 {
+  font-weight: $font-weight-bold;
+  font-size: $body-16;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin body-med-16 {
+  font-weight: $font-weight-medium;
+  font-size: $body-16;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin body-reg-16 {
+  font-weight: $font-weight-regular;
+  font-size: $body-16;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin body-bold-14 {
+  font-weight: $font-weight-bold;
+  font-size: $body-14;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin body-med-14 {
+  font-weight: $font-weight-medium;
+  font-size: $body-14;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin body-reg-14 {
+  font-weight: $font-weight-regular;
+  font-size: $body-14;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin body-bold-12 {
+  font-weight: $font-weight-bold;
+  font-size: $body-12;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin body-med-12 {
+  font-weight: $font-weight-medium;
+  font-size: $body-12;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+}
+
+@mixin body-reg-12 {
+  font-weight: $font-weight-regular;
+  font-size: $body-12;
+  font-family: $font-family-base;
+  line-height: $line-height-auto;
+} 

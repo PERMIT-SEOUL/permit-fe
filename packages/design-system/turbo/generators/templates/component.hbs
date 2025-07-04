@@ -1,0 +1,22 @@
+import { HTMLAttributes } from 'react';
+import classNames from 'classnames/bind';
+
+import styles from './index.module.scss';
+
+const cx = classNames.bind(styles);
+
+export interface {{pascalCase name}}Props extends HTMLAttributes<HTMLDivElement> {
+  // Add your props here
+}
+
+export const {{pascalCase name}} = ({
+  className,
+  children,
+  ...props
+}: {{pascalCase name}}Props) => {
+  return (
+    <div className={cx('root', className)} {...props}>
+      {children}
+    </div>
+  );
+};
