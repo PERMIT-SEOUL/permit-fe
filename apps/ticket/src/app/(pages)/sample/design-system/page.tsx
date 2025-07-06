@@ -2,7 +2,7 @@
 
 import classNames from "classnames/bind";
 
-import { Button, Flex, TextField } from "@permit/design-system";
+import { Button, Flex, TextField, Typography } from "@permit/design-system";
 import { useTextField } from "@permit/design-system/hooks";
 
 import styles from "./index.module.scss";
@@ -53,7 +53,9 @@ export default function DesignSystemPage() {
 
   return (
     <div>
-      <h1>🚀 Streaming SSR Example</h1>
+      <Typography type="title24" color="gray800">
+        🚀 Design-system Example
+      </Typography>
       <div className={cx("wrap")}>
         <Flex gap={8}>
           <Button>버튼 1</Button>
