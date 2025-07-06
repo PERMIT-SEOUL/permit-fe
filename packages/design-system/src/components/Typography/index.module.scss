@@ -1,0 +1,103 @@
+@use '../../styles/variables' as theme;
+@use '../../styles/typography' as typography;
+
+.typography {
+  // font-size
+  &.title32 {
+    @include typography.title-bold-32;
+  }
+
+  &.title24 {
+    @include typography.title-bold-24;
+  }
+
+  &.title20 {
+    @include typography.title-bold-20;
+  }
+
+  &.title18 {
+    @include typography.title-bold-18;
+  }
+
+  &.body16 {
+    @include typography.body-reg-16;
+  }
+
+  &.body14 {
+    @include typography.body-reg-14;
+  }
+
+  &.body12 {
+    @include typography.body-reg-12;
+  }
+
+  // font-weight
+  &.bold {
+    font-weight: theme.$bold;
+  }
+
+  &.medium {
+    font-weight: theme.$medium;
+  }
+
+  &.regular {
+    font-weight: theme.$regular;
+  }
+
+  // color
+  &.black {
+    color: theme.$black;
+  }
+
+  &.white {
+    color: theme.$white;
+  }
+
+  &.red {
+    color: theme.$red;
+  }
+
+  &.red100 {
+    color: theme.$red-100;
+  }
+
+  &.gray100 {
+    color: theme.$gray-100;
+  }
+
+  &.gray150 {
+    color: theme.$gray-150;
+  }
+
+  &.gray200 {
+    color: theme.$gray-200;
+  }
+
+  &.gray300 {
+    color: theme.$gray-300;
+  }
+
+  &.gray400 {
+    color: theme.$gray-400;
+  }
+
+  &.gray500 {
+    color: theme.$gray-500;
+  }
+
+  &.gray600 {
+    color: theme.$gray-600;
+  }
+
+  &.gray700 {
+    color: theme.$gray-700;
+  }
+
+  &.gray800 {
+    color: theme.$gray-800;
+  }
+
+  &.gray900 {
+    color: theme.$gray-900;
+  }
+}
