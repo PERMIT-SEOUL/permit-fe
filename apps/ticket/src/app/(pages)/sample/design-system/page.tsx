@@ -6,46 +6,37 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-import { Button, Code, Flex } from "@permit/design-system";
+import { Button, Flex } from "@permit/design-system";
 
 export default function DesignSystemPage() {
   return (
     <div>
       <h1>🚀 Streaming SSR Example</h1>
-
       <div className={cx("wrap")}>
-        <Code className={cx("code")}>test 1</Code>
-        <Code className={cx("code")}>test 2</Code>
-        <Code className={cx("code")}>test 3</Code>
+        <Flex gap={8}>
+          <Button>버튼 1</Button>
+          <Button>버튼 2</Button>
+          <Button>버튼 3</Button>
+        </Flex>
       </div>
 
-      {/* 가로 방향 정렬 */}
-      <Flex gap={8} align="center">
-        <Button>버튼 1</Button>
-        <Button>버튼 2</Button>
-        <Button>버튼 3</Button>
-      </Flex>
+      <div className={cx("wrap_2")}>
+        <Flex gap={8} align="center">
+          <Button size="sm" variant="cta">
+            버튼입니다람쥐
+          </Button>
 
-      {/* 세로 방향 정렬 */}
-      <Flex direction="column" gap={8}>
-        <Button>버튼 1</Button>
-        <Button>버튼 2</Button>
-        <Button>버튼 3</Button>
-      </Flex>
-
-      {/* 가운데 정렬 */}
-      <Flex justify="center" gap={8}>
-        <Button>버튼 1</Button>
-        <Button>버튼 2</Button>
-        <Button>버튼 3</Button>
-      </Flex>
-
-      {/* Space Between */}
-      <Flex justify="space-between" align="center">
-        <Button>버튼 1</Button>
-        <Button>버튼 2</Button>
-        <Button>버튼 3</Button>
-      </Flex>
+          <Button size="md" variant="cta">
+            버튼입니다람쥐
+          </Button>
+        </Flex>
+        <Button variant="error" fullWidth>
+          경고 버튼
+        </Button>
+        <Button variant="secondary" disabled>
+          비활성화 버튼
+        </Button>
+      </div>
     </div>
   );
 }
