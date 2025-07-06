@@ -5,16 +5,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+
   cursor: pointer;
-  transition: all 0.15s ease-in-out;
   border: 1px solid transparent;
+  border-radius: 4px;
+
+  transition: all 0.15s ease-in-out;
 
   @include typography.body-bold-14;
 
   &:disabled {
-    opacity: 0.5;
     cursor: not-allowed;
+    opacity: 0.5;
   }
 
   // Size variants
@@ -32,8 +34,9 @@
 
   // Style variants
   &--primary {
-    background-color: theme.$gray-700;
     color: theme.$gray-100;
+
+    background-color: theme.$gray-700;
     border-color: theme.$gray-600;
 
     &:hover:not(:disabled) {
@@ -42,8 +45,9 @@
   }
 
   &--secondary {
-    background-color: transparent;
     color: theme.$gray-100;
+
+    background-color: transparent;
     border-color: theme.$gray-600;
 
     &:hover:not(:disabled) {
@@ -52,8 +56,9 @@
   }
 
   &--cta {
-    background-color: theme.$white;
     color: theme.$gray-800;
+
+    background-color: theme.$white;
 
     &:hover:not(:disabled) {
       background-color: theme.$gray-150;
@@ -61,8 +66,9 @@
   }
 
   &--error {
-    background-color: theme.$red;
     color: theme.$gray-800;
+
+    background-color: theme.$red;
 
     &:hover:not(:disabled) {
       background-color: theme.$red-100;
@@ -70,8 +76,9 @@
   }
 
   &--unac {
-    background-color: theme.$gray-600;
     color: theme.$gray-900;
+
+    background-color: theme.$gray-600;
     border-color: theme.$gray-700;
 
     &:hover:not(:disabled) {
