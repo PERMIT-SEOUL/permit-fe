@@ -2,6 +2,8 @@
 @use '../../styles/typography' as typography;
 
 .typography {
+  color: theme.$white;
+  
   // font-size
   &.title32 {
     @include typography.title-bold-32;
