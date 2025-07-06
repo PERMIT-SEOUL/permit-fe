@@ -2,9 +2,8 @@
 
 import { useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
 
-import { loginMutationOptions } from "@/data/users/postUserLogin/mutation";
+import { useLoginMutation } from "@/data/users/postUserLogin/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { LoadingIndicator } from "@/shared/components/LoadingIndicator";
 import { PAGE_URL } from "@/shared/constants/pageUrl";
@@ -20,9 +19,7 @@ export default function AuthPage() {
 
   const socialType = safeLocalStorage.get(SOCIAL_LOGIN_TYPE_KEY) as SocialLoginType;
 
-  const { mutateAsync } = useMutation({
-    ...loginMutationOptions(),
-  });
+  const { mutateAsync } = useLoginMutation();
 
   const handleLogin = useCallback(async () => {
     if (authorizationCode) {
