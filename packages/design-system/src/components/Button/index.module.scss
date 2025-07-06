@@ -1,0 +1,86 @@
+@use "../../styles/variables" as theme;
+@use "../../styles/typography" as typography;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  border: 1px solid transparent;
+
+  @include typography.body-bold-14;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // Size variants
+  &--sm {
+    height: 32px;
+    padding: 0 12px;
+  }
+
+  &--md {
+    height: 44px;
+    padding: 0 16px;
+  }
+
+  // round variants 필요시 추가
+
+  // Style variants
+  &--primary {
+    background-color: theme.$gray-700;
+    color: theme.$gray-100;
+    border-color: theme.$gray-600;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$gray-600;
+    }
+  }
+
+  &--secondary {
+    background-color: transparent;
+    color: theme.$gray-100;
+    border-color: theme.$gray-600;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(theme.$gray-800, 0.1);
+    }
+  }
+
+  &--cta {
+    background-color: theme.$white;
+    color: theme.$gray-800;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$gray-150;
+    }
+  }
+
+  &--error {
+    background-color: theme.$red;
+    color: theme.$gray-800;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$red-100;
+    }
+  }
+
+  &--unac {
+    background-color: theme.$gray-600;
+    color: theme.$gray-900;
+    border-color: theme.$gray-700;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$gray-700;
+    }
+  }
+
+  // Full width variant
+  &--full-width {
+    width: 100%;
+  }
+} 
