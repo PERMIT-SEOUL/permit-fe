@@ -52,6 +52,7 @@ $colors: (
   "white": #FFF,
   // Red
   "red": #FF283E,
+  "red100": #FA4958,
   // Gray
   "gray900": #0A0A0A,
   "gray800": #171717,
@@ -69,6 +70,7 @@ $colors: (
 $black: map.get($colors, "black");
 $white: map.get($colors, "white");
 $red: map.get($colors, "red");
+$red-100: map.get($colors, "red100");
 $gray-900: map.get($colors, "gray900");
 $gray-800: map.get($colors, "gray800");
 $gray-700: map.get($colors, "gray700");
