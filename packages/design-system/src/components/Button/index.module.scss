@@ -19,19 +19,6 @@
     opacity: 0.5;
   }
 
-  // Size variants
-  &--sm {
-    height: 32px;
-    padding: 8px 20px;
-  }
-
-  &--md {
-    height: 44px;
-    padding: 14px 20px;
-  }
-
-  // round variants 필요시 추가
-
   // Style variants
   &--primary {
     color: theme.$gray-100;
@@ -86,6 +73,17 @@
     }
   }
 
+  // Size variants
+  &--sm {
+    height: 32px;
+    padding: 8px 20px;
+  }
+
+  &--md {
+    height: 44px;
+    padding: 14px 20px;
+  }
+
   // header 에서만 사용되는 button
   // 기존 정의된 버튼의 size 를 사용하지 않음
   &--header {
@@ -103,6 +101,8 @@
 
     @include typography.body-reg-14;
   }
+
+  // round variants 필요시 추가
 
   // Full width variant
   &--full-width {

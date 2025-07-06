@@ -7,8 +7,8 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-export type ButtonSize = "sm" | "md";
-export type ButtonVariant = "primary" | "secondary" | "cta" | "error" | "unac" | "header";
+export type ButtonSize = "sm" | "md" | "header";
+export type ButtonVariant = "primary" | "secondary" | "cta" | "error" | "unac";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -55,8 +55,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cx(
           "button",
-          `button--${size.toLowerCase()}`,
           `button--${variant}`,
+          `button--${size.toLowerCase()}`,
           {
             "button--full-width": fullWidth,
           },
