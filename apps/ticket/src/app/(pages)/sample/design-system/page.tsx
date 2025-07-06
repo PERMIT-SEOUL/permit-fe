@@ -80,6 +80,8 @@ export default function DesignSystemPage() {
         <Button variant="secondary" disabled>
           비활성화 버튼
         </Button>
+
+        <Button variant="header">SHOP</Button>
       </div>
 
       <div className={cx("wrap_bg")}>

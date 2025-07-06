@@ -82,8 +82,26 @@
     border-color: theme.$gray-700;
 
     &:hover:not(:disabled) {
-      background-color: theme.$gray-700;
+      background-color: theme.$gray-500;
     }
+  }
+
+  // header 에서만 사용되는 button
+  // 기존 정의된 버튼의 size 를 사용하지 않음
+  &--header {
+    height: 42px;
+    padding: 12.5px 36px;
+
+    color: theme.$white;
+
+    background-color: theme.$gray-700;
+    border-radius: 34px;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$gray-600;
+    }
+
+    @include typography.body-reg-14;
   }
 
   // Full width variant

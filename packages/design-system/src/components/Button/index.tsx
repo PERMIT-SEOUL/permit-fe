@@ -8,7 +8,7 @@ import styles from "./index.module.scss";
 const cx = classNames.bind(styles);
 
 export type ButtonSize = "sm" | "md";
-export type ButtonVariant = "primary" | "secondary" | "cta" | "error" | "unac";
+export type ButtonVariant = "primary" | "secondary" | "cta" | "error" | "unac" | "header";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
