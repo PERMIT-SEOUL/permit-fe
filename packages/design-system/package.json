@@ -15,6 +15,7 @@
   "devDependencies": {
     "@permit/eslint-config": "workspace:*",
     "@permit/typescript-config": "workspace:*",
+    "@svgr/webpack": "^8.1.0",
     "@turbo/gen": "^2.5.0",
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",
@@ -26,6 +27,7 @@
   "dependencies": {
     "classnames": "^2.5.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "webpack": "^5.89.0"
   }
 }

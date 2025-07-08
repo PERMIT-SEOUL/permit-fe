@@ -2,7 +2,7 @@
 
 import classNames from "classnames/bind";
 
-import { Button, Flex, TextField, Typography } from "@permit/design-system";
+import { Button, Flex, Icon, TextField, Typography } from "@permit/design-system";
 import { useTextField } from "@permit/design-system/hooks";
 
 import styles from "./index.module.scss";
@@ -85,6 +85,11 @@ export default function DesignSystemPage() {
       </div>
 
       <div className={cx("wrap_bg")}>
+        <Icon.Calendar fill="gray800" />
+        <Icon.Calendar fill="white" size={40} />
+        <Icon.Calendar fill="red100" size={60} />
+        <Icon.Calendar fill="gray200" size={80} />
+
         <Flex direction="column" gap={16}>
           <TextField
             placeholder="이메일을 입력하세요"
