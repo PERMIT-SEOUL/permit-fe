@@ -12,6 +12,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@permit/design-system": "workspace:*",
     "@sentry/nextjs": "^9.33.0",
     "@tanstack/react-query": "^5.80.10",
     "@tanstack/react-query-devtools": "^5.80.10",
@@ -22,12 +23,12 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^6.0.0",
-    "require-in-the-middle": "^7.5.2",
-    "@permit/design-system": "workspace:*"
+    "require-in-the-middle": "^7.5.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@permit/eslint-config": "workspace:*",
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

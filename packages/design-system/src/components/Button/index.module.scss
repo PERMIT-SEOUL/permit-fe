@@ -1,0 +1,111 @@
+@use "../../styles/variables" as theme;
+@use "../../styles/typography" as typography;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  transition: all 0.15s ease-in-out;
+
+  @include typography.body-bold-14;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  // Style variants
+  &--primary {
+    color: theme.$gray-100;
+
+    background-color: theme.$gray-700;
+    border-color: theme.$gray-600;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$gray-600;
+    }
+  }
+
+  &--secondary {
+    color: theme.$gray-100;
+
+    background-color: transparent;
+    border-color: theme.$gray-600;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(theme.$gray-800, 0.1);
+    }
+  }
+
+  &--cta {
+    color: theme.$gray-800;
+
+    background-color: theme.$white;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$gray-150;
+    }
+  }
+
+  &--error {
+    color: theme.$gray-800;
+
+    background-color: theme.$red;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$red-100;
+    }
+  }
+
+  &--unac {
+    color: theme.$gray-900;
+
+    background-color: theme.$gray-600;
+    border-color: theme.$gray-700;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$gray-500;
+    }
+  }
+
+  // Size variants
+  &--sm {
+    height: 32px;
+    padding: 8px 20px;
+  }
+
+  &--md {
+    height: 44px;
+    padding: 14px 20px;
+  }
+
+  // header 에서만 사용되는 button
+  // 기존 정의된 버튼의 size 를 사용하지 않음
+  &--header {
+    height: 42px;
+    padding: 12.5px 36px;
+
+    color: theme.$white;
+
+    background-color: theme.$gray-700;
+    border-radius: 34px;
+
+    &:hover:not(:disabled) {
+      background-color: theme.$gray-600;
+    }
+
+    @include typography.body-reg-14;
+  }
+
+  // round variants 필요시 추가
+
+  // Full width variant
+  &--full-width {
+    width: 100%;
+  }
+} 
