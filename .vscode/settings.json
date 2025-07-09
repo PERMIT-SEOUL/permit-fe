@@ -27,7 +27,7 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.stylelint": "explicit"
     },
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[sass]": {
     "editor.codeActionsOnSave": {

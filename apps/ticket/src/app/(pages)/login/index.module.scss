@@ -1,0 +1,37 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 300px;
+  height: 45px;
+  padding: 10px 40px;
+
+  cursor: pointer;
+  border-radius: 6px;
+
+  &.kakao {
+    background-color: #fee500;
+  }
+
+  &.google {
+    background-color: theme.$gray-800;
+    border: 1px solid theme.$gray-400;
+  }
+}
+
+.text {
+  width: 173px;
+
+  text-align: center;
+}

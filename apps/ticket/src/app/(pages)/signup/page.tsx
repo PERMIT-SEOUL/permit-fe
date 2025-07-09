@@ -14,7 +14,10 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-export default function SignupPage() {
+/**
+ * 회원가입 페이지
+ */
+const SignupPage = () => {
   const router = useRouter();
 
   const token = safeLocalStorage.get(TOKEN_KEY);
@@ -138,4 +141,6 @@ export default function SignupPage() {
       </form>
     </div>
   );
-}
+};
+
+export default SignupPage;
