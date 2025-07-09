@@ -26,7 +26,7 @@ const LoginPage = () => {
         className={cx("button", "kakao")}
         onClick={() => handleLogin(SOCIAL_LOGIN_TYPE.KAKAO)}
       >
-        <Image src={kakaoLogo.src} alt="kakao" width={20} height={20} />
+        <Image src={kakaoLogo} alt="kakao" width={20} height={20} />
         <Typography className={cx("text")} type="body14" color="black">
           Login with kakao
         </Typography>
@@ -35,7 +35,7 @@ const LoginPage = () => {
         className={cx("button", "google")}
         onClick={() => handleLogin(SOCIAL_LOGIN_TYPE.GOOGLE)}
       >
-        <Image src={googleLogo.src} alt="google" width={20} height={20} />
+        <Image src={googleLogo} alt="google" width={20} height={20} />
         <Typography className={cx("text")} type="body14" color="gray200">
           Login with Google
         </Typography>
