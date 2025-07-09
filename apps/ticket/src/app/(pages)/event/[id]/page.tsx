@@ -46,7 +46,6 @@ export const EventDetailPage = ({ params }: Props) => {
     <>
       <Flex>
         <ImageCarouselClient images={data.images} />
-
         <EventInfo
           eventName={data.eventName}
           venue={data.venue}

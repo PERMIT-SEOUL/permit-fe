@@ -34,10 +34,10 @@ export const ImageCarouselClient = ({ images }: Props) => {
           height={504}
           objectFit="cover"
         />
-        <button className={cx("icon_button", "prev")} onClick={goToPrev}>
+        <button className={cx("icon_button", "prev")} aria-label="prev image" onClick={goToPrev}>
           ‹
         </button>
-        <button className={cx("icon_button", "next")} onClick={goToNext}>
+        <button className={cx("icon_button", "next")} aria-label="next image" onClick={goToNext}>
           ›
         </button>
       </div>

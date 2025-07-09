@@ -51,3 +51,7 @@
 .active {
   background-color: theme.$white;
 }
+
+.icon_button:focus-visible {
+  outline: 2px solid theme.$red;
+}
