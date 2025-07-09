@@ -1,0 +1,53 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.carousel {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 38px 128px 0 155px;
+}
+
+.image {
+  width: 400px;
+  height: 504px;
+}
+
+.icon_button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  background-color: theme.$gray-300;
+  border-radius: 50%;
+  color: theme.$black;
+  padding: 0 6px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.prev {
+  left: 4px;
+}
+
+.next {
+  right: 4px;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: theme.$gray-600;
+  border-radius: 50%;
+  margin: 0 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.active {
+  background-color: theme.$white;
+}

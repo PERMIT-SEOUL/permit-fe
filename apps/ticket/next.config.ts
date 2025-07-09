@@ -38,6 +38,10 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  // FIXME: 이미지 cdn 도메인으로 수정
+  images: {
+    domains: ["avatars.githubusercontent.com"],
+  },
 };
 
 export default withSentryConfig(nextConfig, {

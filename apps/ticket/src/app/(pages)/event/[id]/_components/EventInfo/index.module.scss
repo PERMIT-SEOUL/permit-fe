@@ -1,0 +1,33 @@
+.wrap {
+  padding: 20px 40px;
+}
+
+.title {
+  margin-bottom: 22px;
+}
+
+.time_table_button {
+  margin-bottom: 32px;
+}
+
+.info_section {
+  display: flex;
+  flex-direction: column;
+  gap: 33px;
+}
+
+.info_group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.lineup_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.description {
+  white-space: pre-line;
+}

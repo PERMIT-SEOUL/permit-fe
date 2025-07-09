@@ -1,6 +1,8 @@
 @use "@permit/design-system/styles/variables" as theme;
 
 body {
+  min-height: 100vh;
+
   color: theme.$white;
 
   background-color: theme.$black;
