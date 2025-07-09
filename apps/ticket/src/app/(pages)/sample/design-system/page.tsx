@@ -38,6 +38,16 @@ export default function DesignSystemPage() {
     },
   });
 
+  const {
+    value: age,
+    handleChange: handleAgeChange,
+    error: ageError,
+  } = useTextField({
+    validate: (value: string) => {
+      if (!value) return "나이를 입력해주세요.";
+    },
+  });
+
   const handleSubmit = () => {
     // 모든 필드 유효성 검사 실행
     const isEmailValid = validateEmail();
@@ -104,6 +114,15 @@ export default function DesignSystemPage() {
             onChange={handlePasswordChange}
             error={passwordError}
           />
+
+          <TextField
+            placeholder="yy.mm.dd"
+            value={age}
+            onChange={handleAgeChange}
+            error={ageError}
+            rightIcon={<Icon.Down fill="gray800" />}
+          />
+
           <Button onClick={handleSubmit}>제출</Button>
         </Flex>
       </div>
