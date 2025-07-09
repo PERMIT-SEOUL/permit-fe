@@ -1,6 +1,9 @@
 import { CURRENT_ENV } from "@/shared/constants/env";
 
-export default function Home() {
+/**
+ * 홈 페이지
+ */
+const Home = () => {
   return (
     <div>
       Hello world!
@@ -8,4 +11,6 @@ export default function Home() {
       current env is {CURRENT_ENV}
     </div>
   );
-}
+};
+
+export default Home;

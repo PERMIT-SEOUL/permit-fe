@@ -11,7 +11,16 @@ import { SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
 import { REDIRECT_URI } from "@/shared/hooks/useOAuth/constants";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
-export default function AuthPage() {
+/**
+ * 인증 페이지
+ *
+ * NOTE:
+ * 카카오, 구글 로그인 이후 redirect 되는 페이지
+ * 인증 코드를 통해 로그인 요청을 보내며
+ * 로그인 성공 시, 홈 페이지로 리다이렉트
+ * 로그인 실패 (최초 로그인)시, 회원가입 페이지로 리다이렉트
+ */
+const AuthPage = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -53,4 +62,6 @@ export default function AuthPage() {
       <LoadingIndicator size="large" />
     </div>
   );
-}
+};
+
+export default AuthPage;

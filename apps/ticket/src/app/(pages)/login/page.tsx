@@ -3,7 +3,10 @@
 import { useOAuth } from "@/shared/hooks/useOAuth";
 import { SOCIAL_LOGIN_TYPE } from "@/shared/hooks/useOAuth/types";
 
-export default function LoginPage() {
+/**
+ * 로그인 페이지
+ */
+const LoginPage = () => {
   const { handleLogin } = useOAuth();
 
   return (
@@ -15,4 +18,6 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;
