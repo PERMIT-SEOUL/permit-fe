@@ -1,6 +1,6 @@
 /** @type {import("stylelint").Config} */
 module.exports = {
-  extends: ["stylelint-config-standard"],
+  extends: ["stylelint-config-standard-scss"],
   plugins: ["stylelint-order", "stylelint-scss"],
 
   overrides: [
