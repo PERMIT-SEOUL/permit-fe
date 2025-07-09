@@ -39,7 +39,7 @@ export const data = {
 };
 
 /**
- * 티켓 상세 페이지
+ * 이벤트 상세 페이지
  */
 export const EventDetailPage = ({ params }: Props) => {
   return (
