@@ -8,7 +8,7 @@ type ModalComponentProps<T> = {
   resolve: (result: T) => void;
 };
 
-export const useModal = <T = boolean, P = {}>(
+export const useModal = <T = boolean, P = Record<string, unknown>>(
   ModalComponent: (props: ModalComponentProps<T> & P) => JSX.Element,
 ) => {
   const { open } = useOverlay();
@@ -21,7 +21,7 @@ export const useModal = <T = boolean, P = {}>(
         ));
       });
     },
-    [open],
+    [open, ModalComponent],
   );
 
   return {
