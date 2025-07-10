@@ -7,6 +7,7 @@ import { GlobalErrorBoundary } from "@/shared/clientBoundary/ErrorBoundary/Globa
 
 import "@/styles/reset.css";
 import "@/styles/global.scss";
+import { OverlayProvider } from "@permit/design-system";
 
 export const metadata: Metadata = {
   title: "Permit",
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <GlobalErrorBoundary>
-          <QueryClientProviders>{children}</QueryClientProviders>
+          <QueryClientProviders>
+            <OverlayProvider>{children}</OverlayProvider>
+          </QueryClientProviders>
         </GlobalErrorBoundary>
       </body>
     </html>
