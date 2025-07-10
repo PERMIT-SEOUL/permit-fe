@@ -1,6 +1,7 @@
 export { Button } from "./components/Button";
 export { Card } from "./components/Card";
 export { Code } from "./components/Code";
+export { Dialog } from "./components/Dialog";
 export { Flex } from "./components/Flex";
 export { Icon } from "./components/Icon";
 export { TextField } from "./components/TextField";

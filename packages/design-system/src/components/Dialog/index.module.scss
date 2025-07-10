@@ -1,0 +1,52 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.dialog {
+  width: 348px;
+  max-width: 90%;
+
+  background-color: theme.$gray-900;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 10%),
+    0 2px 4px -1px rgb(0 0 0 / 6%);
+  border-radius: 12px;
+}
+
+.header {
+  padding: 18px 24px;
+}
+
+.icon_button {
+  cursor: pointer;
+}
+
+.content {
+  padding: 0 24px 24px;
+}
+
+.bottom {
+  display: flex;
+  justify-content: flex-end;
+  padding: 24px;
+
+  > div {
+    width: 100%;
+
+    > button {
+      flex: 1;
+    }
+  }
+}
