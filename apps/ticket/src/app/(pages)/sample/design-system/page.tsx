@@ -4,7 +4,9 @@ import classNames from "classnames/bind";
 
 import { Button, Flex, Icon, TextField, Typography } from "@permit/design-system";
 import { useTextField } from "@permit/design-system/hooks";
+import { useModal } from "@/shared/hooks/useModal";
 
+import { DialogContent } from "../_clientBoundary/DialogContent";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -60,6 +62,8 @@ export default function DesignSystemPage() {
       });
     }
   };
+
+  const { show: openFooConfirmDialog } = useModal(DialogContent);
 
   return (
     <div>
@@ -124,6 +128,16 @@ export default function DesignSystemPage() {
           />
 
           <Button onClick={handleSubmit}>제출</Button>
+
+          <Button
+            onClick={async () => {
+              const result = await openFooConfirmDialog();
+
+              console.log(result); // true or false
+            }}
+          >
+            Open Dialog
+          </Button>
         </Flex>
       </div>
     </div>
