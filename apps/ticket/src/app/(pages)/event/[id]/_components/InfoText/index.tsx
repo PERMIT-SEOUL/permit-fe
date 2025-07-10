@@ -17,5 +17,3 @@ export const InfoText = ({ title, value }: Props) => {
     </Flex>
   );
 };
-
-// TBA - Layer 41, 성수동
