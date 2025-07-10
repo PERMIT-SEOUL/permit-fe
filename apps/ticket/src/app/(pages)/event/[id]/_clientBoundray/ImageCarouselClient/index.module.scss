@@ -14,14 +14,16 @@
 .icon_button {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  background-color: theme.$gray-300;
-  border-radius: 50%;
-  color: theme.$black;
-  padding: 0 6px;
-  cursor: pointer;
   z-index: 1;
+  padding: 0 6px;
+
+  color: theme.$black;
+  font-size: 20px;
+
+  background-color: theme.$gray-300;
+  transform: translateY(-50%);
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 .prev {
@@ -41,11 +43,12 @@
 .dot {
   width: 8px;
   height: 8px;
-  background-color: theme.$gray-600;
-  border-radius: 50%;
   margin: 0 4px;
-  border: none;
+
+  background-color: theme.$gray-600;
   cursor: pointer;
+  border: none;
+  border-radius: 50%;
 }
 
 .active {
