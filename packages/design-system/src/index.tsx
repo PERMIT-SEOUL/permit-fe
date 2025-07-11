@@ -5,5 +5,6 @@ export { Dialog } from "./components/Dialog";
 export { Flex } from "./components/Flex";
 export { Icon } from "./components/Icon";
 export { OverlayProvider } from "./components/Overlay/OverlayProvider";
+export { Skeleton } from "./components/Skeleton";
 export { TextField } from "./components/TextField";
 export { Typography } from "./components/Typography";
