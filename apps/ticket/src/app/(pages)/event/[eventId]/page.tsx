@@ -5,17 +5,15 @@ import { ImageCarouselClient } from "./_clientBoundray/ImageCarouselClient";
 import { EventInfo } from "./_components/EventInfo";
 import { data } from "./constants/mock";
 
-interface Props {
-  params: {
-    eventId: string;
-  };
-}
+type Props = {
+  params: Promise<{ eventId: string }>;
+};
 
 /**
  * 이벤트 상세 페이지
  */
-const EventDetailPage = ({ params }: Props) => {
-  const { eventId } = params;
+const EventDetailPage = async ({ params }: Props) => {
+  const { eventId } = await params;
 
   return (
     <>

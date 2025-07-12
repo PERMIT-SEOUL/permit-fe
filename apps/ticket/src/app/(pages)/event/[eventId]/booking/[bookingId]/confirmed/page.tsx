@@ -8,10 +8,16 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
+type Props = {
+  params: Promise<{ bookingId: string }>;
+};
+
 /**
  * 이벤트 예매 확정 페이지
  */
-const ConfirmedPage = () => {
+const ConfirmedPage = async ({ params }: Props) => {
+  const { bookingId } = await params;
+
   return (
     <Flex className={cx("wrap")} direction="column" align="center">
       <Typography type="title24">Booking Confirmed</Typography>
