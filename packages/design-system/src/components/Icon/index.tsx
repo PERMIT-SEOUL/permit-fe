@@ -35,9 +35,9 @@ export const Icon = {
       <path
         d="M5 7.5L10 12.5L15 7.5"
         stroke="#A3A3A3"
-        stroke-width="1.66667"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   ),
@@ -53,9 +53,9 @@ export const Icon = {
       <path
         d="M5 12.5L10 7.5L15 12.5"
         stroke="#A3A3A3"
-        stroke-width="1.66667"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   ),
