@@ -14,7 +14,7 @@ interface Props {
 /**
  * 이벤트 상세 페이지
  */
-export const EventDetailPage = ({ params }: Props) => {
+const EventDetailPage = ({ params }: Props) => {
   const { eventId } = params;
 
   return (
