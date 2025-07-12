@@ -8,10 +8,8 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-type Props = {};
-
 // TODO: params props 추가
-export const EventInfoClient = ({}: Props) => {
+export const EventInfoClient = () => {
   // TODO: API call
   const eventName = "Ceiling service vol.6 -Ksawery Komputery [PL]";
   const date = "Sun, 25 May 2025";
