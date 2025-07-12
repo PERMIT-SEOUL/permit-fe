@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
-pnpm lint 
+echo "🔍 Running lint..."
+pnpm lint || exit 1
+
+echo "🛠 Building project..."
+pnpm build || exit 1

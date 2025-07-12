@@ -6,7 +6,7 @@ import classNames from "classnames/bind";
 
 import { useSignupMutation } from "@/data/users/postUserSignup/mutation";
 import { safeLocalStorage } from "@/lib/storage";
-import { PAGE_URL } from "@/shared/constants/pageUrl";
+import { PATH } from "@/shared/constants/path";
 import { SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
@@ -59,7 +59,7 @@ const SignupPage = () => {
       safeLocalStorage.remove(SOCIAL_LOGIN_TYPE_KEY);
 
       // TODO: redirect 로직 구체적으로 추가
-      router.replace(PAGE_URL.HOME);
+      router.replace(PATH.HOME);
     } catch (error) {
       alert("회원가입에 실패했습니다.");
       console.error("회원가입 실패:", error);
