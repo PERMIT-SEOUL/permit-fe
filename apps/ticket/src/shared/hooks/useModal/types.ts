@@ -2,7 +2,7 @@
  * 모달 컴포넌트에 주입되는 공통 props
  * @template TResult - 모달이 닫힐 때 반환되는 결과값의 타입
  */
-export type ModalComponentProps<TResult> = {
+export type ModalComponentProps<TResult = null> = {
   isOpen: boolean;
   close: (result?: TResult) => void;
 };
