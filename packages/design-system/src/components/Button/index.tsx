@@ -35,17 +35,22 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    * @default false
    */
   fullWidth?: boolean;
+  /**
+   * 로딩 여부
+   */
+  isLoading?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
+      className,
       size = "md",
       variant = "primary",
       children,
       disabled = false,
       fullWidth = false,
-      className,
+      isLoading,
       ...props
     },
     ref,
@@ -59,13 +64,22 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           `button--${size.toLowerCase()}`,
           {
             "button--full-width": fullWidth,
+            "button--loading": isLoading,
           },
           className,
         )}
         disabled={disabled}
         {...props}
       >
-        {children}
+        {isLoading ? (
+          <span className={cx("spinner", variant)}>
+            <span className={cx("dot")} />
+            <span className={cx("dot")} />
+            <span className={cx("dot")} />
+          </span>
+        ) : (
+          children
+        )}
       </button>
     );
   },
