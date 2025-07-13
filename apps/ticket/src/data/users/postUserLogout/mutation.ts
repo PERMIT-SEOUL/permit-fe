@@ -18,7 +18,7 @@ export type LogoutMutationOptions<TData> = Omit<
 export const useLogoutMutation = (options?: LogoutMutationOptions<LogoutResponse>) => {
   return useMutation({
     mutationFn: async () => {
-      const { data } = await instance.post<LogoutResponse>(API_URL.LOGOUT);
+      const { data } = await instance.post<LogoutResponse>(API_URL.USER.LOGOUT);
 
       return data;
     },

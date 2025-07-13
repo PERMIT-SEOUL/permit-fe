@@ -25,7 +25,7 @@ export type LoginMutationOptions<TData> = Omit<
 export const useLoginMutation = (options?: LoginMutationOptions<LoginResponse>) => {
   return useMutation({
     mutationFn: async (params: LoginRequest) => {
-      const { data } = await instance.post<LoginResponse>(API_URL.LOGIN, params);
+      const { data } = await instance.post<LoginResponse>(API_URL.USER.LOGIN, params);
 
       return data;
     },
