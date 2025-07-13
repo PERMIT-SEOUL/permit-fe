@@ -26,7 +26,7 @@ const SignupPage = () => {
   const [formData, setFormData] = useState({
     userName: "",
     userAge: 0,
-    userSex: "MALE" as "MALE" | "FEMALE",
+    userGender: "MALE" as "MALE" | "FEMALE",
     userEmail: "",
     socialType: socialType,
     socialAccessToken: token || "",
@@ -110,7 +110,7 @@ const SignupPage = () => {
           <select
             id="userSex"
             name="userSex"
-            value={formData.userSex}
+            value={formData.userGender}
             onChange={handleChange}
             required
             className={cx("select")}
