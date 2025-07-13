@@ -27,7 +27,7 @@ export type ReservatinoMutationOptions<TData> = Omit<
   onSuccess?: (data: TData) => void;
 };
 
-export const useLoginMutation = (
+export const useReservationReadyMutation = (
   options?: ReservatinoMutationOptions<ReservationReadyResponse>,
 ) => {
   return useMutation({
