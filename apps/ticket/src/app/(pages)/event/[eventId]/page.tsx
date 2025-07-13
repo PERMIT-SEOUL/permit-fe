@@ -30,7 +30,7 @@ const EventDetailPage = async ({ params }: Props) => {
         />
       </Flex>
 
-      <FloatingSection />
+      <FloatingSection eventId={Number(eventId)} />
     </>
   );
 };
