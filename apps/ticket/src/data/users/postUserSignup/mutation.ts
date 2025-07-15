@@ -7,7 +7,7 @@ import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 type SignupRequest = {
   userName: string;
   userAge: number;
-  userSex: "MALE" | "FEMALE";
+  userGender: "MALE" | "FEMALE";
   socialType: SocialLoginType;
   socialAccessToken: string;
   userEmail: string;
