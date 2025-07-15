@@ -42,12 +42,15 @@
   width: 100%;
   padding: 0.5rem 0.75rem;
 
+  color: #333;
   font-size: 1rem;
 
   border: 1px solid #d1d5db;
   border-radius: 6px;
 
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 
   &:focus {
     outline: none;
@@ -99,4 +102,4 @@
   background-color: #fef2f2;
   border: 1px solid #fca5a5;
   border-radius: 6px;
-} 
+}

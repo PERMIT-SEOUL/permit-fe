@@ -26,7 +26,7 @@ const SignupPage = () => {
   const [formData, setFormData] = useState({
     userName: "",
     userAge: 0,
-    userSex: "MALE" as "MALE" | "FEMALE",
+    userGender: "MALE" as "MALE" | "FEMALE",
     userEmail: "",
     socialType: socialType,
     socialAccessToken: token || "",
@@ -104,13 +104,13 @@ const SignupPage = () => {
         </div>
 
         <div className={cx("fieldGroup")}>
-          <label htmlFor="userSex" className={cx("label")}>
+          <label htmlFor="userGender" className={cx("label")}>
             성별
           </label>
           <select
-            id="userSex"
-            name="userSex"
-            value={formData.userSex}
+            id="userGender"
+            name="userGender"
+            value={formData.userGender}
             onChange={handleChange}
             required
             className={cx("select")}
