@@ -16,6 +16,7 @@ const SignoutPage = () => {
       alert("로그아웃 성공!");
     } catch (error) {
       console.error(error);
+      alert(`error: ${JSON.stringify(error)}`);
     }
   };
 
