@@ -1,16 +1,9 @@
 import { useState } from "react";
 
 import { Button, Dialog, Flex } from "@permit/design-system";
+import { ModalComponentProps } from "@/shared/hooks/useModal/types";
 
-export const DialogContent = ({
-  isOpen,
-  close,
-  resolve,
-}: {
-  isOpen: boolean;
-  close: () => void;
-  resolve: (value: boolean) => void;
-}) => {
+export const DialogContent = ({ isOpen, close }: ModalComponentProps<boolean>) => {
   const [isOpenAdditionalInfo, setIsOpenAdditionalInfo] = useState(false);
 
   return (
@@ -19,7 +12,6 @@ export const DialogContent = ({
       title="Title"
       subTitle="sub text"
       onClose={() => {
-        resolve(false);
         close();
       }}
     >
@@ -44,8 +36,7 @@ export const DialogContent = ({
           <Button
             variant="secondary"
             onClick={() => {
-              resolve(false);
-              close();
+              close(false);
             }}
           >
             Cancel
@@ -53,8 +44,7 @@ export const DialogContent = ({
           <Button
             variant="primary"
             onClick={() => {
-              resolve(true);
-              close();
+              close(true);
             }}
           >
             Yes, Confirm

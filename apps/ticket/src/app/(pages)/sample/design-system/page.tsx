@@ -131,7 +131,7 @@ export default function DesignSystemPage() {
 
           <Button
             onClick={async () => {
-              const result = await openFooConfirmDialog();
+              const result = await openFooConfirmDialog({});
 
               console.log(result); // true or false
             }}

@@ -15,8 +15,8 @@
   @include typography.body-bold-14;
 
   &:disabled {
+    // TODO: disabled 색상 확인 필요
     cursor: not-allowed;
-    opacity: 0.5;
   }
 
   // Style variants
@@ -26,9 +26,9 @@
     background-color: theme.$gray-700;
     border-color: theme.$gray-600;
 
-    &:hover:not(:disabled) {
-      background-color: theme.$gray-600;
-    }
+    // &:disabled {
+    //   background-color: theme.$gray-600;
+    // }
   }
 
   &--secondary {
@@ -37,9 +37,9 @@
     background-color: transparent;
     border-color: theme.$gray-600;
 
-    &:hover:not(:disabled) {
-      background-color: rgba(theme.$gray-800, 0.1);
-    }
+    // &:disabled {
+    //   background-color: rgba(theme.$gray-800, 0.1);
+    // }
   }
 
   &--cta {
@@ -47,8 +47,11 @@
 
     background-color: theme.$white;
 
-    &:hover:not(:disabled) {
-      background-color: theme.$gray-150;
+    &:disabled {
+      color: theme.$gray-900;
+
+      background-color: theme.$gray-600;
+      border-color: theme.$gray-700;
     }
   }
 
@@ -57,9 +60,9 @@
 
     background-color: theme.$red;
 
-    &:hover:not(:disabled) {
-      background-color: theme.$red-100;
-    }
+    // &:disabled {
+    //   background-color: theme.$red-100;
+    // }
   }
 
   &--unac {
@@ -68,9 +71,9 @@
     background-color: theme.$gray-600;
     border-color: theme.$gray-700;
 
-    &:hover:not(:disabled) {
-      background-color: theme.$gray-500;
-    }
+    // &:disabled {
+    //   background-color: theme.$gray-500;
+    // }
   }
 
   // Size variants
@@ -95,9 +98,9 @@
     background-color: theme.$gray-700;
     border-radius: 34px;
 
-    &:hover:not(:disabled) {
-      background-color: theme.$gray-600;
-    }
+    // &:disabled {
+    //   background-color: theme.$gray-600;
+    // }
 
     @include typography.body-reg-14;
   }
@@ -108,4 +111,70 @@
   &--full-width {
     width: 100%;
   }
-} 
+}
+
+.button--loading {
+  pointer-events: none;
+}
+
+.spinner {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+
+    background-color: theme.$gray-800;
+    border-radius: 50%;
+
+    animation: bounce 1s infinite ease-in-out;
+  }
+
+  .dot:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  &.primary .dot,
+  &.secondary .dot {
+    background-color: theme.$gray-100;
+  }
+
+  &.cta .dot,
+  &.error .dot {
+    background-color: theme.$gray-800;
+  }
+
+  &.unac .dot {
+    background-color: theme.$gray-900;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  20% {
+    transform: translateY(-8px);
+  }
+
+  40% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}

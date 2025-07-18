@@ -5,4 +5,5 @@ export const PATH = {
   AUTH: "/auth",
   EVENT_DETAIL: "/event/:eventId",
   BOOKING_CONFIRMED: "/event/:eventId/booking/:bookingId/confirmed",
+  ORDER: "/order/:orderId",
 } as const;

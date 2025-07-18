@@ -3,7 +3,7 @@ import { Flex } from "@permit/design-system";
 import { FloatingSection } from "./_clientBoundray/FloatingSection";
 import { ImageCarouselClient } from "./_clientBoundray/ImageCarouselClient";
 import { EventInfo } from "./_components/EventInfo";
-import { data } from "./constants/mock";
+import { mockEvent } from "./constants/mock";
 
 type Props = {
   params: Promise<{ eventId: string }>;
@@ -15,22 +15,24 @@ type Props = {
 const EventDetailPage = async ({ params }: Props) => {
   const { eventId } = await params;
 
+  // TODO: 행사 상세 조회 API 추가
+
   return (
     <>
       <Flex>
-        <ImageCarouselClient images={data.images} />
+        <ImageCarouselClient images={mockEvent.images} />
         <EventInfo
-          eventName={data.eventName}
-          venue={data.venue}
-          date={data.date}
-          time={data.time}
-          minAge={data.minAge}
-          details={data.details}
-          lineup={data.lineup}
+          eventName={mockEvent.eventName}
+          venue={mockEvent.venue}
+          date={mockEvent.date}
+          time={mockEvent.time}
+          minAge={mockEvent.minAge}
+          details={mockEvent.details}
+          lineup={mockEvent.lineup}
         />
       </Flex>
 
-      <FloatingSection />
+      <FloatingSection eventId={Number(eventId)} />
     </>
   );
 };

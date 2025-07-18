@@ -27,9 +27,10 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError<AxiosErrorResponse>) => {
-    if (error.status === 500) {
-      alert("서버에러 발생. 관리자에게 문의해주세요.");
-    }
+    // TODO: 에러 로직 변경
+    // if (error.status === 500) {
+    //   alert("서버에러 발생. 관리자에게 문의해주세요.");
+    // }
 
     // 리프레시 토큰 모두 만료시 로그인 페이지로 이동
     if (error.response?.data.code === 40404) {

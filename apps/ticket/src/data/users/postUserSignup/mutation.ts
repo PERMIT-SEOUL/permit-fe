@@ -28,7 +28,7 @@ export type SignupMutationOptions<TData> = Omit<
 export const useSignupMutation = (options?: SignupMutationOptions<SignupResponse>) => {
   return useMutation({
     mutationFn: async (params: SignupRequest) => {
-      const { data } = await instance.post<SignupResponse>(API_URL.SIGNUP, params);
+      const { data } = await instance.post<SignupResponse>(API_URL.USER.SIGNUP, params);
 
       return data;
     },
