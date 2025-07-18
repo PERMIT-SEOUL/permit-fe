@@ -15,16 +15,20 @@ export const API_URL = {
     /** 행사 전체 조회 API */
     LIST: "/api/events",
     /** 행사 상세 정보 조회 API */
-    DETAIL: "/api/events/detail",
+    DETAIL: "/api/events/detail/:eventId",
     /** 행사 티켓 정보 조회 API */
     TICKETS: "/api/events/tickets",
   },
 
   // 예매 관련 API
   RESERVATION: {
-    /** 결제 요청 준비 API */
+    /** 예약 생성 API */
     READY: "/api/reservations/ready",
+  },
+
+  // 결제 관련 API
+  PAYMENT: {
     /** 결제 승인 API */
-    CONFIRM: "/api/reservations/confirm",
+    CONFIRM: "/api/payments/confirm",
   },
 } as const;
