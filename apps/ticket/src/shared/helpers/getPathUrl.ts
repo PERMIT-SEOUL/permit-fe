@@ -10,7 +10,9 @@ export const getPathUrl = (path: string, params: Record<string, string | number>
   }
 
   for (const [key, value] of Object.entries(params)) {
-    url = url.replace(`:${key}`, value.toString());
+    const regex = new RegExp(`:${key}(?=\\W|$)`, "g");
+
+    url = url.replace(regex, value.toString());
   }
 
   // 치환되지 않은 파라미터 검증
