@@ -1,3 +1,5 @@
+@use "@permit/design-system/styles/variables" as theme;
+
 .container {
   position: relative;
   display: flex;
@@ -127,11 +129,15 @@
 }
 
 .display_number {
-  color: #fafafa;
+  color: theme.$white;
 
   transition: opacity 0.3s ease-in-out;
 }
 
 .mobile_title {
   transition: opacity 0.3s ease-in-out;
+}
+
+.category_name {
+  text-align: right;
 }
