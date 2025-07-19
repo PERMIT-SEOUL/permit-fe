@@ -93,9 +93,7 @@ const SignupPage = () => {
     alert("이메일 확인이 완료되었습니다.");
   };
 
-  const handleSignup = async (e: FormEvent) => {
-    e.preventDefault();
-
+  const handleSignup = async () => {
     if (!emailVerified) {
       alert("이메일 확인을 먼저 해주세요.");
 
@@ -138,7 +136,7 @@ const SignupPage = () => {
 
   return (
     <div className={cx("container")}>
-      <form onSubmit={handleSignup} className={cx("form")}>
+      <form className={cx("form")}>
         <Flex direction="column" gap={20} className={cx("form_fields")}>
           {/* 이름 */}
           <div className={cx("field_row")}>
@@ -219,7 +217,13 @@ const SignupPage = () => {
           </div>
         </Flex>
 
-        <Button type="submit" variant="primary" isLoading={isPending}>
+        <Button
+          type="submit"
+          variant="primary"
+          isLoading={isPending}
+          useClickDebounce
+          onClick={handleSignup}
+        >
           Create Account
         </Button>
       </form>
