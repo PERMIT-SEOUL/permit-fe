@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 
+import { Typography } from "@permit/design-system";
 import type { CategoryType } from "@/app/(pages)/(home)/constants/category";
 import { CATEGORIES, CATEGORY_LABELS } from "@/app/(pages)/(home)/constants/category";
 
@@ -18,8 +19,12 @@ type CategoryItemProps = {
 const CategoryItem = ({ label, count, isActive = false, onClick }: CategoryItemProps) => {
   return (
     <div className={cx("category_item", { active: isActive })} onClick={onClick}>
-      <span className={cx("label")}>{label}</span>
-      <span className={cx("count")}>{count}</span>
+      <Typography className={cx("label")} type="body16" weight="medium" color="gray500">
+        {label}
+      </Typography>
+      <Typography className={cx("label")} type="body16" weight="medium" color="gray500">
+        {count}
+      </Typography>
     </div>
   );
 };

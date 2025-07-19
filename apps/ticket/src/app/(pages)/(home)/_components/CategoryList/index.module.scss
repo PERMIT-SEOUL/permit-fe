@@ -1,3 +1,5 @@
+@use "@permit/design-system/styles/variables" as theme;
+
 .container {
   display: flex;
   gap: 16px;
@@ -16,7 +18,7 @@
 
 .category_item {
   display: flex;
-  gap: 2px;
+  gap: 4px;
   align-items: center;
   width: fit-content;
   padding: 8px 0;
@@ -26,6 +28,7 @@
   cursor: pointer;
 
   @media (min-width: 768px) {
+    gap: 16px;
     padding: 0;
   }
 
@@ -34,28 +37,16 @@
   }
 
   .label {
-    color: #525252;
-    font-weight: 500;
-    font-size: 16px;
-    font-family: Roboto, sans-serif;
-
-    transition: all 0.2s ease-in-out;
-  }
-
-  .count {
-    color: #525252;
-    font-weight: 500;
-    font-size: 16px;
-    font-family: Roboto, sans-serif;
-
+    @media (min-width: 768px) {
+      width: 100px;
+    }
     transition: all 0.2s ease-in-out;
   }
 
   &.active {
-    .label,
-    .count {
-      color: #fafafa;
-      font-weight: 700;
+    .label {
+      color: theme.$white;
+      font-weight: theme.$bold;
     }
   }
 }
