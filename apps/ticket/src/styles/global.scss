@@ -3,7 +3,23 @@
 body {
   min-height: 100vh;
 
-  color: theme.$white;
+  color: #fafafa;
 
-  background-color: theme.$black;
+  background-color: #000;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+
+  @media (max-width: 767px) {
+    padding: 0 12px;
+  }
 }

@@ -2,13 +2,14 @@
 // eslint-disable-next-line simple-import-sort/imports
 import type { Metadata } from "next";
 
-import { QueryClientProviders } from "@/lib/queryClient/clientBoundary/QueryClientProvider";
 import { GlobalErrorBoundary } from "@/shared/clientBoundary/ErrorBoundary/GlobalErrorBoundary";
+import { QueryClientProviders } from "@/lib/queryClient/clientBoundary/QueryClientProvider";
+import { OverlayProvider } from "@permit/design-system";
 
 import "@/styles/reset.css";
 import "@/styles/global.scss";
-import { OverlayProvider } from "@permit/design-system";
 import { Header } from "@/shared/components/Header";
+import { Footer } from "@/shared/components/Footer";
 
 export const metadata: Metadata = {
   title: "Permit",
@@ -21,13 +22,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body>
         <GlobalErrorBoundary>
           <QueryClientProviders>
             <OverlayProvider>
-              <Header />
-              {children}
+              <div className="layout">
+                {/* TODO: 결제 페이지에서 헤더 없애기 */}
+                <Header />
+                <main className="main">{children}</main>
+                <Footer />
+              </div>
             </OverlayProvider>
           </QueryClientProviders>
         </GlobalErrorBoundary>

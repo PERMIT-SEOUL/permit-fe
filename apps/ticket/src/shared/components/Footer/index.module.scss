@@ -1,0 +1,21 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.container {
+  height: 80px;
+  margin-top: auto;
+  padding: 20px 40px;
+
+  @include typography.body-reg-12;
+  font-family: theme.$font-family-roboto;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.info {
+  @include typography.body-reg-12;
+}
