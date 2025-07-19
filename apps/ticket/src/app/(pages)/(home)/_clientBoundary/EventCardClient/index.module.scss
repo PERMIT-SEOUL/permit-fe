@@ -98,17 +98,9 @@
 .image_wrapper {
   position: relative;
   width: 100%;
-  overflow: hidden;
-
-  opacity: 1;
-  border-radius: 4px;
 
   transition: all 0.3s ease-in-out;
   aspect-ratio: 93/125;
-}
-
-.image {
-  object-fit: cover;
 }
 
 .display_number {

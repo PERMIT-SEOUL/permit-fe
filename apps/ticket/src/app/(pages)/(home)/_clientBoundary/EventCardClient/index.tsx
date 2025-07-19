@@ -51,7 +51,7 @@ export const EventCardClient = ({
           {displayNumber}
         </Typography>
         <div className={cx("image_wrapper")}>
-          <Image src={imageUrl} alt={title} fill objectFit="cover" />
+          <Image src={imageUrl} alt={title} fill />
         </div>
         <Typography type="body14" weight="bold" className={cx("mobile_title")}>
           {title}
