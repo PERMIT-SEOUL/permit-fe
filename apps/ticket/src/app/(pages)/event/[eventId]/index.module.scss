@@ -1,0 +1,41 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.content {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+  }
+}
+
+.mobile_title_section {
+  display: none;
+
+  @media (max-width: 767px) {
+    display: block;
+    width: 100%;
+    padding: 30px 4px;
+  }
+}
+
+.info_section {
+  margin-bottom: 80px;
+  padding: 20px 84px 0;
+
+  @media (max-width: 767px) {
+    flex: none;
+    width: 100%;
+    margin-bottom: 40px;
+    padding: 30px 16px 0;
+
+    // 모바일에서는 title_section 숨김
+    .title_section {
+      display: none;
+    }
+  }
+}
