@@ -19,46 +19,70 @@ interface Props {
     category: string;
     artists: { name: string }[];
   }[];
+  showOnlyTitle?: boolean;
 }
 
-export const EventInfo = ({ eventName, venue, date, time, minAge, details, lineup }: Props) => {
-  return (
-    <>
-      <div className={cx("wrap")}>
+export const EventInfo = ({
+  eventName,
+  venue,
+  date,
+  time,
+  minAge,
+  details,
+  lineup,
+  showOnlyTitle = false,
+}: Props) => {
+  if (showOnlyTitle) {
+    return (
+      <div className={cx("title_section")}>
         <Typography className={cx("title")} type="title20" color="white">
           {eventName}
         </Typography>
         <Button className={cx("time_table_button")} variant="secondary" size="sm">
           TIME TABLE
         </Button>
+      </div>
+    );
+  }
 
-        <div className={cx("info_section")}>
-          <div className={cx("info_group")}>
-            <InfoText title="Venue" value={venue} />
+  return (
+    <div className={cx("wrap")}>
+      <div className={cx("title_section", { is_show: !showOnlyTitle })}>
+        <Typography className={cx("title")} type="title20" color="white">
+          {eventName}
+        </Typography>
+        <Button className={cx("time_table_button")} variant="secondary" size="sm">
+          TIME TABLE
+        </Button>
+      </div>
 
-            <Flex direction="column" gap={4}>
-              <InfoText title="Date" value={date} />
-              <InfoText title="Time" value={time} />
-            </Flex>
-            <InfoText title="Min. age" value={minAge.toString()} />
-          </div>
+      <div className={cx("info_section")}>
+        <div className={cx("info_group")}>
+          <InfoText title="Venue" value={venue} />
 
-          <div>
-            <Typography type="body14" color="gray400">
-              Lineup
-            </Typography>
-            <div className={cx("lineup_grid")}>
-              <LineupText lineup={lineup} />
-            </div>
-          </div>
+          <Flex direction="column" gap={8}>
+            <InfoText title="Date" value={date} />
+            <InfoText title="Time" value={time} />
+          </Flex>
 
-          <div className={cx("description")}>
-            <Typography type="body14" color="white">
-              {details}
-            </Typography>
+          <InfoText title="Min. age" value={`${minAge}+`} />
+        </div>
+
+        <div className={cx("lineup_section")}>
+          <Typography className={cx("lineup_title")} type="body14" color="gray400">
+            Lineup
+          </Typography>
+          <div className={cx("lineup_grid")}>
+            <LineupText lineup={lineup} />
           </div>
         </div>
+
+        <div className={cx("description")}>
+          <Typography type="body14" color="white">
+            {details}
+          </Typography>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
