@@ -45,10 +45,9 @@ const PaymentSuccessPage = () => {
         setIsLoading(false);
       } catch (error) {
         // TODO: 에러 처리 로직 추가
+        // 에러 메시지 세분화 요청
         // 결제 실패 페이지로 라우팅
         alert("결제 실패");
-
-        router.push(`/order/${searchParams.get("orderId")}/fail`);
       }
     };
 
