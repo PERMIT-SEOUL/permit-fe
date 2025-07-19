@@ -84,8 +84,6 @@ export const Select = ({
     setIsOpen(false);
   };
 
-  // TODO: 달력 입력 값 확인
-  // 하루 빠르게 들어감
   const getDisplayValue = () => {
     if (type === "calendar") {
       return selectedDate ? selectedDate.toLocaleDateString("ko-KR") : placeholder;
