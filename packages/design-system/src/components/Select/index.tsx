@@ -79,6 +79,8 @@ export const Select = ({
     setIsOpen(false);
   };
 
+  // TODO: 달력 입력 값 확인
+  // 하루 빠르게 들어감
   const getDisplayValue = () => {
     if (type === "calendar") {
       return selectedDate ? selectedDate.toLocaleDateString("ko-KR") : placeholder;
@@ -93,6 +95,14 @@ export const Select = ({
     return placeholder;
   };
 
+  const hasValue = () => {
+    if (type === "calendar") {
+      return !!selectedDate;
+    }
+
+    return !!value;
+  };
+
   return (
     <div className={cx("container")} ref={containerRef}>
       <div
@@ -103,7 +113,12 @@ export const Select = ({
         })}
         onClick={handleToggle}
       >
-        <Typography type="body14" weight="regular" className={cx("value")}>
+        <Typography
+          type="body14"
+          weight="regular"
+          color={hasValue() ? "white" : "gray400"}
+          className={cx("value")}
+        >
           {getDisplayValue()}
         </Typography>
         <Icon.Down size={20} fill="gray400" className={cx("icon", { rotated: isOpen })} />
