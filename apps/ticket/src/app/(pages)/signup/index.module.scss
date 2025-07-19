@@ -1,105 +1,124 @@
 .container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  padding: 40px;
 
-  background: white;
-  box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
-  border-radius: 8px;
-}
-
-.title {
-  margin-bottom: 1.5rem;
-
-  color: #333;
-  font-weight: bold;
-  font-size: 1.5rem;
-  text-align: center;
+  @media (max-width: 767px) {
+    min-height: calc(100vh - 150px);
+    padding: 16px;
+  }
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 40px;
+  width: 100%;
+  max-width: 537px;
+
+  @media (max-width: 767px) {
+    gap: 20px;
+    max-width: 343px;
+  }
 }
 
-.fieldGroup {
+.formFields {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+
+  @media (min-width: 768px) {
+    gap: 20px;
+  }
+
+  @media (max-width: 767px) {
+    gap: 20px;
+  }
 }
 
-.label {
-  display: block;
-  margin-bottom: 0.25rem;
+.fieldRow {
+  display: flex;
+  flex-direction: row;
+  gap: 95px;
+  align-items: center;
 
-  color: #374151;
-  font-weight: 500;
-  font-size: 0.875rem;
+  @media (max-width: 767px) {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
 }
 
-.input,
+.labelContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-width: 143px;
+
+  @media (max-width: 767px) {
+    justify-content: flex-start;
+    min-width: auto;
+  }
+}
+
+.required {
+  flex-shrink: 0;
+  width: 3px;
+  height: 3px;
+
+  background-color: #ff283e;
+  border-radius: 50%;
+}
+
+.textField {
+  width: 100%;
+  max-width: 299px;
+
+  @media (max-width: 767px) {
+    max-width: 100%;
+  }
+}
+
 .select {
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  max-width: 299px;
 
-  color: #333;
-  font-size: 1rem;
+  @media (max-width: 767px) {
+    max-width: 100%;
+  }
+}
 
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+.emailContainer {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
 
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  @media (max-width: 767px) {
+    gap: 12px;
+  }
+}
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgb(59 130 246 / 10%);
-    border-color: #3b82f6;
+.emailField {
+  flex: 1;
+  max-width: 299px;
+
+  @media (max-width: 767px) {
+    max-width: 254px;
+  }
+}
+
+.checkButton {
+  flex-shrink: 0;
+  min-width: fit-content;
+
+  @media (max-width: 767px) {
+    width: 77px;
   }
 }
 
 .submitButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
-  padding: 0.75rem 1rem;
-
-  color: white;
-  font-weight: 500;
-  font-size: 0.875rem;
-
-  background-color: #3b82f6;
-  cursor: pointer;
-  border: none;
-  border-radius: 6px;
-
-  transition: background-color 0.2s;
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgb(59 130 246 / 30%);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-
-  &:hover:not(:disabled) {
-    background-color: #2563eb;
-  }
-}
-
-.errorMessage {
-  margin-top: 1rem;
-  padding: 0.75rem;
-
-  color: #dc2626;
-  font-size: 0.875rem;
-
-  background-color: #fef2f2;
-  border: 1px solid #fca5a5;
-  border-radius: 6px;
 }

@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
+import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
 import { useSignupMutation } from "@/data/users/postUserSignup/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { PATH } from "@/shared/constants/path";
@@ -32,19 +33,31 @@ const SignupPage = () => {
     socialAccessToken: token || "",
   });
 
+  const [emailVerified, setEmailVerified] = useState(false);
+
   const { mutateAsync, isPending } = useSignupMutation();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-
+  const handleChange = (field: string, value: string | number) => {
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [field]: value,
     }));
+  };
+
+  const handleEmailCheck = () => {
+    // TODO: 이메일 중복 확인 API 연동
+    setEmailVerified(true);
+    alert("이메일 확인이 완료되었습니다.");
   };
 
   const handleSignup = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!emailVerified) {
+      alert("이메일 확인을 먼저 해주세요.");
+
+      return;
+    }
 
     const submitData = {
       ...formData,
@@ -66,78 +79,99 @@ const SignupPage = () => {
     }
   };
 
+  const ageOptions = Array.from({ length: 80 }, (_, i) => ({
+    value: String(i + 10),
+    label: `${i + 10}세`,
+  }));
+
+  const genderOptions = [
+    { value: "MALE", label: "남성" },
+    { value: "FEMALE", label: "여성" },
+  ];
+
   return (
     <div className={cx("container")}>
-      <h1 className={cx("title")}>회원가입</h1>
-
       <form onSubmit={handleSignup} className={cx("form")}>
-        <div className={cx("fieldGroup")}>
-          <label htmlFor="userName" className={cx("label")}>
-            이름
-          </label>
-          <input
-            type="text"
-            id="userName"
-            name="userName"
-            value={formData.userName}
-            onChange={handleChange}
-            required
-            className={cx("input")}
-          />
-        </div>
+        <Flex direction="column" gap={20} className={cx("formFields")}>
+          {/* 이름 */}
+          <div className={cx("fieldRow")}>
+            <div className={cx("labelContainer")}>
+              <Flex align="flex-start" gap={8}>
+                <Typography type="body14" weight="regular" color="white">
+                  NAME
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
+            </div>
+            <TextField
+              placeholder="이름을 입력해주세요"
+              value={formData.userName}
+              onChange={(value) => handleChange("userName", value)}
+            />
+          </div>
 
-        <div className={cx("fieldGroup")}>
-          <label htmlFor="userAge" className={cx("label")}>
-            나이
-          </label>
-          <input
-            type="number"
-            id="userAge"
-            name="userAge"
-            value={formData.userAge}
-            onChange={handleChange}
-            required
-            min="1"
-            max="120"
-            className={cx("input")}
-          />
-        </div>
+          {/* 나이 */}
+          <div className={cx("fieldRow")}>
+            <div className={cx("labelContainer")}>
+              <Flex align="flex-start" gap={6}>
+                <Typography type="body14" weight="regular" color="white">
+                  AGE
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
+            </div>
+            <Select
+              placeholder="나이를 선택해주세요"
+              options={ageOptions}
+              value={String(formData.userAge)}
+              onChange={(value) => handleChange("userAge", Number(value))}
+            />
+          </div>
 
-        <div className={cx("fieldGroup")}>
-          <label htmlFor="userGender" className={cx("label")}>
-            성별
-          </label>
-          <select
-            id="userGender"
-            name="userGender"
-            value={formData.userGender}
-            onChange={handleChange}
-            required
-            className={cx("select")}
-          >
-            <option value="MALE">남성</option>
-            <option value="FEMALE">여성</option>
-          </select>
-        </div>
+          {/* 성별 */}
+          <div className={cx("fieldRow")}>
+            <div className={cx("labelContainer")}>
+              <Flex align="flex-start" gap={8}>
+                <Typography type="body14" weight="regular" color="white">
+                  Gender
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
+            </div>
+            <Select
+              placeholder="성별을 선택해주세요"
+              options={genderOptions}
+              value={formData.userGender}
+              onChange={(value) => handleChange("userGender", value)}
+            />
+          </div>
 
-        <div className={cx("fieldGroup")}>
-          <label htmlFor="userEmail" className={cx("label")}>
-            이메일
-          </label>
-          <input
-            type="email"
-            id="userEmail"
-            name="userEmail"
-            value={formData.userEmail}
-            onChange={handleChange}
-            required
-            className={cx("input")}
-          />
-        </div>
+          {/* 이메일 */}
+          <div className={cx("fieldRow")}>
+            <div className={cx("labelContainer")}>
+              <Flex align="flex-start" gap={5}>
+                <Typography type="body14" weight="regular" color="white">
+                  EMAIL
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
+            </div>
+            <div className={cx("emailContainer")}>
+              <TextField
+                placeholder="이메일을 입력해주세요"
+                value={formData.userEmail}
+                onChange={(value) => handleChange("userEmail", value)}
+              />
+              <Button variant="secondary" onClick={handleEmailCheck}>
+                Check
+              </Button>
+            </div>
+          </div>
+        </Flex>
 
-        <button type="submit" disabled={isPending} className={cx("submitButton")}>
-          {isPending ? "처리중..." : "회원가입"}
-        </button>
+        <Button type="submit" variant="secondary" disabled={isPending}>
+          {isPending ? "처리중..." : "Create Account"}
+        </Button>
       </form>
     </div>
   );
