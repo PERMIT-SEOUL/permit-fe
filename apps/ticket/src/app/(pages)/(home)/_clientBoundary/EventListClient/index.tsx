@@ -4,6 +4,7 @@ import { useState } from "react";
 import classNames from "classnames/bind";
 
 import { CategoryList } from "../../_components/CategoryList";
+import { EventWithCategory } from "../../_utils/types";
 import { CATEGORIES, CATEGORY_LABELS, CategoryType } from "../../constants/category";
 import { mockEventData } from "../../constants/mock";
 import { useEventHover } from "../../hooks/useEventHover";
@@ -20,10 +21,10 @@ export const EventListClient = () => {
     setSelectedCategory(category);
   };
 
-  const getEventsWithCategory = () => {
+  const getEventsWithCategory = (): EventWithCategory[] => {
     if (selectedCategory === CATEGORIES.ALL) {
       return Object.entries(mockEventData).flatMap(([category, events]) =>
-        events.map((event) => ({ ...event, category })),
+        events.map((event) => ({ ...event, category }) as EventWithCategory),
       );
     }
 
@@ -39,7 +40,7 @@ export const EventListClient = () => {
     <div className={cx("container")}>
       <CategoryList selectedCategory={selectedCategory} onClickCategory={handleCategoryClick} />
       <div className={cx("event_list")}>
-        {filteredEvents.map((event, index) => {
+        {filteredEvents.map((event: EventWithCategory, index: number) => {
           const { eventId, eventName, thumbnailImageUrl, category } = event;
           const displayNumber = String(index + 1).padStart(2, "0");
 
