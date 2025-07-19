@@ -17,7 +17,7 @@ type CategoryItemProps = {
 
 const CategoryItem = ({ label, count, isActive = false, onClick }: CategoryItemProps) => {
   return (
-    <div className={cx("categoryItem", { active: isActive })} onClick={onClick}>
+    <div className={cx("category_item", { active: isActive })} onClick={onClick}>
       <span className={cx("label")}>{label}</span>
       <span className={cx("count")}>{count}</span>
     </div>
