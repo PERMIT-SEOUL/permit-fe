@@ -16,12 +16,15 @@ const cx = classNames.bind(styles);
 /**
  * 로그인 페이지
  */
-// TODO: 헤더 추가 후 다시 확인
 const LoginPage = () => {
   const { handleLogin } = useOAuth();
 
   return (
     <div className={cx("wrap")}>
+      <Typography type="body16" color="white">
+        Login
+      </Typography>
+
       <button
         className={cx("button", "kakao")}
         onClick={() => handleLogin(SOCIAL_LOGIN_TYPE.KAKAO)}

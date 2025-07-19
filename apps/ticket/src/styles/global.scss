@@ -15,9 +15,17 @@ body {
 .main {
   flex: 1;
   width: 100%;
+
+  // Header 와 Footer 의 높이 합을 뺀 나머지 높이
+  min-height: calc(100vh - 56px - 112px);
   margin: 0 auto;
 
   @media (max-width: 768px) {
     padding: 0 12px;
+  }
+
+  // 데스크탑 환경에서 Header 와 Footer 의 높이 합을 뺀 나머지 높이
+  @media (min-width: 768px) {
+    min-height: calc(100vh - 102px - 80px);
   }
 }

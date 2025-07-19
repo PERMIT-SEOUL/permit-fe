@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { useLoginMutation } from "@/data/users/postUserLogin/mutation";
 import { safeLocalStorage } from "@/lib/storage";
-import { LoadingIndicator } from "@/shared/components/LoadingIndicator";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { PATH } from "@/shared/constants/path";
 import { SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
 import { REDIRECT_URI } from "@/shared/hooks/useOAuth/constants";
@@ -55,13 +55,7 @@ const AuthPage = () => {
     handleLogin();
   }, [handleLogin]);
 
-  return (
-    <div
-      style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}
-    >
-      <LoadingIndicator size="large" />
-    </div>
-  );
+  return <LoadingWithLayout />;
 };
 
 export default AuthPage;
