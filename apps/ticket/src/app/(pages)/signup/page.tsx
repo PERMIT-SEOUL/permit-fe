@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
+import { useSelect, useTextField } from "@permit/design-system/hooks";
 import { useSignupMutation } from "@/data/users/postUserSignup/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { PATH } from "@/shared/constants/path";
@@ -34,28 +35,58 @@ const SignupPage = () => {
   const token = safeLocalStorage.get(TOKEN_KEY);
   const socialType = safeLocalStorage.get(SOCIAL_LOGIN_TYPE_KEY) as SocialLoginType;
 
-  const [formData, setFormData] = useState({
-    userName: "",
-    userAge: 0,
-    userGender: "MALE" as "MALE" | "FEMALE",
-    userEmail: "",
-    socialType: socialType,
-    socialAccessToken: token || "",
-  });
-
   const [emailVerified, setEmailVerified] = useState(false);
 
   const { mutateAsync, isPending } = useSignupMutation();
 
-  const handleChange = (field: string, value: string | number) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  // 필드별 상태 관리 훅 사용
+  const nameField = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value.trim()) return "이름을 입력해주세요.";
+
+      return undefined;
+    },
+  });
+
+  const ageField = useSelect({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "나이를 선택해주세요.";
+
+      return undefined;
+    },
+  });
+
+  const genderField = useSelect({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "성별을 선택해주세요.";
+
+      return undefined;
+    },
+  });
+
+  const emailField = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value.trim()) return "이메일을 입력해주세요.";
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(value)) return "올바른 이메일 형식이 아닙니다.";
+
+      return undefined;
+    },
+  });
 
   const handleEmailCheck = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    // 먼저 이메일 유효성 검사
+    if (!emailField.validateValue()) {
+      return;
+    }
 
     // TODO: 이메일 중복 확인 API 연동
     setEmailVerified(true);
@@ -71,9 +102,23 @@ const SignupPage = () => {
       return;
     }
 
+    // 모든 필드 유효성 검사
+    const isNameValid = nameField.validateValue();
+    const isAgeValid = ageField.validateValue();
+    const isGenderValid = genderField.validateValue();
+    const isEmailValid = emailField.validateValue();
+
+    if (!isNameValid || !isAgeValid || !isGenderValid || !isEmailValid) {
+      return;
+    }
+
     const submitData = {
-      ...formData,
-      userAge: formData.userAge,
+      userName: nameField.value,
+      userAge: Number(ageField.value),
+      userGender: genderField.value as "MALE" | "FEMALE",
+      userEmail: emailField.value,
+      socialType: socialType,
+      socialAccessToken: token || "",
     };
 
     try {
@@ -108,8 +153,9 @@ const SignupPage = () => {
             <TextField
               fullWidth
               placeholder="이름을 입력해주세요"
-              value={formData.userName}
-              onChange={(e) => handleChange("userName", e.target.value)}
+              value={nameField.value}
+              onChange={nameField.handleChange}
+              error={nameField.error}
             />
           </div>
 
@@ -126,8 +172,7 @@ const SignupPage = () => {
             <Select
               placeholder="나이를 선택해주세요"
               options={ageOptions}
-              value={String(formData.userAge)}
-              onChange={(value) => handleChange("userAge", Number(value))}
+              {...ageField.selectProps}
             />
           </div>
 
@@ -144,8 +189,7 @@ const SignupPage = () => {
             <Select
               placeholder="성별을 선택해주세요"
               options={genderOptions}
-              value={formData.userGender}
-              onChange={(value) => handleChange("userGender", value)}
+              {...genderField.selectProps}
             />
           </div>
 
@@ -163,10 +207,12 @@ const SignupPage = () => {
               <TextField
                 fullWidth
                 placeholder="이메일을 입력해주세요"
-                value={formData.userEmail}
-                onChange={(e) => handleChange("userEmail", e.target.value)}
+                value={emailField.value}
+                onChange={emailField.handleChange}
+                error={emailField.error}
+                disabled={emailVerified}
               />
-              <Button variant="secondary" onClick={handleEmailCheck}>
+              <Button variant="secondary" onClick={handleEmailCheck} disabled={emailVerified}>
                 Check
               </Button>
             </div>
