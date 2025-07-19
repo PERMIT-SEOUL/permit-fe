@@ -1,0 +1,207 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: theme.$spacing-3 theme.$spacing-4;
+
+  background-color: theme.$black;
+  cursor: pointer;
+  border: 1px solid theme.$gray-600;
+  border-radius: theme.$radius-md;
+
+  transition: theme.$transition-base;
+
+  &:hover:not(.disabled) {
+    border-color: theme.$gray-500;
+  }
+
+  &.open {
+    border-color: theme.$white;
+  }
+
+  &.disabled {
+    background-color: theme.$gray-800;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.error {
+    border-color: theme.$red;
+  }
+}
+
+.value {
+  flex: 1;
+
+  color: theme.$white;
+  text-align: left;
+
+  .trigger.disabled & {
+    color: theme.$gray-400;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+
+  transition: transform theme.$transition-base;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.error_text {
+  margin-top: theme.$spacing-1;
+
+  color: theme.$red;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: theme.$spacing-1;
+  overflow: hidden;
+
+  background-color: theme.$gray-800;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+  border: 1px solid theme.$gray-600;
+  border-radius: theme.$radius-md;
+}
+
+.options_list {
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.option {
+  padding: theme.$spacing-3 theme.$spacing-4;
+
+  cursor: pointer;
+
+  transition: theme.$transition-fast;
+
+  &:hover {
+    background-color: theme.$gray-700;
+  }
+
+  span {
+    color: theme.$gray-200;
+  }
+
+  &.selected {
+    color: theme.$white;
+
+    background-color: theme.$gray-600;
+  }
+}
+
+// Calendar 스타일
+.calendar {
+  width: 100%;
+  min-width: 280px;
+  max-width: 360px;
+  padding: theme.$spacing-4;
+}
+
+.calendar_header {
+  margin-bottom: theme.$spacing-4;
+}
+
+.nav_button {
+  padding: theme.$spacing-1;
+
+  background: none;
+  cursor: pointer;
+  border: none;
+  border-radius: theme.$radius-sm;
+
+  transition: theme.$transition-fast;
+
+  &:hover {
+    background-color: theme.$gray-700;
+  }
+}
+
+.rotate_left {
+  transform: rotate(-90deg);
+}
+
+.rotate_right {
+  transform: rotate(-90deg);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: theme.$spacing-1;
+  margin-bottom: theme.$spacing-2;
+}
+
+.weekday {
+  padding: theme.$spacing-2;
+
+  color: theme.$gray-400;
+  text-align: center;
+}
+
+.days_grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: theme.$spacing-1;
+}
+
+.day_cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: theme.$gray-200;
+
+  cursor: pointer;
+  border-radius: theme.$radius-sm;
+
+  transition: theme.$transition-fast;
+  aspect-ratio: 1;
+
+  &:not(.empty):hover {
+    background-color: theme.$gray-700;
+  }
+
+  &.empty {
+    cursor: default;
+  }
+
+  &.today {
+    background-color: theme.$gray-600;
+
+    span {
+      color: theme.$white;
+      font-weight: theme.$bold;
+    }
+  }
+
+  &.selected {
+    background-color: theme.$gray-600;
+
+    span {
+      color: theme.$black;
+      font-weight: theme.$bold;
+    }
+  }
+}
