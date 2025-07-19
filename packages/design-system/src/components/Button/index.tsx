@@ -3,14 +3,17 @@
 import { ButtonHTMLAttributes, forwardRef } from "react";
 import classNames from "classnames/bind";
 
+import { useDebounce } from "../../hooks";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
+const DEBOUNCE_WAIT = 200;
+
 export type ButtonSize = "sm" | "md" | "header";
 export type ButtonVariant = "primary" | "secondary" | "cta" | "error" | "unac";
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   /**
    * 버튼 크기
    * @default "md"
@@ -39,7 +42,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    * 로딩 여부
    */
   isLoading?: boolean;
-}
+  /**
+   * 중복 클릭 방지 (디바운스)
+   */
+  useClickDebounce?: boolean;
+};
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -51,10 +58,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabled = false,
       fullWidth = false,
       isLoading,
+      useClickDebounce = false,
+      onClick,
       ...props
     },
     ref,
   ) => {
+    const debouncedOnClick = useDebounce((e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(e);
+    }, DEBOUNCE_WAIT);
+
     return (
       <button
         ref={ref}
@@ -69,6 +82,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className,
         )}
         disabled={disabled || isLoading}
+        onClick={useClickDebounce ? debouncedOnClick : onClick}
         {...props}
       >
         {isLoading ? (
