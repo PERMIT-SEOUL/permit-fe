@@ -24,14 +24,19 @@ export const EventListClient = () => {
   const getEventsWithCategory = (): EventWithCategory[] => {
     if (selectedCategory === CATEGORIES.ALL) {
       return Object.entries(mockEventData).flatMap(([category, events]) =>
-        events.map((event) => ({ ...event, category }) as EventWithCategory),
+        events.map((event) => ({
+          ...event,
+          category: category as CategoryType,
+        })),
       );
     }
 
-    return mockEventData[selectedCategory].map((event) => ({
-      ...event,
-      category: selectedCategory,
-    }));
+    return (
+      mockEventData[selectedCategory]?.map((event) => ({
+        ...event,
+        category: selectedCategory,
+      })) ?? []
+    );
   };
 
   const filteredEvents = getEventsWithCategory();
