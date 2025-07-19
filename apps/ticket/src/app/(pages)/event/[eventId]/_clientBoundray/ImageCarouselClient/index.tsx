@@ -15,6 +15,7 @@ type Props = {
   images: { imageUrl: string }[];
 };
 
+// TODO: 모바일 좌우 스와이프, 애니메이션 추가?
 export const ImageCarouselClient = ({ images }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isMobile = useIsMobile();
