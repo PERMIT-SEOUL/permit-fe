@@ -47,6 +47,7 @@ export const EventListClient = () => {
           return (
             <EventCardClient
               key={eventId}
+              eventId={eventId}
               imageUrl={thumbnailImageUrl}
               title={eventName}
               displayNumber={displayNumber}
