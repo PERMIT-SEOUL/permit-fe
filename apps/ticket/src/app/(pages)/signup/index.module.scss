@@ -17,7 +17,7 @@
   flex-direction: column;
   gap: 40px;
   width: 100%;
-  max-width: 537px;
+  max-width: 500px;
 
   @media (max-width: 767px) {
     gap: 20px;
@@ -41,7 +41,6 @@
 
 .field_row {
   display: flex;
-  flex-direction: row;
   gap: 95px;
   align-items: center;
 
@@ -55,7 +54,8 @@
 .label_container {
   display: flex;
   align-items: flex-start;
-  justify-content: flex-end;
+
+  // justify-content: flex-end;
   min-width: 143px;
 
   @media (max-width: 767px) {
@@ -65,12 +65,7 @@
 }
 
 .required {
-  flex-shrink: 0;
-  width: 3px;
-  height: 3px;
-
-  background-color: #ff283e;
-  border-radius: 50%;
+  color: #ff283e;
 }
 
 .text_field {
@@ -94,7 +89,7 @@
 .email_container {
   display: flex;
   gap: 12px;
-  align-items: flex-start;
+  width: 100%;
 
   @media (max-width: 767px) {
     gap: 12px;

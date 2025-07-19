@@ -212,14 +212,14 @@ const SignupPage = () => {
                 error={emailField.error}
                 disabled={emailVerified}
               />
-              <Button variant="secondary" onClick={handleEmailCheck} disabled={emailVerified}>
+              <Button variant="primary" onClick={handleEmailCheck} disabled={emailVerified}>
                 Check
               </Button>
             </div>
           </div>
         </Flex>
 
-        <Button type="submit" variant="secondary" isLoading={isPending}>
+        <Button type="submit" variant="primary" isLoading={isPending}>
           Create Account
         </Button>
       </form>
