@@ -10,12 +10,11 @@
 
   @media (max-width: 767px) {
     position: relative;
-    flex-direction: row;
+    gap: 16px;
     align-items: center;
     width: 100%;
     max-width: 500px;
     margin: 0;
-    aspect-ratio: 438 / 552;
   }
 }
 
@@ -26,8 +25,11 @@
   margin: 0 auto;
 
   @media (max-width: 767px) {
+    position: relative;
     gap: 0;
     justify-content: center;
+    width: 100%;
+    aspect-ratio: 438 / 552;
   }
 }
 
