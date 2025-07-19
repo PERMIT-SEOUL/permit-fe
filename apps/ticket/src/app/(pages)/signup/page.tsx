@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
@@ -14,6 +14,16 @@ import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
+
+const ageOptions = Array.from({ length: 80 }, (_, i) => ({
+  value: String(i + 10),
+  label: `${i + 10}세`,
+}));
+
+const genderOptions = [
+  { value: "MALE", label: "남성" },
+  { value: "FEMALE", label: "여성" },
+];
 
 /**
  * 회원가입 페이지
@@ -44,7 +54,9 @@ const SignupPage = () => {
     }));
   };
 
-  const handleEmailCheck = () => {
+  const handleEmailCheck = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
     // TODO: 이메일 중복 확인 API 연동
     setEmailVerified(true);
     alert("이메일 확인이 완료되었습니다.");
@@ -79,23 +91,13 @@ const SignupPage = () => {
     }
   };
 
-  const ageOptions = Array.from({ length: 80 }, (_, i) => ({
-    value: String(i + 10),
-    label: `${i + 10}세`,
-  }));
-
-  const genderOptions = [
-    { value: "MALE", label: "남성" },
-    { value: "FEMALE", label: "여성" },
-  ];
-
   return (
     <div className={cx("container")}>
       <form onSubmit={handleSignup} className={cx("form")}>
-        <Flex direction="column" gap={20} className={cx("formFields")}>
+        <Flex direction="column" gap={20} className={cx("form_fields")}>
           {/* 이름 */}
-          <div className={cx("fieldRow")}>
-            <div className={cx("labelContainer")}>
+          <div className={cx("field_row")}>
+            <div className={cx("label_container")}>
               <Flex align="flex-start" gap={8}>
                 <Typography type="body14" weight="regular" color="white">
                   NAME
@@ -104,15 +106,16 @@ const SignupPage = () => {
               </Flex>
             </div>
             <TextField
+              fullWidth
               placeholder="이름을 입력해주세요"
               value={formData.userName}
-              onChange={(value) => handleChange("userName", value)}
+              onChange={(e) => handleChange("userName", e.target.value)}
             />
           </div>
 
           {/* 나이 */}
-          <div className={cx("fieldRow")}>
-            <div className={cx("labelContainer")}>
+          <div className={cx("field_row")}>
+            <div className={cx("label_container")}>
               <Flex align="flex-start" gap={6}>
                 <Typography type="body14" weight="regular" color="white">
                   AGE
@@ -129,8 +132,8 @@ const SignupPage = () => {
           </div>
 
           {/* 성별 */}
-          <div className={cx("fieldRow")}>
-            <div className={cx("labelContainer")}>
+          <div className={cx("field_row")}>
+            <div className={cx("label_container")}>
               <Flex align="flex-start" gap={8}>
                 <Typography type="body14" weight="regular" color="white">
                   Gender
@@ -147,8 +150,8 @@ const SignupPage = () => {
           </div>
 
           {/* 이메일 */}
-          <div className={cx("fieldRow")}>
-            <div className={cx("labelContainer")}>
+          <div className={cx("field_row")}>
+            <div className={cx("label_container")}>
               <Flex align="flex-start" gap={5}>
                 <Typography type="body14" weight="regular" color="white">
                   EMAIL
@@ -156,11 +159,12 @@ const SignupPage = () => {
                 <div className={cx("required")}>*</div>
               </Flex>
             </div>
-            <div className={cx("emailContainer")}>
+            <div className={cx("email_container")}>
               <TextField
+                fullWidth
                 placeholder="이메일을 입력해주세요"
                 value={formData.userEmail}
-                onChange={(value) => handleChange("userEmail", value)}
+                onChange={(e) => handleChange("userEmail", e.target.value)}
               />
               <Button variant="secondary" onClick={handleEmailCheck}>
                 Check
@@ -169,8 +173,8 @@ const SignupPage = () => {
           </div>
         </Flex>
 
-        <Button type="submit" variant="secondary" disabled={isPending}>
-          {isPending ? "처리중..." : "Create Account"}
+        <Button type="submit" variant="secondary" isLoading={isPending}>
+          Create Account
         </Button>
       </form>
     </div>

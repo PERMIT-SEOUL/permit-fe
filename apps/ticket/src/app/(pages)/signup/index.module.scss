@@ -25,7 +25,7 @@
   }
 }
 
-.formFields {
+.form_fields {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -39,7 +39,7 @@
   }
 }
 
-.fieldRow {
+.field_row {
   display: flex;
   flex-direction: row;
   gap: 95px;
@@ -52,7 +52,7 @@
   }
 }
 
-.labelContainer {
+.label_container {
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
@@ -73,7 +73,7 @@
   border-radius: 50%;
 }
 
-.textField {
+.text_field {
   width: 100%;
   max-width: 299px;
 
@@ -91,7 +91,7 @@
   }
 }
 
-.emailContainer {
+.email_container {
   display: flex;
   gap: 12px;
   align-items: flex-start;
@@ -101,7 +101,7 @@
   }
 }
 
-.emailField {
+.email_field {
   flex: 1;
   max-width: 299px;
 
@@ -110,7 +110,7 @@
   }
 }
 
-.checkButton {
+.check_button {
   flex-shrink: 0;
   min-width: fit-content;
 
@@ -119,6 +119,6 @@
   }
 }
 
-.submitButton {
+.submit_button {
   width: 100%;
 }
