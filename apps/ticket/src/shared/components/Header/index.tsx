@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import classNames from "classnames/bind";
 import permitLogo from "public/assets/png/permit_logo.png";
 
@@ -24,9 +25,9 @@ export const Header = () => {
   return (
     <header className={cx("header")}>
       <div className={cx("content")}>
-        <div className={cx("logo")}>
+        <Link className={cx("logo")} href="/">
           <Image src={permitLogo} alt="PERMIT" className={cx("logo_image")} />
-        </div>
+        </Link>
 
         <div className={cx("actions")}>
           <Button variant="secondary" size="sm" className={cx("nav_button")} onClick={onShopClick}>
