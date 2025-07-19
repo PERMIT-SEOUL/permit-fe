@@ -10,12 +10,12 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: theme.$spacing-3 theme.$spacing-4;
+  padding: 10px 16px;
 
-  background-color: theme.$black;
+  background-color: theme.$gray-800;
   cursor: pointer;
   border: 1px solid theme.$gray-600;
-  border-radius: theme.$radius-md;
+  border-radius: 4px;
 
   transition: theme.$transition-base;
 
