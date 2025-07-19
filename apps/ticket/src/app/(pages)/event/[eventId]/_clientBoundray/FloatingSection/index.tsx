@@ -48,6 +48,7 @@ export const FloatingSection = ({ eventId }: Props) => {
     <div className={cx("floating")}>
       <Button
         className={cx("button")}
+        fullWidth
         variant="primary"
         size="md"
         isLoading={isLoading}

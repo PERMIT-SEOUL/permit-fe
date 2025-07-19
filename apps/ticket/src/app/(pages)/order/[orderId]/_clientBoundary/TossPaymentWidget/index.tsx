@@ -115,6 +115,7 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
           variant="primary"
           fullWidth
           className={cx({ hidden: !isWidgetRendered })}
+          style={{ backgroundColor: "#3182F7" }}
         >
           결제하기
         </Button>

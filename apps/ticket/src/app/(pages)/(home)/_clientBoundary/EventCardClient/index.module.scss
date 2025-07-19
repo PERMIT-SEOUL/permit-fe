@@ -71,16 +71,6 @@
     transition: opacity 0.3s ease-in-out;
 
     pointer-events: none;
-
-    .image_wrapper {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 4/5;
-    }
-
-    .image {
-      object-fit: contain;
-    }
   }
 
   @media (min-width: 1336px) {
@@ -101,12 +91,6 @@
     .image_wrapper {
       position: relative;
       width: 447px;
-
-      aspect-ratio: 4/5;
-    }
-
-    .image {
-      object-fit: contain;
     }
   }
 }
@@ -114,17 +98,9 @@
 .image_wrapper {
   position: relative;
   width: 100%;
-  overflow: hidden;
-
-  opacity: 1;
-  border-radius: 4px;
 
   transition: all 0.3s ease-in-out;
   aspect-ratio: 93/125;
-}
-
-.image {
-  object-fit: cover;
 }
 
 .display_number {

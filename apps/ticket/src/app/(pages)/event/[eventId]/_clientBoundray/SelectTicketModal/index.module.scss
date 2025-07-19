@@ -1,7 +1,10 @@
+@use "@permit/design-system/styles/variables" as theme;
+
 .promo_code_button {
   display: block;
   margin-top: 36px;
 
+  color: theme.$white;
   text-decoration: underline;
 
   cursor: pointer;

@@ -80,9 +80,7 @@ const SignupPage = () => {
     },
   });
 
-  const handleEmailCheck = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
+  const handleEmailCheck = () => {
     // 먼저 이메일 유효성 검사
     if (!emailField.validateValue()) {
       return;
@@ -210,7 +208,12 @@ const SignupPage = () => {
                 error={emailField.error}
                 disabled={emailVerified}
               />
-              <Button variant="primary" onClick={handleEmailCheck} disabled={emailVerified}>
+              <Button
+                type="button"
+                variant="primary"
+                onClick={handleEmailCheck}
+                disabled={emailVerified}
+              >
                 Check
               </Button>
             </div>
@@ -218,7 +221,7 @@ const SignupPage = () => {
         </Flex>
 
         <Button
-          type="submit"
+          type="button"
           variant="primary"
           isLoading={isPending}
           useClickDebounce

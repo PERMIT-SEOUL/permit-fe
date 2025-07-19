@@ -7,13 +7,31 @@
   left: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 1rem 2rem;
+  justify-content: center;
+  padding: 24px 16px 20px;
 
   background-color: theme.$gray-800;
-  border-top: 1px solid theme.$gray-400;
+  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
+  border-top: 1px solid theme.$gray-600;
+
+  @media (min-width: 768px) {
+    justify-content: flex-end;
+    height: 79px;
+    padding: 18px 40px;
+  }
 }
 
 .button {
-  width: 240px;
+  color: theme.$white;
+  font-weight: 700;
+  font-size: 14px;
+
+  @media (min-width: 768px) {
+    width: 240px;
+    height: auto;
+
+    background-color: theme.$gray-700;
+    border: 1px solid theme.$gray-600;
+    border-radius: 4px;
+  }
 }
