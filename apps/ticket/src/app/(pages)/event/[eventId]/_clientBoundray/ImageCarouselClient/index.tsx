@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
 
+import { Icon } from "@permit/design-system";
+import { useIsMobile } from "@permit/design-system/hooks";
+
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -14,6 +17,7 @@ type Props = {
 
 export const ImageCarouselClient = ({ images }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   const goToPrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -25,30 +29,41 @@ export const ImageCarouselClient = ({ images }: Props) => {
 
   return (
     <div className={cx("carousel")}>
-      <div>
-        <Image
-          className={cx("image")}
-          src={images[currentIndex].imageUrl}
-          alt=""
-          width={400}
-          height={504}
-          objectFit="cover"
-        />
+      <div className={cx("image_container")}>
         <button
-          className={cx("icon_button", "prev")}
+          className={cx("icon_button")}
           type="button"
           aria-label="prev image"
           onClick={goToPrev}
         >
-          ‹
+          <Icon.Up size={20} fill="gray800" />
         </button>
+
+        {isMobile ? (
+          <Image
+            className={cx("image")}
+            src={images[currentIndex].imageUrl}
+            alt=""
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        ) : (
+          <Image
+            className={cx("desktop_image")}
+            src={images[currentIndex].imageUrl}
+            alt=""
+            width={438}
+            height={552}
+          />
+        )}
+
         <button
-          className={cx("icon_button", "next")}
+          className={cx("icon_button")}
           type="button"
           aria-label="next image"
           onClick={goToNext}
         >
-          ›
+          <Icon.Down size={20} fill="gray800" />
         </button>
       </div>
 

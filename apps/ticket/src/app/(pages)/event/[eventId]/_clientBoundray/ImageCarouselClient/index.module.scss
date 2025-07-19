@@ -1,60 +1,77 @@
 @use "@permit/design-system/styles/variables" as theme;
 
 .carousel {
-  position: relative;
-  flex: 0 0 auto;
-  margin: 38px 128px 0 155px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 0 84px;
+
+  @media (max-width: 767px) {
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 0;
+    aspect-ratio: 438 / 552;
+  }
 }
 
-.image {
-  width: 400px;
-  height: 504px;
+.image_container {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 0 auto;
+
+  @media (max-width: 767px) {
+    gap: 0;
+    justify-content: center;
+  }
 }
 
 .icon_button {
-  position: absolute;
-  top: 50%;
-  z-index: 1;
-  padding: 0 6px;
-
-  color: theme.$black;
-  font-size: 20px;
-
-  background-color: theme.$gray-300;
-  transform: translateY(-50%);
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-.prev {
-  left: 4px;
-}
-
-.next {
-  right: 4px;
-}
-
-.dots {
   display: flex;
-  justify-content: center;
-  margin-top: 8px;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  margin: 0 4px;
+  align-items: center;
 
   background-color: theme.$gray-600;
   cursor: pointer;
   border: none;
   border-radius: 50%;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+
+  svg {
+    transform: rotate(-90deg);
+  }
 }
 
-.active {
-  background-color: theme.$white;
+.dots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+
+  @media (max-width: 767px) {
+    margin-top: 12px;
+  }
 }
 
-.icon_button:focus-visible {
-  outline: 2px solid theme.$red;
+.dot {
+  width: 8px;
+  height: 8px;
+
+  background-color: theme.$gray-600;
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+
+  transition: background-color 0.2s;
+
+  &.active {
+    background-color: theme.$white;
+  }
 }
