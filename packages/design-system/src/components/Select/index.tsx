@@ -124,7 +124,11 @@ export const Select = ({
         >
           {getDisplayValue()}
         </Typography>
-        <Icon.Down size={20} fill="gray400" className={cx("icon", { rotated: isOpen })} />
+        {type === "calendar" ? (
+          <Icon.Calendar size={16} fill="gray400" />
+        ) : (
+          <Icon.Down size={20} fill="gray800" className={cx("icon", { rotated: isOpen })} />
+        )}
       </div>
 
       {error && (
@@ -227,13 +231,13 @@ const Calendar = ({ onDateSelect, selectedDate, hasSelectedValue }: CalendarProp
     <div className={cx("calendar")}>
       <Flex justify="space-between" align="center" className={cx("calendar_header")}>
         <button className={cx("nav_button")} onClick={goToPreviousMonth}>
-          <Icon.Up size={16} fill="gray400" className={cx("rotate_left")} />
+          <Icon.Up size={16} fill="gray800" className={cx("rotate_left")} />
         </button>
         <Typography type="body14" weight="bold">
           {monthYear}
         </Typography>
         <button className={cx("nav_button")} onClick={goToNextMonth}>
-          <Icon.Down size={16} fill="gray400" className={cx("rotate_right")} />
+          <Icon.Down size={16} fill="gray800" className={cx("rotate_right")} />
         </button>
       </Flex>
 
