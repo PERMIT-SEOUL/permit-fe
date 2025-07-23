@@ -76,7 +76,7 @@ export const mockRounds = [
   {
     roundId: 2,
     roundAvailable: true,
-    roundPrice: "50,000 ~ 60,000",
+    roundPrice: "900",
     roundName: "2nd release",
     ticketTypes: [
       {
@@ -84,7 +84,7 @@ export const mockRounds = [
         ticketTypeName: "Day 1",
         ticketTypeDate: "Sun, 25 May 2025",
         ticketTypeTime: "18:30",
-        ticketTypePrice: "60,000",
+        ticketTypePrice: "900",
       },
     ],
   },
