@@ -30,9 +30,10 @@ export const Header = () => {
         </Link>
 
         <div className={cx("actions")}>
-          <Button variant="secondary" size="sm" className={cx("nav_button")} onClick={onShopClick}>
+          {/* TODO: 쇼핑 페이지 추가 시 주석 해제 */}
+          {/* <Button variant="secondary" size="sm" className={cx("nav_button")} onClick={onShopClick}>
             SHOP
-          </Button>
+          </Button> */}
           <Button
             variant="secondary"
             size="sm"
