@@ -149,7 +149,7 @@ export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) =
 const mock = {
   eventId: 2,
   // couponCode: "dijkkksdrl", // 필요 시 주석 해제
-  totalAmount: 50000,
+  totalAmount: 900,
   ticketTypeInfos: [
     // { id: 1, count: 2 },
     { id: 9, count: 1 },
