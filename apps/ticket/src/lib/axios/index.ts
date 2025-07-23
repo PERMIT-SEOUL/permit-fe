@@ -25,7 +25,7 @@ instance.interceptors.request.use(
 
 // 응답 인터셉터
 instance.interceptors.response.use(
-  (response: AxiosResponse) => response,
+  (response: AxiosResponse) => response.data,
   async (error: AxiosError<AxiosErrorResponse>) => {
     // TODO: 에러 로직 변경
     // if (error.status === 500) {
