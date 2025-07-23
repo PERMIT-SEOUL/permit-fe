@@ -31,7 +31,7 @@ const PaymentSuccessPage = () => {
   useEffect(() => {
     const handlePaymentConfirm = async () => {
       try {
-        const { data } = await mutateAsync({
+        const data = await mutateAsync({
           paymentKey: searchParams.get("paymentKey") || "",
           orderId: searchParams.get("orderId") || "",
           totalAmount: Number(searchParams.get("amount")) || 0,
@@ -48,6 +48,10 @@ const PaymentSuccessPage = () => {
         // 에러 메시지 세분화 요청
         // 결제 실패 페이지로 라우팅
         alert("결제 실패");
+
+        window.location.replace(
+          `${window.location.origin}/order/${searchParams.get("orderId")}/fail`,
+        );
       }
     };
 
