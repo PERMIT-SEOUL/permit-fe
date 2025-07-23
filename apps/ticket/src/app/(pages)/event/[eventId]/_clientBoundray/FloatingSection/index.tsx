@@ -32,7 +32,7 @@ export const FloatingSection = ({ eventId }: Props) => {
       // TODO: eventId 로 티켓 정보 조회
       const { data } = await refetch();
 
-      const result = await openDialog({ title: "티켓 선택", ticketInfo: mockRounds });
+      const result = await openDialog({ title: "티켓 선택", eventId: 2, ticketInfo: mockRounds });
 
       if (!result) {
         return;

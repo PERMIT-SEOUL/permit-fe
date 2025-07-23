@@ -15,6 +15,7 @@ const cx = classNames.bind(styles);
 
 type Props = {
   title: string;
+  eventId: number;
   ticketInfo: {
     roundId: number;
     roundAvailable: boolean;
@@ -33,7 +34,7 @@ type Props = {
 /**
  * 티켓 선택 모달
  */
-export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) => {
+export const SelectTicketModal = ({ isOpen, close, title, eventId, ticketInfo }: Props) => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +74,7 @@ export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) =
 
       // TODO: 프로모션 코드 로직 추가
       const requestData = {
-        eventId: 2,
+        eventId,
         totalAmount: parseInt(selectedTicket.ticketTypePrice.replace(/,/g, "")) * ticketCount,
         ticketTypeInfos: [{ id: selectedTicketId, count: ticketCount }],
       };
