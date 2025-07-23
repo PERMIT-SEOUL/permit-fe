@@ -17,7 +17,6 @@ type Props = {
 };
 
 export const TossPaymentWidget = ({ orderId }: Props) => {
-  // TODO: 해당 쿼리 데이터로 변경 필요
   const { data: reservationReady } = useReservationReadyQuery({});
 
   const [isSDKLoaded, setSDKLoaded] = useState(false);
@@ -34,10 +33,14 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
         return;
       }
 
+      if (!reservationReady) {
+        return;
+      }
+
       try {
         // TODO: 추후 변경
         const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-        const customerKey = "21UIIRTiENmceorBAnfsW";
+        const customerKey = reservationReady.customerKey;
         const tossPayments = window.TossPayments(clientKey);
         const widgets = tossPayments.widgets({ customerKey });
 
@@ -46,7 +49,7 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
          */
         await widgets.setAmount({
           currency: "KRW",
-          value: 50000,
+          value: reservationReady.totalAmount,
         });
 
         await Promise.all([
@@ -69,9 +72,9 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
            */
           await widgets.requestPayment({
             orderId,
-            orderName: "토스 티켓 결제 테스트",
-            customerName: "김토스",
-            customerEmail: "customer@email.com",
+            orderName: reservationReady.orderName,
+            customerName: reservationReady.userName,
+            customerEmail: reservationReady.userEmail,
             successUrl: `${window.location.origin}/order/${orderId}/success`,
             failUrl: `${window.location.origin}/order/${orderId}/fail`,
           });
@@ -84,7 +87,7 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
     };
 
     initTossPayment();
-  }, [isSDKLoaded, orderId]);
+  }, [isSDKLoaded, orderId, reservationReady]);
 
   return (
     <>

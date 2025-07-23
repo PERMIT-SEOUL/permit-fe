@@ -8,9 +8,6 @@ export type PaymentConfirmRequest = {
 };
 
 export type PaymentConfirmResponse = {
-  code: number;
-  data: {
-    eventName: string;
-    eventDate: string;
-  };
+  eventName: string;
+  eventDate: string;
 };

@@ -10,6 +10,5 @@ export type ReservationReadyParams = {
 };
 
 export type ReservationReadyResponse = {
-  code: number;
   data: null;
 };

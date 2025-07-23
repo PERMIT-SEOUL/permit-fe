@@ -1,8 +1,8 @@
 @use "sass:map";
 
 // Typography
-$font-family-roboto: 'Roboto', sans-serif;
-$font-family-pretendard: 'Pretendard', sans-serif;
+$font-family-roboto: "Roboto", sans-serif;
+$font-family-pretendard: "Pretendard", sans-serif;
 $font-family-base: $font-family-roboto;
 
 // Font Weights
@@ -10,7 +10,7 @@ $font-weights: (
   "regular": 400,
   "medium": 500,
   "bold": 700,
-  "extrabold": 800
+  "extrabold": 800,
 );
 
 // Font Variables
@@ -27,7 +27,7 @@ $font-sizes: (
   "title18": 18px,
   "body16": 16px,
   "body14": 14px,
-  "body12": 12px
+  "body12": 12px,
 );
 
 // Title Variables
@@ -42,28 +42,28 @@ $body-14: map.get($font-sizes, "body14");
 $body-12: map.get($font-sizes, "body12");
 
 // Line Heights
-$line-height-auto: 1.6; // 160%
+$line-height-auto: 16px;
 
-// Colors 
+// Colors
 $colors: (
   // Black
   "black": #000,
   // White
-  "white": #FFF,
+  "white": #fff,
   // Red
-  "red": #FF283E,
-  "red100": #FA4958,
+  "red": #ff283e,
+  "red100": #fa4958,
   // Gray
-  "gray900": #0A0A0A,
+  "gray900": #0a0a0a,
   "gray800": #171717,
   "gray700": #262626,
   "gray600": #373737,
   "gray500": #525252,
-  "gray400": #8A8A8A,
-  "gray300": #A3A3A3,
-  "gray200": #D4D4D4,
-  "gray150": #E5E5E5,
-  "gray100": #F5F5F5,
+  "gray400": #8a8a8a,
+  "gray300": #a3a3a3,
+  "gray200": #d4d4d4,
+  "gray150": #e5e5e5,
+  "gray100": #f5f5f5
 );
 
 // Colors Variables
@@ -81,7 +81,6 @@ $gray-300: map.get($colors, "gray300");
 $gray-200: map.get($colors, "gray200");
 $gray-150: map.get($colors, "gray150");
 $gray-100: map.get($colors, "gray100");
-
 
 // Spacing
 $spacing-1: 4px;
@@ -104,4 +103,4 @@ $radius-xl: 16px;
 // Transitions
 $transition-fast: 0.15s ease-in-out;
 $transition-base: 0.3s ease-in-out;
-$transition-slow: 0.5s ease-in-out; 
+$transition-slow: 0.5s ease-in-out;

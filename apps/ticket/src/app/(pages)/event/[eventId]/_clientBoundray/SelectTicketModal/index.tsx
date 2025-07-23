@@ -15,6 +15,7 @@ const cx = classNames.bind(styles);
 
 type Props = {
   title: string;
+  eventId: number;
   ticketInfo: {
     roundId: number;
     roundAvailable: boolean;
@@ -33,10 +34,11 @@ type Props = {
 /**
  * 티켓 선택 모달
  */
-export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) => {
+export const SelectTicketModal = ({ isOpen, close, title, eventId, ticketInfo }: Props) => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [ticketCount, setTicketCount] = useState(1);
 
   const [selectedRoundId, setSelectedRoundId] = useState<number>();
   const [selectedTicketId, setSelectedTicketId] = useState<number>();
@@ -45,15 +47,39 @@ export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) =
 
   const selectedRound = ticketInfo.find((round) => round.roundId === selectedRoundId);
 
+  const selectedTicket = selectedRound?.ticketTypes.find(
+    (ticket) => ticket.ticketTypeId === selectedTicketId,
+  );
+
   const { mutateAsync } = useReservationReadyMutation();
+
+  const handleTicketCountChange = (change: number) => {
+    const newCount = ticketCount + change;
+
+    if (newCount >= 1 && newCount <= 10) {
+      // 최대 10개까지 제한
+      setTicketCount(newCount);
+    }
+  };
 
   const handleBuyTicket = useDebounce(async () => {
     setIsLoading(true);
 
+    if (!selectedTicketId || !selectedTicket) {
+      return;
+    }
+
     try {
       const orderId = generateRandomString();
 
-      await mutateAsync({ ...mock, orderId });
+      // TODO: 프로모션 코드 로직 추가
+      const requestData = {
+        eventId,
+        totalAmount: parseInt(selectedTicket.ticketTypePrice.replace(/,/g, "")) * ticketCount,
+        ticketTypeInfos: [{ id: selectedTicketId, count: ticketCount }],
+      };
+
+      await mutateAsync({ ...requestData, orderId });
 
       router.push(`/order/${orderId}`);
     } catch (error) {
@@ -72,36 +98,45 @@ export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) =
     <Dialog open={isOpen} title={title} onClose={() => close()}>
       {/* TODO: onClick={close} 와 리턴이 다른 이유 확인 */}
       <Dialog.Content>
-        {ticketInfo.map((round) => (
-          <Button
-            key={round.roundId}
-            disabled={!round.roundAvailable}
-            variant={selectedRoundId === round.roundId ? "primary" : "secondary"}
-            fullWidth
-            onClick={() => {
-              setSelectedRoundId(round.roundId);
-            }}
-          >
-            {round.roundName}
-          </Button>
-        ))}
+        <Flex direction="column" gap={8}>
+          {ticketInfo.map((round) => (
+            <button
+              key={round.roundId}
+              className={cx("select_button", {
+                selected: selectedRoundId === round.roundId,
+                disabled: !round.roundAvailable,
+              })}
+              disabled={!round.roundAvailable}
+              onClick={() => {
+                setSelectedRoundId(round.roundId);
+              }}
+            >
+              <span className={cx({ disabled: !round.roundAvailable })}>{round.roundName}</span>
+              <span className={cx({ disabled: !round.roundAvailable })}>{round.roundPrice}</span>
+            </button>
+          ))}
+        </Flex>
 
         {selectedRoundId && (
           <>
-            <div style={{ marginTop: 12 }}>
+            <Flex className={cx("select_ticket_wrap")} direction="column" gap={8}>
               {selectedRound?.ticketTypes.map((ticket) => (
-                <Button
+                <button
                   key={ticket.ticketTypeId}
-                  variant={selectedTicketId === ticket.ticketTypeId ? "primary" : "secondary"}
-                  fullWidth
+                  className={cx("select_button", {
+                    selected: selectedTicketId === ticket.ticketTypeId,
+                  })}
                   onClick={() => {
                     setSelectedTicketId(ticket.ticketTypeId);
                   }}
                 >
-                  {ticket.ticketTypeName} {ticket.ticketTypeDate} {ticket.ticketTypeTime}
-                </Button>
+                  <span>
+                    {ticket.ticketTypeName} {ticket.ticketTypeDate}, {ticket.ticketTypeTime}
+                  </span>
+                  <span>{ticket.ticketTypePrice}</span>
+                </button>
               ))}
-            </div>
+            </Flex>
 
             <button className={cx("promo_code_button")} onClick={() => setIsPromocodeOpen(true)}>
               {isPromocodeOpen ? "Enter Promo Code" : "Have a Promo Code?"}
@@ -113,7 +148,11 @@ export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) =
                   * Only one per purchase
                 </Typography>
                 <Flex gap={12}>
-                  <TextField fullWidth placeholder="promotion code" />
+                  <TextField
+                    className={cx("promo_code_input")}
+                    fullWidth
+                    placeholder="promotion code"
+                  />
                   <Button
                     variant="secondary"
                     onClick={() => {
@@ -125,6 +164,46 @@ export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) =
                 </Flex>
               </>
             )}
+
+            {selectedTicketId && selectedTicket && (
+              <Flex
+                className={cx("ticket_count_wrap")}
+                align="flex-end"
+                justify="space-between"
+                gap={16}
+              >
+                <Flex className={cx("price_wrap")} direction="column" gap={6}>
+                  <div>price</div>
+                  <div>
+                    ₩
+                    {(
+                      parseInt(selectedTicket.ticketTypePrice.replace(/,/g, "")) * ticketCount
+                    ).toLocaleString()}
+                  </div>
+                </Flex>
+
+                <Flex align="center" gap={6}>
+                  {/* TODO: 디테일 확인 */}
+                  <button
+                    className={cx("count_button")}
+                    onClick={() => handleTicketCountChange(-1)}
+                    disabled={ticketCount <= 1}
+                  >
+                    −
+                  </button>
+                  <div className={cx("count_display")}>
+                    <span>{ticketCount}</span>
+                  </div>
+                  <button
+                    className={cx("count_button")}
+                    onClick={() => handleTicketCountChange(1)}
+                    disabled={ticketCount >= 10}
+                  >
+                    +
+                  </button>
+                </Flex>
+              </Flex>
+            )}
           </>
         )}
       </Dialog.Content>
@@ -132,6 +211,7 @@ export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) =
       <Dialog.Bottom>
         <Flex gap={12}>
           <Button
+            className={cx("buy_button")}
             variant="cta"
             isLoading={isLoading}
             disabled={!selectedTicketId}
@@ -143,15 +223,4 @@ export const SelectTicketModal = ({ isOpen, close, title, ticketInfo }: Props) =
       </Dialog.Bottom>
     </Dialog>
   );
-};
-
-// TODO: 선택한 값으로 변경
-const mock = {
-  eventId: 2,
-  // couponCode: "dijkkksdrl", // 필요 시 주석 해제
-  totalAmount: 50000,
-  ticketTypeInfos: [
-    // { id: 1, count: 2 },
-    { id: 9, count: 1 },
-  ],
 };
