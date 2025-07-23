@@ -14,7 +14,6 @@ type SignupRequest = {
 };
 
 type SignupResponse = {
-  code: number;
   data: null;
 };
 

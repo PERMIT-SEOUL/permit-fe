@@ -4,7 +4,6 @@ import { API_URL } from "@/data/constants";
 import { instance } from "@/lib/axios";
 
 type LogoutResponse = {
-  code: number;
   data: null;
 };
 

@@ -11,7 +11,6 @@ type LoginRequest = {
 };
 
 type LoginResponse = {
-  code: number;
   data: null;
 };
 
