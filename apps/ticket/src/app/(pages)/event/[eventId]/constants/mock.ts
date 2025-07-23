@@ -54,8 +54,8 @@ export const mockRounds = [
   {
     roundId: 1,
     roundAvailable: false,
-    roundPrice: "50,000~60,000",
-    roundName: "1차 예매",
+    roundPrice: "50,000 ~ 60,000",
+    roundName: "Early bird",
     ticketTypes: [
       {
         ticketTypeId: 1,
@@ -76,13 +76,13 @@ export const mockRounds = [
   {
     roundId: 2,
     roundAvailable: true,
-    roundPrice: "50,000~60,000",
-    roundName: "2차 예매",
+    roundPrice: "50,000 ~ 60,000",
+    roundName: "2nd release",
     ticketTypes: [
       {
-        ticketTypeId: 2,
-        ticketTypeName: "VIP 티켓",
-        ticketTypeDate: "2025-08-10",
+        ticketTypeId: 9,
+        ticketTypeName: "Day 1",
+        ticketTypeDate: "Sun, 25 May 2025",
         ticketTypeTime: "18:30",
         ticketTypePrice: "60,000",
       },
