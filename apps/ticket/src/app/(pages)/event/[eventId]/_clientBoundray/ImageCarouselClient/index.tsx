@@ -28,17 +28,21 @@ export const ImageCarouselClient = ({ images }: Props) => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
+  const isSingleImage = images.length < 2;
+
   return (
     <div className={cx("carousel")}>
       <div className={cx("image_container")}>
-        <button
-          className={cx("icon_button")}
-          type="button"
-          aria-label="prev image"
-          onClick={goToPrev}
-        >
-          <Icon.Up size={20} fill="gray800" />
-        </button>
+        {!isSingleImage && (
+          <button
+            className={cx("icon_button")}
+            type="button"
+            aria-label="prev image"
+            onClick={goToPrev}
+          >
+            <Icon.Up size={20} fill="gray800" />
+          </button>
+        )}
 
         {isMobile ? (
           <Image
@@ -58,14 +62,16 @@ export const ImageCarouselClient = ({ images }: Props) => {
           />
         )}
 
-        <button
-          className={cx("icon_button")}
-          type="button"
-          aria-label="next image"
-          onClick={goToNext}
-        >
-          <Icon.Down size={20} fill="gray800" />
-        </button>
+        {!isSingleImage && (
+          <button
+            className={cx("icon_button")}
+            type="button"
+            aria-label="next image"
+            onClick={goToNext}
+          >
+            <Icon.Down size={20} fill="gray800" />
+          </button>
+        )}
       </div>
 
       <div className={cx("dots")}>
