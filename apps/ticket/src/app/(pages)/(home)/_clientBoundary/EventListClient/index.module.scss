@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  // Header 와 Footer 의 높이 합을 뺀 나머지 높이
+  min-height: calc(100vh - 102px - 80px);
+  padding: 0 40px;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+    padding: 0 16px 20px;
+  }
+}
+
+.event_list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 93px);
+  gap: 30px;
+  width: 100%;
+  margin-top: 240px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 0;
+  }
+}

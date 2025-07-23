@@ -1,0 +1,92 @@
+@use "../../styles/variables" as theme;
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.black {
+    path {
+      fill: theme.$black;
+    }
+  }
+
+  &.white {
+    path {
+      fill: theme.$white;
+    }
+  }
+  
+  &.red {
+    path {
+      fill: theme.$red;
+    }
+  }
+  
+  &.red100 {
+    path {
+      fill: theme.$red-100;
+    }
+  }
+  
+  &.gray100 {
+    path {
+      fill: theme.$gray-100;
+    }
+  }
+  
+  &.gray150 {
+    path {
+      fill: theme.$gray-150;
+    }
+  }
+  
+  &.gray200 {
+    path {
+      fill: theme.$gray-200;
+    }
+  }
+  
+  &.gray300 {
+    path {
+      fill: theme.$gray-300;
+    }
+  }
+  
+  &.gray400 {
+    path {
+      fill: theme.$gray-400;
+    }
+  }
+  
+  &.gray500 {
+    path {
+      fill: theme.$gray-500;
+    }
+  }
+  
+  &.gray600 {
+    path {
+      fill: theme.$gray-600;
+    }
+  }
+  
+  &.gray700 {
+    path {
+      fill: theme.$gray-700;
+    }
+  }
+  
+  &.gray800 {
+    path {
+      fill: theme.$gray-800;
+    }
+  }
+  
+  &.gray900 {
+    path {
+      fill: theme.$gray-900;
+    }
+  }
+}
+

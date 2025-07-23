@@ -1,0 +1,142 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.select_button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px;
+
+  @include typography.body-reg-14;
+  color: theme.$gray-100;
+
+  cursor: pointer;
+  border: 1px solid theme.$gray-400;
+  border-radius: 4px;
+
+  &:not(.selected, .disabled) {
+    &:hover {
+      background-color: theme.$gray-700;
+    }
+  }
+
+  &.selected {
+    color: theme.$white;
+    font-weight: theme.$bold;
+
+    border-color: theme.$gray-100;
+  }
+
+  &.disabled {
+    color: theme.$gray-300;
+
+    cursor: not-allowed;
+  }
+
+  span.disabled {
+    text-decoration: line-through;
+  }
+}
+
+.select_ticket_wrap {
+  margin-top: 24px;
+}
+
+.promo_code_button {
+  display: block;
+  margin-top: 36px;
+
+  color: theme.$white;
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
+.promo_code_notice {
+  margin: 4px 0 12px;
+}
+
+.promo_code_input {
+  > div {
+    background-color: theme.$gray-700;
+  }
+}
+
+.price_wrap {
+  > div:first-child {
+    @include typography.body-reg-14;
+    color: theme.$gray-400;
+  }
+
+  > div:last-child {
+    @include typography.body-bold-16;
+    color: theme.$white;
+  }
+}
+
+.ticket_count_wrap {
+  margin-top: 24px;
+}
+
+.count_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 2px 0;
+
+  color: theme.$white;
+  font-weight: 300;
+  font-size: 20px;
+
+  background-color: theme.$gray-600;
+  cursor: pointer;
+  border: 1px solid theme.$gray-400;
+  border-radius: 50%;
+
+  transition: all 0.2s ease;
+
+  &:disabled {
+    color: theme.$gray-400;
+
+    background-color: theme.$gray-700;
+    cursor: not-allowed;
+    border-color: theme.$gray-500;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: theme.$gray-500;
+    border-color: theme.$gray-300;
+  }
+}
+
+.count_display {
+  width: 50px;
+  height: 30px;
+
+  color: theme.$white;
+  text-align: end;
+  vertical-align: middle;
+
+  background-color: theme.$gray-700;
+  border: 1px solid theme.$gray-400;
+  border-radius: 4px;
+
+  @include typography.body-bold-14;
+
+  > span {
+    display: inline-block;
+    padding-top: 6px;
+    padding-right: 10px;
+  }
+}
+
+.buy_button {
+  width: 300px;
+
+  @media (min-width: 768px) {
+    width: 345px;
+  }
+}

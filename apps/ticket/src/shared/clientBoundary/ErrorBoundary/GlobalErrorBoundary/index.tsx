@@ -10,6 +10,7 @@ export const GlobalErrorBoundary = ({ children }: { children: React.ReactNode })
   </ErrorBoundary>
 );
 
+// TODO: 에러바운더리 수정
 const globalErrorHandler: ErrorHandler[] = [
   {
     isError: () => true,

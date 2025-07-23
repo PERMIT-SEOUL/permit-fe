@@ -1,7 +1,7 @@
 /** @type {import("stylelint").Config} */
 module.exports = {
-  extends: ["stylelint-config-standard"],
-  plugins: ["stylelint-order"],
+  extends: ["stylelint-config-standard-scss"],
+  plugins: ["stylelint-order", "stylelint-scss"],
 
   overrides: [
     {
@@ -21,11 +21,7 @@ module.exports = {
     "declaration-empty-line-before": [
       "never",
       {
-        ignore: [
-          "after-comment",
-          "after-declaration",
-          "inside-single-line-block",
-        ],
+        ignore: ["after-comment", "after-declaration", "inside-single-line-block"],
       },
     ],
     "custom-property-pattern": null,
@@ -36,6 +32,9 @@ module.exports = {
     "declaration-block-no-redundant-longhand-properties": true,
     "media-feature-range-notation": null,
     "no-duplicate-selectors": true,
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "declaration-property-value-no-unknown": null,
 
     "order/order": ["custom-properties", "declarations"],
 

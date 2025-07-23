@@ -1,0 +1,23 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .code {
+    padding: 10px;
+
+    background-color: theme.$gray-100;
+    border-radius: 5px;
+
+    @include typography.title-bold-24;
+  }
+}
+
+.wrap_bg {
+  margin-top: 20px;
+
+  background-color: theme.$black;
+}

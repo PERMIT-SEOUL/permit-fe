@@ -1,0 +1,79 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 0 84px;
+
+  @media (max-width: 767px) {
+    position: relative;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 0;
+  }
+}
+
+.image_container {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 0 auto;
+
+  @media (max-width: 767px) {
+    position: relative;
+    gap: 0;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 438 / 552;
+  }
+}
+
+.icon_button {
+  display: flex;
+  align-items: center;
+
+  background-color: theme.$gray-600;
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+
+  svg {
+    transform: rotate(-90deg);
+  }
+}
+
+.dots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+
+  @media (max-width: 767px) {
+    margin-top: 12px;
+  }
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+
+  background-color: theme.$gray-600;
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+
+  transition: background-color 0.2s;
+
+  &.active {
+    background-color: theme.$white;
+  }
+}

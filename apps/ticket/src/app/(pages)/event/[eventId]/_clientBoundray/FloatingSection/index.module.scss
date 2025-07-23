@@ -1,0 +1,31 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.floating {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px 20px;
+
+  background-color: theme.$gray-800;
+  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
+  border-top: 1px solid theme.$gray-600;
+
+  @media (min-width: 768px) {
+    justify-content: flex-end;
+    height: 79px;
+    padding: 18px 40px;
+  }
+}
+
+.button {
+  @include typography.body-bold-14;
+
+  @media (min-width: 768px) {
+    width: 240px;
+  }
+}
