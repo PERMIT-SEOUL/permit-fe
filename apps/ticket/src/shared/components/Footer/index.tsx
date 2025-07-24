@@ -35,7 +35,7 @@ export const Footer = () => {
         기흥구 강남서로 9, 7층 703호 -b705(구갈동) | 통신판매업 신고번호: 2025-용인기흥-01329
         유선번호: 010-8895-4618 |{" "}
         <a
-          href="https://natural-server-9a4.notion.site/PERMIT-239132f3c6c680a4aa47ca8e02d0a5c2?source=copy_link"
+          href="/refund-policy"
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: "underline" }}
