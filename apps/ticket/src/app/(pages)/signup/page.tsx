@@ -9,7 +9,7 @@ import { useSelect, useTextField } from "@permit/design-system/hooks";
 import { useSignupMutation } from "@/data/users/postUserSignup/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { PATH } from "@/shared/constants/path";
-import { SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
+import { IS_LOGINED, SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
 import styles from "./index.module.scss";
@@ -123,6 +123,9 @@ const SignupPage = () => {
       // signup API 요청에 필요한 정보 제거
       safeLocalStorage.remove(TOKEN_KEY);
       safeLocalStorage.remove(SOCIAL_LOGIN_TYPE_KEY);
+
+      // TODO: 추후 변경
+      safeLocalStorage.set(IS_LOGINED, "true");
 
       // TODO: redirect 로직 구체적으로 추가
       router.replace(PATH.HOME);
