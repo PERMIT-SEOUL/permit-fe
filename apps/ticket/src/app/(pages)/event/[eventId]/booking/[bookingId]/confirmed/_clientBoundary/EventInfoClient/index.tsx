@@ -11,8 +11,8 @@ const cx = classNames.bind(styles);
 // TODO: params props 추가
 export const EventInfoClient = () => {
   // TODO: API call
-  const eventName = "Ceiling service vol.6 -Ksawery Komputery [PL]";
-  const date = "Sun, 25 May 2025";
+  const eventName = "Ceiling service vol.2 -Ksawery Komputery [PL]";
+  const date = "Sun, 28 Sep 2025";
 
   return (
     <div className={cx("event_info")}>

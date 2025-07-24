@@ -2,7 +2,7 @@
 export const mockEvent = {
   eventName: "vol.2 - Ksawery Komputery [PL]",
   venue: "TBA - Layer 41, 성수동",
-  date: "Sun, 25 Sep 2025",
+  date: "Sun, 28 Sep 2025",
   time: "19:00 - 22:00",
   minAge: 18,
   details: `PERMIT이 선보이는 ceiling service vol.2은 성수동 Layer 41에서 펼쳐지는 예술과 사운드의 몰입형 퍼포먼스입니다. Ksawery Komputery(폴란드)를 비롯해 Lewis OfMan, CIFIKA, Danny Arens, Gazaebal, Hahim, sooom, Yeesangyu가 참여하며, 박유석 작가의 라이브 비주얼이 함께합니다.
@@ -83,7 +83,7 @@ export const mockRounds = [
       {
         ticketTypeId: 9,
         ticketTypeName: "Day 1",
-        ticketTypeDate: "Sun, 25 Sep 2025",
+        ticketTypeDate: "Sun, 28 Sep 2025",
         ticketTypeTime: "18:30",
         ticketTypePrice: "90,000",
       },
