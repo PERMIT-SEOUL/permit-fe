@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 import permitLogo from "public/assets/png/permit_logo.png";
 
@@ -16,18 +17,23 @@ const cx = classNames.bind(styles);
 
 export const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
-  let isLogined = false;
+  const [isLogined, setIsLogined] = useState(false);
 
-  try {
-    const stored = safeLocalStorage.get(IS_LOGINED);
+  useEffect(() => {
+    try {
+      const stored = safeLocalStorage.get(IS_LOGINED);
 
-    if (stored !== null) {
-      isLogined = JSON.parse(stored);
+      console.log(stored);
+
+      if (stored !== null) {
+        setIsLogined(JSON.parse(stored));
+      }
+    } catch {
+      // 파싱 실패 시 기본값(false) 유지
     }
-  } catch {
-    // 파싱 실패 시 false 유지
-  }
+  }, [pathname]);
 
   const onShopClick = () => {
     // TODO: Shop 페이지로 이동

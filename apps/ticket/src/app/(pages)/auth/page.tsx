@@ -7,7 +7,7 @@ import { useLoginMutation } from "@/data/users/postUserLogin/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { PATH } from "@/shared/constants/path";
-import { SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
+import { IS_LOGINED, SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
 import { REDIRECT_URI } from "@/shared/hooks/useOAuth/constants";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
@@ -38,6 +38,7 @@ const AuthPage = () => {
           authorizationCode,
           redirectUrl: REDIRECT_URI || "",
         });
+        safeLocalStorage.set(IS_LOGINED, "true");
 
         // TODO: redirect 로직 구체적으로 추가
         router.replace(PATH.HOME);
