@@ -33,7 +33,7 @@ export const Footer = () => {
       <Typography className={cx("info")} type="body12" color="gray400">
         퍼밋(PERMIT) | 대표 곽희준 | 사업자등록번호(268-13-02526) | 사업장 주소: 경기도 용인시
         기흥구 강남서로 9, 7층 703호 -b705(구갈동) | 통신판매업 신고번호: 2025-용인기흥-01329
-        유선번호: 010-8775-4618 |{" "}
+        유선번호: 010-8895-4618 |{" "}
         <a
           href="https://natural-server-9a4.notion.site/PERMIT-239132f3c6c680a4aa47ca8e02d0a5c2?source=copy_link"
           target="_blank"
