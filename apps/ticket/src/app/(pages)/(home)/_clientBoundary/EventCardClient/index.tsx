@@ -4,15 +4,13 @@ import Link from "next/link";
 import classNames from "classnames/bind";
 
 import { Flex, Typography } from "@permit/design-system";
+import { Event } from "@/data/events/getEvents/types";
 
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-type EventCardProps = {
-  eventId: number;
-  imageUrl: string;
-  title: string;
+type EventCardProps = Event & {
   displayNumber: string;
   category: string;
   onHover: (isHovered: boolean) => void;
@@ -21,8 +19,8 @@ type EventCardProps = {
 
 export const EventCardClient = ({
   eventId,
-  imageUrl,
-  title,
+  thumbnailImageUrl,
+  eventName,
   displayNumber,
   category,
   onHover,
@@ -51,10 +49,10 @@ export const EventCardClient = ({
           {displayNumber}
         </Typography>
         <div className={cx("image_wrapper")}>
-          <Image src={imageUrl} alt={title} fill />
+          <Image src={thumbnailImageUrl} alt={eventName} fill />
         </div>
         <Typography type="body14" weight="bold" className={cx("mobile_title")}>
-          {title}
+          {eventName}
         </Typography>
         <div className={cx("hovered_content")}>
           <Flex gap={16}>
@@ -63,14 +61,14 @@ export const EventCardClient = ({
                 {category}
               </Typography>
               <Typography type="body14" weight="bold">
-                {title}
+                {eventName}
               </Typography>
             </Flex>
             <div className={cx("image_wrapper")}>
               <Image
                 className={cx("image")}
-                src={imageUrl}
-                alt={title}
+                src={thumbnailImageUrl}
+                alt={eventName}
                 fill
                 sizes="(min-width: 1336px) 447px, (min-width: 768px) 33.33vw, 100vw"
               />
