@@ -46,19 +46,10 @@ export const BookingHistoryTabs = ({ activeTab, onTabChange }: Props) => {
 
       <div className={cx("tabs_indicator")}>
         <div
-          className={cx("indicator_bar", "active")}
-          style={{
-            width: activeTab === "ready" ? "187px" : "188px",
-            marginLeft: activeTab === "ready" ? "0" : "187px",
-          }}
+          className={cx("indicator_bar", "active", {
+            not_available: activeTab === "not_available",
+          })}
         />
-        {/* <div
-          className={cx("indicator_bar", "inactive")}
-          style={{
-            width: activeTab === "ready" ? "188px" : "187px",
-            marginLeft: activeTab === "ready" ? "187px" : "0",
-          }}
-        /> */}
       </div>
     </div>
   );

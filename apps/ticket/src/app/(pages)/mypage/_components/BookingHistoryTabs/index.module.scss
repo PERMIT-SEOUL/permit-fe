@@ -53,6 +53,7 @@
 }
 
 .indicator_bar {
+  width: 50%;
   height: 100%;
 
   transition: all 0.3s ease-in-out;
@@ -61,7 +62,7 @@
     background-color: theme.$white;
   }
 
-  &.inactive {
-    background-color: theme.$gray-800;
+  &.not_available {
+    margin-left: 50%;
   }
 }
