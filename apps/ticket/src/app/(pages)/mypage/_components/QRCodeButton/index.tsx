@@ -19,7 +19,7 @@ export const QRCodeButton = ({ ticketCode, onClick }: Props) => {
   const entryUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/entry/${ticketCode}`;
 
   return (
-    <button className={cx("qr_button")} onClick={onClick}>
+    <button className={cx("qr_button")} type="button" onClick={onClick}>
       <QRCodeSVG value={entryUrl} size={QR_SIZE} />
     </button>
   );
