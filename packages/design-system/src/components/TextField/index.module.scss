@@ -36,8 +36,11 @@
   }
 
   &--readonly {
-    background-color: theme.$gray-800;
-    border-color: theme.$gray-700;
+    // background-color: theme.$gray-800;
+    // border-color: theme.$gray-700;
+
+    background-color: transparent;
+    border-color: transparent;
   }
 
   &__input {
