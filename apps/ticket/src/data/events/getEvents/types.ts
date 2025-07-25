@@ -4,7 +4,8 @@ export type EventsResponse = {
   festival: Event[];
 };
 
-type Event = {
+export type Event = {
+  eventId: string;
   eventName: string;
   thumbnailImageUrl: string;
 };
