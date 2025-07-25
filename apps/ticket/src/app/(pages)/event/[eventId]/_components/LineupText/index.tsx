@@ -1,10 +1,8 @@
 import { Flex, Typography } from "@permit/design-system";
+import { Lineup } from "@/data/events/getEventDetail/types";
 
 type Props = {
-  lineup: {
-    category: string;
-    artists: { name: string }[];
-  }[];
+  lineup: Lineup[];
 };
 
 export const LineupText = ({ lineup }: Props) => {

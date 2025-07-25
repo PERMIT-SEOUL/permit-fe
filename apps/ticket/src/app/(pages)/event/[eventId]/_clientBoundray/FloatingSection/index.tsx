@@ -15,7 +15,7 @@ import styles from "./index.module.scss";
 const cx = classNames.bind(styles);
 
 type Props = {
-  eventId: number;
+  eventId: string;
 };
 
 export const FloatingSection = ({ eventId }: Props) => {

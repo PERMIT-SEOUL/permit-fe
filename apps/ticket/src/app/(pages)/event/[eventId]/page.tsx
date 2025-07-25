@@ -1,12 +1,11 @@
-import classNames from "classnames/bind";
+import { Suspense } from "react";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-import { FloatingSection } from "./_clientBoundray/FloatingSection";
-import { ImageCarouselClient } from "./_clientBoundray/ImageCarouselClient";
-import { EventInfo } from "./_components/EventInfo";
-import { mockEvent } from "./constants/mock";
-import styles from "./index.module.scss";
+import { eventDetailOptions } from "@/data/events/getEventDetail/queries";
+import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
-const cx = classNames.bind(styles);
+import { EventDetailClient } from "./_clientBoundray/EventDetailClient";
 
 type Props = {
   params: Promise<{ eventId: string }>;
@@ -18,44 +17,16 @@ type Props = {
 const EventDetailPage = async ({ params }: Props) => {
   const { eventId } = await params;
 
-  // TODO: 행사 상세 조회 API 추가
+  const qc = getQueryClient();
+
+  qc.prefetchQuery(eventDetailOptions({ eventId }));
 
   return (
-    <>
-      <div className={cx("content")}>
-        <div className={cx("mobile_title_section")}>
-          <EventInfo
-            eventName={mockEvent.eventName}
-            venue={mockEvent.venue}
-            date={mockEvent.date}
-            time={mockEvent.time}
-            minAge={mockEvent.minAge}
-            details={mockEvent.details}
-            lineup={mockEvent.lineup}
-            showOnlyTitle={true}
-          />
-        </div>
-
-        {/* <div className={cx("image_section")}> */}
-        <ImageCarouselClient images={mockEvent.images} />
-        {/* </div> */}
-
-        <div className={cx("info_section")}>
-          <EventInfo
-            eventName={mockEvent.eventName}
-            venue={mockEvent.venue}
-            date={mockEvent.date}
-            time={mockEvent.time}
-            minAge={mockEvent.minAge}
-            details={mockEvent.details}
-            lineup={mockEvent.lineup}
-            showOnlyTitle={false}
-          />
-        </div>
-      </div>
-
-      <FloatingSection eventId={Number(eventId)} />
-    </>
+    <HydrationBoundary state={dehydrate(qc)}>
+      <Suspense fallback={<LoadingWithLayout />}>
+        <EventDetailClient eventId={eventId} />
+      </Suspense>
+    </HydrationBoundary>
   );
 };
 

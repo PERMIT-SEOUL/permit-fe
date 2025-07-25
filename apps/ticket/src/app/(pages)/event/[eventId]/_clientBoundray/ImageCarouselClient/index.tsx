@@ -50,6 +50,7 @@ export const ImageCarouselClient = ({ images }: Props) => {
             src={images[currentIndex].imageUrl}
             alt=""
             fill
+            priority
             style={{ objectFit: "cover" }}
           />
         ) : (
@@ -59,6 +60,7 @@ export const ImageCarouselClient = ({ images }: Props) => {
             alt=""
             width={438}
             height={552}
+            priority
           />
         )}
 

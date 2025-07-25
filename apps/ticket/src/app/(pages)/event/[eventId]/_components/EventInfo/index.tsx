@@ -1,6 +1,7 @@
 import classNames from "classnames/bind";
 
 import { Button, Flex, Typography } from "@permit/design-system";
+import { EventDetailResponse } from "@/data/events/getEventDetail/types";
 
 import { InfoText } from "../InfoText";
 import { LineupText } from "../LineupText";
@@ -8,19 +9,9 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-interface Props {
-  eventName: string;
-  venue: string;
-  date: string;
-  time: string;
-  minAge: number;
-  details: string;
-  lineup: {
-    category: string;
-    artists: { name: string }[];
-  }[];
+type Props = {
   showOnlyTitle?: boolean;
-}
+} & Omit<EventDetailResponse, "images">;
 
 export const EventInfo = ({
   eventName,
