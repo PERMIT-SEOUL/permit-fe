@@ -25,8 +25,6 @@ export const Header = () => {
     try {
       const stored = safeLocalStorage.get(IS_LOGINED);
 
-      console.log(stored);
-
       if (stored !== null) {
         setIsLogined(JSON.parse(stored));
       }
