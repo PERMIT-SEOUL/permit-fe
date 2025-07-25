@@ -126,6 +126,7 @@ export const UserProfileClient = () => {
             EMAIL
           </Typography>
           {isEditMode ? (
+            // TODO: 이메일 검증 버튼 추가
             <TextField
               fullWidth
               value={editData.email}
