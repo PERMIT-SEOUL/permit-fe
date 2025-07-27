@@ -29,12 +29,13 @@ export const SelectTicketModal = ({ isOpen, close, title, eventId, ticketInfo }:
   const [isLoading, setIsLoading] = useState(false);
   const [ticketCount, setTicketCount] = useState(1);
 
-  const [selectedRoundId, setSelectedRoundId] = useState<number>();
+  const selectedRound = ticketInfo.find((round) => round.roundAvailable);
+  const [selectedRoundId, setSelectedRoundId] = useState(
+    selectedRound?.roundId || ticketInfo[0].roundId,
+  );
   const [selectedTicketId, setSelectedTicketId] = useState<number>();
 
   const [isPromocodeOpen, setIsPromocodeOpen] = useState(false);
-
-  const selectedRound = ticketInfo.find((round) => round.roundId === selectedRoundId);
 
   const selectedTicket = selectedRound?.ticketTypes.find(
     (ticket) => ticket.ticketTypeId === selectedTicketId,
