@@ -17,7 +17,7 @@ export const API_URL = {
     /** 행사 상세 정보 조회 API */
     DETAIL: "/api/events/detail/:eventId",
     /** 행사 티켓 정보 조회 API */
-    TICKETS: "/api/events/tickets",
+    TICKETS: "/api/tickets/:eventId",
   },
 
   // 예매 관련 API
