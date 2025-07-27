@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 
 import { Button, Dialog, Flex, TextField, Typography } from "@permit/design-system";
 import { useDebounce } from "@permit/design-system/hooks";
+import { Round } from "@/data/events/getEventTickets/types";
 import { useReservationReadyMutation } from "@/data/reservations/postReservationReady/mutation";
 import { generateRandomString } from "@/shared/helpers/generateRandomString";
 import { ModalComponentProps } from "@/shared/hooks/useModal/types";
@@ -16,19 +17,7 @@ const cx = classNames.bind(styles);
 type Props = {
   title: string;
   eventId: number;
-  ticketInfo: {
-    roundId: number;
-    roundAvailable: boolean;
-    roundPrice: string;
-    roundName: string;
-    ticketTypes: {
-      ticketTypeId: number;
-      ticketTypeName: string;
-      ticketTypeDate: string;
-      ticketTypeTime: string;
-      ticketTypePrice: string;
-    }[];
-  }[];
+  ticketInfo: Round[];
 } & ModalComponentProps<{ result: boolean }>;
 
 /**
