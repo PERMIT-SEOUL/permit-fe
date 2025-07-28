@@ -39,10 +39,10 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
       </Dialog.Content>
       <Dialog.Bottom>
         <Flex gap={12}>
-          <Button variant="secondary" size="sm" onClick={() => close()}>
+          <Button variant="secondary" size="sm" onClick={handleCancelOrder}>
             Cancel
           </Button>
-          <Button variant="primary" size="sm" onClick={handleCancelOrder}>
+          <Button variant="primary" size="sm" onClick={() => close()}>
             Done
           </Button>
         </Flex>
