@@ -56,8 +56,6 @@ export const BookingHistoryClient = () => {
     console.log("주문 취소:", orderId);
   };
 
-  console.log("@@userTickets", userTickets);
-
   return (
     <div className={cx("booking_history_section")}>
       <Typography type="body16" className={cx("section_title")}>
