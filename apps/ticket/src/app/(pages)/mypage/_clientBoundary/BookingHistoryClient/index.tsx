@@ -1,49 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import classNames from "classnames/bind";
 
 import { Typography } from "@permit/design-system";
 import { useUserTicketsSuspenseQuery } from "@/data/users/getUserTickets/queries";
+import { useModal } from "@/shared/hooks/useModal";
 
-import { BookingHistoryTabs } from "../../_components/BookingHistoryTabs";
 import { OrderItem } from "../../_components/OrderItem";
+import { CancelTicketModal } from "../CancelTicketModal";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
-
-// TODO: API 호출로 변경
-const mockOrders = [
-  {
-    orderId: "adsaaforde",
-    orderDate: "2025.07.03",
-    eventName: "Ceiling service vol.6 -Ksawery Komputery [PL]",
-    ticketInfo: [
-      {
-        ticketCode: "abcd",
-        ticketName: "Day1",
-        ticketDate: "Sun, 25 May 2025 - Mon, 26 May 2025",
-      },
-      {
-        ticketCode: "efgh",
-        ticketName: "Day2",
-        ticketDate: "Sun, 25 May 2025 - Mon, 26 May 2025",
-      },
-    ],
-  },
-  {
-    orderId: "dbbadsaasc",
-    orderDate: "2025.07.02",
-    eventName: "Ceiling service vol.7 -Ksawery Komputery [PL]",
-    ticketInfo: [
-      {
-        ticketCode: "ijkl",
-        ticketName: "Day1",
-        ticketDate: "Sun, 25 May 2025 - Mon, 26 May 2025",
-      },
-    ],
-  },
-];
 
 /**
  * 예약 히스토리 섹션
@@ -51,9 +18,10 @@ const mockOrders = [
 export const BookingHistoryClient = () => {
   const { data: userTickets } = useUserTicketsSuspenseQuery();
 
-  const handleCancelOrder = (orderId: string) => {
-    // TODO: 주문 취소 API 호출
-    console.log("주문 취소:", orderId);
+  const { show: openCancelTicketModal } = useModal(CancelTicketModal);
+
+  const handleCancelOrder = (orderId: string, eventName: string) => {
+    openCancelTicketModal({ orderId, eventName });
   };
 
   return (
