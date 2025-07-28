@@ -28,14 +28,16 @@ export const OrderItem = ({ order, onCancelOrderClick }: Props) => {
           </Typography>
         </div>
 
-        <Button
-          className={cx("cancel_button")}
-          variant="primary"
-          size="sm"
-          onClick={() => onCancelOrderClick(order.orderId)}
-        >
-          Cancel Order
-        </Button>
+        {order.canCancel && (
+          <Button
+            className={cx("cancel_button")}
+            variant="primary"
+            size="sm"
+            onClick={() => onCancelOrderClick(order.orderId)}
+          >
+            Cancel Order
+          </Button>
+        )}
       </div>
 
       <div className={cx("content_wrap")}>
