@@ -18,4 +18,4 @@ type TicketInfo = {
   ticketTime: string;
 };
 
-type TicketStatus = "USABLE" | "USED" | "CANCELED" | "EXPIRED";
+type TicketStatus = "USABLE" | "USED" | "REFUNDED" | "EXPIRED";
