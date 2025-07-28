@@ -33,7 +33,7 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
   return (
     <Dialog open={isOpen} title="Cancel Ticket" onClose={() => close()}>
       <Dialog.Content>
-        <Typography className={cx("button_group")} type="body14" color="gray100">
+        <Typography className={cx("event_name")} type="body14" color="gray100">
           {eventName}
         </Typography>
       </Dialog.Content>
