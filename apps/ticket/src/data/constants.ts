@@ -32,5 +32,7 @@ export const API_URL = {
   PAYMENT: {
     /** 결제 승인 API */
     CONFIRM: "/api/payments/confirm",
+    /** 결제 취소 API */
+    CANCEL: "/api/payments/cancel",
   },
 } as const;
