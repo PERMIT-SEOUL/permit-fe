@@ -20,6 +20,7 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
   const handleCancelOrder = async () => {
     try {
       await mutateAsync({ orderId });
+
       close({ result: true });
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
