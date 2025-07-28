@@ -8,6 +8,8 @@ export const API_URL = {
     LOGOUT: "/api/users/logout",
     /** 액세스토큰 재발급 API */
     REISSUE_ACCESS_TOKEN: "/api/users/reissue",
+    /** 회원 티켓 조회 API */
+    TICKETS: "/api/tickets/user",
   },
 
   // 행사 관련 API
