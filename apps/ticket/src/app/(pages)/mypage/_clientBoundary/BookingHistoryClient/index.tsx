@@ -7,7 +7,7 @@ import { Typography } from "@permit/design-system";
 import { useUserTicketsSuspenseQuery } from "@/data/users/getUserTickets/queries";
 
 import { BookingHistoryTabs } from "../../_components/BookingHistoryTabs";
-import { BookingItem } from "../../_components/BookingItem";
+import { OrderItem } from "../../_components/OrderItem";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -68,7 +68,7 @@ export const BookingHistoryClient = () => {
       <div className={cx("booking_list")}>
         {userTickets.orders.map((order, index) => (
           <div key={order.orderId}>
-            <BookingItem order={order} onCancelOrderClick={handleCancelOrder} />
+            <OrderItem order={order} onCancelOrderClick={handleCancelOrder} />
             {index < userTickets.orders.length - 1 && <div className={cx("divider")} />}
           </div>
         ))}

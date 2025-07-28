@@ -14,7 +14,7 @@ type Props = {
   onCancelOrderClick: (orderId: string) => void;
 };
 
-export const BookingItem = ({ order, onCancelOrderClick }: Props) => {
+export const OrderItem = ({ order, onCancelOrderClick }: Props) => {
   const isMobile = useIsMobile();
 
   return (
