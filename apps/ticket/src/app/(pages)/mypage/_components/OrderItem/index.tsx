@@ -4,6 +4,7 @@ import { Button, Flex, Typography } from "@permit/design-system";
 import { useIsMobile } from "@permit/design-system/hooks";
 import { Order } from "@/data/users/getUserTickets/types";
 
+import { QrTicketInfo } from "../../_clientBoundary/QrTicketModal";
 import { QRCodeButton } from "../QRCodeButton";
 import styles from "./index.module.scss";
 
@@ -12,9 +13,10 @@ const cx = classNames.bind(styles);
 type Props = {
   order: Order;
   onCancelOrderClick: (orderId: string, eventName: string) => void;
+  onClickQRCode: ({ ticketCode, eventName, eventDate, eventTime }: QrTicketInfo) => void;
 };
 
-export const OrderItem = ({ order, onCancelOrderClick }: Props) => {
+export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) => {
   const isMobile = useIsMobile();
 
   return (
@@ -45,7 +47,17 @@ export const OrderItem = ({ order, onCancelOrderClick }: Props) => {
           <div key={ticket.ticketCode}>
             {/* 하단: QR 코드 + 이벤트 정보 */}
             <div className={cx("content_section")}>
-              <QRCodeButton ticketCode={ticket.ticketCode} />
+              <QRCodeButton
+                ticketCode={ticket.ticketCode}
+                onClick={() =>
+                  onClickQRCode({
+                    ticketCode: ticket.ticketCode,
+                    eventName: order.eventName,
+                    eventDate: ticket.ticketDate,
+                    eventTime: ticket.ticketTime,
+                  })
+                }
+              />
 
               <div className={cx("event_info")}>
                 {isMobile && (
