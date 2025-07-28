@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 
 type Props = {
   order: Order;
-  onCancelOrderClick: (orderId: string) => void;
+  onCancelOrderClick: (orderId: string, eventName: string) => void;
 };
 
 export const OrderItem = ({ order, onCancelOrderClick }: Props) => {
@@ -33,7 +33,7 @@ export const OrderItem = ({ order, onCancelOrderClick }: Props) => {
             className={cx("cancel_button")}
             variant="primary"
             size="sm"
-            onClick={() => onCancelOrderClick(order.orderId)}
+            onClick={() => onCancelOrderClick(order.orderId, order.eventName)}
           >
             Cancel Order
           </Button>
