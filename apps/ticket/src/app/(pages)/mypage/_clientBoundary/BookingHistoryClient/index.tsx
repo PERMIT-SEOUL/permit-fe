@@ -4,6 +4,7 @@ import { useState } from "react";
 import classNames from "classnames/bind";
 
 import { Typography } from "@permit/design-system";
+import { useUserTicketsSuspenseQuery } from "@/data/users/getUserTickets/queries";
 
 import { BookingHistoryTabs } from "../../_components/BookingHistoryTabs";
 import { BookingItem } from "../../_components/BookingItem";
@@ -44,20 +45,18 @@ const mockOrders = [
   },
 ];
 
-type TabType = "ready" | "not_available";
-
 /**
  * 예약 히스토리 섹션
  */
 export const BookingHistoryClient = () => {
-  const [activeTab, setActiveTab] = useState<TabType>("ready");
-
-  const filteredBookings = mockOrders;
+  const { data: userTickets } = useUserTicketsSuspenseQuery();
 
   const handleCancelOrder = (orderId: string) => {
     // TODO: 주문 취소 API 호출
     console.log("주문 취소:", orderId);
   };
+
+  console.log("@@userTickets", userTickets);
 
   return (
     <div className={cx("booking_history_section")}>
@@ -65,14 +64,12 @@ export const BookingHistoryClient = () => {
         Booking History
       </Typography>
 
-      <BookingHistoryTabs activeTab={activeTab} onTabChange={setActiveTab} />
-
       {/* 예약 목록 */}
       <div className={cx("booking_list")}>
-        {filteredBookings.map((booking, index) => (
-          <div key={booking.orderId}>
-            <BookingItem booking={booking} onCancelOrderClick={handleCancelOrder} />
-            {index < filteredBookings.length - 1 && <div className={cx("divider")} />}
+        {userTickets.orders.map((order, index) => (
+          <div key={order.orderId}>
+            <BookingItem order={order} onCancelOrderClick={handleCancelOrder} />
+            {index < userTickets.orders.length - 1 && <div className={cx("divider")} />}
           </div>
         ))}
       </div>

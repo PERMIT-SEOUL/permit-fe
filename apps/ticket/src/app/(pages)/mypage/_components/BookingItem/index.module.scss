@@ -23,11 +23,20 @@
     flex-direction: column;
     gap: 4px;
   }
+
+  &.order_date {
+    @include typography.body-reg-14;
+
+    @media (max-width: 767px) {
+      @include typography.body-reg-16;
+    }
+  }
 }
 
 .cancel_button {
   @media (max-width: 767px) {
     @include typography.body-reg-12;
+    padding: 8px 10px;
   }
 }
 
@@ -81,11 +90,26 @@
   }
 }
 
+.event_status {
+  @media (min-width: 768px) {
+    margin-left: auto;
+  }
+  color: theme.$gray-500;
+
+  @include typography.body-reg-12;
+
+  &.usable {
+    color: theme.$white;
+  }
+}
+
 .event_title {
   @include typography.body-bold-14;
 
   @media (max-width: 767px) {
-    color: theme.$gray-400;
+    &.ticket_name {
+      color: theme.$gray-400;
+    }
 
     @include typography.body-reg-14;
   }
