@@ -8,6 +8,8 @@ export const API_URL = {
     LOGOUT: "/api/users/logout",
     /** 액세스토큰 재발급 API */
     REISSUE_ACCESS_TOKEN: "/api/users/reissue",
+    /** 이메일 중복 체크 API */
+    EMAIL_CHECK: "/api/users/email-check",
   },
 
   // 행사 관련 API
