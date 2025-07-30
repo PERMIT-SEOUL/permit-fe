@@ -23,6 +23,7 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
     try {
       setIsLoading(true);
       await mutateAsync({ orderId });
+      // TODO: 예매 취소 후 티켓 목록 업데이트(쿼리 키 무효화)
 
       close({ result: true });
     } catch (error) {

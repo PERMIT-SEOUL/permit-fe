@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import classNames from "classnames/bind";
 
+import { userInfoOptions } from "@/data/users/getUserInfo/queries";
 import { userTicketsOptions } from "@/data/users/getUserTickets/queries";
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
@@ -19,6 +20,7 @@ export const dynamic = "force-dynamic";
 const MyPage = () => {
   const qc = getQueryClient();
 
+  qc.prefetchQuery(userInfoOptions());
   qc.prefetchQuery(userTicketsOptions());
 
   return (
