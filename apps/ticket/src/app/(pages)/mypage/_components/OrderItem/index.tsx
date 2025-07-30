@@ -13,7 +13,14 @@ const cx = classNames.bind(styles);
 type Props = {
   order: Order;
   onCancelOrderClick: (orderId: string, eventName: string) => void;
-  onClickQRCode: ({ ticketCode, eventName, eventDate, eventTime }: QrTicketInfo) => void;
+  onClickQRCode: ({
+    ticketCode,
+    eventName,
+    eventDate,
+    eventTime,
+    ticketName,
+    eventVenue,
+  }: QrTicketInfo) => void;
 };
 
 export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) => {
@@ -53,6 +60,8 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
                   onClickQRCode({
                     ticketCode: ticket.ticketCode,
                     eventName: order.eventName,
+                    eventVenue: order.eventVenue,
+                    ticketName: ticket.ticketName,
                     eventDate: ticket.ticketDate,
                     eventTime: ticket.ticketTime,
                   })
