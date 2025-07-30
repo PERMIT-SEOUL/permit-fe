@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 export const EventInfoClient = () => {
   // TODO: API call
   const eventName = "Ceiling service vol.2 -Ksawery Komputery [PL]";
-  const date = "Sun, 28 Sep 2025";
+  const date = "Sun, 24 Aug 2025";
 
   return (
     <div className={cx("event_info")}>
