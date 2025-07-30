@@ -12,7 +12,7 @@ export type Order = {
   /** 이벤트 장소 */
   eventVenue: string;
   /** 환불 가격 */
-  refundPrice?: string;
+  refundedPrice?: string;
   /** 취소 가능 여부 */
   canCancel: boolean;
   /** 티켓 정보 리스트 */
