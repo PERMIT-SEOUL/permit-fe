@@ -1,4 +1,9 @@
+import { Suspense } from "react";
 import classNames from "classnames/bind";
+
+import { userTicketsOptions } from "@/data/users/getUserTickets/queries";
+import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import { MyPageClient } from "./_clientBoundary/MyPageClient";
 import styles from "./index.module.scss";
@@ -12,9 +17,15 @@ export const dynamic = "force-dynamic";
  * 마이페이지
  */
 const MyPage = () => {
+  const qc = getQueryClient();
+
+  qc.prefetchQuery(userTicketsOptions());
+
   return (
     <div className={cx("container")}>
-      <MyPageClient />
+      <Suspense fallback={<LoadingWithLayout />}>
+        <MyPageClient />
+      </Suspense>
     </div>
   );
 };
