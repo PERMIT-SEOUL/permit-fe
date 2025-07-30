@@ -12,6 +12,8 @@ export const API_URL = {
     TICKETS: "/api/tickets/user",
     /** 회원 정보 조회, 수정 API */
     INFO: "/api/users",
+    /** 이메일 중복 체크 API */
+    EMAIL_CHECK: "/api/users/email-check",
   },
 
   // 행사 관련 API
