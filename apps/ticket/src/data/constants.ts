@@ -10,6 +10,8 @@ export const API_URL = {
     REISSUE_ACCESS_TOKEN: "/api/users/reissue",
     /** 회원 티켓 조회 API */
     TICKETS: "/api/tickets/user",
+    /** 회원 정보 조회, 수정 API */
+    INFO: "/api/users",
   },
 
   // 행사 관련 API
