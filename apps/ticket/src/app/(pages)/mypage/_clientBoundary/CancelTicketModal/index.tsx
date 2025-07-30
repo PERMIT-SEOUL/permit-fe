@@ -1,3 +1,4 @@
+import { useState } from "react";
 import classNames from "classnames/bind";
 
 import { Button, Dialog, Flex, Typography } from "@permit/design-system";
@@ -15,10 +16,12 @@ type Props = {
 } & ModalComponentProps<{ result: boolean }>;
 
 export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const { mutateAsync } = usePaymentCancelMutation();
 
   const handleCancelOrder = async () => {
     try {
+      setIsLoading(true);
       await mutateAsync({ orderId });
 
       close({ result: true });
@@ -28,6 +31,8 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
         // 메시지 프론트 설정 필요
         alert(error.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -40,7 +45,13 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
       </Dialog.Content>
       <Dialog.Bottom>
         <Flex gap={12}>
-          <Button variant="secondary" size="sm" onClick={handleCancelOrder}>
+          <Button
+            variant="secondary"
+            size="sm"
+            isLoading={isLoading}
+            disabled={isLoading}
+            onClick={handleCancelOrder}
+          >
             Cancel
           </Button>
           <Button variant="primary" size="sm" onClick={() => close()}>
