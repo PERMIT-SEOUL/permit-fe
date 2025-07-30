@@ -47,6 +47,16 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
             Cancel Order
           </Button>
         )}
+        {order.refundedPrice && (
+          <Flex gap={8}>
+            <Typography className={cx("refund_price")} type="body14" color="gray300">
+              {order.refundedPrice}
+            </Typography>
+            <Typography type="body14" color="gray300">
+              Refunded
+            </Typography>
+          </Flex>
+        )}
       </div>
 
       <div className={cx("content_wrap")}>
@@ -71,7 +81,10 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
               <div className={cx("event_info")}>
                 {isMobile && (
                   <span
-                    className={cx("event_status", { usable: ticket.ticketStatus === "USABLE" })}
+                    className={cx("event_status", {
+                      usable: ticket.ticketStatus === "USABLE",
+                      refunded: ticket.ticketStatus === "REFUNDED",
+                    })}
                   >
                     {ticket.ticketStatus}
                   </span>
@@ -82,7 +95,10 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
 
                   {!isMobile && (
                     <span
-                      className={cx("event_status", { usable: ticket.ticketStatus === "USABLE" })}
+                      className={cx("event_status", {
+                        usable: ticket.ticketStatus === "USABLE",
+                        refunded: ticket.ticketStatus === "REFUNDED",
+                      })}
                     >
                       {ticket.ticketStatus}
                     </span>

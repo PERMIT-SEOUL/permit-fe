@@ -40,6 +40,10 @@
   }
 }
 
+.refund_price {
+  text-decoration: line-through;
+}
+
 .content_wrap {
   display: flex;
   flex-direction: column;
@@ -100,6 +104,10 @@
 
   &.usable {
     color: theme.$white;
+  }
+
+  &.refunded {
+    display: none;
   }
 }
 
