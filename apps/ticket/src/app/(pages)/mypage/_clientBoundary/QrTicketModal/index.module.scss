@@ -1,0 +1,17 @@
+.event_venue {
+  margin-top: 20px;
+}
+
+.date_time_wrap {
+  margin-top: 10px;
+}
+
+.qr_code_wrap {
+  padding: 80px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+}

@@ -8,6 +8,10 @@ export const API_URL = {
     LOGOUT: "/api/users/logout",
     /** 액세스토큰 재발급 API */
     REISSUE_ACCESS_TOKEN: "/api/users/reissue",
+    /** 회원 티켓 조회 API */
+    TICKETS: "/api/tickets/user",
+    /** 회원 정보 조회, 수정 API */
+    INFO: "/api/users",
     /** 이메일 중복 체크 API */
     EMAIL_CHECK: "/api/users/email-check",
   },
@@ -32,5 +36,7 @@ export const API_URL = {
   PAYMENT: {
     /** 결제 승인 API */
     CONFIRM: "/api/payments/confirm",
+    /** 결제 취소 API */
+    CANCEL: "/api/payments/cancel",
   },
 } as const;
