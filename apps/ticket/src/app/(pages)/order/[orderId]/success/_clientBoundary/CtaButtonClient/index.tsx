@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
 import { Button, Flex, Typography } from "@permit/design-system";
@@ -9,8 +10,10 @@ import styles from "./index.module.scss";
 const cx = classNames.bind(styles);
 
 export const CtaButtonClient = () => {
+  const router = useRouter();
+
   const goToTicket = () => {
-    // TODO: 마이페이지 티켓 정보로 이동
+    router.push("/mypage");
   };
 
   return (

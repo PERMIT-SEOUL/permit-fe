@@ -13,7 +13,8 @@
 }
 
 .label {
-  width: 60px;
+  width: 50px;
+  flex-shrink: 0;
 }
 
 .mobile_edit_button {
@@ -46,6 +47,10 @@
   @media (max-width: 767px) {
     display: none;
   }
+}
+
+.email_field {
+  width: 100%;
 }
 
 .bottom_actions {

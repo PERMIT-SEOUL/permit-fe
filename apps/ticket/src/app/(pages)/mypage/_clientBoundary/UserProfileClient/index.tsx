@@ -1,61 +1,150 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
+import { useSelect, useTextField } from "@permit/design-system/hooks";
+import { useUserInfoSuspenseQuery } from "@/data/users/getUserInfo/queries";
+import { usePatchUserInfoMutation } from "@/data/users/patchUserInfo/mutation";
+import { useUserEmailCheckMutation } from "@/data/users/postUserEmailCheck/mutation";
+import { USER_QUERY_KEYS } from "@/data/users/queryKeys";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-// 나이 옵션 (18-100세)
-const AGE_OPTIONS = Array.from({ length: 83 }, (_, i) => ({
-  value: String(i + 18),
-  label: `${i + 18}세`,
+const ageOptions = Array.from({ length: 80 }, (_, i) => ({
+  value: String(i + 10),
+  label: `${i + 10}세`,
 }));
 
 // 성별 옵션
 const GENDER_OPTIONS = [
   { value: "MALE", label: "남성" },
   { value: "FEMALE", label: "여성" },
-  { value: "OTHER", label: "기타" },
 ];
 
 /**
  * 사용자 프로필 섹션
  */
 export const UserProfileClient = () => {
-  // TODO: API 호출
+  const queryClient = useQueryClient();
+
+  const { data: userInfoData } = useUserInfoSuspenseQuery();
+
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editData, setEditData] = useState({
-    userName: "User name",
-    age: "20",
-    gender: "MALE",
-    email: "test@test.com",
+
+  const [emailVerified, setEmailVerified] = useState(false);
+
+  const { mutateAsync: mutateEmailCheck, isPending: isEmailCheckPending } =
+    useUserEmailCheckMutation();
+
+  const { mutateAsync: mutatePatchUserInfo, isPending } = usePatchUserInfoMutation();
+
+  const nameField = useTextField({
+    initialValue: userInfoData.name,
+    validate: (value: string) => {
+      if (!value.trim()) return "이름을 입력해주세요.";
+
+      return undefined;
+    },
+  });
+
+  const genderField = useSelect({
+    initialValue: userInfoData.gender,
+    validate: (value: string) => {
+      if (!value) return "성별을 선택해주세요.";
+
+      return undefined;
+    },
+  });
+
+  const emailField = useTextField({
+    initialValue: userInfoData.email,
+    validate: (value: string) => {
+      if (!value.trim()) return "이메일을 입력해주세요.";
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(value)) return "올바른 이메일 형식이 아닙니다.";
+
+      return undefined;
+    },
   });
 
   const handleEditClick = () => {
     setIsEditMode(true);
   };
 
-  const handleSave = () => {
-    // TODO: API 호출로 데이터 저장
-    console.log("저장할 데이터:", editData);
-    setIsEditMode(false);
+  const handleEmailCheck = async () => {
+    if (!emailField.validateValue()) {
+      return;
+    }
+
+    try {
+      await mutateEmailCheck({ userEmail: emailField.value });
+
+      setEmailVerified(true);
+      // TODO: 얼럿 디자인 변경
+      alert("이메일 확인이 완료되었습니다.");
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        alert(error.message);
+      }
+    }
   };
 
-  const handleFieldChange = (field: keyof typeof editData, value: string) => {
-    setEditData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const handleSave = async () => {
+    if (!emailVerified) {
+      alert("이메일 확인을 먼저 해주세요.");
+
+      return;
+    }
+
+    const isNameValid = nameField.validateValue();
+    const isGenderValid = genderField.validateValue();
+    const isEmailValid = emailField.validateValue();
+
+    if (!isNameValid || !isGenderValid || !isEmailValid) {
+      return;
+    }
+
+    try {
+      await mutatePatchUserInfo({
+        name: nameField.value,
+        gender: genderField.value,
+        email: emailField.value,
+      });
+
+      // TODO: 얼럿 디자인 변경
+      alert("프로필 수정이 완료되었습니다.");
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.INFO] });
+      setIsEditMode(false);
+      setEmailVerified(false);
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        alert(error.message);
+      }
+    }
   };
 
   return (
     <div className={cx("container")}>
-      <Flex gap={8} justify="space-between" align="center" className={cx("header")}>
-        <Typography type="title20" weight="bold" color="white">
-          {editData.userName}
-        </Typography>
+      <Flex className={cx("header")} gap={8} justify="space-between" align="center">
+        {isEditMode ? (
+          <TextField
+            placeholder="이름을 입력해주세요"
+            fullWidth
+            value={nameField.value}
+            onChange={nameField.handleChange}
+            error={nameField.error}
+          />
+        ) : (
+          <Typography type="title20" weight="bold" color="white">
+            {nameField.value}
+          </Typography>
+        )}
 
         {!isEditMode && (
           <>
@@ -73,11 +162,9 @@ export const UserProfileClient = () => {
         )}
 
         {isEditMode && (
-          <Flex gap={8}>
-            <Button variant="cta" onClick={handleSave}>
-              save
-            </Button>
-          </Flex>
+          <Button variant="cta" onClick={handleSave} isLoading={isPending} disabled={isPending}>
+            save
+          </Button>
         )}
       </Flex>
 
@@ -88,13 +175,15 @@ export const UserProfileClient = () => {
           </Typography>
           {isEditMode ? (
             <Select
-              options={AGE_OPTIONS}
-              value={editData.age}
-              onChange={(value) => handleFieldChange("age", value)}
+              type="default"
+              options={ageOptions}
               placeholder="나이를 선택해주세요"
+              disabled
+              value={userInfoData.age.toString()}
+              onChange={() => {}}
             />
           ) : (
-            <TextField readOnly fullWidth value={`${editData.age}세`} />
+            <TextField readOnly fullWidth value={`${userInfoData.age}세`} />
           )}
         </Flex>
 
@@ -105,17 +194,16 @@ export const UserProfileClient = () => {
           {isEditMode ? (
             <Select
               options={GENDER_OPTIONS}
-              value={editData.gender}
-              onChange={(value) => handleFieldChange("gender", value)}
               placeholder="성별을 선택해주세요"
+              {...genderField.selectProps}
             />
           ) : (
             <TextField
               readOnly
               fullWidth
               value={
-                GENDER_OPTIONS.find((option) => option.value === editData.gender)?.label ||
-                editData.gender
+                GENDER_OPTIONS.find((option) => option.value === userInfoData.gender)?.label ||
+                userInfoData.gender
               }
             />
           )}
@@ -126,16 +214,27 @@ export const UserProfileClient = () => {
             EMAIL
           </Typography>
           {isEditMode ? (
-            // TODO: 이메일 검증 버튼 추가
-            <TextField
-              fullWidth
-              value={editData.email}
-              onChange={(e) => handleFieldChange("email", e.target.value)}
-              placeholder="이메일을 입력해주세요"
-              type="email"
-            />
+            <Flex className={cx("email_field")} gap={8}>
+              <TextField
+                placeholder="이메일을 입력해주세요"
+                fullWidth
+                value={emailField.value}
+                onChange={emailField.handleChange}
+                error={emailField.error}
+                disabled={emailVerified}
+              />
+              <Button
+                type="button"
+                variant="primary"
+                onClick={handleEmailCheck}
+                isLoading={isEmailCheckPending}
+                disabled={emailVerified || isEmailCheckPending}
+              >
+                Check
+              </Button>
+            </Flex>
           ) : (
-            <TextField readOnly fullWidth value={editData.email} />
+            <TextField readOnly fullWidth value={emailField.value} />
           )}
         </Flex>
       </Flex>

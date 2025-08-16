@@ -1,0 +1,8 @@
+.event_name {
+  width: 324px;
+  min-height: 128px;
+
+  @media (max-width: 767px) {
+    min-width: 240px;
+  }
+}
