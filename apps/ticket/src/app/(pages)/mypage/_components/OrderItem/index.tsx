@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 
 import { Button, Flex, Typography } from "@permit/design-system";
 import { useIsMobile } from "@permit/design-system/hooks";
-import { Order } from "@/data/users/getUserTickets/types";
+import type { Order } from "@/data/users/getUserTickets/types";
 
 import { QrTicketInfo } from "../../_clientBoundary/QrTicketModal";
 import { QRCodeButton } from "../QRCodeButton";
