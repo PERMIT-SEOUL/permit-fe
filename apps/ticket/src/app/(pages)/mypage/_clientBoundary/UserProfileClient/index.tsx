@@ -34,12 +34,6 @@ export const UserProfileClient = () => {
   const { data: userInfoData } = useUserInfoSuspenseQuery();
 
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editData, setEditData] = useState({
-    userName: userInfoData.name,
-    age: userInfoData.age,
-    gender: userInfoData.gender,
-    email: userInfoData.email,
-  });
 
   const [emailVerified, setEmailVerified] = useState(false);
 
@@ -55,12 +49,6 @@ export const UserProfileClient = () => {
 
       return undefined;
     },
-    onChange: (value) => {
-      setEditData((prev) => ({
-        ...prev,
-        userName: value,
-      }));
-    },
   });
 
   const genderField = useSelect({
@@ -69,12 +57,6 @@ export const UserProfileClient = () => {
       if (!value) return "성별을 선택해주세요.";
 
       return undefined;
-    },
-    onChange: (value) => {
-      setEditData((prev) => ({
-        ...prev,
-        gender: value,
-      }));
     },
   });
 
@@ -88,12 +70,6 @@ export const UserProfileClient = () => {
       if (!emailRegex.test(value)) return "올바른 이메일 형식이 아닙니다.";
 
       return undefined;
-    },
-    onChange: (value) => {
-      setEditData((prev) => ({
-        ...prev,
-        email: value,
-      }));
     },
   });
 
@@ -136,9 +112,9 @@ export const UserProfileClient = () => {
 
     try {
       await mutatePatchUserInfo({
-        name: editData.userName,
-        gender: editData.gender,
-        email: editData.email,
+        name: nameField.value,
+        gender: genderField.value,
+        email: emailField.value,
       });
 
       // TODO: 얼럿 디자인 변경
@@ -166,7 +142,7 @@ export const UserProfileClient = () => {
           />
         ) : (
           <Typography type="title20" weight="bold" color="white">
-            {editData.userName}
+            {nameField.value}
           </Typography>
         )}
 
@@ -203,11 +179,11 @@ export const UserProfileClient = () => {
               options={ageOptions}
               placeholder="나이를 선택해주세요"
               disabled
-              value={editData.age.toString()}
+              value={userInfoData.age.toString()}
               onChange={() => {}}
             />
           ) : (
-            <TextField readOnly fullWidth value={`${editData.age}세`} />
+            <TextField readOnly fullWidth value={`${userInfoData.age}세`} />
           )}
         </Flex>
 
@@ -226,8 +202,8 @@ export const UserProfileClient = () => {
               readOnly
               fullWidth
               value={
-                GENDER_OPTIONS.find((option) => option.value === editData.gender)?.label ||
-                editData.gender
+                GENDER_OPTIONS.find((option) => option.value === userInfoData.gender)?.label ||
+                userInfoData.gender
               }
             />
           )}
@@ -258,7 +234,7 @@ export const UserProfileClient = () => {
               </Button>
             </Flex>
           ) : (
-            <TextField readOnly fullWidth value={editData.email} />
+            <TextField readOnly fullWidth value={emailField.value} />
           )}
         </Flex>
       </Flex>

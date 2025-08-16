@@ -13,7 +13,8 @@
 }
 
 .label {
-  width: 60px;
+  width: 50px;
+  flex-shrink: 0;
 }
 
 .mobile_edit_button {
