@@ -101,6 +101,7 @@ export const UserProfileClient = () => {
       await mutateEmailCheck({ userEmail: emailField.value });
 
       setEmailVerified(true);
+      // TODO: 얼럿 디자인 변경
       alert("이메일 확인이 완료되었습니다.");
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
