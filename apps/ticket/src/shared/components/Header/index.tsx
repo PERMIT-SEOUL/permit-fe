@@ -9,6 +9,7 @@ import permitLogo from "public/assets/png/permit_logo.png";
 
 import { Button } from "@permit/design-system";
 import { safeLocalStorage } from "@/lib/storage";
+import { PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 
 import styles from "./index.module.scss";
@@ -39,12 +40,11 @@ export const Header = () => {
   };
 
   const onMyPageClick = () => {
-    // TODO: MyPage로 이동
-    console.log("MyPage clicked");
+    router.push(PATH.MYPAGE);
   };
 
   const onLoginClick = () => {
-    router.push("/login");
+    router.push(PATH.LOGIN);
   };
 
   return (
