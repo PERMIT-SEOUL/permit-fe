@@ -142,7 +142,7 @@ export const UserProfileClient = () => {
 
   return (
     <div className={cx("container")}>
-      <Flex gap={8} justify="space-between" align="center" className={cx("header")}>
+      <Flex gap={8} justify="space-between" className={cx("header")}>
         {isEditMode ? (
           <TextField
             placeholder="이름을 입력해주세요"
