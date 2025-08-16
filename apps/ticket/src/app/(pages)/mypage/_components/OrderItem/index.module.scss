@@ -23,13 +23,13 @@
     flex-direction: column;
     gap: 4px;
   }
+}
 
-  &.order_date {
-    @include typography.body-reg-14;
+.order_date {
+  @include typography.body-reg-14;
 
-    @media (max-width: 767px) {
-      @include typography.body-reg-16;
-    }
+  @media (max-width: 767px) {
+    @include typography.body-reg-16;
   }
 }
 

@@ -3,10 +3,10 @@
 
 @function get-default-weight($size-key) {
   @if str-index($size-key, "title") {
-    @return $bold;
+    @return "bold";
   }
 
-  @return $regular;
+  @return "regular";
 }
 
 @function get-default-line-height($size-key) {
