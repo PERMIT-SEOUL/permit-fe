@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
@@ -6,11 +7,17 @@ import { useSelect, useTextField } from "@permit/design-system/hooks";
 import { useUserInfoSuspenseQuery } from "@/data/users/getUserInfo/queries";
 import { usePatchUserInfoMutation } from "@/data/users/patchUserInfo/mutation";
 import { useUserEmailCheckMutation } from "@/data/users/postUserEmailCheck/mutation";
+import { USER_QUERY_KEYS } from "@/data/users/queryKeys";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
+
+const ageOptions = Array.from({ length: 80 }, (_, i) => ({
+  value: String(i + 10),
+  label: `${i + 10}세`,
+}));
 
 // 성별 옵션
 const GENDER_OPTIONS = [
@@ -22,6 +29,8 @@ const GENDER_OPTIONS = [
  * 사용자 프로필 섹션
  */
 export const UserProfileClient = () => {
+  const queryClient = useQueryClient();
+
   const { data: userInfoData } = useUserInfoSuspenseQuery();
 
   const [isEditMode, setIsEditMode] = useState(false);
@@ -117,6 +126,14 @@ export const UserProfileClient = () => {
       return;
     }
 
+    const isNameValid = nameField.validateValue();
+    const isGenderValid = genderField.validateValue();
+    const isEmailValid = emailField.validateValue();
+
+    if (!isNameValid || !isGenderValid || !isEmailValid) {
+      return;
+    }
+
     try {
       await mutatePatchUserInfo({
         name: editData.userName,
@@ -124,9 +141,11 @@ export const UserProfileClient = () => {
         email: editData.email,
       });
 
-      setIsEditMode(false);
+      // TODO: 얼럿 디자인 변경
       alert("프로필 수정이 완료되었습니다.");
-      // TODO: 프로필 수정 후 프로필 페이지 업데이트 (쿼리 무효화)
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.INFO] });
+      setIsEditMode(false);
+      setEmailVerified(false);
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
         alert(error.message);
@@ -134,16 +153,9 @@ export const UserProfileClient = () => {
     }
   };
 
-  const handleFieldChange = (field: keyof typeof editData, value: string) => {
-    setEditData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
   return (
     <div className={cx("container")}>
-      <Flex gap={8} justify="space-between" className={cx("header")}>
+      <Flex className={cx("header")} gap={8} justify="space-between" align="center">
         {isEditMode ? (
           <TextField
             placeholder="이름을 입력해주세요"
@@ -174,11 +186,9 @@ export const UserProfileClient = () => {
         )}
 
         {isEditMode && (
-          <Flex gap={8}>
-            <Button variant="cta" onClick={handleSave} isLoading={isPending} disabled={isPending}>
-              save
-            </Button>
-          </Flex>
+          <Button variant="cta" onClick={handleSave} isLoading={isPending} disabled={isPending}>
+            save
+          </Button>
         )}
       </Flex>
 
@@ -187,7 +197,18 @@ export const UserProfileClient = () => {
           <Typography className={cx("label")} type="body14" color="gray400">
             Age
           </Typography>
-          <TextField readOnly fullWidth value={`${editData.age}세`} />
+          {isEditMode ? (
+            <Select
+              type="default"
+              options={ageOptions}
+              placeholder="나이를 선택해주세요"
+              disabled
+              value={editData.age.toString()}
+              onChange={() => {}}
+            />
+          ) : (
+            <TextField readOnly fullWidth value={`${editData.age}세`} />
+          )}
         </Flex>
 
         <Flex gap={40} align="center">
@@ -217,7 +238,7 @@ export const UserProfileClient = () => {
             EMAIL
           </Typography>
           {isEditMode ? (
-            <Flex gap={8}>
+            <Flex className={cx("email_field")} gap={8}>
               <TextField
                 placeholder="이메일을 입력해주세요"
                 fullWidth
