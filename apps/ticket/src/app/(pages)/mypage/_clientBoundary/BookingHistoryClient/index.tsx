@@ -1,62 +1,33 @@
 "use client";
 
-import { useState } from "react";
 import classNames from "classnames/bind";
 
 import { Typography } from "@permit/design-system";
+import { useUserTicketsSuspenseQuery } from "@/data/users/getUserTickets/queries";
+import { useModal } from "@/shared/hooks/useModal";
 
-import { BookingHistoryTabs } from "../../_components/BookingHistoryTabs";
-import { BookingItem } from "../../_components/BookingItem";
+import { OrderItem } from "../../_components/OrderItem";
+import { CancelTicketModal } from "../CancelTicketModal";
+import { QrTicketInfo, QrTicketModal } from "../QrTicketModal";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
-
-// TODO: API 호출로 변경
-const mockOrders = [
-  {
-    orderId: "adsaaforde",
-    orderDate: "2025.07.03",
-    eventName: "Ceiling service vol.6 -Ksawery Komputery [PL]",
-    ticketInfo: [
-      {
-        ticketCode: "abcd",
-        ticketName: "Day1",
-        ticketDate: "Sun, 25 May 2025 - Mon, 26 May 2025",
-      },
-      {
-        ticketCode: "efgh",
-        ticketName: "Day2",
-        ticketDate: "Sun, 25 May 2025 - Mon, 26 May 2025",
-      },
-    ],
-  },
-  {
-    orderId: "dbbadsaasc",
-    orderDate: "2025.07.02",
-    eventName: "Ceiling service vol.7 -Ksawery Komputery [PL]",
-    ticketInfo: [
-      {
-        ticketCode: "ijkl",
-        ticketName: "Day1",
-        ticketDate: "Sun, 25 May 2025 - Mon, 26 May 2025",
-      },
-    ],
-  },
-];
-
-type TabType = "ready" | "not_available";
 
 /**
  * 예약 히스토리 섹션
  */
 export const BookingHistoryClient = () => {
-  const [activeTab, setActiveTab] = useState<TabType>("ready");
+  const { data: userTicketsData } = useUserTicketsSuspenseQuery();
 
-  const filteredBookings = mockOrders;
+  const { show: openCancelTicketModal } = useModal(CancelTicketModal);
+  const { show: openQrTicketModal } = useModal(QrTicketModal);
 
-  const handleCancelOrder = (orderId: string) => {
-    // TODO: 주문 취소 API 호출
-    console.log("주문 취소:", orderId);
+  const handleCancelOrder = (orderId: string, eventName: string) => {
+    openCancelTicketModal({ orderId, eventName });
+  };
+
+  const handleClickQRCode = (ticketInfo: QrTicketInfo) => {
+    openQrTicketModal({ ticketInfo });
   };
 
   return (
@@ -65,16 +36,24 @@ export const BookingHistoryClient = () => {
         Booking History
       </Typography>
 
-      <BookingHistoryTabs activeTab={activeTab} onTabChange={setActiveTab} />
-
       {/* 예약 목록 */}
       <div className={cx("booking_list")}>
-        {filteredBookings.map((booking, index) => (
-          <div key={booking.orderId}>
-            <BookingItem booking={booking} onCancelOrderClick={handleCancelOrder} />
-            {index < filteredBookings.length - 1 && <div className={cx("divider")} />}
-          </div>
-        ))}
+        {userTicketsData.orders.length > 0 ? (
+          userTicketsData.orders.map((order, index) => (
+            <div key={order.orderId}>
+              <OrderItem
+                order={order}
+                onCancelOrderClick={handleCancelOrder}
+                onClickQRCode={handleClickQRCode}
+              />
+              {index < userTicketsData.orders.length - 1 && <div className={cx("divider")} />}
+            </div>
+          ))
+        ) : (
+          <Typography type="body16" color="gray500">
+            예약 내역이 없습니다.
+          </Typography>
+        )}
       </div>
     </div>
   );
