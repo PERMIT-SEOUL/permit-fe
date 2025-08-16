@@ -6,4 +6,5 @@ export const PATH = {
   EVENT_DETAIL: "/event/:eventId",
   BOOKING_CONFIRMED: "/event/:eventId/booking/:bookingId/confirmed",
   ORDER: "/order/:orderId",
+  MYPAGE: "/mypage",
 } as const;
