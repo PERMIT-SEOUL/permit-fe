@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
  * 예약 히스토리 섹션
  */
 export const BookingHistoryClient = () => {
-  const { data: userTickets } = useUserTicketsSuspenseQuery();
+  const { data: userTicketsData } = useUserTicketsSuspenseQuery();
 
   const { show: openCancelTicketModal } = useModal(CancelTicketModal);
   const { show: openQrTicketModal } = useModal(QrTicketModal);
@@ -38,16 +38,22 @@ export const BookingHistoryClient = () => {
 
       {/* 예약 목록 */}
       <div className={cx("booking_list")}>
-        {userTickets.orders.map((order, index) => (
-          <div key={order.orderId}>
-            <OrderItem
-              order={order}
-              onCancelOrderClick={handleCancelOrder}
-              onClickQRCode={handleClickQRCode}
-            />
-            {index < userTickets.orders.length - 1 && <div className={cx("divider")} />}
-          </div>
-        ))}
+        {userTicketsData.orders.length > 0 ? (
+          userTicketsData.orders.map((order, index) => (
+            <div key={order.orderId}>
+              <OrderItem
+                order={order}
+                onCancelOrderClick={handleCancelOrder}
+                onClickQRCode={handleClickQRCode}
+              />
+              {index < userTicketsData.orders.length - 1 && <div className={cx("divider")} />}
+            </div>
+          ))
+        ) : (
+          <Typography type="body16" color="gray500">
+            예약 내역이 없습니다.
+          </Typography>
+        )}
       </div>
     </div>
   );
