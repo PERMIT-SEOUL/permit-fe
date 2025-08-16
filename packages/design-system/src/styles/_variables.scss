@@ -42,7 +42,7 @@ $body-14: map.get($font-sizes, "body14");
 $body-12: map.get($font-sizes, "body12");
 
 // Line Heights
-$line-height-auto: 16px;
+$line-height-auto: auto;
 
 // Colors
 $colors: (
