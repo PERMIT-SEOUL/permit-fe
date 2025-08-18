@@ -139,7 +139,6 @@ export const SelectTicketModal = ({ isOpen, close, title, eventId, ticketInfo }:
     }
   });
 
-  // TODO: 차수별, 날짜별 뷰 다르게 수정
   return (
     <Dialog open={isOpen} title={title} onClose={() => close()}>
       {/* TODO: onClick={close} 와 리턴이 다른 이유 확인 */}

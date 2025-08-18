@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import { eventDetailOptions } from "@/data/events/getEventDetail/queries";
+import { eventTicketsOptions } from "@/data/events/getEventTickets/queries";
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
@@ -20,6 +21,7 @@ const EventDetailPage = async ({ params }: Props) => {
   const qc = getQueryClient();
 
   qc.prefetchQuery(eventDetailOptions({ eventId }));
+  qc.prefetchQuery(eventTicketsOptions({ eventId }));
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>

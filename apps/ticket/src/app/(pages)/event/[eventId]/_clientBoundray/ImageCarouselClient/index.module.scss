@@ -5,7 +5,6 @@
   flex-direction: column;
   flex-shrink: 0;
   gap: 12px;
-  align-items: center;
   margin: 0 0 0 84px;
 
   @media (max-width: 767px) {
@@ -22,7 +21,6 @@
   display: flex;
   gap: 14px;
   align-items: center;
-  margin: 0 auto;
 
   @media (max-width: 767px) {
     position: relative;
@@ -55,6 +53,7 @@
   display: flex;
   gap: 10px;
   justify-content: center;
+  width: calc(100% - 64px);
   margin-top: 8px;
 
   @media (max-width: 767px) {

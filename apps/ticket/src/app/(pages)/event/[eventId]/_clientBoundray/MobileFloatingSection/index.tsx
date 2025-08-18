@@ -17,7 +17,7 @@ type Props = {
   eventId: string;
 };
 
-export const FloatingSection = ({ eventId }: Props) => {
+export const MobileFloatingSection = ({ eventId }: Props) => {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const { show: openDialog } = useModal(SelectTicketModal);

@@ -16,14 +16,14 @@ export const LineupText = ({ lineup }: Props) => {
 
   return (
     <>
-      {lineup.map((item) => (
-        <Flex key={item.category} direction="column" gap={4}>
+      {lineup.map((item, index) => (
+        <Flex key={`${item.category}-${index}`} direction="column" gap={4}>
           <Typography type="body14" color="white">
             {item.category}
           </Typography>
           {item.artists.length > 0 ? (
-            item.artists.map((artist) => (
-              <Typography key={artist.name} type="body14" color="white">
+            item.artists.map((artist, index) => (
+              <Typography key={`${artist.name}-${index}`} type="body14" color="white">
                 {artist.name}
               </Typography>
             ))
