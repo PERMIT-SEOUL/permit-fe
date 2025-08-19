@@ -1,3 +1,4 @@
+export { BottomSheet, useBottomSheetClose } from "./components/BottomSheet";
 export { Button } from "./components/Button";
 export { Card } from "./components/Card";
 export { Code } from "./components/Code";
