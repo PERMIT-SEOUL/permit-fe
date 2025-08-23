@@ -1,4 +1,4 @@
-import { SelectedTicket } from "../_clientBoundray/DesktopTicketSectionClient";
+import { type SelectedTicket } from "../_clientBoundray/DesktopTicketSectionClient";
 
 export const calculateTotalPrice = (selectedTickets: SelectedTicket[]) => {
   return selectedTickets.reduce((total, ticket) => {
