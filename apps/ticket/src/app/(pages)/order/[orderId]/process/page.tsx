@@ -29,7 +29,7 @@ const PaymentProcessPage = () => {
         const { eventName, eventDate } = data;
 
         window.location.replace(
-          `${window.location.origin}/order/${searchParams.get("orderId")}/success?eventName=${eventName}&eventDate=${eventDate}`,
+          `${window.location.origin}/order/${searchParams.get("orderId")}/success?eventName=${encodeURIComponent(eventName)}&eventDate=${encodeURIComponent(eventDate)}`,
         );
       } catch (error) {
         // TODO: 에러 처리 로직 추가
