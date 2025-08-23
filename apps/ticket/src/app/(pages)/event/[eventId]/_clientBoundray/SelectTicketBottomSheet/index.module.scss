@@ -1,0 +1,116 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80vh;
+}
+
+.ticket_wrap {
+  height: 100%;
+}
+
+.selected_tickets_wrap {
+  height: calc(100% - 33px);
+}
+
+.promo_code_wrap {
+  margin-bottom: auto;
+}
+
+.promo_code_button {
+  display: block;
+  margin-top: 12px;
+
+  color: theme.$white;
+  text-decoration: underline;
+
+  cursor: pointer;
+
+  @include typography.body-reg-14;
+
+  &:not(.open) {
+    margin-bottom: 12px;
+  }
+}
+
+.promo_code_notice {
+  margin: 4px 0 12px;
+}
+
+.promo_code_input {
+  > div {
+    background-color: theme.$gray-700;
+  }
+}
+
+.count_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  &:disabled {
+    path {
+      fill: theme.$gray-500;
+    }
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    path {
+      fill: theme.$gray-200;
+    }
+  }
+}
+
+.selected_tickets_list {
+  max-height: 168px;
+  overflow-y: auto;
+}
+
+.count_display {
+  width: 50px;
+  height: 30px;
+
+  color: theme.$white;
+  text-align: end;
+  vertical-align: middle;
+
+  border: 1px solid theme.$gray-400;
+  border-radius: 4px;
+
+  @include typography.body-bold-14;
+
+  > span {
+    display: inline-block;
+    padding-top: 6px;
+    padding-right: 10px;
+  }
+}
+
+.close_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  padding: 1px;
+
+  background-color: theme.$gray-600;
+  cursor: pointer;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: theme.$gray-700;
+  }
+}
+
+.total_price_wrap {
+  margin-top: 12px;
+  padding-top: 12px;
+
+  border-top: 2px solid theme.$gray-200;
+}
