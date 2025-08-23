@@ -38,13 +38,11 @@ const FailPage = () => {
       </Typography>
 
       <Flex direction="column" gap={16}>
-        {orderId ||
-          errorCode ||
-          (errorMessage && (
-            <Typography type="body16" weight="medium">
-              오류 정보
-            </Typography>
-          ))}
+        {(orderId || errorCode || errorMessage) && (
+          <Typography type="body16" weight="medium">
+            오류 정보
+          </Typography>
+        )}
         <Flex direction="column" gap={16}>
           {orderId && (
             <>
