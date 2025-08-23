@@ -1,8 +1,9 @@
+@use "sass:string";
 @use "sass:map";
 @use "./variables" as *;
 
 @function get-default-weight($size-key) {
-  @if str-index($size-key, "title") {
+  @if string.index($size-key, "title") {
     @return "bold";
   }
 
@@ -10,31 +11,31 @@
 }
 
 @function get-default-line-height($size-key) {
-  @if str-index($size-key, "32") {
+  @if string.index($size-key, "32") {
     @return 38px;
   }
 
-  @if str-index($size-key, "24") {
+  @if string.index($size-key, "24") {
     @return 28px;
   }
 
-  @if str-index($size-key, "20") {
+  @if string.index($size-key, "20") {
     @return 23px;
   }
 
-  @if str-index($size-key, "18") {
+  @if string.index($size-key, "18") {
     @return 21px;
   }
 
-  @if str-index($size-key, "16") {
+  @if string.index($size-key, "16") {
     @return 19px;
   }
 
-  @if str-index($size-key, "14") {
+  @if string.index($size-key, "14") {
     @return 16px;
   }
 
-  @if str-index($size-key, "12") {
+  @if string.index($size-key, "12") {
     @return 14px;
   }
 
