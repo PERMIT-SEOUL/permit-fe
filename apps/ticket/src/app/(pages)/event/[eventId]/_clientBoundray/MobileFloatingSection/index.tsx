@@ -6,9 +6,9 @@ import classNames from "classnames/bind";
 
 import { Button } from "@permit/design-system";
 import { eventTicketsOptions } from "@/data/events/getEventTickets/queries";
-import { useModal } from "@/shared/hooks/useModal";
+import { useBottomSheet } from "@/shared/hooks";
 
-import { SelectTicketModal } from "../SelectTicketModal";
+import { SelectTicketBottomSheet } from "../SelectTicketBottomSheet";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -20,18 +20,17 @@ type Props = {
 export const MobileFloatingSection = ({ eventId }: Props) => {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
-  const { show: openDialog } = useModal(SelectTicketModal);
-
+  const { show: openBottomSheet } = useBottomSheet(SelectTicketBottomSheet);
   const selectTicket = async () => {
     setIsLoading(true);
 
     try {
       const eventTicketsData = await queryClient.fetchQuery(eventTicketsOptions({ eventId }));
 
-      const result = await openDialog({
+      const result = await openBottomSheet({
         title: "티켓 선택",
-        eventId: 2,
-        ticketInfo: eventTicketsData.rounds,
+        eventTicketsData,
+        eventId,
       });
 
       if (!result) {

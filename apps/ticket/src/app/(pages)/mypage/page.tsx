@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { userInfoOptions } from "@/data/users/getUserInfo/queries";
@@ -24,11 +25,13 @@ const MyPage = () => {
   qc.prefetchQuery(userTicketsOptions());
 
   return (
-    <div className={cx("container")}>
-      <Suspense fallback={<LoadingWithLayout />}>
-        <MyPageClient />
-      </Suspense>
-    </div>
+    <HydrationBoundary state={dehydrate(qc)}>
+      <div className={cx("container")}>
+        <Suspense fallback={<LoadingWithLayout />}>
+          <MyPageClient />
+        </Suspense>
+      </div>
+    </HydrationBoundary>
   );
 };
 

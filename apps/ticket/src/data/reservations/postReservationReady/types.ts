@@ -1,5 +1,5 @@
 export type ReservationReadyParams = {
-  eventId: number;
+  eventId: string;
   orderId: string;
   couponCode?: string;
   totalAmount: number;

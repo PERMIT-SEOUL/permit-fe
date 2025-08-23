@@ -2,39 +2,56 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
-import { Button, Flex, Icon, Select, TextField, Typography } from "@permit/design-system";
+import {
+  BottomSheet,
+  Button,
+  Flex,
+  Icon,
+  Select,
+  TextField,
+  Typography,
+} from "@permit/design-system";
 import { useDebounce, useSelect } from "@permit/design-system/hooks";
-import { useEventTicketsSuspenseQuery } from "@/data/events/getEventTickets/queries";
+import { EventTicketsResponse } from "@/data/events/getEventTickets/types";
 import { useReservationReadyMutation } from "@/data/reservations/postReservationReady/mutation";
 import { generateRandomString } from "@/shared/helpers/generateRandomString";
+import { BottomSheetComponentProps } from "@/shared/hooks";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
-import { TitleSection } from "../../_components/TitleSection";
 import { calculateTotalPrice } from "../../_helpers/calculateTotalPrice";
+import { SelectedTicket } from "../DesktopTicketSectionClient";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-export type SelectedTicket = {
-  ticketTypeId: number;
-  count: number;
-  ticketInfo: {
-    ticketTypeName: string;
-    ticketTypeDate: string;
-    ticketTypeTime: string;
-    ticketTypePrice: string;
-  };
-};
-
 type Props = {
+  title: string;
+  eventTicketsData: EventTicketsResponse;
   eventId: string;
-  eventName: string;
+} & BottomSheetComponentProps<string>;
+
+export const SelectTicketBottomSheet = ({
+  isOpen,
+  close,
+  title,
+  eventId,
+  eventTicketsData,
+}: Props) => {
+  return (
+    <BottomSheet open={isOpen} onClose={() => close("cancelled")} title={title}>
+      <SelectTicketBottomSheetContent eventTicketsData={eventTicketsData} eventId={eventId} />
+    </BottomSheet>
+  );
 };
 
-export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
+const SelectTicketBottomSheetContent = ({
+  eventTicketsData,
+  eventId,
+}: {
+  eventTicketsData: EventTicketsResponse;
+  eventId: string;
+}) => {
   const router = useRouter();
-
-  const { data: eventTicketsData } = useEventTicketsSuspenseQuery({ eventId });
 
   const [isLoading, setIsLoading] = useState(false);
   const selectedRound = eventTicketsData.rounds.find((round) => round.roundAvailable);
@@ -137,7 +154,8 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
       // TODO: 프로모션 코드 로직 추가
       const requestData = {
-        eventId: eventId,
+        // TODO: 변경
+        eventId,
         totalAmount: calculateTotalPrice(selectedTickets),
         ticketTypeInfos: selectedTickets.map((ticket) => ({
           id: ticket.ticketTypeId,
@@ -160,30 +178,30 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
   });
 
   return (
-    <div className={cx("wrap")}>
-      <TitleSection eventName={eventName} />
+    <>
+      <BottomSheet.Content className={cx("content")}>
+        <div>
+          <Flex direction="column" gap={16}>
+            <Select
+              type="default"
+              placeholder="Round"
+              options={roundOptions}
+              {...roundSelect.selectProps}
+            />
 
-      <div className={cx("ticket_section")}>
-        <Flex className={cx("select_section")} direction="column" gap={12}>
-          <Select
-            type="default"
-            placeholder="Round"
-            options={roundOptions}
-            {...roundSelect.selectProps}
-          />
-
-          <Select
-            type="default"
-            placeholder="Ticket"
-            options={ticketOptions}
-            {...ticketSelect.selectProps}
-          />
-        </Flex>
+            <Select
+              type="default"
+              placeholder="Ticket"
+              options={ticketOptions}
+              {...ticketSelect.selectProps}
+            />
+          </Flex>
+        </div>
 
         {selectedTickets.length > 0 && (
-          <div>
+          <div className={cx("ticket_wrap")}>
             <Flex className={cx("selected_tickets_wrap")} direction="column">
-              <div>
+              <div className={cx("promo_code_wrap")}>
                 <button
                   className={cx("promo_code_button", {
                     open: isPromocodeOpen,
@@ -195,7 +213,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
                 {isPromocodeOpen && (
                   <>
-                    <Typography className={cx("promo_code_notice")} type="body14" color="red">
+                    <Typography className={cx("promo_code_notice")} type="body14" color="gray400">
                       * Only one per purchase
                     </Typography>
                     <Flex className={cx("promo_code_input_wrap")} gap={12}>
@@ -259,22 +277,12 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
                         </Flex>
                       </Flex>
 
-                      <Flex align="center" gap={2}>
-                        <Typography className={cx("price_text")} type="body14" weight="medium">
-                          ₩{" "}
-                          {(
-                            parseInt(selectedTicket.ticketInfo.ticketTypePrice.replace(/,/g, "")) *
-                            selectedTicket.count
-                          ).toLocaleString()}
-                        </Typography>
-
-                        <button
-                          onClick={() => handleRemoveTicket(selectedTicket.ticketTypeId)}
-                          className={cx("close_button")}
-                        >
-                          <Icon.Close fill="gray400" size={16} />
-                        </button>
-                      </Flex>
+                      <button
+                        onClick={() => handleRemoveTicket(selectedTicket.ticketTypeId)}
+                        className={cx("close_button")}
+                      >
+                        <Icon.Close fill="gray400" size={16} />
+                      </button>
                     </Flex>
                   </Flex>
                 ))}
@@ -291,18 +299,19 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
             </Flex>
           </div>
         )}
-      </div>
+      </BottomSheet.Content>
 
-      <Button
-        className={cx("buy_button")}
-        variant="cta"
-        isLoading={isLoading}
-        disabled={selectedTickets.length === 0}
-        onClick={handleBuyTicket}
-        fullWidth
-      >
-        {selectedTickets.length === 0 ? "Select Ticket Type" : "Buy Ticket"}
-      </Button>
-    </div>
+      <BottomSheet.Bottom>
+        <Button
+          fullWidth
+          variant="cta"
+          isLoading={isLoading}
+          disabled={selectedTickets.length === 0}
+          onClick={handleBuyTicket}
+        >
+          {selectedTickets.length === 0 ? "Select Ticket Type" : "Buy Ticket"}
+        </Button>
+      </BottomSheet.Bottom>
+    </>
   );
 };

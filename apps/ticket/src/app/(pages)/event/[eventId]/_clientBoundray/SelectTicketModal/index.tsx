@@ -1,3 +1,5 @@
+// @deprecated
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
@@ -27,7 +29,7 @@ type SelectedTicket = {
 
 type Props = {
   title: string;
-  eventId: number;
+  eventId: string;
   ticketInfo: Round[];
 } & ModalComponentProps<{ result: boolean }>;
 

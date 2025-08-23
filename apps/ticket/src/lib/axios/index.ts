@@ -32,8 +32,8 @@ instance.interceptors.response.use(
     //   alert("서버에러 발생. 관리자에게 문의해주세요.");
     // }
 
-    console.log("@@@@@@", error);
-    console.log("@@@@@@", error.response?.data);
+    // console.log("@@@@@@", error);
+    // console.log("@@@@@@", error.response?.data);
 
     // 리프레시 토큰 모두 만료시 로그인 페이지로 이동
     if (error.response?.data.code === 40404) {

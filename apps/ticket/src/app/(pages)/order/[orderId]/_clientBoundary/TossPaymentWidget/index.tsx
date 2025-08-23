@@ -75,7 +75,7 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
             orderName: reservationReady.orderName,
             customerName: reservationReady.userName,
             customerEmail: reservationReady.userEmail,
-            successUrl: `${window.location.origin}/order/${orderId}/success`,
+            successUrl: `${window.location.origin}/order/${orderId}/process`,
             failUrl: `${window.location.origin}/order/${orderId}/fail`,
           });
         });
