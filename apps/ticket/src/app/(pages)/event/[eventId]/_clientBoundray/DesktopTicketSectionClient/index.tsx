@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
-import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
+import { Button, Flex, Icon, Select, TextField, Typography } from "@permit/design-system";
 import { useDebounce, useSelect } from "@permit/design-system/hooks";
 import { useEventTicketsSuspenseQuery } from "@/data/events/getEventTickets/queries";
 import { useReservationReadyMutation } from "@/data/reservations/postReservationReady/mutation";
@@ -10,11 +10,12 @@ import { generateRandomString } from "@/shared/helpers/generateRandomString";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import { TitleSection } from "../../_components/TitleSection";
+import { calculateTotalPrice } from "../../_helpers/calculateTotalPrice";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-type SelectedTicket = {
+export type SelectedTicket = {
   ticketTypeId: number;
   count: number;
   ticketInfo: {
@@ -56,7 +57,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
   const ticketOptions = eventTicketsData.rounds.flatMap((round) =>
     round.ticketTypes.map((ticket) => ({
       value: String(ticket.ticketTypeId),
-      label: ticket.ticketTypeName,
+      label: `${ticket.ticketTypeName} - ₩ ${ticket.ticketTypePrice}`,
     })),
   );
 
@@ -116,12 +117,8 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
     );
   };
 
-  const calculateTotalPrice = () => {
-    return selectedTickets.reduce((total, ticket) => {
-      const price = parseInt(ticket.ticketInfo.ticketTypePrice.replace(/,/g, ""));
-
-      return total + price * ticket.count;
-    }, 0);
+  const handleRemoveTicket = (ticketTypeId: number) => {
+    setSelectedTickets((prev) => prev.filter((ticket) => ticket.ticketTypeId !== ticketTypeId));
   };
 
   const handleBuyTicket = useDebounce(async () => {
@@ -136,9 +133,8 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
       // TODO: 프로모션 코드 로직 추가
       const requestData = {
-        // eventId: Number(eventId),
-        eventId: 2,
-        totalAmount: calculateTotalPrice(),
+        eventId: eventId,
+        totalAmount: calculateTotalPrice(selectedTickets),
         ticketTypeInfos: selectedTickets.map((ticket) => ({
           id: ticket.ticketTypeId,
           count: ticket.count,
@@ -244,7 +240,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
                             onClick={() => handleTicketCountChange(selectedTicket.ticketTypeId, -1)}
                             disabled={selectedTicket.count <= 1}
                           >
-                            −
+                            <Icon.Minus fill="gray400" size={20} />
                           </button>
                           <div className={cx("count_display")}>
                             <span>{selectedTicket.count}</span>
@@ -254,28 +250,45 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
                             onClick={() => handleTicketCountChange(selectedTicket.ticketTypeId, 1)}
                             disabled={selectedTicket.count >= 10}
                           >
-                            +
+                            <Icon.Plus fill="gray400" size={20} />
                           </button>
                         </Flex>
                       </Flex>
 
-                      <Flex direction="column" align="center" gap={2}>
-                        <Typography type="body14" weight="medium">
-                          ₩
+                      <Flex align="center" gap={2}>
+                        <Typography className={cx("price_text")} type="body14" weight="medium">
+                          ₩{" "}
                           {(
                             parseInt(selectedTicket.ticketInfo.ticketTypePrice.replace(/,/g, "")) *
                             selectedTicket.count
                           ).toLocaleString()}
                         </Typography>
+
+                        <button
+                          onClick={() => handleRemoveTicket(selectedTicket.ticketTypeId)}
+                          className={cx("close_button")}
+                        >
+                          <Icon.Close fill="gray400" size={16} />
+                        </button>
                       </Flex>
                     </Flex>
                   </Flex>
                 ))}
               </Flex>
             </Flex>
+
+            <Flex className={cx("total_price_wrap")} align="center" justify="space-between" gap={8}>
+              <Typography type="body16" weight="medium">
+                Total
+              </Typography>
+              <Typography type="body14" weight="medium">
+                ₩ {calculateTotalPrice(selectedTickets).toLocaleString()}
+              </Typography>
+            </Flex>
           </div>
         )}
       </div>
+
       <Button
         className={cx("buy_button")}
         variant="cta"
