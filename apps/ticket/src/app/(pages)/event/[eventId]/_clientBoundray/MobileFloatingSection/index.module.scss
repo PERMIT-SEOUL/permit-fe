@@ -16,6 +16,7 @@
   border-top: 1px solid theme.$gray-600;
 
   @media (min-width: 768px) {
+    display: none;
     justify-content: flex-end;
     height: 79px;
     padding: 18px 40px;

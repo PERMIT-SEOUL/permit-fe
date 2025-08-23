@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 import { API_URL } from "@/data/constants";
 import { instance } from "@/lib/axios";
@@ -7,6 +7,7 @@ import {
   OptionsObject,
   PermitQueryOptions,
   UsePermitQueryOptions,
+  UsePermitSuspenseQueryOptions,
 } from "@/shared/types/queryOptions";
 
 import { EVENT_QUERY_KEYS } from "../queryKeys";
@@ -31,6 +32,16 @@ export const useEventDetailQuery = ({
   options,
 }: EventDetailParams & OptionsObject<UsePermitQueryOptions<EventDetailResponse>>) => {
   return useQuery({
+    ...eventDetailOptions({ eventId }),
+    ...options,
+  });
+};
+
+export const useEventDetailSuspenseQuery = ({
+  eventId,
+  options,
+}: EventDetailParams & OptionsObject<UsePermitSuspenseQueryOptions<EventDetailResponse>>) => {
+  return useSuspenseQuery({
     ...eventDetailOptions({ eventId }),
     ...options,
   });

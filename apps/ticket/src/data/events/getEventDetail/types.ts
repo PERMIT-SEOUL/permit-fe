@@ -1,8 +1,7 @@
 export type EventDetailParams = {
-  eventId: number;
+  eventId: string;
 };
 
-// TODO: 응답 타입 code, data align 필요
 export type EventDetailResponse = {
   eventName: string;
   venue: string;
@@ -10,12 +9,13 @@ export type EventDetailResponse = {
   time: string;
   minAge: number;
   details: string;
-  lineup: {
-    category: string;
-    artist: string;
-    name: string;
-  }[];
+  lineup: Lineup[];
   images: {
     imageUrl: string;
   }[];
+};
+
+export type Lineup = {
+  category: string;
+  artists: { name: string }[];
 };

@@ -32,9 +32,14 @@ instance.interceptors.response.use(
     //   alert("서버에러 발생. 관리자에게 문의해주세요.");
     // }
 
+    console.log("@@@@@@", error);
+    console.log("@@@@@@", error.response?.data);
+
     // 리프레시 토큰 모두 만료시 로그인 페이지로 이동
     if (error.response?.data.code === 40404) {
-      alert("로그인이 필요한 페이지입니다.");
+      if (typeof window !== "undefined") {
+        alert("로그인이 필요한 페이지입니다.");
+      }
     }
 
     // 액세스 토큰 만료
@@ -51,9 +56,13 @@ instance.interceptors.response.use(
         }
 
         return instance(originalRequest);
-      } catch {
-        // 재발급 실패시 로그인 페이지로 이동
-        window.location.href = "/login";
+      } catch (error) {
+        // console.error("@@", error);
+
+        if (typeof window !== "undefined") {
+          // 재발급 실패시 로그인 페이지로 이동
+          window.location.href = "/login";
+        }
       }
     }
 
