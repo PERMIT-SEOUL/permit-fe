@@ -54,12 +54,16 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
     };
   });
 
-  const ticketOptions = eventTicketsData.rounds.flatMap((round) =>
-    round.ticketTypes.map((ticket) => ({
-      value: String(ticket.ticketTypeId),
-      label: `${ticket.ticketTypeName} - ₩ ${ticket.ticketTypePrice}`,
-    })),
-  );
+  const ticketOptions = eventTicketsData.rounds.flatMap((round) => {
+    if (round.roundAvailable) {
+      return round.ticketTypes.map((ticket) => ({
+        value: String(ticket.ticketTypeId),
+        label: `${ticket.ticketTypeName} - ₩ ${ticket.ticketTypePrice}`,
+      }));
+    }
+
+    return [];
+  });
 
   const roundSelect = useSelect({
     initialValue: selectedRoundId?.toString() || "",
