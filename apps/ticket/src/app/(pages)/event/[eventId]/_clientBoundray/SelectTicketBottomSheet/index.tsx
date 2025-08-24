@@ -165,7 +165,7 @@ const SelectTicketBottomSheetContent = ({
 
       await reservationReadyMutateAsync({ ...requestData, orderId });
 
-      router.push(`/order/${orderId}`);
+      window.location.href = `/order/${orderId}`;
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
         // TODO: 토스트나 커스텀 모달로 변경
