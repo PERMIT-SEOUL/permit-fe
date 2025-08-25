@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
 import { Button, Flex, Icon, Select, TextField, Typography } from "@permit/design-system";
@@ -32,8 +31,6 @@ type Props = {
 };
 
 export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
-  const router = useRouter();
-
   const { data: eventTicketsData } = useEventTicketsSuspenseQuery({ eventId });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -161,7 +158,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
   return (
     <div className={cx("wrap")}>
-      <TitleSection eventName={eventName} />
+      <TitleSection eventName={eventName} eventId={eventId} />
 
       <div className={cx("ticket_section")}>
         <Flex className={cx("select_section")} direction="column" gap={12}>
