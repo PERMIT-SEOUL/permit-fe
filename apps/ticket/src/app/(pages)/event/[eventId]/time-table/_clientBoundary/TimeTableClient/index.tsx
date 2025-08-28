@@ -1,10 +1,126 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useIsMobile } from "@permit/design-system/hooks";
 
+import EventDetailModal from "../../_components/EventDetailModal";
 import TimeTableLayout from "../../_components/TimeTableLayout";
+
+const TimeTableClient = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  const isMobile = useIsMobile();
+  // NOTE: 모바일뷰 여부를 SSR 시점에 알 수 없어 기본값(85px)을 사용하고, 클라이언트에서 마운트된 후에만 실제 값 적용
+  // TODO: 모바일여부 확인 가능한지 알아보기
+  const columnWidth = isMounted ? (isMobile ? 85 : 160) : 85;
+
+  const timeSlots = generateTimeSlots(mockData.startDate, mockData.endDate);
+  const areas = mockData.areas.sort((a, b) => a.sequence - b.sequence);
+
+  const [currentTimePosition, setCurrentTimePosition] = useState<number | null>(null);
+
+  // 모달 상태 관리
+  const [selectedBlock, setSelectedBlock] = useState<Block | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const timeColumnRef = useRef<HTMLDivElement>(null);
+  const rightScrollAreaRef = useRef<HTMLDivElement>(null);
+
+  // 블록 클릭 핸들러
+  const handleBlockClick = (block: Block) => {
+    setSelectedBlock(block);
+    setIsModalOpen(true);
+  };
+
+  // 모달 닫기 핸들러
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedBlock(null);
+  };
+
+  // 클라이언트 마운트 감지
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // 현재 시간 위치 업데이트
+  useEffect(() => {
+    const updateCurrentTime = () => {
+      const position = calcCurrentTimeLine(timeSlots);
+
+      setCurrentTimePosition(position);
+    };
+
+    // 초기 설정
+    updateCurrentTime();
+
+    // 1분마다 업데이트
+    const interval = setInterval(updateCurrentTime, 60000);
+
+    return () => clearInterval(interval);
+  }, [timeSlots]);
+
+  // 세로 스크롤 동기화
+  useEffect(() => {
+    const timeColumn = timeColumnRef.current;
+    const rightScrollArea = rightScrollAreaRef.current;
+
+    if (!timeColumn || !rightScrollArea) return;
+
+    const syncScrollFromTimeColumn = () => {
+      rightScrollArea.scrollTop = timeColumn.scrollTop;
+    };
+
+    const syncScrollFromRightArea = () => {
+      timeColumn.scrollTop = rightScrollArea.scrollTop;
+    };
+
+    timeColumn.addEventListener("scroll", syncScrollFromTimeColumn);
+    rightScrollArea.addEventListener("scroll", syncScrollFromRightArea);
+
+    return () => {
+      timeColumn.removeEventListener("scroll", syncScrollFromTimeColumn);
+      rightScrollArea.removeEventListener("scroll", syncScrollFromRightArea);
+    };
+  }, []);
+
+  // 블록 위치 계산된 데이터 준비
+  const blocksWithPosition = mockData.blocks.map((block) => {
+    const { top, height, left } = calcBlockPosition(block, timeSlots, areas, columnWidth);
+    const blockWidth = columnWidth - 20; // 좌우 마진 10px씩 제외
+
+    return {
+      ...block,
+      style: {
+        top,
+        height,
+        left,
+        width: blockWidth,
+        backgroundColor: block.blockColor,
+      },
+    };
+  });
+
+  return (
+    <>
+      <TimeTableLayout
+        timeSlots={timeSlots}
+        areas={areas}
+        blocks={blocksWithPosition}
+        columnWidth={columnWidth}
+        hourHeight={hourHeight}
+        currentTimePosition={currentTimePosition}
+        timeColumnRef={timeColumnRef as React.RefObject<HTMLDivElement>}
+        rightScrollAreaRef={rightScrollAreaRef as React.RefObject<HTMLDivElement>}
+        onBlockClick={handleBlockClick}
+      />
+
+      <EventDetailModal block={selectedBlock} isOpen={isModalOpen} onClose={handleModalClose} />
+    </>
+  );
+};
+
+export default TimeTableClient;
 
 // 실제 응답 예시 데이터
 const mockData = {
@@ -217,95 +333,4 @@ function calcCurrentTimeLine(timeSlots: TimeSlot[]): number | null {
   }
 
   return null;
-}
-
-export default function TimeTableClient() {
-  const [isMounted, setIsMounted] = useState(false);
-  const isMobile = useIsMobile();
-  // SSR 시에는 기본값(85px)을 사용하고, 클라이언트에서 마운트된 후에만 실제 값 적용
-  const columnWidth = isMounted ? (isMobile ? 85 : 160) : 85;
-
-  const timeSlots = generateTimeSlots(mockData.startDate, mockData.endDate);
-  const areas = mockData.areas.sort((a, b) => a.sequence - b.sequence);
-
-  const [currentTimePosition, setCurrentTimePosition] = useState<number | null>(null);
-
-  const timeColumnRef = useRef<HTMLDivElement>(null);
-  const rightScrollAreaRef = useRef<HTMLDivElement>(null);
-
-  // 클라이언트 마운트 감지
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // 현재 시간 위치 업데이트
-  useEffect(() => {
-    const updateCurrentTime = () => {
-      const position = calcCurrentTimeLine(timeSlots);
-
-      setCurrentTimePosition(position);
-    };
-
-    // 초기 설정
-    updateCurrentTime();
-
-    // 1분마다 업데이트
-    const interval = setInterval(updateCurrentTime, 60000);
-
-    return () => clearInterval(interval);
-  }, [timeSlots]);
-
-  // 세로 스크롤 동기화
-  useEffect(() => {
-    const timeColumn = timeColumnRef.current;
-    const rightScrollArea = rightScrollAreaRef.current;
-
-    if (!timeColumn || !rightScrollArea) return;
-
-    const syncScrollFromTimeColumn = () => {
-      rightScrollArea.scrollTop = timeColumn.scrollTop;
-    };
-
-    const syncScrollFromRightArea = () => {
-      timeColumn.scrollTop = rightScrollArea.scrollTop;
-    };
-
-    timeColumn.addEventListener("scroll", syncScrollFromTimeColumn);
-    rightScrollArea.addEventListener("scroll", syncScrollFromRightArea);
-
-    return () => {
-      timeColumn.removeEventListener("scroll", syncScrollFromTimeColumn);
-      rightScrollArea.removeEventListener("scroll", syncScrollFromRightArea);
-    };
-  }, []);
-
-  // 블록 위치 계산된 데이터 준비
-  const blocksWithPosition = mockData.blocks.map((block) => {
-    const { top, height, left } = calcBlockPosition(block, timeSlots, areas, columnWidth);
-    const blockWidth = columnWidth - 20; // 좌우 마진 10px씩 제외
-
-    return {
-      ...block,
-      style: {
-        top,
-        height,
-        left,
-        width: blockWidth,
-        backgroundColor: block.blockColor,
-      },
-    };
-  });
-
-  return (
-    <TimeTableLayout
-      timeSlots={timeSlots}
-      areas={areas}
-      blocks={blocksWithPosition}
-      columnWidth={columnWidth}
-      hourHeight={hourHeight}
-      currentTimePosition={currentTimePosition}
-      timeColumnRef={timeColumnRef as React.RefObject<HTMLDivElement>}
-      rightScrollAreaRef={rightScrollAreaRef as React.RefObject<HTMLDivElement>}
-    />
-  );
 }

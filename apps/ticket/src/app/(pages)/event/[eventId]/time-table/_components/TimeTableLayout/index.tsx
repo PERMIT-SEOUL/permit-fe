@@ -1,11 +1,9 @@
-import React from "react";
 import classNames from "classnames/bind";
 
 import { Area, Block, TimeSlot } from "../../_clientBoundary/TimeTableClient";
 import AreaHeaders from "../AreaHeaders";
 import GridArea from "../GridArea";
 import TimeColumn from "../TimeColumn";
-
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -19,9 +17,10 @@ interface TimeTableLayoutProps {
   currentTimePosition: number | null;
   timeColumnRef: React.RefObject<HTMLDivElement>;
   rightScrollAreaRef: React.RefObject<HTMLDivElement>;
+  onBlockClick?: (block: Block) => void;
 }
 
-export default function TimeTableLayout({
+const TimeTableLayout = ({
   timeSlots,
   areas,
   blocks,
@@ -30,7 +29,8 @@ export default function TimeTableLayout({
   currentTimePosition,
   timeColumnRef,
   rightScrollAreaRef,
-}: TimeTableLayoutProps) {
+  onBlockClick,
+}: TimeTableLayoutProps) => {
   return (
     <div className={cx("timetable_wrapper")}>
       {/* 왼쪽 고정 시간 영역 */}
@@ -59,8 +59,11 @@ export default function TimeTableLayout({
           hourHeight={hourHeight}
           timeSlots={timeSlots}
           currentTimePosition={currentTimePosition}
+          onBlockClick={onBlockClick}
         />
       </div>
     </div>
   );
-}
+};
+
+export default TimeTableLayout;
