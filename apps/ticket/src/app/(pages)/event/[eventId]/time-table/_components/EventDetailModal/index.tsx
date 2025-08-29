@@ -43,10 +43,10 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
   };
 
   return (
-    <div className={cx("modalOverlay")} onClick={handleBackgroundClick}>
-      <div className={cx("modalContent")}>
+    <div className={cx("modal_overlay")} onClick={handleBackgroundClick}>
+      <div className={cx("modal_content")}>
         {/* 닫기 버튼 */}
-        <button className={cx("closeButton")} onClick={onClose} aria-label="모달 닫기">
+        <button className={cx("close_button")} onClick={onClose} aria-label="모달 닫기">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path
               d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z"
@@ -56,16 +56,16 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
         </button>
 
         {/* 모달 내용 */}
-        <div className={cx("modalBody")}>
-          <div className={cx("eventInfo")}>
-            <div className={cx("eventHeader")}>
-              <div className={cx("eventTitleSection")}>
-                <h2 className={cx("eventTitle")}>{block.blockName}</h2>
-                <div className={cx("categoryTag")}>
+        <div className={cx("modal_body")}>
+          <div className={cx("event_info")}>
+            <div className={cx("event_header")}>
+              <div className={cx("event_title_section")}>
+                <h2 className={cx("event_title")}>{block.blockName}</h2>
+                <div className={cx("category_tag")}>
                   <span>category</span>
                 </div>
               </div>
-              <button className={cx("starButton")} aria-label="즐겨찾기">
+              <button className={cx("star_button")} aria-label="즐겨찾기">
                 <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
                   <path
                     d="M12.1191 6.92285L12.2959 7.33887L12.7471 7.37695L18.165 7.83691L14.0488 11.4033L13.707 11.6992L13.8096 12.1406L15.0449 17.4385L10.3877 14.6279L10 14.3936L9.6123 14.6279L4.9541 17.4385L6.19043 12.1406L6.29297 11.6992L5.95117 11.4033L1.83398 7.83691L7.25293 7.37695L7.7041 7.33887L7.88086 6.92285L10 1.92188L12.1191 6.92285Z"
@@ -78,9 +78,9 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
               </button>
             </div>
 
-            <div className={cx("eventDetails")}>
-              <div className={cx("timeAndPlace")}>
-                <div className={cx("timeInfo")}>
+            <div className={cx("event_details")}>
+              <div className={cx("time_and_place")}>
+                <div className={cx("time_info")}>
                   <span>
                     {block.blockStartDate} ~ {block.blockEndDate}
                   </span>
@@ -94,9 +94,9 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
                 </p>
               </div>
 
-              <div className={cx("artistInfo")}>
-                <span className={cx("artistLabel")}>아티스트 url</span>
-                <a href="#" className={cx("artistLink")}>
+              <div className={cx("artist_info")}>
+                <span className={cx("artist_label")}>아티스트 url</span>
+                <a href="#" className={cx("artist_link")}>
                   아티스트 url 링크
                 </a>
               </div>
@@ -104,8 +104,8 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
           </div>
 
           {/* 이미지 플레이스홀더 */}
-          <div className={cx("eventImage")}>
-            <div className={cx("imagePlaceholder")}>{/* 실제 이미지가 있다면 여기에 추가 */}</div>
+          <div className={cx("event_image")}>
+            <div className={cx("image_placeholder")}>{/* 실제 이미지가 있다면 여기에 추가 */}</div>
           </div>
         </div>
       </div>

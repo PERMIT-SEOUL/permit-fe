@@ -1,6 +1,6 @@
 @use "@permit/design-system/styles/variables" as theme;
 
-.modalOverlay {
+.modal_overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -18,7 +18,7 @@
   }
 }
 
-.modalContent {
+.modal_content {
   position: relative;
   width: 100%;
   max-width: 641px;
@@ -50,7 +50,7 @@
   }
 }
 
-.closeButton {
+.close_button {
   position: absolute;
   top: 0;
   right: 0;
@@ -72,7 +72,7 @@
   }
 }
 
-.modalBody {
+.modal_body {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -84,27 +84,27 @@
   }
 }
 
-.eventInfo {
+.event_info {
   display: flex;
   flex-direction: column;
   gap: 26px;
 }
 
-.eventHeader {
+.event_header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
 }
 
-.eventTitleSection {
+.event_title_section {
   display: flex;
   flex: 1;
   flex-direction: column;
   gap: 16px;
 }
 
-.eventTitle {
+.event_title {
   max-width: 305px;
   margin: 0;
 
@@ -121,7 +121,7 @@
   }
 }
 
-.categoryTag {
+.category_tag {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +140,7 @@
   }
 }
 
-.starButton {
+.star_button {
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -159,19 +159,19 @@
   }
 }
 
-.eventDetails {
+.event_details {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.timeAndPlace {
+.time_and_place {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
-.timeInfo {
+.time_info {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -218,14 +218,14 @@
   }
 }
 
-.artistInfo {
+.artist_info {
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: fit-content;
 }
 
-.artistLabel {
+.artist_label {
   color: #525252;
   font-size: 14px;
   font-family: Roboto, "Noto Sans KR", sans-serif;
@@ -236,7 +236,7 @@
   }
 }
 
-.artistLink {
+.artist_link {
   color: #f5f5f5;
   font-size: 14px;
   font-family: Roboto, "Noto Sans KR", sans-serif;
@@ -252,11 +252,11 @@
   }
 }
 
-.eventImage {
+.event_image {
   width: 100%;
 }
 
-.imagePlaceholder {
+.image_placeholder {
   width: 100%;
   height: 441px;
 
