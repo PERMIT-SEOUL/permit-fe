@@ -3,19 +3,26 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useIsMobile } from "@permit/design-system/hooks";
+import { useTimetablesSuspenseQuery } from "@/data/events/getTimetables/queries";
 
 import EventDetailModal from "../../_components/EventDetailModal";
 import TimeTableLayout from "../../_components/TimeTableLayout";
 
-const TimeTableClient = () => {
+type Props = {
+  eventId: string;
+};
+
+const TimeTableClient = ({ eventId }: Props) => {
   const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
   // NOTE: 모바일뷰 여부를 SSR 시점에 알 수 없어 기본값(85px)을 사용하고, 클라이언트에서 마운트된 후에만 실제 값 적용
   // TODO: 모바일여부 확인 가능한지 알아보기
   const columnWidth = isMounted ? (isMobile ? 85 : 160) : 85;
 
-  const timeSlots = generateTimeSlots(mockData.startDate, mockData.endDate);
-  const areas = mockData.areas.sort((a, b) => a.sequence - b.sequence);
+  const { data: timetables } = useTimetablesSuspenseQuery({ eventId });
+
+  const timeSlots = generateTimeSlots(timetables.startDate, timetables.endDate);
+  const areas = timetables.areas.sort((a, b) => a.sequence - b.sequence);
 
   const [currentTimePosition, setCurrentTimePosition] = useState<number | null>(null);
 
