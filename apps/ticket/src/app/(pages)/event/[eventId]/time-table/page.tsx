@@ -4,7 +4,7 @@ import { timetablesOptions } from "@/data/events/getTimetables/queries";
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
-import TimeTableClient from "./_clientBoundary/TimeTableClient";
+import { TimeTableClient } from "./_clientBoundary/TimeTableClient";
 
 type Props = {
   params: Promise<{ eventId: string }>;

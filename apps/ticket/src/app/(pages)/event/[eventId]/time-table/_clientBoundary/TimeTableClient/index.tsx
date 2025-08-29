@@ -12,7 +12,7 @@ type Props = {
   eventId: string;
 };
 
-const TimeTableClient = ({ eventId }: Props) => {
+export const TimeTableClient = ({ eventId }: Props) => {
   const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
   // NOTE: 모바일뷰 여부를 SSR 시점에 알 수 없어 기본값(85px)을 사용하고, 클라이언트에서 마운트된 후에만 실제 값 적용
@@ -126,8 +126,6 @@ const TimeTableClient = ({ eventId }: Props) => {
     </>
   );
 };
-
-export default TimeTableClient;
 
 // 실제 응답 예시 데이터
 const mockData = {
