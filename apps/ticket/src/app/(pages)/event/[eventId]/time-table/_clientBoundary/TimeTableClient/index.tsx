@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@permit/design-system/hooks";
 import { useTimetablesSuspenseQuery } from "@/data/events/getTimetables/queries";
 
-import EventDetailModal from "../../_components/EventDetailModal";
-import TimeTableLayout from "../../_components/TimeTableLayout";
+import { EventDetailModal } from "../../_components/EventDetailModal";
+import { TimeTableLayout } from "../../_components/TimeTableLayout";
 
 type Props = {
   eventId: string;

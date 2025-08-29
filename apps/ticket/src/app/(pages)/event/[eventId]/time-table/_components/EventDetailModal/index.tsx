@@ -1,5 +1,9 @@
 import { useEffect } from "react";
+import Image from "next/image";
 import classNames from "classnames/bind";
+
+import { useTimetableDetailQuery } from "@/data/events/getTimetableDetail/queries";
+import { TimetableDetail } from "@/data/events/getTimetableDetail/types";
 
 import { Block } from "../../_clientBoundary/TimeTableClient";
 import styles from "./index.module.scss";
@@ -12,7 +16,11 @@ type EventDetailModalProps = {
   onClose: () => void;
 };
 
-const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => {
+export const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => {
+  const { data: timetableDetail, isLoading } = useTimetableDetailQuery({
+    blockId: block?.blockId as string,
+  });
+
   // ESC 키로 모달 닫기
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -33,7 +41,8 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen || !block) return null;
+  // TODO: is loading vs isPending?
+  if (!isOpen || !timetableDetail || isLoading) return null;
 
   // 배경 클릭 시 모달 닫기
   const handleBackgroundClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -60,17 +69,23 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
           <div className={cx("event_info")}>
             <div className={cx("event_header")}>
               <div className={cx("event_title_section")}>
-                <h2 className={cx("event_title")}>{block.blockName}</h2>
-                <div className={cx("category_tag")}>
-                  <span>category</span>
+                <h2 className={cx("event_title")}>{timetableDetail.blockName}</h2>
+                <div
+                  className={cx("category_tag")}
+                  style={{
+                    backgroundColor: `${timetableDetail.categoryColor}66`,
+                    borderColor: timetableDetail.categoryColor,
+                  }}
+                >
+                  <span>{timetableDetail.blockCategory}</span>
                 </div>
               </div>
               <button className={cx("star_button")} aria-label="즐겨찾기">
                 <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
                   <path
                     d="M12.1191 6.92285L12.2959 7.33887L12.7471 7.37695L18.165 7.83691L14.0488 11.4033L13.707 11.6992L13.8096 12.1406L15.0449 17.4385L10.3877 14.6279L10 14.3936L9.6123 14.6279L4.9541 17.4385L6.19043 12.1406L6.29297 11.6992L5.95117 11.4033L1.83398 7.83691L7.25293 7.37695L7.7041 7.33887L7.88086 6.92285L10 1.92188L12.1191 6.92285Z"
-                    fill={block.isUserLiked ? "currentColor" : "transparent"}
-                    fillOpacity={block.isUserLiked ? "1" : "0.1"}
+                    fill={timetableDetail.isLiked ? "currentColor" : "transparent"}
+                    fillOpacity={timetableDetail.isLiked ? "1" : "0.1"}
                     stroke="currentColor"
                     strokeWidth="1.5"
                   />
@@ -81,23 +96,20 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
             <div className={cx("event_details")}>
               <div className={cx("time_and_place")}>
                 <div className={cx("time_info")}>
-                  <span>
-                    {block.blockStartDate} ~ {block.blockEndDate}
-                  </span>
-                  <div className={cx("divider")} />
-                  <span>Place</span>
+                  <span>{timetableDetail.area}</span>
                 </div>
-                <p className={cx("description")}>
-                  소개글 가나다라마바사 아자차카타파하 소개글 가나다라마바사 아자차카타파하 소개글
-                  가나다라마바사 아자차카타파하소개글 가나다라마바사 아자차카타파하 소개글
-                  가나다라마바사 아자차카타파하 소개글 가나다라마바사 아자차카타파하
-                </p>
+                <p className={cx("description")}>{timetableDetail.information}</p>
               </div>
 
               <div className={cx("artist_info")}>
-                <span className={cx("artist_label")}>아티스트 url</span>
-                <a href="#" className={cx("artist_link")}>
-                  아티스트 url 링크
+                <span className={cx("artist_label")}>자세히 보기</span>
+                <a
+                  href={timetableDetail.blockInfoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cx("artist_link")}
+                >
+                  {timetableDetail.blockInfoUrl}
                 </a>
               </div>
             </div>
@@ -105,7 +117,18 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
 
           {/* 이미지 플레이스홀더 */}
           <div className={cx("event_image")}>
-            <div className={cx("image_placeholder")}>{/* 실제 이미지가 있다면 여기에 추가 */}</div>
+            {timetableDetail.imageUrl ? (
+              <Image
+                src={timetableDetail.imageUrl}
+                alt={timetableDetail.blockName}
+                width={1200}
+                height={441}
+                style={{ width: "100%", height: "441px", objectFit: "cover", borderRadius: 4 }}
+                priority
+              />
+            ) : (
+              <div className={cx("image_placeholder")} />
+            )}
           </div>
         </div>
       </div>
@@ -113,4 +136,15 @@ const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => 
   );
 };
 
-export default EventDetailModal;
+// 실제 요청 로직 자리
+// TODO: block의 식별자(ID)가 있다면 이를 사용해 fetch
+const mock: TimetableDetail = {
+  blockName: "아티스트1",
+  blockCategory: "카테고리1",
+  categoryColor: "#600123",
+  isLiked: false,
+  information: "소개글소개글소개글",
+  area: "장소1",
+  imageUrl: "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/images4.webp",
+  blockInfoUrl: "https://naver.com",
+};

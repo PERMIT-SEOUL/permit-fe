@@ -20,7 +20,7 @@ type TimeTableLayoutProps = {
   onBlockClick?: (block: Block) => void;
 };
 
-const TimeTableLayout = ({
+export const TimeTableLayout = ({
   timeSlots,
   areas,
   blocks,
@@ -65,5 +65,3 @@ const TimeTableLayout = ({
     </div>
   );
 };
-
-export default TimeTableLayout;
