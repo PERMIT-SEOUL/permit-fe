@@ -25,7 +25,9 @@ export const API_URL = {
     /** 행사 티켓 정보 조회 API */
     TICKETS: "/api/tickets/:eventId",
     /** 행사 타임테이블 정보 조회 API */
-    TIMETABLES: "/api/:eventId/timetables",
+    TIMETABLES: "/api/events/:eventId/timetables",
+    /** 행사 타임테이블 상세 정보 조회 API */
+    TIMETABLE_DETAIL: "/api/events/timetables/:blockId",
   },
 
   // 예매 관련 API
