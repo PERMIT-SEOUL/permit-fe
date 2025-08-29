@@ -1,20 +1,18 @@
-import React from "react";
 import classNames from "classnames/bind";
 
 import { Typography } from "@permit/design-system";
 
 import { Area } from "../../_clientBoundary/TimeTableClient";
-
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-interface AreaHeadersProps {
+type AreaHeadersProps = {
   areas: Area[];
   columnWidth: number;
-}
+};
 
-export default function AreaHeaders({ areas, columnWidth }: AreaHeadersProps) {
+const AreaHeaders = ({ areas, columnWidth }: AreaHeadersProps) => {
   return (
     <div className={cx("area_headers")}>
       {areas.map((area) => (
@@ -29,4 +27,6 @@ export default function AreaHeaders({ areas, columnWidth }: AreaHeadersProps) {
       ))}
     </div>
   );
-}
+};
+
+export default AreaHeaders;

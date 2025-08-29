@@ -8,7 +8,7 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-interface TimeTableLayoutProps {
+type TimeTableLayoutProps = {
   timeSlots: TimeSlot[];
   areas: Area[];
   blocks: Array<Block & { style: React.CSSProperties }>;
@@ -18,7 +18,7 @@ interface TimeTableLayoutProps {
   timeColumnRef: React.RefObject<HTMLDivElement>;
   rightScrollAreaRef: React.RefObject<HTMLDivElement>;
   onBlockClick?: (block: Block) => void;
-}
+};
 
 const TimeTableLayout = ({
   timeSlots,

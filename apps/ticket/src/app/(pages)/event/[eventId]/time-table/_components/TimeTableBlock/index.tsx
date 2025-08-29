@@ -5,10 +5,10 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-interface TimeTableBlockProps {
+type TimeTableBlockProps = {
   block: Block & { style: React.CSSProperties };
   onClick?: (block: Block) => void;
-}
+};
 
 const TimeTableBlock = ({ block, onClick }: TimeTableBlockProps) => {
   const handleClick = () => {

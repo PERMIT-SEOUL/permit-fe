@@ -6,7 +6,7 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-interface GridAreaProps {
+type GridAreaProps = {
   areas: Area[];
   blocks: Array<Block & { style: React.CSSProperties }>;
   columnWidth: number;
@@ -14,7 +14,7 @@ interface GridAreaProps {
   timeSlots: TimeSlot[];
   currentTimePosition: number | null;
   onBlockClick?: (block: Block) => void;
-}
+};
 
 const GridArea = ({
   areas,

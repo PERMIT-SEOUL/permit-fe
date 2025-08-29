@@ -6,11 +6,11 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-interface EventDetailModalProps {
+type EventDetailModalProps = {
   block: Block | null;
   isOpen: boolean;
   onClose: () => void;
-}
+};
 
 const EventDetailModal = ({ block, isOpen, onClose }: EventDetailModalProps) => {
   // ESC 키로 모달 닫기

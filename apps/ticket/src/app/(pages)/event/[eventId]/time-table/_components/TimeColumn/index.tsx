@@ -1,20 +1,19 @@
-import React from "react";
+import { forwardRef } from "react";
 import classNames from "classnames/bind";
 
 import { Typography } from "@permit/design-system";
 
 import { TimeSlot } from "../../_clientBoundary/TimeTableClient";
-
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-interface TimeColumnProps {
+type TimeColumnProps = {
   timeSlots: TimeSlot[];
   currentTimePosition: number | null;
-}
+};
 
-const TimeColumn = React.forwardRef<HTMLDivElement, TimeColumnProps>(
+const TimeColumn = forwardRef<HTMLDivElement, TimeColumnProps>(
   ({ timeSlots, currentTimePosition }, ref) => {
     return (
       <div ref={ref} className={cx("time_column")}>
