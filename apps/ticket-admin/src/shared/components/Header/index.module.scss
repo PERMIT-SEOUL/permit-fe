@@ -8,12 +8,12 @@
 
 .content {
   display: flex;
+  gap: 40px;
   align-items: center;
   box-sizing: border-box;
   width: 100%;
   padding: 40px 40px 20px;
 
-  gap: 40px;
   // Mobile responsive
   @media (max-width: 768px) {
     height: 56px;

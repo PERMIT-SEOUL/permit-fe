@@ -1,8 +1,10 @@
 .container {
   min-height: 100vh;
-  background-color: #000000;
-  color: white;
   padding: 2rem;
+
+  color: white;
+
+  background-color: #000;
 }
 
 .main {
@@ -12,40 +14,47 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 3rem;
   padding-bottom: 1rem;
 }
 
 .table_container {
-  background-color: #000000;
-  border-radius: 0.5rem;
   overflow: hidden;
+
+  background-color: #000;
+  border-radius: 0.5rem;
 }
 
 .guest_table {
   width: 100%;
-  border-collapse: collapse;
-  background-color: #000000;
+
   color: white;
 
+  background-color: #000;
+  border-collapse: collapse;
+
   th {
-    background-color: #000000;
+    padding: 1rem;
+
     color: white;
     font-weight: bold;
     font-size: 1rem;
     text-align: left;
-    padding: 1rem;
-    border-bottom: 1px solid #333;
+
+    background-color: #000;
     border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
   }
 
   td {
     padding: 1rem;
-    border-bottom: 1px solid #333;
-    font-size: 0.9rem;
+
     color: white;
+    font-size: 0.9rem;
+
+    border-bottom: 1px solid #333;
   }
 
   tbody tr {
