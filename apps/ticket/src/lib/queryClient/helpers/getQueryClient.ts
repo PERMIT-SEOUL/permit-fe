@@ -8,6 +8,13 @@ function makeQueryClient() {
     defaultOptions: {
       queries: {
         retry(count: number, error: Error & { digest?: string }): boolean {
+          /** server 에서 prefetch 한 쿼리에서 에러가 발생한 경우 retry 를 수행
+           * retry 는 client 에서 수행하는 것이 목적이므로 서버에선 제외
+           *
+           * (error.message === "redacted"): SSR 타임에 에러 응답까지 내려받은 쿼리
+           *
+           * (typeof error.digest === "string"): CSR 타임에 streaming 응답으로 내려온 쿼리 promise 의 에러
+           */
           const isServerPrefetchError =
             error.message === "redacted" || typeof error.digest === "string";
 
@@ -23,15 +30,15 @@ function makeQueryClient() {
         // include pending queries in dehydration
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) || query.state.status === "pending",
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        shouldRedactErrors: (error) => {
-          // We should not catch Next.js server errors
-          // as that's how Next.js detects dynamic pages
-          // so we cannot redact them.
-          // Next.js also automatically redacts errors for us
-          // with better digests.
-          return false;
-        },
+        // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // shouldRedactErrors: (error) => {
+        //   // We should not catch Next.js server errors
+        //   // as that's how Next.js detects dynamic pages
+        //   // so we cannot redact them.
+        //   // Next.js also automatically redacts errors for us
+        //   // with better digests.
+        //   return false;
+        // },
       },
       mutations: {
         throwOnError: false,
