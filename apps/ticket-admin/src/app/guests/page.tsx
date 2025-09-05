@@ -40,7 +40,7 @@ export default function GuestsPage() {
               </tr>
             </thead>
             <tbody>
-              {mockGuests.map((guest) => (
+              {guestListData.guests.map((guest) => (
                 <tr key={guest.id}>
                   <td>{guest.guestType}</td>
                   <td>{guest.affiliation}</td>
@@ -58,45 +58,3 @@ export default function GuestsPage() {
 }
 
 // Mock data
-const mockGuests = [
-  {
-    id: 1,
-    guestName: "이름",
-    guestType: "VIP",
-    affiliation: "퍼밋소속",
-    phoneNumber: "010-8775-4618",
-    email: "seongjoonkw@naver.com",
-  },
-  {
-    id: 2,
-    guestName: "이름",
-    guestType: "VIP",
-    affiliation: "솝트소속",
-    phoneNumber: "010-1234-4618",
-    email: "aase@naver.com",
-  },
-  {
-    id: 3,
-    guestName: "이름",
-    guestType: "VIP",
-    affiliation: "퍼밋소속",
-    phoneNumber: "010-8775-4618",
-    email: "seongjoonkw@naver.com",
-  },
-  {
-    id: 4,
-    guestName: "이름",
-    guestType: "VIP",
-    affiliation: "솝트소속",
-    phoneNumber: "010-1234-4618",
-    email: "aase@naver.com",
-  },
-  {
-    id: 5,
-    guestName: "이름",
-    guestType: "VIP",
-    affiliation: "퍼밋소속",
-    phoneNumber: "010-8775-4618",
-    email: "seongjoonkw@naver.com",
-  },
-];
