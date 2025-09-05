@@ -10,6 +10,7 @@ const cx = classNames.bind(styles);
 export default function GuestsPage() {
   const { data: guestListData, isLoading } = useGuestListQuery({});
 
+  // TODO: 로딩 컴포넌트 변경
   if (!guestListData || isLoading) {
     return <div>Loading...</div>;
   }
