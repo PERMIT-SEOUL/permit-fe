@@ -43,4 +43,10 @@ export const API_URL = {
     /** 결제 취소 API */
     CANCEL: "/api/payments/cancel",
   },
+
+  // 쿠폰 관련 API
+  COUPON: {
+    /** 할인 쿠폰 검증 API */
+    VALIDATE: "/api/coupons/validate/:eventId",
+  },
 } as const;
