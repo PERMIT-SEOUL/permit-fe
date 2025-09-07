@@ -13,7 +13,7 @@ type Props = {
 /**
  * 타임테이블 페이지
  */
-export const TimeTablePage = async ({ params }: Props) => {
+const TimeTablePage = async ({ params }: Props) => {
   const { eventId } = await params;
 
   const qc = getQueryClient();
