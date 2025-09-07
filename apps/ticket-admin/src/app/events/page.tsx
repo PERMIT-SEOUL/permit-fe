@@ -34,7 +34,9 @@ export default function EventsPage() {
             </Typography>
           </div>
 
-          <Button variant="cta">submit an event</Button>
+          <Link href="/events/create">
+            <Button variant="cta">submit an event</Button>
+          </Link>
         </header>
 
         <header className={cx("header")}>
