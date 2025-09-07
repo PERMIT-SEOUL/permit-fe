@@ -7,10 +7,11 @@ import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import { EventListClient } from "./_clientBoundary/EventListClient";
 
-const HomePage = () => {
+const HomePage = async () => {
   const qc = getQueryClient();
 
-  qc.prefetchQuery(eventsOptions());
+  // TODO: 서버사이드에서 오류 확인 후 await 제거
+  await qc.prefetchQuery(eventsOptions());
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
