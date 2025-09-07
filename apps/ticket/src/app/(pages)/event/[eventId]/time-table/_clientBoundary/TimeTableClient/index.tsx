@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useIsMobile } from "@permit/design-system/hooks";
 import { useTimetablesSuspenseQuery } from "@/data/events/getTimetables/queries";
 
-import { EventDetailModal } from "../../_components/EventDetailModal";
+import { TimeTableDetailModal } from "../../_components/TimeTableDetailModal";
 import { TimeTableLayout } from "../../_components/TimeTableLayout";
 
 type Props = {
@@ -21,8 +21,15 @@ export const TimeTableClient = ({ eventId }: Props) => {
 
   const { data: timetables } = useTimetablesSuspenseQuery({ eventId });
 
-  const timeSlots = generateTimeSlots(timetables.startDate, timetables.endDate);
-  const areas = timetables.areas.sort((a, b) => a.sequence - b.sequence);
+  const timeSlots = useMemo(
+    () => generateTimeSlots(timetables.startDate, timetables.endDate),
+    [timetables.startDate, timetables.endDate],
+  );
+
+  const areas = useMemo(
+    () => timetables.areas.sort((a, b) => a.sequence - b.sequence),
+    [timetables.areas],
+  );
 
   const [currentTimePosition, setCurrentTimePosition] = useState<number | null>(null);
 
@@ -92,7 +99,7 @@ export const TimeTableClient = ({ eventId }: Props) => {
   }, []);
 
   // 블록 위치 계산된 데이터 준비
-  const blocksWithPosition = mockData.blocks.map((block) => {
+  const blocksWithPosition = timetables.blocks.map((block) => {
     const { top, height, left } = calcBlockPosition(block, timeSlots, areas, columnWidth);
     const blockWidth = columnWidth - 20; // 좌우 마진 10px씩 제외
 
@@ -122,99 +129,15 @@ export const TimeTableClient = ({ eventId }: Props) => {
         onBlockClick={handleBlockClick}
       />
 
-      <EventDetailModal block={selectedBlock} isOpen={isModalOpen} onClose={handleModalClose} />
+      {isModalOpen && (
+        <TimeTableDetailModal
+          block={selectedBlock}
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        />
+      )}
     </>
   );
-};
-
-// 실제 응답 예시 데이터
-const mockData = {
-  startDate: "2025.08.26 00:00",
-  endDate: "2025.08.27 18:00",
-  areas: [
-    {
-      areaId: 1,
-      areaName: "장소1",
-      sequence: 0,
-    },
-    {
-      areaId: 2,
-      areaName: "장소2",
-      sequence: 1,
-    },
-    {
-      areaId: 3,
-      areaName: "장소3",
-      sequence: 2,
-    },
-    {
-      areaId: 4,
-      areaName: "장소4",
-      sequence: 3,
-    },
-    {
-      areaId: 5,
-      areaName: "장소5",
-      sequence: 4,
-    },
-    {
-      areaId: 6,
-      areaName: "장소6",
-      sequence: 5,
-    },
-    {
-      areaId: 7,
-      areaName: "장소7",
-      sequence: 6,
-    },
-  ],
-  blocks: [
-    {
-      blockId: "O0KWMgAk",
-      blockName: "아티스트1",
-      blockColor: "#600123",
-      blockStartDate: "2025.08.26 15:00",
-      blockEndDate: "2025.08.26 16:00",
-      blockAreaId: 1,
-      isUserLiked: true,
-    },
-    {
-      blockId: "z3g3PbR0",
-      blockName: "아티스트3",
-      blockColor: "#123123",
-      blockStartDate: "2025.08.26 15:00",
-      blockEndDate: "2025.08.26 16:30",
-      blockAreaId: 3,
-      isUserLiked: false,
-    },
-    {
-      blockId: "7zbQ5b80",
-      blockName: "아티스트2",
-      blockColor: "#600123",
-      blockStartDate: "2025.08.26 15:30",
-      blockEndDate: "2025.08.26 16:30",
-      blockAreaId: 2,
-      isUserLiked: false,
-    },
-    {
-      blockId: "n5KdyNza",
-      blockName: "아티스트5",
-      blockColor: "#111111",
-      blockStartDate: "2025.08.26 17:30",
-      blockEndDate: "2025.08.26 18:20",
-      blockAreaId: 1,
-      isUserLiked: false,
-    },
-    {
-      blockId: "7MNP6be8",
-      blockName: "요가",
-      blockColor: "#123123",
-      blockStartDate: "2025.08.26 19:00",
-      blockEndDate: "2025.08.26 21:30",
-      blockAreaId: 3,
-      isUserLiked: false,
-    },
-  ],
 };
 
 const hourHeight = 50; // px per hour
