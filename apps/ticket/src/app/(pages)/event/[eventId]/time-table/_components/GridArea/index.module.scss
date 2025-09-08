@@ -1,0 +1,22 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.grid_area {
+  position: relative;
+  flex: 1;
+  min-width: max-content;
+}
+
+.grid_column {
+  position: absolute;
+}
+
+.current_time_line {
+  position: absolute;
+  left: 0;
+  z-index: 4;
+  height: 2px;
+
+  background-color: #f00;
+
+  pointer-events: none;
+}

@@ -4,6 +4,10 @@
   width: 100%;
 
   background-color: theme.$black;
+
+  &.is_time_table_page {
+    display: none;
+  }
 }
 
 .content {

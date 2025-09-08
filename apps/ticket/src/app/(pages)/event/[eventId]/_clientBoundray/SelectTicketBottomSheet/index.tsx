@@ -152,9 +152,9 @@ const SelectTicketBottomSheetContent = ({
     try {
       const orderId = generateRandomString();
 
-      // TODO: 프로모션 코드 로직 추가
+      // TODO: 쿠폰 관련해서........... 하나를 적용완료하면 다른 건 클릭을 못하게? => 클릭 금지 상태 추가?
+      // TODO: totalPrice 보여주는 부분 수정하기.................
       const requestData = {
-        // TODO: 변경
         eventId,
         totalAmount: calculateTotalPrice(selectedTickets),
         ticketTypeInfos: selectedTickets.map((ticket) => ({
@@ -165,7 +165,7 @@ const SelectTicketBottomSheetContent = ({
 
       await reservationReadyMutateAsync({ ...requestData, orderId });
 
-      router.push(`/order/${orderId}`);
+      window.location.href = `/order/${orderId}`;
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
         // TODO: 토스트나 커스텀 모달로 변경

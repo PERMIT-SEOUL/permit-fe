@@ -7,7 +7,7 @@ import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import { EventListClient } from "./_clientBoundary/EventListClient";
 
-const HomePage = () => {
+const HomePage = async () => {
   const qc = getQueryClient();
 
   qc.prefetchQuery(eventsOptions());

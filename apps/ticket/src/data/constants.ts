@@ -24,6 +24,10 @@ export const API_URL = {
     DETAIL: "/api/events/detail/:eventId",
     /** 행사 티켓 정보 조회 API */
     TICKETS: "/api/tickets/:eventId",
+    /** 행사 타임테이블 정보 조회 API */
+    TIMETABLES: "/api/events/:eventId/timetables",
+    /** 행사 타임테이블 상세 정보 조회 API */
+    TIMETABLE_DETAIL: "/api/events/timetables/:blockId",
   },
 
   // 예매 관련 API
@@ -38,5 +42,11 @@ export const API_URL = {
     CONFIRM: "/api/payments/confirm",
     /** 결제 취소 API */
     CANCEL: "/api/payments/cancel",
+  },
+
+  // 쿠폰 관련 API
+  COUPON: {
+    /** 할인 쿠폰 검증 API */
+    VALIDATE: "/api/coupons/validate/:eventId",
   },
 } as const;

@@ -44,6 +44,15 @@
   > div {
     background-color: theme.$gray-700;
   }
+
+  // iOS <input> 포커스 때 화면이 “확대(줌)”되는 현상 방지
+
+  input {
+    font-size: 16px;
+
+    transform: scale(0.875); /* 14/16 = 0.875 */
+    transform-origin: left center;
+  }
 }
 
 .count_button {

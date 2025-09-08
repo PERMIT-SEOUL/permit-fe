@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
 import { Button, Flex, Icon, Select, TextField, Typography } from "@permit/design-system";
-import { useDebounce, useSelect } from "@permit/design-system/hooks";
+import { useDebounce, useSelect, useTextField } from "@permit/design-system/hooks";
+import { useCouponValidateMutation } from "@/data/coupon/postCouponValidate/mutation";
 import { useEventTicketsSuspenseQuery } from "@/data/events/getEventTickets/queries";
 import { useReservationReadyMutation } from "@/data/reservations/postReservationReady/mutation";
 import { generateRandomString } from "@/shared/helpers/generateRandomString";
@@ -32,8 +32,6 @@ type Props = {
 };
 
 export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
-  const router = useRouter();
-
   const { data: eventTicketsData } = useEventTicketsSuspenseQuery({ eventId });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -43,8 +41,10 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
   );
   const [selectedTickets, setSelectedTickets] = useState<SelectedTicket[]>([]);
   const [isPromocodeOpen, setIsPromocodeOpen] = useState(false);
+  const [couponVerified, setCouponVerified] = useState(false);
 
   const { mutateAsync: reservationReadyMutateAsync } = useReservationReadyMutation();
+  const { mutateAsync: couponValidateMutateAsync } = useCouponValidateMutation(eventId);
 
   const roundOptions = eventTicketsData.rounds.map((round) => {
     return {
@@ -104,6 +104,16 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
     },
   });
 
+  const couponCodeField = useTextField({
+    initialValue: "",
+    validate: () => {
+      if (selectedTickets.length !== 1) return "Please select only one ticket.";
+
+      return undefined;
+    },
+  });
+
+  // TODO: 훅으로 분리하면 좋을 듯.......
   const handleTicketCountChange = (ticketTypeId: number, change: number) => {
     setSelectedTickets((prev) =>
       prev.map((ticket) => {
@@ -125,6 +135,32 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
     setSelectedTickets((prev) => prev.filter((ticket) => ticket.ticketTypeId !== ticketTypeId));
   };
 
+  const handleCouponValidate = useDebounce(async () => {
+    const isCouponCodeValid = couponCodeField.validateValue();
+
+    if (!isCouponCodeValid) {
+      return;
+    }
+
+    const couponCode = couponCodeField.value;
+
+    try {
+      const { discountRate } = await couponValidateMutateAsync({ couponCode });
+
+      setCouponVerified(true);
+
+      // const discountedPrice = totalPrice * (1 - discountRate / 100);
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        const errorMessage = "Invalid promotion code.";
+
+        couponCodeField.setError(errorMessage);
+
+        // couponCodeField.setError(error.message);
+      }
+    }
+  }, 500);
+
   const handleBuyTicket = useDebounce(async () => {
     setIsLoading(true);
 
@@ -135,10 +171,12 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
     try {
       const orderId = generateRandomString();
 
-      // TODO: 프로모션 코드 로직 추가
+      // TODO: 쿠폰 관련해서........... 하나를 적용완료하면 다른 건 클릭을 못하게? => 클릭 금지 상태 추가?
+      // TODO: totalPrice 보여주는 부분 수정하기.................
       const requestData = {
         eventId: eventId,
         totalAmount: calculateTotalPrice(selectedTickets),
+        couponCode: couponCodeField.value,
         ticketTypeInfos: selectedTickets.map((ticket) => ({
           id: ticket.ticketTypeId,
           count: ticket.count,
@@ -147,7 +185,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
       await reservationReadyMutateAsync({ ...requestData, orderId });
 
-      router.push(`/order/${orderId}`);
+      window.location.href = `/order/${orderId}`;
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
         // TODO: 토스트나 커스텀 모달로 변경
@@ -161,7 +199,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
   return (
     <div className={cx("wrap")}>
-      <TitleSection eventName={eventName} />
+      <TitleSection eventName={eventName} eventId={eventId} />
 
       <div className={cx("ticket_section")}>
         <Flex className={cx("select_section")} direction="column" gap={12}>
@@ -203,13 +241,12 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
                         className={cx("promo_code_input")}
                         fullWidth
                         placeholder="promotion code"
+                        value={couponCodeField.value}
+                        onChange={couponCodeField.handleChange}
+                        error={couponCodeField.error}
+                        disabled={couponVerified}
                       />
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          // TODO: 할인 적용 로직 추가
-                        }}
-                      >
+                      <Button variant="secondary" onClick={handleCouponValidate}>
                         Confirm
                       </Button>
                     </Flex>

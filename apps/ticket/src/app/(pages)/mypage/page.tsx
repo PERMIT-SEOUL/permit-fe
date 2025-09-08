@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 /**
  * 마이페이지
  */
-const MyPage = () => {
+const MyPage = async () => {
   const qc = getQueryClient();
 
   qc.prefetchQuery(userInfoOptions());

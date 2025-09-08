@@ -26,7 +26,7 @@ export const EventDetailClient = ({ eventId }: Props) => {
       <Flex justify="center">
         <div className={cx("content")}>
           <div className={cx("mobile_title_section")}>
-            <TitleSection eventName={eventDetailData.eventName} />
+            <TitleSection eventName={eventDetailData.eventName} eventId={eventId} />
           </div>
 
           <ImageCarouselClient images={eventDetailData.images} />
