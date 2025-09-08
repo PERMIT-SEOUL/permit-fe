@@ -49,7 +49,7 @@ export const Select = ({
   onClick,
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
