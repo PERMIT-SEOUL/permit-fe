@@ -35,6 +35,11 @@ export const nextJsConfig = [
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs["core-web-vitals"].rules,
     },
+    settings: {
+      next: {
+        rootDir: ".",
+      },
+    },
   },
   {
     plugins: {

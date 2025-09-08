@@ -1,11 +1,11 @@
 "use client";
 
-import classNames from "classnames/bind";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import classNames from "classnames/bind";
 import permitLogo from "public/assets/png/permit_logo.png";
-import { useEffect, useState } from "react";
 
 import { Typography } from "@permit/design-system";
 

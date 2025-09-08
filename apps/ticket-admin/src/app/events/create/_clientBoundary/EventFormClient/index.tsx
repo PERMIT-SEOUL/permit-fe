@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { EventFormLayout } from "../../_components/EventFormLayout";
+
 import { useSelect, useTextField } from "@permit/design-system/hooks";
+
+import { EventFormLayout } from "../../_components/EventFormLayout";
 
 export type EventFormData = {
   eventExposureStartDate: string;
@@ -83,6 +85,7 @@ export function EventFormClient() {
       if (!value.trim()) return "이벤트 노출 시작 시간을 입력해주세요.";
 
       const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
       if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
@@ -101,6 +104,7 @@ export function EventFormClient() {
       if (!value.trim()) return "이벤트 노출 종료 시간을 입력해주세요.";
 
       const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
       if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
@@ -179,6 +183,7 @@ export function EventFormClient() {
       if (!value.trim()) return "이벤트 노출 시작 시간을 입력해주세요.";
 
       const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
       if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
@@ -197,6 +202,7 @@ export function EventFormClient() {
       if (!value.trim()) return "이벤트 노출 종료 시간을 입력해주세요.";
 
       const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
       if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;

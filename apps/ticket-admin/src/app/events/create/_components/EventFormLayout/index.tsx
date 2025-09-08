@@ -1,8 +1,10 @@
-import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
 import classNames from "classnames/bind";
+
+import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
+
+import { UseTextFieldReturn } from "../../../../../../../../packages/design-system/src/hooks/useTextField";
 import { EventFormData } from "../../_clientBoundary/EventFormClient";
 import styles from "./index.module.scss";
-import { UseTextFieldReturn } from "../../../../../../../../packages/design-system/src/hooks/useTextField";
 
 const cx = classNames.bind(styles);
 

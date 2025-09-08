@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@/styles/globals.scss";
-import { Header } from "@/shared/components/Header";
+
 import { QueryClientProviders } from "@/lib/queryClient/clientBoundary/QueryClientProvider";
+import { Header } from "@/shared/components/Header";
+
+import "@/styles/globals.scss";
 
 export const metadata: Metadata = {
   title: "Ticket Admin",
