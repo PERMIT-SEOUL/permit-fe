@@ -10,8 +10,7 @@ import { EventListClient } from "./_clientBoundary/EventListClient";
 const HomePage = async () => {
   const qc = getQueryClient();
 
-  // TODO: 서버사이드에서 오류 확인 후 await 제거
-  await qc.prefetchQuery(eventsOptions());
+  qc.prefetchQuery(eventsOptions());
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>

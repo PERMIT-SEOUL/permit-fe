@@ -18,7 +18,7 @@ const TimeTablePage = async ({ params }: Props) => {
 
   const qc = getQueryClient();
 
-  await qc.prefetchQuery(timetablesOptions({ eventId }));
+  qc.prefetchQuery(timetablesOptions({ eventId }));
 
   return (
     <Suspense fallback={<LoadingWithLayout />}>

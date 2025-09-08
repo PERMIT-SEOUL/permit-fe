@@ -21,8 +21,8 @@ export const dynamic = "force-dynamic";
 const MyPage = async () => {
   const qc = getQueryClient();
 
-  await qc.prefetchQuery(userInfoOptions());
-  await qc.prefetchQuery(userTicketsOptions());
+  qc.prefetchQuery(userInfoOptions());
+  qc.prefetchQuery(userTicketsOptions());
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
