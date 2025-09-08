@@ -57,7 +57,7 @@
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  margin-top: 72px;
+  margin: 72px 0 120px;
 }
 
 .row {
@@ -71,7 +71,7 @@
   left: 0;
   display: flex;
   justify-content: flex-end;
-  padding: 12px 160px 12px 0;
+  padding: 12px 160px;
 
   background-color: theme.$gray-800;
   box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
@@ -79,5 +79,7 @@
 }
 
 .button {
+  padding: 0 100px;
+
   @include typography.body-bold-14;
 }

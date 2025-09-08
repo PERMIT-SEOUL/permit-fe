@@ -62,243 +62,243 @@ export function EventFormLayout({
   minAgeField,
 }: EventFormLayoutProps) {
   return (
-    <div className={cx("container")}>
-      {/* Sidebar */}
-      <div className={cx("sidebar")}>
-        <div className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
-          <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
-          <span className={cx("sidebar_text", currentStep === "basic" && "active")}>Add Basic</span>
+    <>
+      <div className={cx("container")}>
+        {/* Sidebar */}
+        <div className={cx("sidebar")}>
+          <div className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
+            <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
+            <span className={cx("sidebar_text", currentStep === "basic" && "active")}>
+              Add Basic
+            </span>
+          </div>
+          <div className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
+            <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
+            <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>
+              Add Ticket
+            </span>
+          </div>
         </div>
-        <div className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
-          <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
-          <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>
-            Add Ticket
-          </span>
+
+        {/* Main */}
+        <div className={cx("main")}>
+          {currentStep === "basic" && (
+            <>
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure Start Date
+                  </Typography>
+                  <Select
+                    type="calendar"
+                    placeholder="노출 시작 날짜를 선택해주세요"
+                    {...eventExposureStartDateField}
+                  />
+                </Flex>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure End Date
+                  </Typography>
+                  <Select
+                    type="calendar"
+                    placeholder="노출 종료 날짜를 선택해주세요"
+                    {...eventExposureEndDateField}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure Start Time
+                  </Typography>
+                  <TextField
+                    placeholder="이벤트 노출 시작 시간을 입력해주세요 (hh:mm:ss)"
+                    value={eventExposureStartTimeField.value}
+                    onChange={eventExposureStartTimeField.handleChange}
+                    error={eventExposureStartTimeField.error}
+                  />
+                </Flex>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure End Time
+                  </Typography>
+                  <TextField
+                    placeholder="이벤트 노출 종료 시간을 입력해주세요 (hh:mm:ss)"
+                    value={eventExposureEndTimeField.value}
+                    onChange={eventExposureEndTimeField.handleChange}
+                    error={eventExposureEndTimeField.error}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Event Verification Code
+                  </Typography>
+                  <TextField
+                    placeholder="입장 코드를 입력해주세요"
+                    value={eventVerificationCodeField.value}
+                    onChange={eventVerificationCodeField.handleChange}
+                    error={eventVerificationCodeField.error}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Event Name
+                  </Typography>
+                  <TextField
+                    placeholder="이벤트 이름을 입력해주세요"
+                    value={eventNameField.value}
+                    onChange={eventNameField.handleChange}
+                    error={eventNameField.error}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Start Date
+                  </Typography>
+                  <Select
+                    type="calendar"
+                    placeholder="이벤트 시작 날짜를 선택해주세요"
+                    {...eventStartDateField}
+                  />
+                </Flex>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    End Date
+                  </Typography>
+                  <Select
+                    type="calendar"
+                    placeholder="이벤트 종료 날짜를 선택해주세요"
+                    {...eventEndDateField}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Start Time
+                  </Typography>
+                  <TextField
+                    placeholder="이벤트 시작 시간을 입력해주세요 (hh:mm:ss)"
+                    value={eventStartTimeField.value}
+                    onChange={eventStartTimeField.handleChange}
+                    error={eventStartTimeField.error}
+                  />
+                </Flex>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    End Time
+                  </Typography>
+                  <TextField
+                    placeholder="이벤트 종료 시간을 입력해주세요 (hh:mm:ss)"
+                    value={eventEndTimeField.value}
+                    onChange={eventEndTimeField.handleChange}
+                    error={eventEndTimeField.error}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Venue
+                  </Typography>
+                  <TextField
+                    placeholder="장소를 입력해주세요"
+                    value={venueField.value}
+                    onChange={venueField.handleChange}
+                    error={venueField.error}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Lineup
+                  </Typography>
+                  <TextField
+                    multiline
+                    rows={6}
+                    placeholder="라인업을 입력해주세요"
+                    value={lineupField.value}
+                    onChange={lineupField.handleChange}
+                    error={lineupField.error}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Details
+                  </Typography>
+                  <TextField
+                    multiline
+                    rows={6}
+                    placeholder="상세 내용을 입력해주세요"
+                    value={detailsField.value}
+                    onChange={detailsField.handleChange}
+                    error={detailsField.error}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Image
+                  </Typography>
+                  <TextField
+                    className={cx("textarea")}
+                    multiline
+                    rows={3}
+                    placeholder="이미지를 업로드하거나 URL을 입력해주세요"
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Min Age
+                  </Typography>
+                  <TextField
+                    className={cx("textarea")}
+                    multiline
+                    rows={3}
+                    placeholder="최소 나이를 입력해주세요"
+                    value={minAgeField.value}
+                    onChange={minAgeField.handleChange}
+                    error={minAgeField.error}
+                  />
+                </Flex>
+              </Flex>
+            </>
+          )}
+          {currentStep === "ticket" && (
+            <>
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Ticket Name
+                  </Typography>
+                  <TextField />
+                </Flex>
+              </Flex>
+            </>
+          )}
         </div>
-      </div>
-
-      {/* Main */}
-      <div className={cx("main")}>
-        {currentStep === "basic" && (
-          <>
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Exposure Start Date
-                </Typography>
-                <Select
-                  type="calendar"
-                  placeholder="노출 시작 날짜를 선택해주세요"
-                  {...eventExposureStartDateField}
-                />
-              </Flex>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Exposure End Date
-                </Typography>
-                <Select
-                  type="calendar"
-                  placeholder="노출 종료 날짜를 선택해주세요"
-                  {...eventExposureEndDateField}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Exposure Start Time
-                </Typography>
-                <TextField
-                  type="time"
-                  placeholder="이벤트 노출 시작 시간을 선택해주세요"
-                  value={eventExposureStartTimeField.value}
-                  onChange={eventExposureStartTimeField.handleChange}
-                  error={eventExposureStartTimeField.error}
-                />
-              </Flex>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Exposure End Time
-                </Typography>
-                <TextField
-                  type="time"
-                  placeholder="이벤트 노출 종료 시간을 선택해주세요"
-                  value={eventExposureEndTimeField.value}
-                  onChange={eventExposureEndTimeField.handleChange}
-                  error={eventExposureEndTimeField.error}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Verification Code
-                </Typography>
-                <TextField
-                  placeholder="입장 코드를 입력해주세요"
-                  value={eventVerificationCodeField.value}
-                  onChange={eventVerificationCodeField.handleChange}
-                  error={eventVerificationCodeField.error}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Name
-                </Typography>
-                <TextField
-                  placeholder="이벤트 이름을 입력해주세요"
-                  value={eventNameField.value}
-                  onChange={eventNameField.handleChange}
-                  error={eventNameField.error}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Start Date
-                </Typography>
-                <Select
-                  type="calendar"
-                  placeholder="이벤트 시작 날짜를 선택해주세요"
-                  {...eventStartDateField}
-                />
-              </Flex>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  End Date
-                </Typography>
-                <Select
-                  type="calendar"
-                  placeholder="이벤트 종료 날짜를 선택해주세요"
-                  {...eventEndDateField}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Start Time
-                </Typography>
-                <TextField
-                  type="time"
-                  placeholder="이벤트 시작 시간을 선택해주세요"
-                  value={eventStartTimeField.value}
-                  onChange={eventStartTimeField.handleChange}
-                  error={eventStartTimeField.error}
-                />
-              </Flex>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  End Time
-                </Typography>
-                <TextField
-                  type="time"
-                  placeholder="이벤트 종료 시간을 선택해주세요"
-                  value={eventEndTimeField.value}
-                  onChange={eventEndTimeField.handleChange}
-                  error={eventEndTimeField.error}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Venue
-                </Typography>
-                <TextField
-                  placeholder="장소를 입력해주세요"
-                  value={venueField.value}
-                  onChange={venueField.handleChange}
-                  error={venueField.error}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Lineup
-                </Typography>
-                <TextField
-                  multiline
-                  rows={6}
-                  placeholder="라인업을 입력해주세요"
-                  value={lineupField.value}
-                  onChange={lineupField.handleChange}
-                  error={lineupField.error}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Details
-                </Typography>
-                <TextField
-                  multiline
-                  rows={6}
-                  placeholder="상세 내용을 입력해주세요"
-                  value={detailsField.value}
-                  onChange={detailsField.handleChange}
-                  error={detailsField.error}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Image
-                </Typography>
-                <TextField
-                  className={cx("textarea")}
-                  multiline
-                  rows={3}
-                  placeholder="이미지를 업로드하거나 URL을 입력해주세요"
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Min Age
-                </Typography>
-                <TextField
-                  className={cx("textarea")}
-                  multiline
-                  rows={3}
-                  placeholder="최소 나이를 입력해주세요"
-                  value={minAgeField.value}
-                  onChange={minAgeField.handleChange}
-                  error={minAgeField.error}
-                />
-              </Flex>
-            </Flex>
-          </>
-        )}
-        {currentStep === "ticket" && (
-          <>
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Ticket Name
-                </Typography>
-                <TextField />
-              </Flex>
-            </Flex>
-          </>
-        )}
       </div>
 
       <div className={cx("floating")}>
@@ -317,6 +317,6 @@ export function EventFormLayout({
           Next
         </Button>
       </div>
-    </div>
+    </>
   );
 }
