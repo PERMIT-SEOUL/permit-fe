@@ -180,7 +180,7 @@ export function EventFormClient() {
   const eventStartTimeField = useTextField({
     initialValue: "",
     validate: (value: string) => {
-      if (!value.trim()) return "이벤트 노출 시작 시간을 입력해주세요.";
+      if (!value.trim()) return "이벤트 시작 시간을 입력해주세요.";
 
       const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
@@ -199,7 +199,7 @@ export function EventFormClient() {
   const eventEndTimeField = useTextField({
     initialValue: "",
     validate: (value: string) => {
-      if (!value.trim()) return "이벤트 노출 종료 시간을 입력해주세요.";
+      if (!value.trim()) return "이벤트 종료 시간을 입력해주세요.";
 
       const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 

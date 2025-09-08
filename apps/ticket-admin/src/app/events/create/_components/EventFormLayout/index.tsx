@@ -1,8 +1,8 @@
 import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
+import type { UseTextFieldReturn } from "@permit/design-system/hooks";
 
-import { UseTextFieldReturn } from "../../../../../../../../packages/design-system/src/hooks/useTextField";
 import { EventFormData } from "../../_clientBoundary/EventFormClient";
 import styles from "./index.module.scss";
 
@@ -68,18 +68,18 @@ export function EventFormLayout({
       <div className={cx("container")}>
         {/* Sidebar */}
         <div className={cx("sidebar")}>
-          <div className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
+          <button className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
             <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
             <span className={cx("sidebar_text", currentStep === "basic" && "active")}>
               Add Basic
             </span>
-          </div>
-          <div className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
+          </button>
+          <button className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
             <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
             <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>
               Add Ticket
             </span>
-          </div>
+          </button>
         </div>
 
         {/* Main */}
@@ -261,6 +261,7 @@ export function EventFormLayout({
                   <Typography type="body16" weight="bold">
                     Image
                   </Typography>
+                  {/* TODO: 이미지 업로드 기능 추후 추가 */}
                   <TextField
                     className={cx("textarea")}
                     multiline
@@ -276,9 +277,6 @@ export function EventFormLayout({
                     Min Age
                   </Typography>
                   <TextField
-                    className={cx("textarea")}
-                    multiline
-                    rows={3}
                     placeholder="최소 나이를 입력해주세요"
                     value={minAgeField.value}
                     onChange={minAgeField.handleChange}

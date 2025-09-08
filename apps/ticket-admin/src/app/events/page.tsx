@@ -78,7 +78,7 @@ export default function EventsPage() {
   );
 }
 
-// Mock data
+// TODO: 추후 Mock data 제거
 const mockData: EventGroup[] = [
   {
     eventYearMonth: "2025.09",
