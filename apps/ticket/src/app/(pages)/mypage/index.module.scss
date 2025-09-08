@@ -1,0 +1,9 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.container {
+  width: 100%;
+
+  color: theme.$white;
+
+  background-color: theme.$black;
+}

@@ -1,0 +1,40 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+
+  background-color: theme.$black;
+
+  @media (min-width: 768px) {
+    display: flex;
+    gap: 120px;
+    justify-content: space-between;
+    max-width: 1336px;
+    padding: 40px;
+  }
+}
+
+.bottom_actions {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  margin-top: 80px;
+
+  @media (max-width: 767px) {
+    margin-top: 60px;
+  }
+}
+
+.action_button {
+  text-align: left;
+
+  background: none;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

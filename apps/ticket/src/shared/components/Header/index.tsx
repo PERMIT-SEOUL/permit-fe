@@ -9,6 +9,7 @@ import permitLogo from "public/assets/png/permit_logo.png";
 
 import { Button } from "@permit/design-system";
 import { safeLocalStorage } from "@/lib/storage";
+import { PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 
 import styles from "./index.module.scss";
@@ -19,13 +20,13 @@ export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const isTimeTablePage = /^\/event\/[^/]+\/time-table$/.test(pathname);
+
   const [isLogined, setIsLogined] = useState(false);
 
   useEffect(() => {
     try {
       const stored = safeLocalStorage.get(IS_LOGINED);
-
-      console.log(stored);
 
       if (stored !== null) {
         setIsLogined(JSON.parse(stored));
@@ -41,16 +42,15 @@ export const Header = () => {
   };
 
   const onMyPageClick = () => {
-    // TODO: MyPage로 이동
-    console.log("MyPage clicked");
+    router.push(PATH.MYPAGE);
   };
 
   const onLoginClick = () => {
-    router.push("/login");
+    router.push(PATH.LOGIN);
   };
 
   return (
-    <header className={cx("header")}>
+    <header className={cx("header", { is_time_table_page: isTimeTablePage })}>
       <div className={cx("content")}>
         <Link className={cx("logo")} href="/">
           <Image src={permitLogo} alt="PERMIT" className={cx("logo_image")} />

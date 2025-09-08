@@ -37,10 +37,11 @@
   }
 
   .label {
+    transition: all 0.2s ease-in-out;
+
     @media (min-width: 768px) {
       width: 100px;
     }
-    transition: all 0.2s ease-in-out;
   }
 
   &.active {

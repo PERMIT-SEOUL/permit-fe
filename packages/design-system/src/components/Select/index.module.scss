@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 10px 16px;
+  padding: 10px 12px;
 
   background-color: theme.$gray-800;
   cursor: pointer;
@@ -98,6 +98,13 @@
 
   &:hover {
     background-color: theme.$gray-700;
+  }
+
+  &.disabled {
+    text-decoration: line-through;
+
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 
   span {

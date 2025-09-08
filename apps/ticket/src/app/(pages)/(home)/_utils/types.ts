@@ -1,10 +1,5 @@
 import { CategoryType } from "@/app/(pages)/(home)/constants/category";
-
-export type Event = {
-  eventId: number;
-  eventName: string;
-  thumbnailImageUrl: string;
-};
+import { Event } from "@/data/events/getEvents/types";
 
 export type EventWithCategory = Event & {
   category: CategoryType;

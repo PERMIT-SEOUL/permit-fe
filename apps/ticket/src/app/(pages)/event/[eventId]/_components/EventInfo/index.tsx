@@ -1,6 +1,7 @@
 import classNames from "classnames/bind";
 
-import { Button, Flex, Typography } from "@permit/design-system";
+import { Flex, Typography } from "@permit/design-system";
+import { EventDetailResponse } from "@/data/events/getEventDetail/types";
 
 import { InfoText } from "../InfoText";
 import { LineupText } from "../LineupText";
@@ -8,54 +9,11 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-interface Props {
-  eventName: string;
-  venue: string;
-  date: string;
-  time: string;
-  minAge: number;
-  details: string;
-  lineup: {
-    category: string;
-    artists: { name: string }[];
-  }[];
-  showOnlyTitle?: boolean;
-}
+type Props = Omit<EventDetailResponse, "images">;
 
-export const EventInfo = ({
-  eventName,
-  venue,
-  date,
-  time,
-  minAge,
-  details,
-  lineup,
-  showOnlyTitle = false,
-}: Props) => {
-  if (showOnlyTitle) {
-    return (
-      <div className={cx("title_section")}>
-        <Typography className={cx("title")} type="title20" color="white">
-          {eventName}
-        </Typography>
-        <Button className={cx("time_table_button")} variant="secondary" size="sm">
-          TIME TABLE
-        </Button>
-      </div>
-    );
-  }
-
+export const EventInfo = ({ venue, date, time, minAge, details, lineup }: Props) => {
   return (
     <div className={cx("wrap")}>
-      <div className={cx("title_section", { is_show: !showOnlyTitle })}>
-        <Typography className={cx("title")} type="title20" color="white">
-          {eventName}
-        </Typography>
-        <Button className={cx("time_table_button")} variant="secondary" size="sm">
-          TIME TABLE
-        </Button>
-      </div>
-
       <div className={cx("info_section")}>
         <div className={cx("info_group")}>
           <InfoText title="Venue" value={venue} />

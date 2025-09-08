@@ -1,15 +1,5 @@
 @use "../../styles/variables" as theme;
 
-.textfield-wrapper {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 6px;
-
-  &--full-width {
-    width: 100%;
-  }
-}
-
 .textfield {
   display: flex;
   align-items: center;
@@ -36,8 +26,11 @@
   }
 
   &--readonly {
-    background-color: theme.$gray-800;
-    border-color: theme.$gray-700;
+    // background-color: theme.$gray-800;
+    // border-color: theme.$gray-700;
+
+    background-color: transparent;
+    border-color: transparent;
   }
 
   &__input {
@@ -65,6 +58,29 @@
     &:read-only {
       cursor: default;
     }
+
+    // Time input picker icon (Chrome/Safari)
+    &[type="time"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      filter: invert(1);
+    }
+
+    // TODO: 추후 변경
+    // Hide visible value for time inputs while keeping the picker icon visible
+    &[type="time"][data-empty="true"] {
+      color: transparent; // Chromium
+      -webkit-text-fill-color: transparent; // Safari
+      caret-color: transparent;
+
+      text-shadow: none;
+    }
+  }
+
+  &__textarea {
+    min-height: 44px;
+    padding: 12px 0;
+
+    resize: none;
   }
 
   &__icon {
@@ -82,5 +98,44 @@
     color: theme.$red;
     font-size: 14px;
     font-family: Pretendard, sans-serif;
+  }
+
+  // Pseudo placeholder for empty time inputs
+  &[data-time-empty="true"][data-placeholder] {
+    position: relative;
+  }
+
+  &[data-time-empty="true"][data-placeholder]::after {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+
+    color: theme.$gray-400;
+    font-size: 14px;
+    font-family: Pretendard, sans-serif;
+
+    transform: translateY(-50%);
+
+    content: attr(data-placeholder);
+    pointer-events: none;
+  }
+}
+
+.textfield-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &--full-width {
+    width: 100%;
+  }
+
+  &--multiline {
+    /* stylelint-disable-next-line no-descending-specificity */
+    .textfield {
+      align-items: flex-start;
+      height: auto;
+      min-height: 44px;
+    }
   }
 }

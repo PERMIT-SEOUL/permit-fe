@@ -1,0 +1,62 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.container {
+  width: 100%;
+
+  @media (max-width: 767px) {
+    margin-top: 12px;
+  }
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.label {
+  flex-shrink: 0;
+  width: 50px;
+}
+
+.mobile_edit_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+
+  background: none;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  // pc 에서는 편집 아이콘 안보이도록
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.pc_edit_button {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.email_field {
+  width: 100%;
+}
+
+.bottom_actions {
+  margin-top: 324px;
+
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}

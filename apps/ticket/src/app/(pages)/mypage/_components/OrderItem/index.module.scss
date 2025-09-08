@@ -1,0 +1,132 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.header_section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.order_info {
+  display: flex;
+  gap: 20px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.order_date {
+  @include typography.body-reg-14;
+
+  @media (max-width: 767px) {
+    @include typography.body-reg-16;
+  }
+}
+
+.cancel_button {
+  @media (max-width: 767px) {
+    @include typography.body-reg-12;
+    padding: 8px 10px;
+  }
+}
+
+.refund_price {
+  text-decoration: line-through;
+}
+
+.content_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.content_section {
+  display: flex;
+  gap: 32px;
+
+  @media (max-width: 767px) {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+}
+
+.event_info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event_details {
+  display: flex;
+  gap: 4px;
+
+  // Typography 요소 뒤에 divider 추가
+
+  @media (min-width: 768px) {
+    :first-child::after {
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+      margin: auto 8px auto 10px;
+
+      vertical-align: middle;
+
+      background-color: theme.$gray-500;
+
+      content: "";
+    }
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.event_status {
+  @media (min-width: 768px) {
+    margin-left: auto;
+  }
+  color: theme.$gray-500;
+
+  @include typography.body-reg-12;
+
+  &.usable {
+    color: theme.$white;
+  }
+
+  &.refunded {
+    display: none;
+  }
+}
+
+.event_title {
+  @include typography.body-bold-14;
+
+  @media (max-width: 767px) {
+    &.ticket_name {
+      color: theme.$gray-400;
+    }
+
+    @include typography.body-reg-14;
+  }
+}
+
+.event_schedule {
+  @include typography.body-reg-14;
+
+  @media (max-width: 767px) {
+    color: theme.$gray-400;
+  }
+}

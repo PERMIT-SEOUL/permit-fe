@@ -3,10 +3,11 @@
 import { useState } from "react";
 import classNames from "classnames/bind";
 
+import { useEventsSuspenseQuery } from "@/data/events/getEvents/queries";
+
 import { CategoryList } from "../../_components/CategoryList";
 import { EventWithCategory } from "../../_utils/types";
 import { CATEGORIES, CATEGORY_LABELS, CategoryType } from "../../constants/category";
-import { mockEventData } from "../../constants/mock";
 import { useEventHover } from "../../hooks/useEventHover";
 import { EventCardClient } from "../EventCardClient";
 import styles from "./index.module.scss";
@@ -17,13 +18,15 @@ export const EventListClient = () => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>(CATEGORIES.ALL);
   const { handleEventHover, isEventDimmed } = useEventHover();
 
+  const { data: eventsData } = useEventsSuspenseQuery();
+
   const handleCategoryClick = (category: CategoryType) => {
     setSelectedCategory(category);
   };
 
   const getEventsWithCategory = (): EventWithCategory[] => {
     if (selectedCategory === CATEGORIES.ALL) {
-      return Object.entries(mockEventData).flatMap(([category, events]) =>
+      return Object.entries(eventsData).flatMap(([category, events]) =>
         events.map((event) => ({
           ...event,
           category: category as CategoryType,
@@ -32,7 +35,7 @@ export const EventListClient = () => {
     }
 
     return (
-      mockEventData[selectedCategory]?.map((event) => ({
+      eventsData[selectedCategory]?.map((event) => ({
         ...event,
         category: selectedCategory,
       })) ?? []
@@ -43,7 +46,11 @@ export const EventListClient = () => {
 
   return (
     <div className={cx("container")}>
-      <CategoryList selectedCategory={selectedCategory} onClickCategory={handleCategoryClick} />
+      <CategoryList
+        eventsData={eventsData}
+        selectedCategory={selectedCategory}
+        onClickCategory={handleCategoryClick}
+      />
       <div className={cx("event_list")}>
         {filteredEvents.map((event: EventWithCategory, index: number) => {
           const { eventId, eventName, thumbnailImageUrl, category } = event;
@@ -53,8 +60,8 @@ export const EventListClient = () => {
             <EventCardClient
               key={eventId}
               eventId={eventId}
-              imageUrl={thumbnailImageUrl}
-              title={eventName}
+              thumbnailImageUrl={thumbnailImageUrl}
+              eventName={eventName}
               displayNumber={displayNumber}
               category={CATEGORY_LABELS[category]}
               onHover={(isHovered) => handleEventHover(eventId, isHovered)}

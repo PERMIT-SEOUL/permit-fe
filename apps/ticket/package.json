@@ -20,10 +20,12 @@
     "classnames": "^2.5.1",
     "import-in-the-middle": "^1.14.2",
     "next": "15.3.3",
+    "qrcode.react": "^4.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^6.0.0",
-    "require-in-the-middle": "^7.5.2"
+    "require-in-the-middle": "^7.5.2",
+    "swiper": "^11.2.10"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

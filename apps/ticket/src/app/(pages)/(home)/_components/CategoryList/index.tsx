@@ -3,8 +3,8 @@ import classNames from "classnames/bind";
 import { Typography } from "@permit/design-system";
 import type { CategoryType } from "@/app/(pages)/(home)/constants/category";
 import { CATEGORIES, CATEGORY_LABELS } from "@/app/(pages)/(home)/constants/category";
+import { EventsResponse } from "@/data/events/getEvents/types";
 
-import { mockEventData } from "../../constants/mock";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -30,19 +30,24 @@ const CategoryItem = ({ label, count, isActive = false, onClick }: CategoryItemP
 };
 
 type CategoryListProps = {
+  eventsData: EventsResponse;
   selectedCategory: CategoryType;
   onClickCategory: (category: CategoryType) => void;
 };
 
-export const CategoryList = ({ selectedCategory, onClickCategory }: CategoryListProps) => {
-  const allEventsCount = Object.values(mockEventData).flat().length;
+export const CategoryList = ({
+  eventsData,
+  selectedCategory,
+  onClickCategory,
+}: CategoryListProps) => {
+  const allEventsCount = Object.values(eventsData).flat().length;
 
   const getCategoryCount = (category: CategoryType): number => {
     if (category === CATEGORIES.ALL) {
       return allEventsCount;
     }
 
-    return mockEventData[category].length;
+    return eventsData[category].length;
   };
 
   return (

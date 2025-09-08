@@ -43,6 +43,36 @@
   margin-top: 24px;
 }
 
+.selected_tickets_wrap {
+  margin-top: 24px;
+  padding: 16px;
+
+  background-color: theme.$gray-800;
+  border: 1px solid theme.$gray-500;
+  border-radius: 8px;
+}
+
+.selected_ticket_item {
+  padding: 12px;
+
+  background-color: theme.$gray-700;
+  border: 1px solid theme.$gray-600;
+  border-radius: 6px;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.total_price_wrap {
+  margin-top: 24px;
+  padding: 16px;
+
+  background-color: theme.$gray-800;
+  border-top: 2px solid theme.$gray-500;
+  border-radius: 6px;
+}
+
 .promo_code_button {
   display: block;
   margin-top: 36px;

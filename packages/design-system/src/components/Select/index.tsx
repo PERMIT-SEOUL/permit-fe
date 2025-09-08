@@ -13,6 +13,7 @@ const cx = classNames.bind(styles);
 type SelectOption = {
   value: string;
   label: string;
+  disabled?: boolean;
 };
 
 type BaseSelectProps = {
@@ -26,11 +27,13 @@ type BaseSelectProps = {
 type DefaultSelectProps = BaseSelectProps & {
   type?: "default";
   options: SelectOption[];
+  onClick?: () => void;
 };
 
 type CalendarSelectProps = BaseSelectProps & {
   type: "calendar";
   options?: never;
+  onClick?: () => void;
 };
 
 type SelectProps = DefaultSelectProps | CalendarSelectProps;
@@ -43,9 +46,10 @@ export const Select = ({
   onChange,
   value = "",
   options,
+  onClick,
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,6 +69,7 @@ export const Select = ({
   const handleToggle = () => {
     if (!disabled) {
       setIsOpen(!isOpen);
+      onClick?.();
     }
   };
 
@@ -146,8 +151,13 @@ export const Select = ({
                   key={option.value}
                   className={cx("option", {
                     selected: value === option.value,
+                    disabled: option.disabled,
                   })}
-                  onClick={() => handleOptionSelect(option.value)}
+                  onClick={() => {
+                    if (option.disabled) return;
+
+                    handleOptionSelect(option.value);
+                  }}
                 >
                   <Typography type="body14" weight="regular">
                     {option.label}

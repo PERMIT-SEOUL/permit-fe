@@ -1,0 +1,266 @@
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import classNames from "classnames/bind";
+
+import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
+import { useSelect, useTextField } from "@permit/design-system/hooks";
+import { useUserInfoSuspenseQuery } from "@/data/users/getUserInfo/queries";
+import { usePatchUserInfoMutation } from "@/data/users/patchUserInfo/mutation";
+import { useUserEmailCheckMutation } from "@/data/users/postUserEmailCheck/mutation";
+import { USER_QUERY_KEYS } from "@/data/users/queryKeys";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
+
+import styles from "./index.module.scss";
+
+const cx = classNames.bind(styles);
+
+const ageOptions = Array.from({ length: 80 }, (_, i) => ({
+  value: String(i + 10),
+  label: `${i + 10}세`,
+}));
+
+// 성별 옵션
+const GENDER_OPTIONS = [
+  { value: "MALE", label: "남성" },
+  { value: "FEMALE", label: "여성" },
+];
+
+/**
+ * 사용자 프로필 섹션
+ */
+export const UserProfileClient = () => {
+  const queryClient = useQueryClient();
+
+  const { data: userInfoData } = useUserInfoSuspenseQuery();
+
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const [emailVerified, setEmailVerified] = useState(false);
+
+  const { mutateAsync: mutateEmailCheck, isPending: isEmailCheckPending } =
+    useUserEmailCheckMutation();
+
+  const { mutateAsync: mutatePatchUserInfo, isPending } = usePatchUserInfoMutation();
+
+  const nameField = useTextField({
+    initialValue: userInfoData.name,
+    validate: (value: string) => {
+      if (!value.trim()) return "이름을 입력해주세요.";
+
+      return undefined;
+    },
+  });
+
+  const genderField = useSelect({
+    initialValue: userInfoData.gender,
+    validate: (value: string) => {
+      if (!value) return "성별을 선택해주세요.";
+
+      return undefined;
+    },
+  });
+
+  const emailField = useTextField({
+    initialValue: userInfoData.email,
+    validate: (value: string) => {
+      if (!value.trim()) return "이메일을 입력해주세요.";
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(value)) return "올바른 이메일 형식이 아닙니다.";
+
+      return undefined;
+    },
+  });
+
+  const handleEditClick = () => {
+    setIsEditMode(true);
+  };
+
+  const handleEmailCheck = async () => {
+    if (!emailField.validateValue()) {
+      return;
+    }
+
+    try {
+      await mutateEmailCheck({ userEmail: emailField.value });
+
+      setEmailVerified(true);
+      // TODO: 얼럿 디자인 변경
+      alert("이메일 확인이 완료되었습니다.");
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        alert(error.message);
+      }
+    }
+  };
+
+  const handleSave = async () => {
+    if (!emailVerified) {
+      alert("이메일 확인을 먼저 해주세요.");
+
+      return;
+    }
+
+    const isNameValid = nameField.validateValue();
+    const isGenderValid = genderField.validateValue();
+    const isEmailValid = emailField.validateValue();
+
+    if (!isNameValid || !isGenderValid || !isEmailValid) {
+      return;
+    }
+
+    try {
+      await mutatePatchUserInfo({
+        name: nameField.value,
+        gender: genderField.value,
+        email: emailField.value,
+      });
+
+      // TODO: 얼럿 디자인 변경
+      alert("프로필 수정이 완료되었습니다.");
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.INFO] });
+      setIsEditMode(false);
+      setEmailVerified(false);
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        alert(error.message);
+      }
+    }
+  };
+
+  return (
+    <div className={cx("container")}>
+      <Flex className={cx("header")} gap={8} justify="space-between" align="center">
+        {isEditMode ? (
+          <TextField
+            placeholder="이름을 입력해주세요"
+            fullWidth
+            value={nameField.value}
+            onChange={nameField.handleChange}
+            error={nameField.error}
+          />
+        ) : (
+          <Typography type="title20" weight="bold" color="white">
+            {nameField.value}
+          </Typography>
+        )}
+
+        {!isEditMode && (
+          <>
+            <button
+              className={cx("mobile_edit_button")}
+              onClick={handleEditClick}
+              aria-label="Edit"
+            >
+              <EditIcon />
+            </button>
+            <Button type="button" className={cx("pc_edit_button")} onClick={handleEditClick}>
+              Edit Profile
+            </Button>
+          </>
+        )}
+
+        {isEditMode && (
+          <Button variant="cta" onClick={handleSave} isLoading={isPending} disabled={isPending}>
+            save
+          </Button>
+        )}
+      </Flex>
+
+      <Flex direction="column" gap={16}>
+        <Flex gap={40} align="center">
+          <Typography className={cx("label")} type="body14" color="gray400">
+            Age
+          </Typography>
+          {isEditMode ? (
+            <Select
+              type="default"
+              options={ageOptions}
+              placeholder="나이를 선택해주세요"
+              disabled
+              value={userInfoData.age.toString()}
+              onChange={() => {}}
+            />
+          ) : (
+            <TextField readOnly fullWidth value={`${userInfoData.age}세`} />
+          )}
+        </Flex>
+
+        <Flex gap={40} align="center">
+          <Typography className={cx("label")} type="body14" color="gray400">
+            Gender
+          </Typography>
+          {isEditMode ? (
+            <Select
+              options={GENDER_OPTIONS}
+              placeholder="성별을 선택해주세요"
+              {...genderField.selectProps}
+            />
+          ) : (
+            <TextField
+              readOnly
+              fullWidth
+              value={
+                GENDER_OPTIONS.find((option) => option.value === userInfoData.gender)?.label ||
+                userInfoData.gender
+              }
+            />
+          )}
+        </Flex>
+
+        <Flex gap={40} align="center">
+          <Typography className={cx("label")} type="body14" color="gray400">
+            EMAIL
+          </Typography>
+          {isEditMode ? (
+            <Flex className={cx("email_field")} gap={8}>
+              <TextField
+                placeholder="이메일을 입력해주세요"
+                fullWidth
+                value={emailField.value}
+                onChange={emailField.handleChange}
+                error={emailField.error}
+                disabled={emailVerified}
+              />
+              <Button
+                type="button"
+                variant="primary"
+                onClick={handleEmailCheck}
+                isLoading={isEmailCheckPending}
+                disabled={emailVerified || isEmailCheckPending}
+              >
+                Check
+              </Button>
+            </Flex>
+          ) : (
+            <TextField readOnly fullWidth value={emailField.value} />
+          )}
+        </Flex>
+      </Flex>
+
+      <Flex className={cx("bottom_actions")} direction="column" gap={20}>
+        <button>
+          <Typography type="body14" color="white">
+            Logout
+          </Typography>
+        </button>
+        <button>
+          <Typography type="body14" color="white">
+            Delete Account
+          </Typography>
+        </button>
+      </Flex>
+    </div>
+  );
+};
+
+// 편집 아이콘 SVG
+const EditIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M14.7583 3.36875C15.0833 3.04375 15.0833 2.50208 14.7583 2.19375L12.8083 0.24375C12.5 -0.08125 11.9583 -0.08125 11.6333 0.24375L10.1 1.76875L13.225 4.89375M0 11.8771V15.0021H3.125L12.3417 5.77708L9.21667 2.65208L0 11.8771Z"
+      fill="#A3A3A3"
+    />
+  </svg>
+);

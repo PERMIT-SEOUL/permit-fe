@@ -1,38 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { Button } from "@permit/design-system";
-import { sampleOptions } from "@/data/sample/getTodoItem/queries";
-import { useModal } from "@/shared/hooks/useModal";
+import { eventTicketsOptions } from "@/data/events/getEventTickets/queries";
+import { useBottomSheet } from "@/shared/hooks";
 
-import { mockRounds } from "../../constants/mock";
-import { SelectTicketModal } from "../SelectTicketModal";
+import { SelectTicketBottomSheet } from "../SelectTicketBottomSheet";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
 type Props = {
-  eventId: number;
+  eventId: string;
 };
 
-export const FloatingSection = ({ eventId }: Props) => {
+export const MobileFloatingSection = ({ eventId }: Props) => {
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
-  const { show: openDialog } = useModal(SelectTicketModal);
-
-  // TODO: 행사 티켓 정보 조회 API 로 변경
-  const { refetch } = useQuery({ ...sampleOptions(), enabled: false });
-
+  const { show: openBottomSheet } = useBottomSheet(SelectTicketBottomSheet);
   const selectTicket = async () => {
     setIsLoading(true);
 
     try {
-      // TODO: eventId 로 티켓 정보 조회
-      const { data } = await refetch();
+      const eventTicketsData = await queryClient.fetchQuery(eventTicketsOptions({ eventId }));
 
-      const result = await openDialog({ title: "티켓 선택", eventId: 2, ticketInfo: mockRounds });
+      const result = await openBottomSheet({
+        title: "티켓 선택",
+        eventTicketsData,
+        eventId,
+      });
 
       if (!result) {
         return;

@@ -6,11 +6,13 @@ import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
+import { useUserEmailCheckMutation } from "@/data/users/postUserEmailCheck/mutation";
 import { useSignupMutation } from "@/data/users/postUserSignup/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { PATH } from "@/shared/constants/path";
 import { IS_LOGINED, SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import styles from "./index.module.scss";
 
@@ -37,7 +39,9 @@ const SignupPage = () => {
 
   const [emailVerified, setEmailVerified] = useState(false);
 
-  const { mutateAsync, isPending } = useSignupMutation();
+  const { mutateAsync: mutateEmailCheck } = useUserEmailCheckMutation();
+
+  const { mutateAsync: mutateSignup, isPending } = useSignupMutation();
 
   // 필드별 상태 관리 훅 사용
   const nameField = useTextField({
@@ -80,15 +84,21 @@ const SignupPage = () => {
     },
   });
 
-  const handleEmailCheck = () => {
-    // 먼저 이메일 유효성 검사
+  const handleEmailCheck = async () => {
     if (!emailField.validateValue()) {
       return;
     }
 
-    // TODO: 이메일 중복 확인 API 연동
-    setEmailVerified(true);
-    alert("이메일 확인이 완료되었습니다.");
+    try {
+      await mutateEmailCheck({ userEmail: emailField.value });
+
+      setEmailVerified(true);
+      alert("이메일 확인이 완료되었습니다.");
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        alert(error.message);
+      }
+    }
   };
 
   const handleSignup = async () => {
@@ -118,7 +128,7 @@ const SignupPage = () => {
     };
 
     try {
-      await mutateAsync(submitData);
+      await mutateSignup(submitData);
 
       // signup API 요청에 필요한 정보 제거
       safeLocalStorage.remove(TOKEN_KEY);
@@ -130,8 +140,9 @@ const SignupPage = () => {
       // TODO: redirect 로직 구체적으로 추가
       router.replace(PATH.HOME);
     } catch (error) {
-      alert("회원가입에 실패했습니다.");
-      console.error("회원가입 실패:", error);
+      if (isAxiosErrorResponse(error)) {
+        alert(error.message);
+      }
     }
   };
 

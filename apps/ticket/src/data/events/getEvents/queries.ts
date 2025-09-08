@@ -1,8 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 import { API_URL } from "@/data/constants";
 import { instance } from "@/lib/axios";
-import { PermitQueryOptions, UsePermitQueryOptions } from "@/shared/types/queryOptions";
+import {
+  PermitQueryOptions,
+  UsePermitQueryOptions,
+  UsePermitSuspenseQueryOptions,
+} from "@/shared/types/queryOptions";
 
 import { EVENT_QUERY_KEYS } from "../queryKeys";
 import { EventsResponse } from "./types";
@@ -19,6 +23,13 @@ export const eventsOptions = (): PermitQueryOptions<EventsResponse> => {
 
 export const useEventsQuery = (options?: UsePermitQueryOptions<EventsResponse>) => {
   return useQuery({
+    ...eventsOptions(),
+    ...options,
+  });
+};
+
+export const useEventsSuspenseQuery = (options?: UsePermitSuspenseQueryOptions<EventsResponse>) => {
+  return useSuspenseQuery({
     ...eventsOptions(),
     ...options,
   });

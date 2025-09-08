@@ -1,0 +1,273 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.modal_overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  background-color: rgb(0 0 0 / 80%);
+
+  // 모바일에서는 패딩 제거하여 화면에 꽉 차도록
+  @media (max-width: 768px) {
+    align-items: flex-end;
+    padding: 0;
+  }
+}
+
+.modal_content {
+  position: relative;
+  width: 100%;
+  max-width: 641px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  background-color: rgb(10 10 10 / 80%);
+  border: 1px solid #525252;
+  border-radius: 8px;
+
+  // 모바일에서는 화면 전체 높이 사용
+  @media (max-width: 768px) {
+    max-width: none;
+    max-height: 90vh;
+
+    border-radius: 12px 12px 0 0;
+
+    animation: slide-up 0.3s ease-out;
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+}
+
+.close_button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  color: #f5f5f5;
+
+  background: none;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.modal_body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 36px 24px 40px;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+    padding: 24px 16px 32px;
+  }
+}
+
+.event_info {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.event_header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.event_title_section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event_title {
+  max-width: 305px;
+  margin: 0;
+
+  color: white;
+  font-weight: 800;
+  font-size: 20px;
+  font-family: Roboto, "Noto Sans KR", sans-serif;
+  line-height: 1;
+
+  @media (max-width: 768px) {
+    max-width: 280px;
+
+    font-size: 18px;
+  }
+}
+
+.category_tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 4px 20px;
+
+  background-color: rgb(42 241 255 / 40%);
+  border: 1px solid #2af1ff;
+  border-radius: 4px;
+
+  span {
+    color: #f5f5f5;
+    font-size: 14px;
+    font-family: Pretendard, sans-serif;
+    line-height: 1;
+  }
+}
+
+.star_button {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  color: #d4d4d4;
+
+  background: none;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.event_details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.time_and_place {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.time_info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 0;
+
+  span {
+    color: rgb(255 255 255 / 50%);
+    font-size: 14px;
+    font-family: Roboto, sans-serif;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    gap: 8px;
+
+    span {
+      font-size: 13px;
+    }
+  }
+}
+
+.divider {
+  flex-shrink: 0;
+  width: 2px;
+  height: 16px;
+
+  background-color: #525252;
+}
+
+.description {
+  width: 100%;
+  margin: 0;
+  margin-top: 0;
+
+  color: white;
+  font-size: 14px;
+  font-family: Roboto, "Noto Sans KR", sans-serif;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+}
+
+.artist_info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: fit-content;
+}
+
+.artist_label {
+  color: #525252;
+  font-size: 14px;
+  font-family: Roboto, "Noto Sans KR", sans-serif;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+}
+
+.artist_link {
+  color: #f5f5f5;
+  font-size: 14px;
+  font-family: Roboto, "Noto Sans KR", sans-serif;
+  line-height: 1.6;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+}
+
+.event_image {
+  width: 100%;
+}
+
+.image_placeholder {
+  width: 100%;
+  height: 441px;
+
+  background-color: #eee;
+  background-image: url("data:image/svg+xml;base64,PHN2ZwogICAgICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgICAgIHZpZXdCb3g9IjAgMCAxIDEiCiAgICAgIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiCiAgICAgIHdpZHRoPSIxMDAlIgogICAgICBoZWlnaHQ9IjEwMCUiCiAgICA+CiAgICAgIDxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNFRUUiIC8+CiAgICA8L3N2Zz4=");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 4px;
+
+  @media (max-width: 768px) {
+    height: 280px;
+  }
+}

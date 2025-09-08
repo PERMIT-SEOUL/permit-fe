@@ -1,0 +1,33 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.area_headers {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-shrink: 0;
+  min-width: max-content;
+
+  background-color: theme.$black;
+}
+
+.area_header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+
+  font-weight: 600;
+  font-size: 14px;
+
+  border-right: 1px solid theme.$gray-600;
+  border-bottom: 1px solid theme.$gray-600;
+}
+
+// 반응형 처리
+@media (max-width: 768px) {
+  .area_header {
+    font-size: 12px;
+  }
+}

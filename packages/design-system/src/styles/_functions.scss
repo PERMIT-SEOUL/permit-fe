@@ -1,12 +1,45 @@
+@use "sass:string";
 @use "sass:map";
 @use "./variables" as *;
 
 @function get-default-weight($size-key) {
-  @if str-index($size-key, "title") {
-    @return $bold;
+  @if string.index($size-key, "title") {
+    @return "bold";
   }
-  
-  @return $regular;
+
+  @return "regular";
+}
+
+@function get-default-line-height($size-key) {
+  @if string.index($size-key, "32") {
+    @return 38px;
+  }
+
+  @if string.index($size-key, "24") {
+    @return 28px;
+  }
+
+  @if string.index($size-key, "20") {
+    @return 23px;
+  }
+
+  @if string.index($size-key, "18") {
+    @return 21px;
+  }
+
+  @if string.index($size-key, "16") {
+    @return 19px;
+  }
+
+  @if string.index($size-key, "14") {
+    @return 16px;
+  }
+
+  @if string.index($size-key, "12") {
+    @return 14px;
+  }
+
+  @return $line-height-auto;
 }
 
 // Typography Functions
@@ -16,11 +49,10 @@
   font-weight: map.get($font-weights, $final-weight);
   font-size: map.get($font-sizes, $size-key);
   font-family: $font-family;
-  line-height: $line-height-auto;
+  line-height: get-default-line-height($size-key);
 }
 
 // Color Functions
 @function get-color($color-name) {
   @return map.get($colors, $color-name);
 }
-

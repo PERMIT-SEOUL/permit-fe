@@ -8,6 +8,12 @@ export const API_URL = {
     LOGOUT: "/api/users/logout",
     /** 액세스토큰 재발급 API */
     REISSUE_ACCESS_TOKEN: "/api/users/reissue",
+    /** 회원 티켓 조회 API */
+    TICKETS: "/api/tickets/user",
+    /** 회원 정보 조회, 수정 API */
+    INFO: "/api/users",
+    /** 이메일 중복 체크 API */
+    EMAIL_CHECK: "/api/users/email-check",
   },
 
   // 행사 관련 API
@@ -17,7 +23,11 @@ export const API_URL = {
     /** 행사 상세 정보 조회 API */
     DETAIL: "/api/events/detail/:eventId",
     /** 행사 티켓 정보 조회 API */
-    TICKETS: "/api/events/tickets",
+    TICKETS: "/api/tickets/:eventId",
+    /** 행사 타임테이블 정보 조회 API */
+    TIMETABLES: "/api/events/:eventId/timetables",
+    /** 행사 타임테이블 상세 정보 조회 API */
+    TIMETABLE_DETAIL: "/api/events/timetables/:blockId",
   },
 
   // 예매 관련 API
@@ -30,5 +40,13 @@ export const API_URL = {
   PAYMENT: {
     /** 결제 승인 API */
     CONFIRM: "/api/payments/confirm",
+    /** 결제 취소 API */
+    CANCEL: "/api/payments/cancel",
+  },
+
+  // 쿠폰 관련 API
+  COUPON: {
+    /** 할인 쿠폰 검증 API */
+    VALIDATE: "/api/coupons/validate/:eventId",
   },
 } as const;

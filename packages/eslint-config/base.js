@@ -24,9 +24,6 @@ export const config = [
     },
     settings: {
       "import/resolver": {
-        node: {
-          extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".scss"],
-        },
         typescript: {
           alwaysTryTypes: true,
           project: "./tsconfig.json",

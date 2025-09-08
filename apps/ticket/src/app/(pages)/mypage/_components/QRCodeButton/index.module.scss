@@ -1,0 +1,17 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.qr_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  padding: 8px;
+
+  background-color: theme.$white;
+  cursor: pointer;
+  border-radius: 12px;
+
+  @media (max-width: 767px) {
+    margin-top: auto;
+  }
+}
