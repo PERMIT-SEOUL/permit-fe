@@ -10,8 +10,7 @@ import { EventListClient } from "./_clientBoundary/EventListClient";
 const HomePage = async () => {
   const qc = getQueryClient();
 
-  // TODO: 스트리밍 되어서 내려오는 게 에러... 바운더리?
-  await qc.fetchQuery(eventsOptions());
+  qc.prefetchQuery(eventsOptions());
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>

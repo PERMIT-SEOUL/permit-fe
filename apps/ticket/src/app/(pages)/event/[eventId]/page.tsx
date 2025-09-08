@@ -20,8 +20,8 @@ const EventDetailPage = async ({ params }: Props) => {
 
   const qc = getQueryClient();
 
-  await qc.prefetchQuery(eventDetailOptions({ eventId }));
-  await qc.prefetchQuery(eventTicketsOptions({ eventId }));
+  qc.prefetchQuery(eventDetailOptions({ eventId }));
+  qc.prefetchQuery(eventTicketsOptions({ eventId }));
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
