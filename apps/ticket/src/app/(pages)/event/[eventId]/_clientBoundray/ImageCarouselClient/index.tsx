@@ -54,11 +54,12 @@ export const ImageCarouselClient = ({ images }: Props) => {
           modules={[Navigation, Pagination]}
           spaceBetween={0}
           slidesPerView={1}
+          loop={!isSingleImage}
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
           }}
           onSlideChange={(swiper) => {
-            setActiveIndex(swiper.activeIndex);
+            setActiveIndex(swiper.realIndex);
           }}
           className={cx("swiper")}
         >
