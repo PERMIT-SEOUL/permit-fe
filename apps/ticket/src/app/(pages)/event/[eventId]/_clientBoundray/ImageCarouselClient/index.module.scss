@@ -5,7 +5,8 @@
   flex-direction: column;
   flex-shrink: 0;
   gap: 12px;
-  margin: 0 0 0 84px;
+  margin: 0 auto 0 0;
+  padding-left: 16px;
 
   @media (max-width: 767px) {
     position: relative;
@@ -14,21 +15,57 @@
     width: 100%;
     max-width: 500px;
     margin: 0;
+    padding-left: 0;
   }
 }
 
 .image_container {
+  position: relative;
   display: flex;
   gap: 14px;
   align-items: center;
+  justify-content: center;
+  width: 506px;
+  height: 552px;
 
   @media (max-width: 767px) {
     position: relative;
     gap: 0;
     justify-content: center;
     width: 100%;
+    max-width: 500px;
+    height: auto;
     aspect-ratio: 438 / 552;
   }
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.swiper_slide {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.image {
+  width: 438px;
+  height: 552px;
 }
 
 .icon_button {
@@ -47,6 +84,10 @@
   svg {
     transform: rotate(-90deg);
   }
+
+  &:hover {
+    background-color: theme.$gray-500;
+  }
 }
 
 .dots {
@@ -54,7 +95,7 @@
   gap: 10px;
   justify-content: center;
   width: calc(100% - 64px);
-  margin-top: 8px;
+  margin: 8px auto 0;
 
   @media (max-width: 767px) {
     margin-top: 12px;
@@ -71,6 +112,10 @@
   border-radius: 50%;
 
   transition: background-color 0.2s;
+
+  &:hover {
+    background-color: theme.$gray-500;
+  }
 
   &.active {
     background-color: theme.$white;

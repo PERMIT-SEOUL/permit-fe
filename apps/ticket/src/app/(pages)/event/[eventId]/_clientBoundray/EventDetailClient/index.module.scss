@@ -3,8 +3,8 @@
 .content {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: space-between;
+  grid-template-columns: repeat(2, minmax(400px, 600px));
+  justify-content: center;
   width: 100%;
   max-width: 1336px;
 
@@ -38,8 +38,7 @@
   grid-row: 2;
   grid-column: 1 / span 2;
   margin-bottom: 80px;
-  margin-left: 84px;
-  padding: 20px 0 0 calc(20px + 12px);
+  padding: 40px 0 0 calc(20px + 12px);
 
   @media (max-width: 767px) {
     flex: none;

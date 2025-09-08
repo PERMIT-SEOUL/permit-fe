@@ -1,11 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
+import type { Swiper as SwiperType } from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Icon } from "@permit/design-system";
-import { useIsMobile } from "@permit/design-system/hooks";
+
+// Swiper CSS import
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 import styles from "./index.module.scss";
 
@@ -15,17 +22,16 @@ type Props = {
   images: { imageUrl: string }[];
 };
 
-// TODO: 모바일 좌우 스와이프, 애니메이션 추가?
 export const ImageCarouselClient = ({ images }: Props) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const isMobile = useIsMobile();
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const goToPrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    swiperRef.current?.slidePrev();
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    swiperRef.current?.slideNext();
   };
 
   const isSingleImage = images.length < 2;
@@ -44,25 +50,31 @@ export const ImageCarouselClient = ({ images }: Props) => {
           </button>
         )}
 
-        {isMobile ? (
-          <Image
-            className={cx("image")}
-            src={images[currentIndex].imageUrl}
-            alt=""
-            fill
-            priority
-            style={{ objectFit: "cover" }}
-          />
-        ) : (
-          <Image
-            className={cx("desktop_image")}
-            src={images[currentIndex].imageUrl}
-            alt=""
-            width={438}
-            height={552}
-            priority
-          />
-        )}
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={0}
+          slidesPerView={1}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+          }}
+          onSlideChange={(swiper) => {
+            setActiveIndex(swiper.activeIndex);
+          }}
+          className={cx("swiper")}
+        >
+          {images.map((image, index) => (
+            <SwiperSlide key={index} className={cx("swiper_slide")}>
+              <Image
+                className={cx("image")}
+                src={image.imageUrl}
+                alt=""
+                fill
+                priority={index === 0}
+                style={{ objectFit: "cover" }}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
         {!isSingleImage && (
           <button
@@ -76,15 +88,17 @@ export const ImageCarouselClient = ({ images }: Props) => {
         )}
       </div>
 
-      <div className={cx("dots")}>
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            className={cx("dot", { active: idx === currentIndex })}
-            onClick={() => setCurrentIndex(idx)}
-          />
-        ))}
-      </div>
+      {!isSingleImage && (
+        <div className={cx("dots")}>
+          {images.map((_, idx) => (
+            <button
+              key={idx}
+              className={cx("dot", { active: idx === activeIndex })}
+              onClick={() => swiperRef.current?.slideTo(idx)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
