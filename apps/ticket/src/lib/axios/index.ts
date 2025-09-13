@@ -1,7 +1,9 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
+import { IS_LOGINED } from "@/shared/constants/storage";
 import { AxiosErrorResponse, isAxiosErrorResponse } from "@/shared/types/axioxError";
 
+import { safeLocalStorage } from "../storage";
 import { refreshAccessToken } from "./helpers";
 import { ERROR_CODE } from "./utils/errorCode";
 
@@ -47,6 +49,7 @@ instance.interceptors.response.use(
         if (window.location.pathname !== "/auth") {
           alert("로그인이 필요한 페이지입니다.");
 
+          safeLocalStorage.remove(IS_LOGINED);
           window.location.href = "/login";
         }
       }
@@ -75,6 +78,8 @@ instance.interceptors.response.use(
       } catch (error) {
         if (typeof window !== "undefined") {
           // 엑세스 토큰 재발급 실패시 로그인 페이지로 이동
+          safeLocalStorage.remove(IS_LOGINED);
+
           window.location.href = "/login";
         }
       }
