@@ -51,6 +51,10 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
     }
   };
 
+  const handleStarButtonClick = () => {
+    console.log("handleStarButtonClick");
+  };
+
   return (
     <div className={cx("modal_overlay")} onClick={handleBackgroundClick}>
       <div className={cx("modal_container")}>
@@ -80,7 +84,11 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                     <span>{timetableDetail.blockCategory}</span>
                   </div>
                 </div>
-                <button className={cx("star_button")} aria-label="즐겨찾기">
+                <button
+                  className={cx("star_button", { liked: timetableDetail.isLiked })}
+                  aria-label="즐겨찾기"
+                  onClick={handleStarButtonClick}
+                >
                   <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
                     <path
                       d="M12.1191 6.92285L12.2959 7.33887L12.7471 7.37695L18.165 7.83691L14.0488 11.4033L13.707 11.6992L13.8096 12.1406L15.0449 17.4385L10.3877 14.6279L10 14.3936L9.6123 14.6279L4.9541 17.4385L6.19043 12.1406L6.29297 11.6992L5.95117 11.4033L1.83398 7.83691L7.25293 7.37695L7.7041 7.33887L7.88086 6.92285L10 1.92188L12.1191 6.92285Z"
