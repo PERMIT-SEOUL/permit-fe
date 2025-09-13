@@ -12,14 +12,15 @@
 }
 
 .area_header {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
+  align-content: center;
   height: 60px;
+  overflow: hidden;
 
   font-weight: 600;
   font-size: 14px;
+  white-space: nowrap;
+  text-align: center;
+  text-overflow: ellipsis;
 
   border-right: 1px solid theme.$gray-600;
   border-bottom: 1px solid theme.$gray-600;
