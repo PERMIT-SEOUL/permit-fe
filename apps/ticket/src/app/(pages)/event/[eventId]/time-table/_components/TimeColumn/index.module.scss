@@ -13,6 +13,7 @@
 
 .time_slot {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 50px;
@@ -38,8 +39,6 @@
 // 반응형 처리
 @media (max-width: 768px) {
   .time_slot {
-    padding-left: 4px;
-
-    font-size: 10px;
+    font-size: 14px;
   }
 }
