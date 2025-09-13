@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-import { AxiosErrorResponse } from "@/shared/types/axioxError";
+import { AxiosErrorResponse, isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import { refreshAccessToken } from "./helpers";
+import { ERROR_CODE } from "./utils/errorCode";
 
 export const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TICKET_API_BASE_URL,
@@ -27,23 +28,38 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response: AxiosResponse) => response.data,
   async (error: AxiosError<AxiosErrorResponse>) => {
-    // TODO: 에러 로직 변경
-    // if (error.status === 500) {
-    //   alert("서버에러 발생. 관리자에게 문의해주세요.");
-    // }
+    if (typeof window === "undefined") {
+      // Server 에서는 에러 처리 안함
 
-    // console.log("@@@@@@", error);
-    // console.log("@@@@@@", error.response?.data);
+      return;
+    }
 
-    // 리프레시 토큰 모두 만료시 로그인 페이지로 이동
-    if (error.response?.data.code === 40404) {
-      if (typeof window !== "undefined") {
+    if (error.status === ERROR_CODE.SERVER_ERROR) {
+      alert("서버에러가 발생하였습니다. 관리자에게 문의해주세요.");
+
+      window.location.href = "/login";
+    }
+
+    // 로그인이 필요한 요청이거나, 리프레시 토큰 모두 만료시 로그인 페이지로 이동
+    if (isAxiosErrorResponse(error.response?.data)) {
+      if (error.response?.data.code === ERROR_CODE.LOGIN_REQUIRED) {
+        // 인증 페이지에서는 로그인 페이지로 이동하지 않음
+        if (window.location.pathname !== "/auth") {
+          alert("로그인이 필요한 페이지입니다.");
+
+          window.location.href = "/login";
+        }
+      }
+
+      if (error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED) {
         alert("로그인이 필요한 페이지입니다.");
+
+        window.location.href = "/login";
       }
     }
 
     // 액세스 토큰 만료
-    if (error.response?.data.code === 40403) {
+    if (error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
       try {
         // 엑세스 토큰 재발급
         await refreshAccessToken();
@@ -57,10 +73,8 @@ instance.interceptors.response.use(
 
         return instance(originalRequest);
       } catch (error) {
-        // console.error("@@", error);
-
         if (typeof window !== "undefined") {
-          // 재발급 실패시 로그인 페이지로 이동
+          // 엑세스 토큰 재발급 실패시 로그인 페이지로 이동
           window.location.href = "/login";
         }
       }
