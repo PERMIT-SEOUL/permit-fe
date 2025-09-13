@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import Image from "next/image";
 import classNames from "classnames/bind";
 
+import { useTimetableUnlikeMutation } from "@/data/events/deleteTimetableLike/mutation";
 import { useTimetableDetailQuery } from "@/data/events/getTimetableDetail/queries";
 import { TimetableDetail } from "@/data/events/getTimetableDetail/types";
+import { useTimetableLikeMutation } from "@/data/events/postTimetableLike/mutation";
 
 import { Block } from "../../_clientBoundary/TimeTableClient";
 import styles from "./index.module.scss";
@@ -17,9 +19,19 @@ type TimeTableDetailModalProps = {
 };
 
 export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetailModalProps) => {
-  const { data: timetableDetail, isLoading } = useTimetableDetailQuery({
+  const {
+    data: timetableDetail,
+    isLoading,
+    refetch,
+  } = useTimetableDetailQuery({
     blockId: block?.blockId as string,
+    options: {
+      staleTime: 0,
+    },
   });
+
+  const { mutateAsync: likeTimetable } = useTimetableLikeMutation(block?.blockId as string);
+  const { mutateAsync: unlikeTimetable } = useTimetableUnlikeMutation(block?.blockId as string);
 
   // ESC 키로 모달 닫기
   useEffect(() => {
@@ -51,8 +63,18 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
     }
   };
 
-  const handleStarButtonClick = () => {
-    console.log("handleStarButtonClick");
+  const handleStarButtonClick = async () => {
+    try {
+      if (timetableDetail.isLiked) {
+        await unlikeTimetable();
+      } else {
+        await likeTimetable();
+      }
+
+      refetch();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
