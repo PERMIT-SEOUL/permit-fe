@@ -17,11 +17,18 @@ const TimeColumn = forwardRef<HTMLDivElement, TimeColumnProps>(
   ({ timeSlots, currentTimePosition }, ref) => {
     return (
       <div ref={ref} className={cx("time_column")}>
-        {timeSlots.map((slot, i) => (
-          <Typography key={i} className={cx("time_slot")} type="body14">
-            {slot.label}
-          </Typography>
-        ))}
+        {timeSlots.map((slot, i) => {
+          const [date, time] = slot.label.split(" ");
+          const [prevDate] = i > 0 ? timeSlots[i - 1].label.split(" ") : [null];
+          const shouldShowDate = i === 0 || date !== prevDate;
+
+          return (
+            <div key={i} className={cx("time_slot")}>
+              {shouldShowDate && <Typography type="body14">{date}</Typography>}
+              <Typography type="body14">{time}</Typography>
+            </div>
+          );
+        })}
 
         {/* 시간 컬럼의 현재 시간 라인 */}
         {currentTimePosition !== null && (
