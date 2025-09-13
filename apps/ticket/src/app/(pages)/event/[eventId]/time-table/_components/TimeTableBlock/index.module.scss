@@ -2,13 +2,15 @@
 
 .block {
   position: absolute;
+  align-content: center;
   box-sizing: border-box;
   margin-left: 10px;
   padding: 8px;
 
   color: white;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 14px;
+  text-align: center;
 
   cursor: pointer;
   border: 1px solid rgb(255 255 255 / 30%);
@@ -28,7 +30,16 @@
   .block {
     margin-left: 10px;
     padding: 6px;
-
-    font-size: 11px;
   }
+}
+
+.block_text {
+  display: -webkit-box;
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  word-break: break-all;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
