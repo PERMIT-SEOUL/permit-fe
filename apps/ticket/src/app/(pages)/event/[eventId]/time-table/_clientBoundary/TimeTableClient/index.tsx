@@ -226,7 +226,9 @@ function calcBlockPosition(
   const area = areas.find((a) => a.areaId === block.blockAreaId);
   const areaSequence = area ? area.sequence : 0;
 
-  const top = slotIndex * hourHeight;
+  const DISABLE_DISPLAY_HEIGHT = -100;
+
+  const top = slotIndex >= 0 ? slotIndex * hourHeight : DISABLE_DISPLAY_HEIGHT; // -100보다 작으면 블록이 표시되지 않음
   const height = durationInHours * hourHeight;
   const left = areaSequence * columnWidth;
 
