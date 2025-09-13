@@ -159,7 +159,7 @@ function generateTimeSlots(startDateStr: string, endDateStr: string) {
   const timeSlots = [];
   const current = new Date(start);
 
-  while (current <= end) {
+  while (current.getDate() <= end.getDate()) {
     for (let h = 0; h < 24; h++) {
       const slot = new Date(current);
 
@@ -169,7 +169,7 @@ function generateTimeSlots(startDateStr: string, endDateStr: string) {
       if (slot >= start && slot <= end) {
         timeSlots.push({
           datetime: new Date(slot),
-          label: `${slot.getMonth() + 1}.${slot.getDate()} ${h.toString().padStart(2, "0")}:00`,
+          label: `${slot.getMonth() + 1}/${slot.getDate()} ${h.toString().padStart(2, "0")}:00`,
         });
       }
     }
