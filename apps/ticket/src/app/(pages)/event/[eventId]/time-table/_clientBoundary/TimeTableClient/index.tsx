@@ -132,8 +132,6 @@ export const TimeTableClient = ({ eventId }: Props) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const handleFavoriteClick = async () => {
-    await refetch();
-
     if (isFavorite) {
       setIsFavorite(false);
       setTimetables(timetablesData);

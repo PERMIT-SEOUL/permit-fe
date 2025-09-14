@@ -56,7 +56,7 @@ export default TimeColumn;
 function isCurrentTimeSlot(slotTime: string, nextSlotTime?: string) {
   const now = new Date();
   // MM/DD 형식으로 변환
-  const currentDate = `${(now.getMonth() + 1).toString()}/${now.getDate().toString().padStart(2, "0")}`;
+  const currentDate = `${(now.getMonth() + 1).toString()}/${now.getDate().toString()}`;
   const currentTime = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
 
   // 슬롯 시간에서 날짜와 시간 부분 추출 (예: "09/14 08:00" -> ["09/14", "08:00"])

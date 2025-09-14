@@ -36,7 +36,7 @@ instance.interceptors.response.use(
       return;
     }
 
-    if (error.status === ERROR_CODE.SERVER_ERROR) {
+    if (error.response?.status === ERROR_CODE.SERVER_ERROR) {
       alert("서버에러가 발생하였습니다. 관리자에게 문의해주세요.");
 
       window.location.href = "/login";
