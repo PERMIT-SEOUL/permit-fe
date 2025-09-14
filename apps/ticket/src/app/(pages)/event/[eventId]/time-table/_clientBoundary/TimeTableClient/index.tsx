@@ -23,9 +23,9 @@ export const TimeTableClient = ({ eventId }: Props) => {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
-  // NOTE: 모바일뷰 여부를 SSR 시점에 알 수 없어 기본값(85px)을 사용하고, 클라이언트에서 마운트된 후에만 실제 값 적용
+  // NOTE: 모바일뷰 여부를 SSR 시점에 알 수 없어 기본값(110px)을 사용하고, 클라이언트에서 마운트된 후에만 실제 값 적용
   // TODO: 모바일여부 확인 가능한지 알아보기
-  const columnWidth = isMounted ? (isMobile ? 85 : 160) : 85;
+  const columnWidth = isMounted ? (isMobile ? 110 : 160) : 110;
 
   const { data: timetablesData } = useTimetablesSuspenseQuery({
     eventId,
@@ -228,7 +228,7 @@ export const TimeTableClient = ({ eventId }: Props) => {
   );
 };
 
-const hourHeight = 50; // px per hour
+const hourHeight = 60; // px per hour
 
 // 날짜 문자열을 Date 객체로 변환하는 함수
 function parseCustomDate(dateStr: string): Date {
@@ -316,7 +316,7 @@ function calcBlockPosition(
 
   const DISABLE_DISPLAY_HEIGHT = -200;
 
-  const top = slotIndex >= 0 ? slotIndex * hourHeight : DISABLE_DISPLAY_HEIGHT; // -100보다 작으면 블록이 표시되지 않음
+  const top = slotIndex >= 0 ? slotIndex * hourHeight + start.getMinutes() : DISABLE_DISPLAY_HEIGHT; // -100보다 작으면 블록이 표시되지 않음
   const height = durationInHours * hourHeight;
   const left = areaSequence * columnWidth;
 

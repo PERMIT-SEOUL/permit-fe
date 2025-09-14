@@ -17,12 +17,20 @@
 
   font-weight: 600;
   font-size: 14px;
-  white-space: nowrap;
   text-align: center;
-  text-overflow: ellipsis;
 
   border-right: 1px solid theme.$gray-600;
   border-bottom: 1px solid theme.$gray-600;
+}
+
+.area_header_text {
+  display: -webkit-box;
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 // 반응형 처리

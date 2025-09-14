@@ -33,34 +33,45 @@ export const TimeTableLayout = ({
 }: TimeTableLayoutProps) => {
   return (
     <div className={cx("timetable_wrapper")}>
-      {/* 왼쪽 고정 시간 영역 */}
-      <div className={cx("left_fixed_area")}>
-        {/* 시간 컬럼 헤더 */}
-        <div className={cx("time_column_header")}>time / SA</div>
+      {/* 통합된 타임테이블 컨테이너 */}
+      <div className={cx("unified_container")}>
+        {/* 고정된 시간 헤더 */}
+        <div className={cx("fixed_time_header")}>
+          <div className={cx("time_column_header")}>time / SA</div>
+        </div>
 
-        {/* 시간 컬럼 */}
-        <TimeColumn
-          ref={timeColumnRef}
-          timeSlots={timeSlots}
-          currentTimePosition={currentTimePosition}
-        />
-      </div>
+        {/* 스크롤 가능한 메인 영역 */}
+        <div ref={rightScrollAreaRef} className={cx("scrollable_area")}>
+          {/* 헤더 행 (스크롤과 함께 이동) */}
+          <div className={cx("header_row")}>
+            <AreaHeaders areas={areas} columnWidth={columnWidth} />
+          </div>
 
-      {/* 오른쪽 스크롤 가능한 영역 */}
-      <div ref={rightScrollAreaRef} className={cx("right_scroll_area")}>
-        {/* 장소 헤더들 */}
-        <AreaHeaders areas={areas} columnWidth={columnWidth} />
+          {/* 컨텐츠 행 */}
+          <div className={cx("content_row")}>
+            {/* 시간 컬럼 */}
+            <div className={cx("time_column_wrapper")}>
+              <TimeColumn
+                ref={timeColumnRef}
+                timeSlots={timeSlots}
+                currentTimePosition={currentTimePosition}
+              />
+            </div>
 
-        {/* 그리드 영역 */}
-        <GridArea
-          areas={areas}
-          blocks={blocks}
-          columnWidth={columnWidth}
-          hourHeight={hourHeight}
-          timeSlots={timeSlots}
-          currentTimePosition={currentTimePosition}
-          onBlockClick={onBlockClick}
-        />
+            {/* 그리드 영역 */}
+            <div className={cx("grid_wrapper")}>
+              <GridArea
+                areas={areas}
+                blocks={blocks}
+                columnWidth={columnWidth}
+                hourHeight={hourHeight}
+                timeSlots={timeSlots}
+                currentTimePosition={currentTimePosition}
+                onBlockClick={onBlockClick}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

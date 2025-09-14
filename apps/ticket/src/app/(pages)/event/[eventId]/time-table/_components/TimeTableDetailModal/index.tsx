@@ -5,7 +5,6 @@ import classNames from "classnames/bind";
 
 import { useTimetableUnlikeMutation } from "@/data/events/deleteTimetableLike/mutation";
 import { useTimetableDetailQuery } from "@/data/events/getTimetableDetail/queries";
-import { TimetableDetail } from "@/data/events/getTimetableDetail/types";
 import { useTimetableLikeMutation } from "@/data/events/postTimetableLike/mutation";
 import { EVENT_QUERY_KEYS } from "@/data/events/queryKeys";
 
@@ -125,6 +124,9 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
               <div className={cx("event_details")}>
                 <div className={cx("time_and_place")}>
                   <div className={cx("time_info")}>
+                    <span>
+                      {timetableDetail.startDate} ~ {timetableDetail.endDate}
+                    </span>
                     <span>{timetableDetail.area}</span>
                   </div>
                   <p className={cx("description")}>{timetableDetail.information}</p>
@@ -164,17 +166,4 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
       </div>
     </div>
   );
-};
-
-// 실제 요청 로직 자리
-// TODO: block의 식별자(ID)가 있다면 이를 사용해 fetch
-const mock: TimetableDetail = {
-  blockName: "아티스트1",
-  blockCategory: "카테고리1",
-  categoryColor: "#600123",
-  isLiked: false,
-  information: "소개글소개글소개글",
-  area: "장소1",
-  imageUrl: "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/images4.webp",
-  blockInfoUrl: "https://naver.com",
 };

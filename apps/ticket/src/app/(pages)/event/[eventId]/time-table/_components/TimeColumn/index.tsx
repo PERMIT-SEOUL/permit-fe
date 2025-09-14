@@ -58,7 +58,9 @@ function isCurrentTimeSlot(slotTime: string, nextSlotTime?: string) {
 
   // 운영 환경에서만 한국 시간으로 변환 (KST: UTC+9)
   const koreaTime =
-    process.env.VERCEL_ENV === "production"
+    process.env.VERCEL_ENV === "production" ||
+    process.env.VERCEL_ENV === "development" ||
+    process.env.VERCEL_ENV === "preview"
       ? new Date(now.getTime() + 9 * 60 * 60 * 1000) // UTC + 9시간
       : now; // 로컬 환경에서는 시스템 시간 사용
 

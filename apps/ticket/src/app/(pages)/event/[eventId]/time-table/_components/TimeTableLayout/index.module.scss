@@ -2,8 +2,8 @@
 
 .timetable_wrapper {
   position: relative;
-  display: flex;
-  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 
   color: white;
   font-family: sans-serif;
@@ -11,54 +11,101 @@
   background-color: theme.$black;
 }
 
-.left_fixed_area {
+.unified_container {
   position: relative;
-  z-index: 6;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.fixed_time_header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 7;
   width: 120px;
 
   background-color: theme.$black;
-  border-right: 1px solid theme.$gray-600;
 }
 
 .time_column_header {
-  position: sticky;
-  top: 0;
-  z-index: 7;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 120px;
   height: 60px;
 
   font-weight: 600;
   font-size: 14px;
 
   background-color: theme.$black;
+  border-right: 1px solid theme.$gray-600;
   border-bottom: 1px solid theme.$gray-600;
 }
 
-.right_scroll_area {
+.scrollable_area {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
   overflow: auto;
   scrollbar-width: none;
-
-  /* 모바일 스크롤 성능 최적화 */
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  overscroll-behavior: contain;
 
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
+.header_row {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  flex-shrink: 0;
+  min-width: max-content;
+  height: 60px;
+  padding-left: 120px;
+
+  background-color: theme.$black;
+}
+
+.content_row {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: max-content;
+  margin: 0;
+  padding: 0;
+}
+
+.time_column_wrapper {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  flex-shrink: 0;
+  width: 120px;
+  margin: 0;
+
+  background-color: theme.$black;
+}
+
+.grid_wrapper {
+  flex: 1;
+  min-width: max-content;
+  margin: 0;
+}
+
 // 반응형 처리
 @media (max-width: 768px) {
-  .left_fixed_area {
+  .time_column_header,
+  .time_column_wrapper,
+  .fixed_time_header {
     width: 80px;
+  }
+
+  .header_row {
+    padding-left: 80px;
   }
 }

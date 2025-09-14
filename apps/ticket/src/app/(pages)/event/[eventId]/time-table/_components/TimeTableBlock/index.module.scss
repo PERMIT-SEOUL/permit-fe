@@ -42,4 +42,8 @@
 
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+
+  &.under_30min {
+    -webkit-line-clamp: 1;
+  }
 }
