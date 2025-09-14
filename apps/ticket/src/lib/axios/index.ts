@@ -31,9 +31,8 @@ instance.interceptors.response.use(
   (response: AxiosResponse) => response.data,
   async (error: AxiosError<AxiosErrorResponse>) => {
     if (typeof window === "undefined") {
-      // Server 에서는 에러 처리 안함
-
-      return;
+      // Server에서는 기본 전파
+      return Promise.reject(error);
     }
 
     if (error.response?.status === ERROR_CODE.SERVER_ERROR) {
