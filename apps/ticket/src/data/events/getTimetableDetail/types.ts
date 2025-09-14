@@ -11,4 +11,6 @@ export type TimetableDetail = {
   area: string;
   imageUrl: string;
   blockInfoUrl: string;
+  startDate: string;
+  endDate: string;
 };

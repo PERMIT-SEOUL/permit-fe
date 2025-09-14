@@ -195,11 +195,26 @@
 
 .time_info {
   display: flex;
-  gap: 10px;
+  gap: 2px;
   align-items: center;
-  margin-bottom: 0;
+  margin-bottom: 8px;
+
+  :first-child::after {
+    display: inline-block;
+    width: 2px;
+    height: 16px;
+    margin: auto 8px auto 10px;
+
+    vertical-align: middle;
+
+    background-color: theme.$gray-500;
+
+    content: "";
+  }
 
   span {
+    align-content: center;
+
     color: rgb(255 255 255 / 50%);
     font-size: 14px;
     font-family: Roboto, sans-serif;
@@ -209,7 +224,7 @@
 
   @media (max-width: 768px) {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 0;
   }
 }
 
