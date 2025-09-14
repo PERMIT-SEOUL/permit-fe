@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import classNames from "classnames/bind";
 
 import { Area, Block, TimeSlot } from "../../_clientBoundary/TimeTableClient";
@@ -32,39 +31,6 @@ export const TimeTableLayout = ({
   rightScrollAreaRef,
   onBlockClick,
 }: TimeTableLayoutProps) => {
-  // iOS Safari 스크롤 버그 해결을 위한 추가 처리
-  useEffect(() => {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-    if (isIOS && rightScrollAreaRef.current) {
-      const scrollArea = rightScrollAreaRef.current;
-
-      // iOS에서 스크롤 끊김 방지를 위한 강제 리렌더링
-      const handleTouchStart = () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (scrollArea.style as any).webkitOverflowScrolling = "auto";
-        setTimeout(() => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (scrollArea.style as any).webkitOverflowScrolling = "touch";
-        }, 1);
-      };
-
-      // 스크롤 모멘텀 유지를 위한 처리
-      const handleScroll = () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (scrollArea.style as any).webkitTransform = "translate3d(0,0,0)";
-      };
-
-      scrollArea.addEventListener("touchstart", handleTouchStart, { passive: true });
-      scrollArea.addEventListener("scroll", handleScroll, { passive: true });
-
-      return () => {
-        scrollArea.removeEventListener("touchstart", handleTouchStart);
-        scrollArea.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [rightScrollAreaRef]);
-
   return (
     <div className={cx("timetable_wrapper")}>
       {/* 왼쪽 고정 시간 영역 */}

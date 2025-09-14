@@ -4,25 +4,23 @@
   position: relative;
   display: flex;
   height: 100dvh;
-  overflow: hidden;
+  overflow: hidden; /* iOS 스크롤 이슈 방지를 위해 hidden으로 변경 */
 
   color: white;
   font-family: sans-serif;
 
   background-color: theme.$black;
 
-  /* iOS 전용 최적화 */
-  @supports (-webkit-overflow-scrolling: touch) {
+  /* iOS Safari 스크롤 최적화 */
+  -webkit-overflow-scrolling: touch;
+
+  transform: translateZ(0); /* GPU 가속 활성화 */
+
+  @media (max-width: 768px) {
+    /* iOS에서 더 부드러운 스크롤을 위한 설정 */
     transform: translate3d(0, 0, 0);
-
-    /* iOS 스크롤 버그 회피 */
-    isolation: isolate;
-
-    will-change: transform;
-
-    /* iOS Safari에서만 적용 */
-    -webkit-overflow-scrolling: touch;
-    contain: layout style paint;
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 }
 
@@ -74,49 +72,31 @@
   flex: 1;
   flex-direction: column;
   overflow: auto;
+
+  transform: translateZ(0);
+
+  touch-action: pan-x pan-y; /* 터치 스크롤 허용 */
+  will-change: scroll-position;
   scrollbar-width: none;
+
+  /* iOS Safari 스크롤 최적화 */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+
+  /* iOS에서 부드러운 스크롤을 위한 추가 설정 */
+  scroll-behavior: auto; /* smooth 대신 auto 사용 */
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  /* iOS 스크롤 문제 해결을 위한 강력한 최적화 */
-  @supports (-webkit-overflow-scrolling: touch) {
+  @media (max-width: 768px) {
+    /* iOS에서 스크롤 끊김 방지 */
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
 
-    /* 레이어 최적화 */
-    isolation: isolate;
-
-    touch-action: manipulation;
-
-    /* 렌더링 최적화 */
-    will-change: scroll-position;
-
-    /* iOS Safari 전용 */
-    -webkit-overflow-scrolling: touch;
-
-    /* 스크롤 최적화 */
-    overscroll-behavior: none;
-    scroll-behavior: auto;
-    contain: layout style paint;
-
-    /* iOS 14+ 최적화 */
-    mask-image: radial-gradient(white, black);
-  }
-
-  /* 모바일에서 추가 최적화 */
-  @media (max-width: 768px) {
-    /* iOS 디바이스에서만 적용 */
-    position: relative;
-    z-index: 1;
-
-    /* 스크롤 영역 명시적 정의 */
-    height: calc(100dvh - 60px); /* 헤더 높이 제외 */
-    min-height: 0;
-
-    /* 터치 이벤트 최적화 */
-    touch-action: pan-y;
-    overscroll-behavior: auto none;
+    /* 스크롤 관성 증가 */
+    scroll-snap-type: none;
+    scroll-padding: 0;
   }
 }
