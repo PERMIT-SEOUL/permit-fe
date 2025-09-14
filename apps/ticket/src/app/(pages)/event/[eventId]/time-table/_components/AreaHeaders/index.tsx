@@ -22,7 +22,7 @@ const AreaHeaders = ({ areas, columnWidth }: AreaHeadersProps) => {
           type="body14"
           style={{ width: columnWidth }}
         >
-          {area.areaName}
+          <span className={cx("area_header_text")}>{area.areaName}</span>
         </Typography>
       ))}
     </div>
