@@ -17,7 +17,7 @@ const TimeTableBlock = ({ block, onClick }: TimeTableBlockProps) => {
 
   const isOver30Min =
     new Date(block.blockEndDate).getTime() - new Date(block.blockStartDate).getTime() >
-    31 * 60 * 1000;
+    30 * 60 * 1000;
 
   return (
     <div
