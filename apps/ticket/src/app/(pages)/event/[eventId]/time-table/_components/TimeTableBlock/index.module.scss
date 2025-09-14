@@ -38,14 +38,12 @@
   overflow: hidden;
 
   text-overflow: ellipsis;
-
-  // word-break: break-all;
+  word-break: break-all;
 
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
 
-  &.under_30min {
-    min-width: 0;
-    -webkit-line-clamp: 1;
+  &.over_30min {
+    -webkit-line-clamp: 2;
   }
 }
