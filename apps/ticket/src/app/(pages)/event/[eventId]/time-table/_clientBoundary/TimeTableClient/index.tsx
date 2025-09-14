@@ -1,9 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import classNames from "classnames/bind";
 
+import { Button, Flex, Typography } from "@permit/design-system";
 import { useIsMobile } from "@permit/design-system/hooks";
 import { useTimetablesSuspenseQuery } from "@/data/events/getTimetables/queries";
+
+import styles from "./index.module.scss";
+
+const cx = classNames.bind(styles);
 
 import { TimeTableDetailModal } from "../../_components/TimeTableDetailModal";
 import { TimeTableLayout } from "../../_components/TimeTableLayout";
@@ -13,13 +20,20 @@ type Props = {
 };
 
 export const TimeTableClient = ({ eventId }: Props) => {
+  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
   // NOTE: 모바일뷰 여부를 SSR 시점에 알 수 없어 기본값(85px)을 사용하고, 클라이언트에서 마운트된 후에만 실제 값 적용
   // TODO: 모바일여부 확인 가능한지 알아보기
   const columnWidth = isMounted ? (isMobile ? 85 : 160) : 85;
 
-  const { data: timetables } = useTimetablesSuspenseQuery({ eventId });
+  const { data: timetablesData, refetch } = useTimetablesSuspenseQuery({
+    eventId,
+    options: {
+      refetchOnWindowFocus: true,
+    },
+  });
+  const [timetables, setTimetables] = useState(timetablesData);
 
   const timeSlots = useMemo(
     () => generateTimeSlots(timetables.startDate, timetables.endDate),
@@ -115,8 +129,84 @@ export const TimeTableClient = ({ eventId }: Props) => {
     };
   });
 
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleFavoriteClick = async () => {
+    await refetch();
+
+    if (isFavorite) {
+      setIsFavorite(false);
+      setTimetables(timetablesData);
+    } else {
+      setIsFavorite(true);
+      setTimetables({
+        ...timetablesData,
+        blocks: timetablesData.blocks.filter((block) => block.isUserLiked),
+      });
+    }
+  };
+
+  const handleBackButtonClick = () => {
+    // 히스토리가 있는지 확인
+    if (window.history.length > 1 && document.referrer) {
+      // 이전 페이지가 같은 도메인이고, 이벤트 디테일 페이지인지 확인
+      const referrerUrl = new URL(document.referrer);
+      const currentUrl = new URL(window.location.href);
+
+      if (referrerUrl.origin === currentUrl.origin) {
+        // 같은 도메인에서 온 경우 뒤로가기
+        router.back();
+
+        return;
+      }
+    }
+
+    // 직접 접근이거나 외부에서 온 경우 이벤트 디테일 페이지로 이동
+    router.push(`/event/${eventId}`);
+  };
+
   return (
     <>
+      <header className={cx("header")}>
+        <Flex gap={8} justify="space-between">
+          <Flex direction="column" gap={16}>
+            <Typography type="title20">{timetables.eventName}</Typography>
+
+            <Button
+              className={cx("back_button")}
+              variant="secondary"
+              onClick={handleBackButtonClick}
+            >
+              {"< back"}
+            </Button>
+          </Flex>
+          <>
+            {/* 즐겨찾기 버튼 영역 (media query 로 분기) */}
+            <button
+              className={cx("star_button", { liked: isFavorite })}
+              aria-label="즐겨찾기"
+              onClick={handleFavoriteClick}
+            >
+              <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
+                <path
+                  d="M12.1191 6.92285L12.2959 7.33887L12.7471 7.37695L18.165 7.83691L14.0488 11.4033L13.707 11.6992L13.8096 12.1406L15.0449 17.4385L10.3877 14.6279L10 14.3936L9.6123 14.6279L4.9541 17.4385L6.19043 12.1406L6.29297 11.6992L5.95117 11.4033L1.83398 7.83691L7.25293 7.37695L7.7041 7.33887L7.88086 6.92285L10 1.92188L12.1191 6.92285Z"
+                  fill={isFavorite ? "currentColor" : "transparent"}
+                  fillOpacity={isFavorite ? "1" : "0.1"}
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </button>
+            <Button
+              className={cx("favorite_button")}
+              variant={isFavorite ? "cta" : "primary"}
+              onClick={handleFavoriteClick}
+            >
+              favorite
+            </Button>
+          </>
+        </Flex>
+      </header>
       <TimeTableLayout
         timeSlots={timeSlots}
         areas={areas}
@@ -226,7 +316,7 @@ function calcBlockPosition(
   const area = areas.find((a) => a.areaId === block.blockAreaId);
   const areaSequence = area ? area.sequence : 0;
 
-  const DISABLE_DISPLAY_HEIGHT = -100;
+  const DISABLE_DISPLAY_HEIGHT = -200;
 
   const top = slotIndex >= 0 ? slotIndex * hourHeight : DISABLE_DISPLAY_HEIGHT; // -100보다 작으면 블록이 표시되지 않음
   const height = durationInHours * hourHeight;
