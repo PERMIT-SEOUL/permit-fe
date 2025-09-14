@@ -5,7 +5,6 @@ import classNames from "classnames/bind";
 
 import { useTimetableUnlikeMutation } from "@/data/events/deleteTimetableLike/mutation";
 import { useTimetableDetailQuery } from "@/data/events/getTimetableDetail/queries";
-import { TimetableDetail } from "@/data/events/getTimetableDetail/types";
 import { useTimetableLikeMutation } from "@/data/events/postTimetableLike/mutation";
 import { EVENT_QUERY_KEYS } from "@/data/events/queryKeys";
 

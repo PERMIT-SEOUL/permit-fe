@@ -18,9 +18,6 @@
   flex-direction: column;
   flex-shrink: 0;
   width: 120px;
-
-  background-color: theme.$black;
-  border-right: 1px solid theme.$gray-600;
 }
 
 .time_column_header {
@@ -36,6 +33,7 @@
   font-size: 14px;
 
   background-color: theme.$black;
+  border-right: 1px solid theme.$gray-600;
   border-bottom: 1px solid theme.$gray-600;
 }
 
