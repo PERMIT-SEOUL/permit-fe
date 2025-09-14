@@ -9,6 +9,9 @@
   font-family: sans-serif;
 
   background-color: theme.$black;
+
+  -webkit-overflow-scrolling: touch; /* 관성 스크롤 */
+  overscroll-behavior: contain; /* 상위 스크롤과 충돌 방지 */
 }
 
 .left_fixed_area {
