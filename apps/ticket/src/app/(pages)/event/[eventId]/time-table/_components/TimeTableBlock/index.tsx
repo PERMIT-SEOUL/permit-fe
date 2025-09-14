@@ -29,7 +29,7 @@ const TimeTableBlock = ({ block, onClick }: TimeTableBlockProps) => {
         }
       }}
     >
-      {block.blockName}
+      <p className={cx("block_text")}>{block.blockName}</p>
     </div>
   );
 };

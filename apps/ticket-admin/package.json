@@ -2,6 +2,7 @@
   "name": "ticket-admin",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
@@ -22,8 +23,8 @@
     "@tanstack/eslint-plugin-query": "^5.83.1",
     "@types/classnames": "^2.3.1",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "eslint": "^9.35.0",
     "eslint-config-next": "15.3.3",
     "sass": "^1.69.5",

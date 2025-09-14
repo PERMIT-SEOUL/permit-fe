@@ -2,6 +2,63 @@
 
 /* 모든 스타일은 _components의 UI 컴포넌트들에서 처리 */
 
+.header {
+  // margin-bottom: 8px;
+  padding: 12px 16px;
+}
+
+.back_button {
+  width: 90px;
+  height: 32px;
+}
+
+.favorite_button {
+  // TODO: 1차 릴리즈 이후 다시 오픈
+  display: none;
+
+  border: none;
+  border-radius: 34px;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.star_button {
+  // TODO: 1차 릴리즈 이후 다시 오픈
+  display: none;
+
+  // display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  color: #d4d4d4;
+
+  background: none;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    color: white;
+  }
+
+  &.liked {
+    svg {
+      path {
+        fill: yellow;
+        stroke: yellow;
+      }
+    }
+  }
+
+  @media (min-width: 767px) {
+    display: none;
+  }
+}
+
 .placeholder {
   /* 빈 파일 오류 방지를 위한 placeholder */
   display: none;

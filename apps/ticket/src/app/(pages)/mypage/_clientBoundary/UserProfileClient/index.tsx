@@ -7,7 +7,10 @@ import { useSelect, useTextField } from "@permit/design-system/hooks";
 import { useUserInfoSuspenseQuery } from "@/data/users/getUserInfo/queries";
 import { usePatchUserInfoMutation } from "@/data/users/patchUserInfo/mutation";
 import { useUserEmailCheckMutation } from "@/data/users/postUserEmailCheck/mutation";
+import { useLogoutMutation } from "@/data/users/postUserLogout/mutation";
 import { USER_QUERY_KEYS } from "@/data/users/queryKeys";
+import { safeLocalStorage } from "@/lib/storage";
+import { IS_LOGINED } from "@/shared/constants/storage";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import styles from "./index.module.scss";
@@ -31,7 +34,7 @@ const GENDER_OPTIONS = [
 export const UserProfileClient = () => {
   const queryClient = useQueryClient();
 
-  const { data: userInfoData } = useUserInfoSuspenseQuery();
+  const { data: userInfoData } = useUserInfoSuspenseQuery({ refetchOnWindowFocus: true });
 
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -41,6 +44,8 @@ export const UserProfileClient = () => {
     useUserEmailCheckMutation();
 
   const { mutateAsync: mutatePatchUserInfo, isPending } = usePatchUserInfoMutation();
+
+  const { mutateAsync: mutateLogout } = useLogoutMutation();
 
   const nameField = useTextField({
     initialValue: userInfoData.name,
@@ -122,6 +127,20 @@ export const UserProfileClient = () => {
       queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEYS.INFO] });
       setIsEditMode(false);
       setEmailVerified(false);
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        alert(error.message);
+      }
+    }
+  };
+
+  const handleSignout = async () => {
+    try {
+      // TODO: 로그아웃 여부 물어봐야할까?
+      await mutateLogout();
+
+      safeLocalStorage.remove(IS_LOGINED);
+      window.location.href = "/login";
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
         alert(error.message);
@@ -240,11 +259,12 @@ export const UserProfileClient = () => {
       </Flex>
 
       <Flex className={cx("bottom_actions")} direction="column" gap={20}>
-        <button>
+        <button onClick={handleSignout}>
           <Typography type="body14" color="white">
             Logout
           </Typography>
         </button>
+        {/* TODO: 회원 탈퇴 기능 추가 */}
         <button>
           <Typography type="body14" color="white">
             Delete Account

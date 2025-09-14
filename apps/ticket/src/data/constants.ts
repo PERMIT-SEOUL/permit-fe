@@ -28,6 +28,10 @@ export const API_URL = {
     TIMETABLES: "/api/events/:eventId/timetables",
     /** 행사 타임테이블 상세 정보 조회 API */
     TIMETABLE_DETAIL: "/api/events/timetables/:blockId",
+    /** 행사 타임테이블 좋아요 생성 API */
+    TIMETABLE_LIKE: "/api/events/timetables/likes/:blockId",
+    /** 행사 타임테이블 좋아요 삭제 API */
+    TIMETABLE_UNLIKE: "/api/events/timetables/likes/:blockId",
   },
 
   // 예매 관련 API

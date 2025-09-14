@@ -3,6 +3,7 @@ export type TimetablesParams = {
 };
 
 export type TimetablesResponse = {
+  eventName: string;
   startDate: string;
   endDate: string;
   areas: Area[];

@@ -13,9 +13,15 @@ export const Footer = () => {
   const pathname = usePathname();
 
   const isEventPage = /^\/event\/[^/]+$/.test(pathname);
+  const isTimeTablePage = /^\/event\/[^/]+\/time-table$/.test(pathname);
 
   return (
-    <footer className={cx("container", { is_event_page: isEventPage })}>
+    <footer
+      className={cx("container", {
+        is_event_page: isEventPage,
+        is_time_table_page: isTimeTablePage,
+      })}
+    >
       <div className={cx("links")}>
         <Typography type="body12" color="gray400">
           Copyright © 2024 PERMIT
