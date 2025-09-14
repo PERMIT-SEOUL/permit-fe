@@ -19,6 +19,11 @@
   height: 50px;
 
   border-bottom: 1px solid theme.$gray-600;
+
+  &.current_time_slot {
+    background-color: theme.$red;
+    border-color: theme.$red;
+  }
 }
 
 // TODO: 확인 box에 색상 더하도록
