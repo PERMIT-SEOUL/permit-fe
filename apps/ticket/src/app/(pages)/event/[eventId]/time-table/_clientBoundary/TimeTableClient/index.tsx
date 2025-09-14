@@ -27,7 +27,7 @@ export const TimeTableClient = ({ eventId }: Props) => {
   // TODO: 모바일여부 확인 가능한지 알아보기
   const columnWidth = isMounted ? (isMobile ? 85 : 160) : 85;
 
-  const { data: timetablesData, refetch } = useTimetablesSuspenseQuery({
+  const { data: timetablesData } = useTimetablesSuspenseQuery({
     eventId,
     options: {
       refetchOnWindowFocus: true,
