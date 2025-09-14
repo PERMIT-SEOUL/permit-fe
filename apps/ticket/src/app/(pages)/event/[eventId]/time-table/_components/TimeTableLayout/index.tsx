@@ -46,21 +46,24 @@ export const TimeTableLayout = ({
         />
       </div>
 
-      {/* 오른쪽 스크롤 가능한 영역 */}
-      <div ref={rightScrollAreaRef} className={cx("right_scroll_area")}>
-        {/* 장소 헤더들 */}
-        <AreaHeaders areas={areas} columnWidth={columnWidth} />
+      {/* 오른쪽 고정 영역 */}
+      <div className={cx("right_fixed_area")}>
+        {/* 내부 스크롤 가능한 컨테이너 */}
+        <div ref={rightScrollAreaRef} className={cx("scroll_container")}>
+          {/* 장소 헤더들 */}
+          <AreaHeaders areas={areas} columnWidth={columnWidth} />
 
-        {/* 그리드 영역 */}
-        <GridArea
-          areas={areas}
-          blocks={blocks}
-          columnWidth={columnWidth}
-          hourHeight={hourHeight}
-          timeSlots={timeSlots}
-          currentTimePosition={currentTimePosition}
-          onBlockClick={onBlockClick}
-        />
+          {/* 그리드 영역 */}
+          <GridArea
+            areas={areas}
+            blocks={blocks}
+            columnWidth={columnWidth}
+            hourHeight={hourHeight}
+            timeSlots={timeSlots}
+            currentTimePosition={currentTimePosition}
+            onBlockClick={onBlockClick}
+          />
+        </div>
       </div>
     </div>
   );

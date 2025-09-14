@@ -4,7 +4,7 @@
   position: relative;
   display: flex;
   height: 100dvh;
-  overflow: scroll;
+  overflow: hidden;
 
   color: white;
   font-family: sans-serif;
@@ -38,7 +38,14 @@
   border-bottom: 1px solid theme.$gray-600;
 }
 
-.right_scroll_area {
+.right_fixed_area {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.scroll_container {
   display: flex;
   flex: 1;
   flex-direction: column;
