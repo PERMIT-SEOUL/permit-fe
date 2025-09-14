@@ -19,6 +19,8 @@
   flex-direction: column;
   flex-shrink: 0;
   width: 120px;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 .time_column_header {
@@ -39,9 +41,11 @@
 }
 
 .right_fixed_area {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
+  height: 100dvh;
   overflow: hidden;
 }
 

@@ -3,12 +3,7 @@
 .time_column {
   position: relative;
   flex: 1;
-  overflow-y: auto;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  overflow: hidden;
 }
 
 .time_slot {
