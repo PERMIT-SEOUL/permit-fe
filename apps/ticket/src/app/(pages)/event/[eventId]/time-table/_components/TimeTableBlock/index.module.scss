@@ -35,11 +35,16 @@
 
 .block_text {
   display: block;
+  width: 120px;
   overflow: hidden;
 
-  white-space: pre-line;
+  white-space: nowrap;
   text-overflow: ellipsis;
   word-break: normal;
+
+  @media (max-width: 768px) {
+    width: 76px;
+  }
 
   &.over_30min {
     display: -webkit-box;
