@@ -8,6 +8,8 @@
 
 .grid_column {
   position: absolute;
+  -webkit-overflow-scrolling: touch; /* 관성 스크롤 */
+  overscroll-behavior: contain; /* 상위 스크롤과 충돌 방지 */
 }
 
 .current_time_line {

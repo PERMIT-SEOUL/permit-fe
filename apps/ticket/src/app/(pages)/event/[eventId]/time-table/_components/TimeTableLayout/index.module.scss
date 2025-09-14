@@ -3,13 +3,13 @@
 .timetable_wrapper {
   position: relative;
   display: flex;
-  height: 100vh;
+  height: 100dvh;
+  overflow: scroll;
 
   color: white;
   font-family: sans-serif;
 
   background-color: theme.$black;
-
   -webkit-overflow-scrolling: touch; /* 관성 스크롤 */
   overscroll-behavior: contain; /* 상위 스크롤과 충돌 방지 */
 }
