@@ -55,9 +55,16 @@ export default TimeColumn;
 // 현재 시간이 해당 슬롯 범위에 있는지 확인하는 함수
 function isCurrentTimeSlot(slotTime: string, nextSlotTime?: string) {
   const now = new Date();
+
+  // 운영 환경에서만 한국 시간으로 변환 (KST: UTC+9)
+  const koreaTime =
+    process.env.VERCEL_ENV === "production"
+      ? new Date(now.getTime() + 9 * 60 * 60 * 1000) // UTC + 9시간
+      : now; // 로컬 환경에서는 시스템 시간 사용
+
   // MM/DD 형식으로 변환
-  const currentDate = `${(now.getMonth() + 1).toString()}/${now.getDate().toString()}`;
-  const currentTime = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+  const currentDate = `${(koreaTime.getMonth() + 1).toString()}/${koreaTime.getDate().toString()}`;
+  const currentTime = `${koreaTime.getHours().toString().padStart(2, "0")}:${koreaTime.getMinutes().toString().padStart(2, "0")}`;
 
   // 슬롯 시간에서 날짜와 시간 부분 추출 (예: "09/14 08:00" -> ["09/14", "08:00"])
   const [slotDate, slotTimeOnly] = slotTime.split(" ");
