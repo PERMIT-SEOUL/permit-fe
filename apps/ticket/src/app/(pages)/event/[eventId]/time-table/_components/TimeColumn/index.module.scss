@@ -5,8 +5,6 @@
   flex: 1;
   overflow-y: auto;
   scrollbar-width: none;
-  -webkit-overflow-scrolling: touch; /* 관성 스크롤 */
-  overscroll-behavior: contain; /* 상위 스크롤과 충돌 방지 */
 
   &::-webkit-scrollbar {
     display: none;

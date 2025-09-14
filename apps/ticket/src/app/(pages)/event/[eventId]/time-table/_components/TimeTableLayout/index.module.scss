@@ -10,8 +10,6 @@
   font-family: sans-serif;
 
   background-color: theme.$black;
-  -webkit-overflow-scrolling: touch; /* 관성 스크롤 */
-  overscroll-behavior: contain; /* 상위 스크롤과 충돌 방지 */
 }
 
 .left_fixed_area {
@@ -47,6 +45,9 @@
   overflow: auto;
   scrollbar-width: none;
 
+  -webkit-overflow-scrolling: touch; /* 관성 스크롤 */
+  overscroll-behavior: contain; /* 상위 스크롤과 충돌 방지 */
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -56,5 +57,8 @@
 @media (max-width: 768px) {
   .left_fixed_area {
     width: 80px;
+
+    -webkit-overflow-scrolling: touch; /* 관성 스크롤 */
+    overscroll-behavior: contain; /* 상위 스크롤과 충돌 방지 */
   }
 }
