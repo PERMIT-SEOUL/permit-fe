@@ -39,12 +39,13 @@
 
   white-space: nowrap;
   text-overflow: ellipsis;
-  word-break: break-all;
+  word-break: normal;
 
   &.over_30min {
     display: -webkit-box;
 
     white-space: normal;
+    word-break: break-all;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
