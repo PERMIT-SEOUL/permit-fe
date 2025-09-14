@@ -151,7 +151,10 @@
 }
 
 .star_button {
-  display: flex;
+  // TODO: 1차 릴리즈 이후 다시 오픈
+  display: none;
+
+  // display: flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
