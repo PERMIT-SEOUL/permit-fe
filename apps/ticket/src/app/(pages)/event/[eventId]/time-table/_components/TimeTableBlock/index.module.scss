@@ -37,6 +37,7 @@
   display: -webkit-box;
   overflow: hidden;
 
+  white-space: nowrap;
   text-overflow: ellipsis;
   word-break: break-all;
 
@@ -45,5 +46,7 @@
 
   &.over_30min {
     -webkit-line-clamp: 2;
+
+    white-space: normal;
   }
 }
