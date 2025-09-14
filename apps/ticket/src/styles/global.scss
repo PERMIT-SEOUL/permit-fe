@@ -1,5 +1,10 @@
 @use "@permit/design-system/styles/variables" as theme;
 
+html,
+body {
+  touch-action: pan-y;
+}
+
 body {
   min-height: 100vh;
 
