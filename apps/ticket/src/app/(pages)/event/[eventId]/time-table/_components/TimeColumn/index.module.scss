@@ -13,13 +13,17 @@
 
 .time_slot {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 50px;
 
-  font-size: 12px;
-
   border-bottom: 1px solid theme.$gray-600;
+
+  &.current_time_slot {
+    background-color: theme.$red;
+    border-color: theme.$red;
+  }
 }
 
 // TODO: 확인 box에 색상 더하도록
@@ -38,8 +42,6 @@
 // 반응형 처리
 @media (max-width: 768px) {
   .time_slot {
-    padding-left: 4px;
-
-    font-size: 10px;
+    font-size: 14px;
   }
 }

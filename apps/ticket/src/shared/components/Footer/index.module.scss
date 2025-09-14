@@ -17,6 +17,10 @@
       margin-bottom: 89px;
     }
   }
+
+  &.is_time_table_page {
+    display: none;
+  }
 }
 
 .links {

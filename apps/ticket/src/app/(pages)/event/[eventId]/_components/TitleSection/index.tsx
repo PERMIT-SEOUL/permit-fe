@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import classNames from "classnames/bind";
 
 import { Button, Typography } from "@permit/design-system";
@@ -13,24 +13,14 @@ type Props = {
 };
 
 export const TitleSection = ({ eventName, eventId }: Props) => {
-  const router = useRouter();
-
-  const goToTimeTable = () => {
-    router.push(`/event/${eventId}/time-table`);
-  };
-
   return (
     <div className={cx("title_section")}>
       <Typography className={cx("title")} type="title20" color="white">
         {eventName}
       </Typography>
-      <Button
-        className={cx("time_table_button")}
-        variant="secondary"
-        size="sm"
-        onClick={goToTimeTable}
-      >
-        TIME TABLE
+
+      <Button asChild className={cx("time_table_button")} variant="secondary" size="sm">
+        <Link href={`/event/${eventId}/time-table`}>TIME TABLE</Link>
       </Button>
     </div>
   );

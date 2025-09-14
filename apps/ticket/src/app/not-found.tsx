@@ -10,6 +10,7 @@ const NotFound = () => {
         justifyContent: "center",
         height: "100vh",
         textAlign: "center",
+        color: "white",
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -26,6 +27,7 @@ const NotFound = () => {
               width: "180px",
               borderRadius: "8px",
               cursor: "pointer",
+              backgroundColor: "gray",
             }}
           >
             홈으로
