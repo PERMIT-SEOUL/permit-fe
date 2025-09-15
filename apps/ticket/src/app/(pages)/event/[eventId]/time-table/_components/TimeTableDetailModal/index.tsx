@@ -129,10 +129,10 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                     </span>
                     <span>{timetableDetail.area}</span>
                   </div>
-                  <p className={cx("description")}>{timetableDetail.information}</p>
+                  {/* <p className={cx("description")}>{timetableDetail.information}</p> */}
                 </div>
 
-                <div className={cx("artist_info")}>
+                {/* <div className={cx("artist_info")}>
                   <span className={cx("artist_label")}>자세히 보기</span>
                   <a
                     href={timetableDetail.blockInfoUrl}
@@ -142,7 +142,7 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                   >
                     {timetableDetail.blockInfoUrl}
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -152,10 +152,14 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                 <div className={cx("image_wrapper")}>
                   {timetableDetail.imageUrl.includes("videos") ? (
                     <video
-                      src={timetableDetail.imageUrl}
+                      src={`${timetableDetail.imageUrl}#t=0.001`}
                       controls
                       className={cx("event_video")}
                       preload="metadata"
+                      playsInline
+                      {...({
+                        "webkit-playsinline": "true",
+                      } as React.VideoHTMLAttributes<HTMLVideoElement>)}
                     >
                       <track kind="captions" />
                       브라우저가 비디오를 지원하지 않습니다.
