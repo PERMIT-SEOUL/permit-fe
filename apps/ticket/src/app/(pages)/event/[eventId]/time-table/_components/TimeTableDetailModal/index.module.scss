@@ -32,7 +32,7 @@
   position: relative;
   width: 100%;
   max-width: 641px;
-  max-height: 90vh;
+  max-height: 80vh;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -45,7 +45,7 @@
   // 모바일에서는 화면 전체 높이 사용
   @media (max-width: 768px) {
     max-width: none;
-    max-height: 80vh;
+    max-height: 100vh;
 
     border-radius: 12px 12px 0 0;
   }
@@ -279,7 +279,8 @@
   width: 100%;
 
   transition: all 0.3s ease-in-out;
-  aspect-ratio: 35/26;
+
+  aspect-ratio: 3/4;
 }
 
 .event_video {

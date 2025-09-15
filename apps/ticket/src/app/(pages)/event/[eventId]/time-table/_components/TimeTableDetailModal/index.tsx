@@ -29,6 +29,8 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
   const { mutateAsync: likeTimetable } = useTimetableLikeMutation(block?.blockId as string);
   const { mutateAsync: unlikeTimetable } = useTimetableUnlikeMutation(block?.blockId as string);
 
+  const isVideo = timetableDetail?.imageUrl.includes("videos");
+
   // ESC 키로 모달 닫기
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -151,7 +153,7 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
             <div className={cx("event_image")}>
               {timetableDetail.imageUrl ? (
                 <div className={cx("image_wrapper")}>
-                  {timetableDetail.imageUrl.includes("videos") ? (
+                  {isVideo ? (
                     <div style={{ position: "relative", width: "100%", height: "100%" }}>
                       <ReactPlayer
                         src={timetableDetail.imageUrl + "#t=0.001"}
