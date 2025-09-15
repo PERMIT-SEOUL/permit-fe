@@ -146,16 +146,28 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
               </div>
             </div>
 
-            {/* 이미지 플레이스홀더 */}
+            {/* 이미지/비디오 플레이스홀더 */}
             <div className={cx("event_image")}>
               {timetableDetail.imageUrl ? (
                 <div className={cx("image_wrapper")}>
-                  <Image
-                    src={timetableDetail.imageUrl}
-                    alt={timetableDetail.blockName}
-                    fill
-                    priority
-                  />
+                  {timetableDetail.imageUrl.includes("videos") ? (
+                    <video
+                      src={timetableDetail.imageUrl}
+                      controls
+                      className={cx("event_video")}
+                      preload="metadata"
+                    >
+                      <track kind="captions" />
+                      브라우저가 비디오를 지원하지 않습니다.
+                    </video>
+                  ) : (
+                    <Image
+                      src={timetableDetail.imageUrl}
+                      alt={timetableDetail.blockName}
+                      fill
+                      priority
+                    />
+                  )}
                 </div>
               ) : (
                 <div className={cx("image_placeholder")} />
