@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import ReactPlayer from "react-player";
 import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
@@ -151,19 +152,19 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
               {timetableDetail.imageUrl ? (
                 <div className={cx("image_wrapper")}>
                   {timetableDetail.imageUrl.includes("videos") ? (
-                    <video
-                      src={`${timetableDetail.imageUrl}#t=0.001`}
-                      controls
-                      className={cx("event_video")}
-                      preload="metadata"
-                      playsInline
-                      {...({
-                        "webkit-playsinline": "true",
-                      } as React.VideoHTMLAttributes<HTMLVideoElement>)}
-                    >
-                      <track kind="captions" />
-                      브라우저가 비디오를 지원하지 않습니다.
-                    </video>
+                    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+                      <ReactPlayer
+                        {...({
+                          url: timetableDetail.imageUrl + "#t=0.001",
+                          controls: true,
+                          width: "100%",
+                          height: "100%",
+                          playsinline: true,
+                          style: { borderRadius: "4px" },
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        } as any)}
+                      />
+                    </div>
                   ) : (
                     <Image
                       src={timetableDetail.imageUrl}
