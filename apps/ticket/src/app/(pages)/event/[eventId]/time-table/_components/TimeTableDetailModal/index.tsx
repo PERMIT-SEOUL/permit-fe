@@ -154,15 +154,12 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                   {timetableDetail.imageUrl.includes("videos") ? (
                     <div style={{ position: "relative", width: "100%", height: "100%" }}>
                       <ReactPlayer
-                        {...({
-                          url: timetableDetail.imageUrl + "#t=0.001",
-                          controls: true,
-                          width: "100%",
-                          height: "100%",
-                          playsinline: true,
-                          style: { borderRadius: "4px" },
-                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        } as any)}
+                        src={timetableDetail.imageUrl + "#t=0.001"}
+                        controls
+                        width="100%"
+                        height="100%"
+                        playsInline
+                        style={{ borderRadius: "4px" }}
                       />
                     </div>
                   ) : (
