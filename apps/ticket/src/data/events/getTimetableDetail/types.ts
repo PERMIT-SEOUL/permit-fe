@@ -9,7 +9,9 @@ export type TimetableDetail = {
   isLiked: boolean;
   information: string;
   area: string;
-  imageUrl: string;
+  media: {
+    mediaUrl: string;
+  }[];
   blockInfoUrl: string;
   startDate: string;
   endDate: string;
