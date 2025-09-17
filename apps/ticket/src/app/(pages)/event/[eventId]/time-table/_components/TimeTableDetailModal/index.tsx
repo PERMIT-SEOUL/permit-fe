@@ -29,7 +29,7 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
   const { mutateAsync: likeTimetable } = useTimetableLikeMutation(block?.blockId as string);
   const { mutateAsync: unlikeTimetable } = useTimetableUnlikeMutation(block?.blockId as string);
 
-  const isVideo = timetableDetail?.imageUrl.includes("videos");
+  const isVideo = timetableDetail?.imageUrl.includes(".mp4");
 
   // ESC 키로 모달 닫기
   useEffect(() => {
