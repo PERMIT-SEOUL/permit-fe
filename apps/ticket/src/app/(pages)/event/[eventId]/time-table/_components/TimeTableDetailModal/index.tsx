@@ -1,13 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
+import type { Swiper as SwiperType } from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
+import { Icon } from "@permit/design-system";
 import { useTimetableUnlikeMutation } from "@/data/events/deleteTimetableLike/mutation";
 import { useTimetableDetailQuery } from "@/data/events/getTimetableDetail/queries";
 import { useTimetableLikeMutation } from "@/data/events/postTimetableLike/mutation";
 import { EVENT_QUERY_KEYS } from "@/data/events/queryKeys";
+
+// Swiper CSS import
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 import { Block } from "../../_clientBoundary/TimeTableClient";
 import styles from "./index.module.scss";
@@ -29,7 +38,18 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
   const { mutateAsync: likeTimetable } = useTimetableLikeMutation(block?.blockId as string);
   const { mutateAsync: unlikeTimetable } = useTimetableUnlikeMutation(block?.blockId as string);
 
-  const isVideo = timetableDetail?.imageUrl.includes(".mp4");
+  // Swiper 관련 상태
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // 캐러셀 컨트롤 함수
+  const goToPrev = () => {
+    swiperRef.current?.slidePrev();
+  };
+
+  const goToNext = () => {
+    swiperRef.current?.slideNext();
+  };
 
   // ESC 키로 모달 닫기
   useEffect(() => {
@@ -53,6 +73,8 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
 
   // TODO: is loading vs isPending?
   if (!isOpen || !timetableDetail || isLoading) return null;
+
+  const isSingleMedia = timetableDetail.media.length < 2;
 
   // 배경 클릭 시 모달 닫기
   const handleBackgroundClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -151,26 +173,87 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
 
             {/* 이미지/비디오 플레이스홀더 */}
             <div className={cx("event_image")}>
-              {timetableDetail.imageUrl ? (
-                <div className={cx("image_wrapper")}>
-                  {isVideo ? (
-                    <div style={{ position: "relative", width: "100%", height: "100%" }}>
-                      <ReactPlayer
-                        src={timetableDetail.imageUrl + "#t=0.001"}
-                        controls
-                        width="100%"
-                        height="100%"
-                        playsInline
-                        style={{ borderRadius: "4px" }}
-                      />
+              {timetableDetail.media.length > 0 ? (
+                <div className={cx("carousel")}>
+                  <div className={cx("image_container")}>
+                    {!isSingleMedia && (
+                      <button
+                        className={cx("icon_button")}
+                        type="button"
+                        aria-label="prev image"
+                        onClick={goToPrev}
+                      >
+                        <Icon.Up size={20} fill="gray800" />
+                      </button>
+                    )}
+
+                    <Swiper
+                      modules={[Navigation, Pagination]}
+                      spaceBetween={0}
+                      slidesPerView={1}
+                      loop={!isSingleMedia}
+                      onSwiper={(swiper) => {
+                        swiperRef.current = swiper;
+                      }}
+                      onSlideChange={(swiper) => {
+                        setActiveIndex(swiper.realIndex);
+                      }}
+                      className={cx("swiper")}
+                    >
+                      {timetableDetail.media.map((mediaItem, index) => {
+                        const isVideo = mediaItem.mediaUrl.includes(".mp4");
+
+                        return (
+                          <SwiperSlide key={index} className={cx("swiper_slide")}>
+                            {isVideo ? (
+                              <div style={{ position: "relative", width: "100%", height: "100%" }}>
+                                <ReactPlayer
+                                  src={mediaItem.mediaUrl + "#t=0.001"}
+                                  controls
+                                  width="100%"
+                                  height="100%"
+                                  playsInline
+                                  autoPlay
+                                  style={{ borderRadius: "4px" }}
+                                />
+                              </div>
+                            ) : (
+                              <Image
+                                className={cx("image")}
+                                src={mediaItem.mediaUrl}
+                                alt={timetableDetail.blockName}
+                                fill
+                                priority={index === 0}
+                                style={{ objectFit: "cover" }}
+                              />
+                            )}
+                          </SwiperSlide>
+                        );
+                      })}
+                    </Swiper>
+
+                    {!isSingleMedia && (
+                      <button
+                        className={cx("icon_button")}
+                        type="button"
+                        aria-label="next image"
+                        onClick={goToNext}
+                      >
+                        <Icon.Down size={20} fill="gray800" />
+                      </button>
+                    )}
+                  </div>
+
+                  {!isSingleMedia && (
+                    <div className={cx("dots")}>
+                      {timetableDetail.media.map((_, idx) => (
+                        <button
+                          key={idx}
+                          className={cx("dot", { active: idx === activeIndex })}
+                          onClick={() => swiperRef.current?.slideTo(idx)}
+                        />
+                      ))}
                     </div>
-                  ) : (
-                    <Image
-                      src={timetableDetail.imageUrl}
-                      alt={timetableDetail.blockName}
-                      fill
-                      priority
-                    />
                   )}
                 </div>
               ) : (
