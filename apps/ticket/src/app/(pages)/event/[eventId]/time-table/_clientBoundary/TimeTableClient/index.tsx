@@ -170,6 +170,21 @@ export const TimeTableClient = ({ eventId }: Props) => {
           <Flex direction="column" gap={16}>
             <Typography type="title20">{timetables.eventName}</Typography>
 
+            <Flex gap={8}>
+              <Button
+                variant="secondary"
+                onClick={() => router.push(`/event/${eventId}/time-table`)}
+              >
+                {"TIME TABLE"}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => router.push(`/event/${eventId}/time-table/site-map`)}
+              >
+                {"MAP VIEW"}
+              </Button>
+            </Flex>
+
             <Button
               className={cx("back_button")}
               variant="secondary"

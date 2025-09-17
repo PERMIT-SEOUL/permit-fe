@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import { timetablesOptions } from "@/data/events/getTimetables/queries";
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
@@ -21,9 +22,11 @@ const TimeTablePage = async ({ params }: Props) => {
   qc.prefetchQuery(timetablesOptions({ eventId }));
 
   return (
-    <Suspense fallback={<LoadingWithLayout />}>
-      <TimeTableClient eventId={eventId} />
-    </Suspense>
+    <HydrationBoundary state={dehydrate(qc)}>
+      <Suspense fallback={<LoadingWithLayout />}>
+        <TimeTableClient eventId={eventId} />
+      </Suspense>
+    </HydrationBoundary>
   );
 };
 
