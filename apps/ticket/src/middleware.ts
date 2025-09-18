@@ -8,7 +8,7 @@ export function middleware(req: NextRequest) {
 
   // 운영 환경에서만 특별한 제한을 적용
   if (isProd) {
-    const isAllowedPage = /^\/event\/[^/]+\/time-table$/.test(path) || path === "/";
+    const isAllowedPage = /^\/event\/[^/]+\/time-table(\/.*)?$/.test(path);
     const isStaticFile =
       path.startsWith("/_next/") || path.startsWith("/static/") || path.startsWith("/public/");
 

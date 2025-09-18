@@ -25,6 +25,7 @@ type Props = {
 const siteMapImages = [
   "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap1.jpg",
   "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap2.jpg",
+  "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap0.jpg",
 ];
 
 export const SiteMapClient = ({ eventId }: Props) => {

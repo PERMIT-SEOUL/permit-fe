@@ -1,0 +1,11 @@
+.container {
+  @media (max-width: 768px) {
+    // 상위 main 컨테이너의 padding 제거
+    margin: 0 -12px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
