@@ -15,8 +15,8 @@ const TimeTableBlock = ({ block, onClick }: TimeTableBlockProps) => {
     onClick?.(block);
   };
 
-  const isUnder30Min =
-    new Date(block.blockEndDate).getTime() - new Date(block.blockStartDate).getTime() <=
+  const isOver30Min =
+    new Date(block.blockEndDate).getTime() - new Date(block.blockStartDate).getTime() >
     30 * 60 * 1000;
 
   return (
@@ -33,7 +33,7 @@ const TimeTableBlock = ({ block, onClick }: TimeTableBlockProps) => {
         }
       }}
     >
-      <p className={cx("block_text", { under_30min: isUnder30Min })}>{block.blockName}</p>
+      <p className={cx("block_text", { over_30min: isOver30Min })}>{block.blockName}</p>
     </div>
   );
 };

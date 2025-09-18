@@ -5,16 +5,13 @@ import { timetablesOptions } from "@/data/events/getTimetables/queries";
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
-import { TimeTableClient } from "./_clientBoundary/TimeTableClient";
+import { SiteMapClient } from "./_clientBoundary/SiteMapClient";
 
 type Props = {
   params: Promise<{ eventId: string }>;
 };
 
-/**
- * 타임테이블 페이지
- */
-const TimeTablePage = async ({ params }: Props) => {
+export default async function SiteMapPage({ params }: Props) {
   const { eventId } = await params;
 
   const qc = getQueryClient();
@@ -24,10 +21,8 @@ const TimeTablePage = async ({ params }: Props) => {
   return (
     <HydrationBoundary state={dehydrate(qc)}>
       <Suspense fallback={<LoadingWithLayout />}>
-        <TimeTableClient eventId={eventId} />
+        <SiteMapClient eventId={eventId} />
       </Suspense>
     </HydrationBoundary>
   );
-};
-
-export default TimeTablePage;
+}

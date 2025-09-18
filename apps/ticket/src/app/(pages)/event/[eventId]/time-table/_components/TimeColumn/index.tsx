@@ -18,7 +18,7 @@ const TimeColumn = forwardRef<HTMLDivElement, TimeColumnProps>(
     return (
       <div ref={ref} className={cx("time_column")}>
         {timeSlots.map((slot, i) => {
-          const [date, time] = slot.label.split(" ");
+          const [date, time, dayOfWeek] = slot.label.split(" ");
           const [prevDate] = i > 0 ? timeSlots[i - 1].label.split(" ") : [null];
           const shouldShowDate = i === 0 || date !== prevDate;
 
@@ -29,7 +29,9 @@ const TimeColumn = forwardRef<HTMLDivElement, TimeColumnProps>(
           return (
             <div key={i} className={cx("time_slot", { current_time_slot: isCurrentSlot })}>
               {shouldShowDate && <Typography type="body14">{date}</Typography>}
-              <Typography type="body14">{time}</Typography>
+              <Typography type="body14">
+                {time} {dayOfWeek}
+              </Typography>
             </div>
           );
         })}

@@ -34,16 +34,19 @@
 }
 
 .block_text {
-  display: -webkit-box;
+  display: block;
   overflow: hidden;
 
+  white-space: nowrap;
   text-overflow: ellipsis;
-  word-break: break-all;
+  word-break: normal;
 
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  &.over_30min {
+    display: -webkit-box;
 
-  &.under_30min {
-    -webkit-line-clamp: 1;
+    white-space: normal;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 }

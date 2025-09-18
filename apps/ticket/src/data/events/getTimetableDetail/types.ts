@@ -5,11 +5,14 @@ export type TimetableDetailParams = {
 export type TimetableDetail = {
   blockName: string;
   blockCategory: string;
-  categoryColor: string;
+  categoryLineColor: string;
+  categoryBackgroundColor: string;
   isLiked: boolean;
   information: string;
   area: string;
-  imageUrl: string;
+  media: {
+    mediaUrl: string;
+  }[];
   blockInfoUrl: string;
   startDate: string;
   endDate: string;

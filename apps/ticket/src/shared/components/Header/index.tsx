@@ -20,7 +20,7 @@ export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const isTimeTablePage = /^\/event\/[^/]+\/time-table$/.test(pathname);
+  const isTimeTablePage = /^\/event\/[^/]+\/time-table(\/.*)?$/.test(pathname);
 
   const [isLogined, setIsLogined] = useState(false);
 
