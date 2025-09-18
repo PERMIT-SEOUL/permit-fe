@@ -139,11 +139,10 @@
   padding: 4px 20px;
 
   background-color: rgb(42 241 255 / 40%);
-  border: 1px solid #2af1ff;
+  border: 1px solid;
   border-radius: 4px;
 
   span {
-    color: #f5f5f5;
     font-size: 14px;
     font-family: Pretendard, sans-serif;
     line-height: 1;
@@ -335,7 +334,6 @@
   justify-content: center;
   width: 100%;
   aspect-ratio: 3/4;
-  height: 400px;
 }
 
 .swiper {
