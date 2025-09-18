@@ -122,8 +122,9 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                   <div
                     className={cx("category_tag")}
                     style={{
-                      backgroundColor: `${timetableDetail.categoryColor}66`,
-                      borderColor: timetableDetail.categoryColor,
+                      backgroundColor: `${timetableDetail.categoryBackgroundColor}`,
+                      color: timetableDetail.categoryLineColor,
+                      borderColor: timetableDetail.categoryLineColor,
                     }}
                   >
                     <span>{timetableDetail.blockCategory}</span>

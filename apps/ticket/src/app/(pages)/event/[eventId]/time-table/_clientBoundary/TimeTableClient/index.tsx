@@ -181,7 +181,7 @@ export const TimeTableClient = ({ eventId }: Props) => {
                 variant="secondary"
                 onClick={() => router.push(`/event/${eventId}/time-table/site-map`)}
               >
-                {"MAP VIEW"}
+                {"SITE MAP"}
               </Button>
             </Flex>
 
