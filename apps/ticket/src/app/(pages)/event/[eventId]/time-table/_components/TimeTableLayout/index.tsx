@@ -37,7 +37,7 @@ export const TimeTableLayout = ({
       <div className={cx("unified_container")}>
         {/* 고정된 시간 헤더 */}
         <div className={cx("fixed_time_header")}>
-          <div className={cx("time_column_header")}>time / SA</div>
+          <div className={cx("time_column_header")}>TIME / SA</div>
         </div>
 
         {/* 스크롤 가능한 메인 영역 */}
