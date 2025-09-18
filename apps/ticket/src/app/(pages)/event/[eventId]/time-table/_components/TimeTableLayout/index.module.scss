@@ -49,6 +49,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+  width: 100%;
   margin: 0;
   padding: 0;
   overflow: auto;
@@ -64,7 +65,8 @@
   top: 0;
   z-index: 6;
   flex-shrink: 0;
-  min-width: max-content;
+  width: max-content;
+  min-width: 100%;
   height: 60px;
   padding-left: 120px;
 
@@ -75,7 +77,8 @@
   position: relative;
   display: flex;
   flex: 1;
-  min-width: max-content;
+  width: max-content;
+  min-width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -92,8 +95,7 @@
 }
 
 .grid_wrapper {
-  flex: 1;
-  min-width: max-content;
+  flex: 0 0 auto;
   margin: 0;
 }
 

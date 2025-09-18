@@ -25,8 +25,10 @@ const GridArea = ({
   currentTimePosition,
   onBlockClick,
 }: GridAreaProps) => {
+  const totalWidth = areas.length * columnWidth;
+
   return (
-    <div className={cx("grid_area")}>
+    <div className={cx("grid_area")} style={{ width: totalWidth }}>
       {/* 그리드 배경 라인들 */}
       {areas.map((area, index) => (
         <div
