@@ -38,7 +38,7 @@
   &::-webkit-scrollbar {
     display: none;
   }
-  background-color: rgb(10 10 10 / 60%);
+  background-color: rgb(10 10 10 / 80%);
   border: 1px solid #525252;
   border-radius: 8px;
 
@@ -87,11 +87,11 @@
 .modal_body {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   padding: 40px 24px;
 
   @media (max-width: 768px) {
-    gap: 20px;
+    gap: 8px;
     padding: 40px 24px 32px;
   }
 }
@@ -99,7 +99,11 @@
 .event_info {
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    gap: 12px;
+  }
 }
 
 .event_header {
@@ -114,6 +118,10 @@
   flex: 1;
   flex-direction: column;
   gap: 16px;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
 }
 
 .event_title {
@@ -183,7 +191,6 @@
 .event_details {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
 .time_and_place {

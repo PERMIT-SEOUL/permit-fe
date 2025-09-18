@@ -158,17 +158,19 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                   {/* <p className={cx("description")}>{timetableDetail.information}</p> */}
                 </div>
 
-                {/* <div className={cx("artist_info")}>
-                  <span className={cx("artist_label")}>자세히 보기</span>
-                  <a
-                    href={timetableDetail.blockInfoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={cx("artist_link")}
-                  >
-                    {timetableDetail.blockInfoUrl}
-                  </a>
-                </div> */}
+                {timetableDetail.blockInfoUrl && (
+                  <div className={cx("artist_info")}>
+                    <span className={cx("artist_label")}>예매링크</span>
+                    <a
+                      href={timetableDetail.blockInfoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={cx("artist_link")}
+                    >
+                      {timetableDetail.blockInfoUrl}
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
 
