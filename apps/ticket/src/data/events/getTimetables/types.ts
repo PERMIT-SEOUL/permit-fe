@@ -19,7 +19,8 @@ export type Area = {
 export type Block = {
   blockId: string;
   blockName: string;
-  blockColor: string;
+  blockLineColor: string;
+  blockBackgroundColor: string;
   blockStartDate: string;
   blockEndDate: string;
   blockAreaId: number;

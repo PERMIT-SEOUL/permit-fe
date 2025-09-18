@@ -124,7 +124,9 @@ export const TimeTableClient = ({ eventId }: Props) => {
         height,
         left,
         width: blockWidth,
-        backgroundColor: block.blockColor,
+        backgroundColor: block.blockBackgroundColor,
+        color: block.blockLineColor,
+        borderColor: block.blockLineColor,
       },
     };
   });
@@ -303,7 +305,8 @@ export interface Area {
 export interface Block {
   blockId: string;
   blockName: string;
-  blockColor: string;
+  blockLineColor: string;
+  blockBackgroundColor: string;
   blockStartDate: string;
   blockEndDate: string;
   blockAreaId: number;
