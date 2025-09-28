@@ -36,6 +36,9 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
     }
 
     const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENTS_CLIENT_KEY;
+
+    console.log("@@clientKey:", clientKey);
+
     const customerKey = reservationReady.customerKey;
     const tossPayments = window.TossPayments(clientKey);
     const widgets = tossPayments.widgets({ customerKey });
