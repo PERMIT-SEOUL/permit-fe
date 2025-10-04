@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
 
 import { EventFormLayout } from "../../_components/EventFormLayout";
+import type { TicketData } from "../../_components/TicketForm";
 
 export type EventFormData = {
   eventExposureStartDate: string;
@@ -23,6 +24,12 @@ export type EventFormData = {
   details: string;
   minAge: number;
   images: File[];
+  ticketRoundName: string;
+  roundSalesStartDate: string;
+  roundSalesEndDate: string;
+  roundSalesStartTime: string;
+  roundSalesEndTime: string;
+  ticketTypes: TicketData[];
 };
 
 const initialFormData: EventFormData = {
@@ -41,6 +48,12 @@ const initialFormData: EventFormData = {
   details: "",
   minAge: 0,
   images: [],
+  ticketRoundName: "",
+  roundSalesStartDate: "",
+  roundSalesEndDate: "",
+  roundSalesStartTime: "",
+  roundSalesEndTime: "",
+  ticketTypes: [],
 };
 
 export function EventFormClient() {
@@ -232,7 +245,7 @@ export function EventFormClient() {
 
   const lineupField = useTextField({
     initialValue: "",
-    validate: (value: string) => {
+    validate: (_value: string) => {
       return undefined;
     },
     onChange: (value: string) => {
@@ -245,7 +258,7 @@ export function EventFormClient() {
 
   const detailsField = useTextField({
     initialValue: "",
-    validate: (value: string) => {
+    validate: (_value: string) => {
       return undefined;
     },
     onChange: (value: string) => {
@@ -258,7 +271,7 @@ export function EventFormClient() {
 
   const minAgeField = useTextField({
     initialValue: "",
-    validate: (value: string) => {
+    validate: (_value: string) => {
       return undefined;
     },
     onChange: (value: string) => {
@@ -276,6 +289,117 @@ export function EventFormClient() {
         images: Array.from(files),
       }));
     }
+  };
+
+  // 2단계 폼 필드
+  const ticketRoundNameField = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 이름을 입력해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        ticketRoundName: value,
+      }));
+    },
+  });
+
+  const roundSalesStartDate = useSelect({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 판매 시작 날짜를 선택해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        roundSalesStartDate: value,
+      }));
+    },
+  });
+
+  const roundSalesEndDate = useSelect({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 판매 종료 날짜를 선택해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        roundSalesEndDate: value,
+      }));
+    },
+  });
+
+  const roundSalesStartTime = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 판매 시작 시간을 입력해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        roundSalesStartTime: value,
+      }));
+    },
+  });
+
+  const roundSalesEndTime = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 판매 종료 시간을 입력해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        roundSalesEndTime: value,
+      }));
+    },
+  });
+
+  // 티켓 관리 함수들
+  const addTicket = () => {
+    const newTicket: TicketData = {
+      id: Date.now().toString(),
+      ticketName: "",
+      price: 0,
+      ticketCount: 0,
+      ticketStartDate: "",
+      ticketStartTime: "",
+      ticketEndDate: "",
+      ticketEndTime: "",
+    };
+
+    setFormData((prev) => ({
+      ...prev,
+      ticketTypes: [...prev.ticketTypes, newTicket],
+    }));
+  };
+
+  const updateTicket = (ticketId: string, updatedTicket: TicketData) => {
+    setFormData((prev) => ({
+      ...prev,
+      ticketTypes: prev.ticketTypes.map((ticket) =>
+        ticket.id === ticketId ? updatedTicket : ticket,
+      ),
+    }));
+  };
+
+  const deleteTicket = (ticketId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      ticketTypes: prev.ticketTypes.filter((ticket) => ticket.id !== ticketId),
+    }));
   };
 
   const handleSubmit = async () => {
@@ -314,8 +438,16 @@ export function EventFormClient() {
       minAgeField={minAgeField}
       formData={formData}
       onFileChange={handleFileChange}
+      ticketRoundNameField={ticketRoundNameField}
+      roundSalesStartDate={roundSalesStartDate.selectProps}
+      roundSalesEndDate={roundSalesEndDate.selectProps}
+      roundSalesStartTime={roundSalesStartTime}
+      roundSalesEndTime={roundSalesEndTime}
       onSubmit={handleSubmit}
       isSubmitting={isSubmitting}
+      onAddTicket={addTicket}
+      onUpdateTicket={updateTicket}
+      onDeleteTicket={deleteTicket}
     />
   );
 }
