@@ -1,44 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { useSelect, useTextField } from "@permit/design-system/hooks";
+import { EventRequest, useEventMutation } from "@/data/admin/postEvents/mutation";
 
 import { EventFormLayout } from "../../_components/EventFormLayout";
 import type { TicketData } from "../../_components/TicketForm";
 
-export type EventFormData = {
-  eventExposureStartDate: string;
-  eventExposureEndDate: string;
-  eventExposureStartTime: string;
-  eventExposureEndTime: string;
-  verificationCode: string;
-  eventName: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  venue: string;
-  lineup: string;
-  details: string;
-  minAge: number;
-  images: File[];
-  ticketRoundName: string;
-  roundSalesStartDate: string;
-  roundSalesEndDate: string;
-  roundSalesStartTime: string;
-  roundSalesEndTime: string;
+type FormData = Omit<EventRequest, "ticketTypes"> & {
   ticketTypes: TicketData[];
 };
 
-const initialFormData: EventFormData = {
+const initialFormData: EventRequest = {
   eventExposureStartDate: "",
   eventExposureEndDate: "",
   eventExposureStartTime: "",
   eventExposureEndTime: "",
   verificationCode: "",
-  eventName: "",
+  name: "",
+  eventType: "PERMIT", // TODO: 입력 받을 수 있도록 변경 (select)
   startDate: "",
   endDate: "",
   startTime: "",
@@ -47,7 +28,7 @@ const initialFormData: EventFormData = {
   lineup: "",
   details: "",
   minAge: 0,
-  images: [],
+  images: [{ imageUrl: "" }],
   ticketRoundName: "",
   roundSalesStartDate: "",
   roundSalesEndDate: "",
@@ -57,10 +38,11 @@ const initialFormData: EventFormData = {
 };
 
 export function EventFormClient() {
-  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<"basic" | "ticket">("basic");
-  const [formData, setFormData] = useState<EventFormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>(initialFormData as FormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { mutateAsync: createEvent } = useEventMutation({});
 
   const eventExposureStartDateField = useSelect({
     initialValue: "",
@@ -155,7 +137,7 @@ export function EventFormClient() {
     onChange: (value: string) => {
       setFormData((prev) => ({
         ...prev,
-        eventName: value,
+        name: value,
       }));
     },
   });
@@ -282,11 +264,14 @@ export function EventFormClient() {
     },
   });
 
+  // TODO: 이미지 업로드 기능 추가
   const handleFileChange = (files: FileList | null) => {
     if (files) {
       setFormData((prev) => ({
         ...prev,
-        images: Array.from(files),
+        images: Array.from(files).map((file) => ({
+          imageUrl: URL.createObjectURL(file),
+        })),
       }));
     }
   };
@@ -406,8 +391,15 @@ export function EventFormClient() {
     setIsSubmitting(true);
 
     try {
-      // TODO: API 호출로 이벤트 생성
+      const apiData: EventRequest = {
+        ...formData,
+        ticketTypes: formData.ticketTypes.map(({ id: _id, ...ticket }) => ticket),
+      };
+
       console.log("Form data:", formData);
+      console.log("API data:", apiData);
+
+      await createEvent(apiData);
 
       // 성공 시 이벤트 목록으로 이동
       //   router.push("/events");
