@@ -1,0 +1,25 @@
+.ticket_form {
+  margin-bottom: 16px;
+  padding: 24px;
+
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+}
+
+.ticket_form_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.ticket_form_content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  flex: 1;
+}
