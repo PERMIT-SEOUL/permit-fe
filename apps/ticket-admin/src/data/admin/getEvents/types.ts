@@ -6,7 +6,7 @@ export type EventsResponse = {
 export type Event = {
   eventId: number;
   eventName: string;
-  eventVenue?: string;
+  eventVenue: string;
   eventDate: string;
   soldTicketCount: number;
 };
