@@ -55,10 +55,7 @@ export default function EventsPage() {
 
                   <div className={cx("event_status")}>
                     <Typography type="body14">{event.soldTicketCount} tickets sold</Typography>
-                    <Link
-                      href={`/events/${event.eventId}/manage`}
-                      className={cx("management_link")}
-                    >
+                    <Link href={`/events/${event.eventId}/edit`} className={cx("management_link")}>
                       Event management
                     </Link>
                   </div>

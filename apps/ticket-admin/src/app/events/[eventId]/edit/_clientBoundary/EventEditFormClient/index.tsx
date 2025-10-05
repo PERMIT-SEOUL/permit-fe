@@ -1,63 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
 import { Button } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
-import { EventRequest, useEventMutation } from "@/data/admin/postEvents/mutation";
+import { EventFormData } from "@/app/events/create/_clientBoundary/EventFormClient";
+import { EventFormLayout } from "@/app/events/create/_components/EventFormLayout";
+import { type TicketData } from "@/app/events/create/_components/TicketForm";
+import { useEventDetailSuspenseQuery } from "@/data/admin/getEventDetail/queries";
 
-import { EventFormLayout } from "../../_components/EventFormLayout";
-import type { TicketData } from "../../_components/TicketForm";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-export type EventFormData = Omit<EventRequest, "ticketTypes"> & {
-  ticketTypes: TicketData[];
+type Props = {
+  eventId: string;
 };
 
-type FormData = EventFormData;
-
-const initialFormData: EventRequest = {
-  eventExposureStartDate: "",
-  eventExposureEndDate: "",
-  eventExposureStartTime: "",
-  eventExposureEndTime: "",
-  verificationCode: "",
-  name: "",
-  eventType: "PERMIT", // TODO: 입력 받을 수 있도록 변경 (select)
-  startDate: "",
-  endDate: "",
-  startTime: "",
-  endTime: "",
-  venue: "",
-  lineup: "",
-  details: "",
-  minAge: 0,
-  // TODO: 이미지 업로드 기능으로 변경
-  images: [
-    { imageUrl: "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap0.jpg" },
-  ],
-  ticketRoundName: "",
-  roundSalesStartDate: "",
-  roundSalesEndDate: "",
-  roundSalesStartTime: "",
-  roundSalesEndTime: "",
-  ticketTypes: [],
-};
-
-export function EventFormClient() {
+export function EventEditFormClient({ eventId }: Props) {
   const router = useRouter();
+  const [isReadOnlyMode, setIsReadOnlyMode] = useState(true); // 수정 모드 여부
   const [currentStep, setCurrentStep] = useState<"basic" | "ticket">("basic");
-  const [formData, setFormData] = useState<FormData>(initialFormData as FormData);
+  const [formData, setFormData] = useState<EventFormData>({
+    eventExposureStartDate: "",
+    eventExposureEndDate: "",
+    eventExposureStartTime: "",
+    eventExposureEndTime: "",
+    verificationCode: "",
+    name: "",
+    eventType: "PERMIT",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    venue: "",
+    lineup: "",
+    details: "",
+    minAge: 0,
+    images: [],
+    ticketRoundName: "",
+    roundSalesStartDate: "",
+    roundSalesEndDate: "",
+    roundSalesStartTime: "",
+    roundSalesEndTime: "",
+    ticketTypes: [],
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { mutateAsync: createEvent } = useEventMutation({});
+  const { data: eventDetailData } = useEventDetailSuspenseQuery({
+    eventId,
+    options: { refetchOnWindowFocus: true },
+  });
 
+  // 이벤트 노출 시작 날짜
   const eventExposureStartDateField = useSelect({
-    initialValue: "",
+    initialValue: eventDetailData.eventExposureStartDate,
     onChange: (value: string) => {
       setFormData((prev) => ({
         ...prev,
@@ -71,8 +70,9 @@ export function EventFormClient() {
     },
   });
 
+  // 이벤트 노출 종료 날짜
   const eventExposureEndDateField = useSelect({
-    initialValue: "",
+    initialValue: eventDetailData.eventExposureEndDate,
     validate: (value: string) => {
       if (!value) return "이벤트 노출 종료 날짜를 선택해주세요.";
 
@@ -86,8 +86,9 @@ export function EventFormClient() {
     },
   });
 
+  // 이벤트 노출 시작 시간
   const eventExposureStartTimeField = useTextField({
-    initialValue: "",
+    initialValue: eventDetailData.eventExposureStartTime,
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 노출 시작 시간을 입력해주세요.";
 
@@ -105,8 +106,9 @@ export function EventFormClient() {
     },
   });
 
+  // 이벤트 노출 종료 시간
   const eventExposureEndTimeField = useTextField({
-    initialValue: "",
+    initialValue: eventDetailData.eventExposureEndTime,
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 노출 종료 시간을 입력해주세요.";
 
@@ -124,6 +126,7 @@ export function EventFormClient() {
     },
   });
 
+  // 검증 코드
   const eventVerificationCodeField = useTextField({
     initialValue: "",
     validate: (value: string) => {
@@ -139,6 +142,7 @@ export function EventFormClient() {
     },
   });
 
+  // 이벤트 이름
   const eventNameField = useTextField({
     initialValue: "",
     validate: (value: string) => {
@@ -154,8 +158,9 @@ export function EventFormClient() {
     },
   });
 
+  // 이벤트 시작 날짜
   const eventStartDateField = useSelect({
-    initialValue: "",
+    initialValue: eventDetailData.startDate,
     validate: (value: string) => {
       if (!value) return "이벤트 시작 날짜를 선택해주세요.";
 
@@ -169,8 +174,9 @@ export function EventFormClient() {
     },
   });
 
+  // 이벤트 종료 날짜
   const eventEndDateField = useSelect({
-    initialValue: "",
+    initialValue: eventDetailData.endDate,
     validate: (value: string) => {
       if (!value) return "이벤트 종료 날짜를 선택해주세요.";
 
@@ -184,8 +190,9 @@ export function EventFormClient() {
     },
   });
 
+  // 이벤트 시작 시간
   const eventStartTimeField = useTextField({
-    initialValue: "",
+    initialValue: eventDetailData.startTime,
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 시작 시간을 입력해주세요.";
 
@@ -203,8 +210,9 @@ export function EventFormClient() {
     },
   });
 
+  // 이벤트 종료 시간
   const eventEndTimeField = useTextField({
-    initialValue: "",
+    initialValue: eventDetailData.endTime,
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 종료 시간을 입력해주세요.";
 
@@ -222,6 +230,7 @@ export function EventFormClient() {
     },
   });
 
+  // 장소
   const venueField = useTextField({
     initialValue: "",
     validate: (value: string) => {
@@ -237,6 +246,7 @@ export function EventFormClient() {
     },
   });
 
+  // 라인업
   const lineupField = useTextField({
     initialValue: "",
     validate: (_value: string) => {
@@ -250,6 +260,7 @@ export function EventFormClient() {
     },
   });
 
+  // 상세 정보
   const detailsField = useTextField({
     initialValue: "",
     validate: (_value: string) => {
@@ -263,6 +274,7 @@ export function EventFormClient() {
     },
   });
 
+  // 최소 연령
   const minAgeField = useTextField({
     initialValue: "",
     validate: (_value: string) => {
@@ -276,19 +288,7 @@ export function EventFormClient() {
     },
   });
 
-  // TODO: 이미지 업로드 기능 추가
-  const handleFileChange = (files: FileList | null) => {
-    if (files) {
-      setFormData((prev) => ({
-        ...prev,
-        images: Array.from(files).map((file) => ({
-          imageUrl: URL.createObjectURL(file),
-        })),
-      }));
-    }
-  };
-
-  // 2단계 폼 필드
+  // 티켓 차수 이름
   const ticketRoundNameField = useTextField({
     initialValue: "",
     validate: (value: string) => {
@@ -304,6 +304,7 @@ export function EventFormClient() {
     },
   });
 
+  // 티켓 차수 판매 시작 날짜
   const roundSalesStartDate = useSelect({
     initialValue: "",
     validate: (value: string) => {
@@ -319,6 +320,7 @@ export function EventFormClient() {
     },
   });
 
+  // 티켓 차수 판매 종료 날짜
   const roundSalesEndDate = useSelect({
     initialValue: "",
     validate: (value: string) => {
@@ -334,6 +336,7 @@ export function EventFormClient() {
     },
   });
 
+  // 티켓 차수 판매 시작 시간
   const roundSalesStartTime = useTextField({
     initialValue: "",
     validate: (value: string) => {
@@ -349,6 +352,7 @@ export function EventFormClient() {
     },
   });
 
+  // 티켓 차수 판매 종료 시간
   const roundSalesEndTime = useTextField({
     initialValue: "",
     validate: (value: string) => {
@@ -363,6 +367,85 @@ export function EventFormClient() {
       }));
     },
   });
+
+  console.log(eventDetailData);
+  // API 응답 데이터를 폼 필드에 설정
+  useEffect(() => {
+    if (eventDetailData) {
+      // 폼 데이터 설정
+      setFormData({
+        eventExposureStartDate: eventDetailData.eventExposureStartDate,
+        eventExposureEndDate: eventDetailData.eventExposureEndDate,
+        eventExposureStartTime: eventDetailData.eventExposureStartTime,
+        eventExposureEndTime: eventDetailData.eventExposureEndTime,
+        verificationCode: eventDetailData.verificationCode,
+        name: eventDetailData.name,
+        eventType: "PERMIT", // TODO: API 응답에 eventType이 없으므로 기본값 사용
+        startDate: eventDetailData.startDate,
+        endDate: eventDetailData.endDate,
+        startTime: eventDetailData.startTime,
+        endTime: eventDetailData.endTime,
+        venue: eventDetailData.venue,
+        lineup: eventDetailData.lineup || "",
+        details: eventDetailData.details || "",
+        minAge: eventDetailData.minAge,
+        images: eventDetailData.images || [],
+        ticketRoundName: "", // TODO: API 응답에 티켓 관련 데이터가 없으므로 빈 값 사용
+        roundSalesStartDate: "",
+        roundSalesEndDate: "",
+        roundSalesStartTime: "",
+        roundSalesEndTime: "",
+        ticketTypes: [], // TODO: API 응답에 티켓 타입 데이터가 없으므로 빈 배열 사용
+      });
+
+      // 각 필드의 value를 설정
+      eventExposureStartDateField.selectProps.onChange(eventDetailData.eventExposureStartDate);
+      eventExposureEndDateField.selectProps.onChange(eventDetailData.eventExposureEndDate);
+      eventExposureStartTimeField.handleChange({
+        target: { value: eventDetailData.eventExposureStartTime },
+      } as React.ChangeEvent<HTMLInputElement>);
+      eventExposureEndTimeField.handleChange({
+        target: { value: eventDetailData.eventExposureEndTime },
+      } as React.ChangeEvent<HTMLInputElement>);
+      eventVerificationCodeField.handleChange({
+        target: { value: eventDetailData.verificationCode },
+      } as React.ChangeEvent<HTMLInputElement>);
+      eventNameField.handleChange({
+        target: { value: eventDetailData.name },
+      } as React.ChangeEvent<HTMLInputElement>);
+      eventStartDateField.selectProps.onChange(eventDetailData.startDate);
+      eventEndDateField.selectProps.onChange(eventDetailData.endDate);
+      eventStartTimeField.handleChange({
+        target: { value: eventDetailData.startTime },
+      } as React.ChangeEvent<HTMLInputElement>);
+      eventEndTimeField.handleChange({
+        target: { value: eventDetailData.endTime },
+      } as React.ChangeEvent<HTMLInputElement>);
+      venueField.handleChange({
+        target: { value: eventDetailData.venue },
+      } as React.ChangeEvent<HTMLInputElement>);
+      lineupField.handleChange({
+        target: { value: eventDetailData.lineup || "" },
+      } as React.ChangeEvent<HTMLInputElement>);
+      detailsField.handleChange({
+        target: { value: eventDetailData.details || "" },
+      } as React.ChangeEvent<HTMLInputElement>);
+      minAgeField.handleChange({
+        target: { value: String(eventDetailData.minAge) },
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
+  }, [eventDetailData]);
+
+  const handleFileChange = (files: FileList | null) => {
+    if (files) {
+      setFormData((prev) => ({
+        ...prev,
+        images: Array.from(files).map((file) => ({
+          imageUrl: URL.createObjectURL(file),
+        })),
+      }));
+    }
+  };
 
   // 티켓 관리 함수들
   const addTicket = () => {
@@ -403,20 +486,29 @@ export function EventFormClient() {
     setIsSubmitting(true);
 
     try {
-      const apiData: EventRequest = {
-        ...formData,
-        ticketTypes: formData.ticketTypes.map(({ id: _id, ...ticket }) => ticket),
-      };
-
-      await createEvent(apiData);
+      // TODO: API 호출로 이벤트 수정
+      console.log("Updated form data:", formData);
 
       // 성공 시 이벤트 목록으로 이동
-      router.push("/events");
+      // router.push("/events");
     } catch (error) {
-      alert("이벤트 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
-      console.error("Error creating event:", error);
+      console.error("Error updating event:", error);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (confirm("정말로 이 이벤트를 삭제하시겠습니까?")) {
+      try {
+        // TODO: API 호출로 이벤트 삭제
+        console.log("Deleting event:", eventId);
+
+        // 성공 시 이벤트 목록으로 이동
+        router.push("/events");
+      } catch (error) {
+        console.error("Error deleting event:", error);
+      }
     }
   };
 
@@ -446,7 +538,9 @@ export function EventFormClient() {
         roundSalesEndDate={roundSalesEndDate.selectProps}
         roundSalesStartTime={roundSalesStartTime}
         roundSalesEndTime={roundSalesEndTime}
+        onDelete={handleDelete}
         isSubmitting={isSubmitting}
+        isReadOnlyMode={isReadOnlyMode}
         onAddTicket={addTicket}
         onUpdateTicket={updateTicket}
         onDeleteTicket={deleteTicket}
@@ -458,14 +552,17 @@ export function EventFormClient() {
           variant="cta"
           size="md"
           onClick={() => {
-            if (currentStep === "basic") {
-              setCurrentStep("ticket");
-            } else {
-              handleSubmit();
-            }
+            setIsReadOnlyMode((prev) => {
+              if (prev) {
+                // 현재 편집 모드라면 저장 시도
+                handleSubmit();
+              }
+
+              return !prev;
+            });
           }}
         >
-          Next
+          {isReadOnlyMode ? "edit" : "save"}
         </Button>
       </div>
     </>

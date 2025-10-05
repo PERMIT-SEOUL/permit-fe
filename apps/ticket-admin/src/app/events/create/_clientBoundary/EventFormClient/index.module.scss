@@ -1,0 +1,22 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.floating {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 160px;
+
+  background-color: theme.$gray-800;
+  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
+  border-top: 1px solid theme.$gray-600;
+}
+
+.button {
+  padding: 0 100px;
+
+  @include typography.body-bold-14;
+}

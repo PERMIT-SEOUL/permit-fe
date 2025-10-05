@@ -18,10 +18,9 @@ type SelectField = {
 type EventFormLayoutProps = {
   formData: EventFormData;
   onFileChange: (files: FileList | null) => void;
-  onSubmit: () => void;
   onDelete?: () => void;
   isSubmitting: boolean;
-  isEditMode?: boolean;
+  isReadOnlyMode?: boolean;
   currentStep: "basic" | "ticket";
   setCurrentStep: (step: "basic" | "ticket") => void;
   eventExposureStartDateField: SelectField;
@@ -51,10 +50,9 @@ type EventFormLayoutProps = {
 export function EventFormLayout({
   formData,
   onFileChange,
-  onSubmit,
   onDelete,
   isSubmitting,
-  isEditMode = false,
+  isReadOnlyMode = false,
   currentStep,
   setCurrentStep,
   eventExposureStartDateField,
@@ -109,6 +107,7 @@ export function EventFormLayout({
                     Event Exposure Start Date
                   </Typography>
                   <Select
+                    disabled={isReadOnlyMode}
                     type="calendar"
                     placeholder="노출 시작 날짜를 선택해주세요"
                     {...eventExposureStartDateField}
@@ -119,6 +118,7 @@ export function EventFormLayout({
                     Event Exposure End Date
                   </Typography>
                   <Select
+                    disabled={isReadOnlyMode}
                     type="calendar"
                     placeholder="노출 종료 날짜를 선택해주세요"
                     {...eventExposureEndDateField}
@@ -132,6 +132,7 @@ export function EventFormLayout({
                     Event Exposure Start Time
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="이벤트 노출 시작 시간을 입력해주세요 (hh:mm:ss)"
                     value={eventExposureStartTimeField.value}
                     onChange={eventExposureStartTimeField.handleChange}
@@ -143,6 +144,7 @@ export function EventFormLayout({
                     Event Exposure End Time
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="이벤트 노출 종료 시간을 입력해주세요 (hh:mm:ss)"
                     value={eventExposureEndTimeField.value}
                     onChange={eventExposureEndTimeField.handleChange}
@@ -157,6 +159,7 @@ export function EventFormLayout({
                     Event Verification Code
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="입장 코드를 입력해주세요"
                     value={eventVerificationCodeField.value}
                     onChange={eventVerificationCodeField.handleChange}
@@ -171,6 +174,7 @@ export function EventFormLayout({
                     Event Name
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="이벤트 이름을 입력해주세요"
                     value={eventNameField.value}
                     onChange={eventNameField.handleChange}
@@ -185,6 +189,7 @@ export function EventFormLayout({
                     Start Date
                   </Typography>
                   <Select
+                    disabled={isReadOnlyMode}
                     type="calendar"
                     placeholder="이벤트 시작 날짜를 선택해주세요"
                     {...eventStartDateField}
@@ -195,6 +200,7 @@ export function EventFormLayout({
                     End Date
                   </Typography>
                   <Select
+                    disabled={isReadOnlyMode}
                     type="calendar"
                     placeholder="이벤트 종료 날짜를 선택해주세요"
                     {...eventEndDateField}
@@ -208,6 +214,7 @@ export function EventFormLayout({
                     Start Time
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="이벤트 시작 시간을 입력해주세요 (hh:mm:ss)"
                     value={eventStartTimeField.value}
                     onChange={eventStartTimeField.handleChange}
@@ -219,6 +226,7 @@ export function EventFormLayout({
                     End Time
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="이벤트 종료 시간을 입력해주세요 (hh:mm:ss)"
                     value={eventEndTimeField.value}
                     onChange={eventEndTimeField.handleChange}
@@ -233,6 +241,7 @@ export function EventFormLayout({
                     Venue
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="장소를 입력해주세요"
                     value={venueField.value}
                     onChange={venueField.handleChange}
@@ -247,6 +256,7 @@ export function EventFormLayout({
                     Lineup
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     multiline
                     rows={6}
                     placeholder="라인업을 입력해주세요"
@@ -263,6 +273,7 @@ export function EventFormLayout({
                     Details
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     multiline
                     rows={6}
                     placeholder="상세 내용을 입력해주세요"
@@ -280,6 +291,7 @@ export function EventFormLayout({
                   </Typography>
                   {/* TODO: 이미지 업로드 기능 추후 추가 */}
                   <TextField
+                    readOnly={isReadOnlyMode}
                     className={cx("textarea")}
                     multiline
                     rows={3}
@@ -294,6 +306,7 @@ export function EventFormLayout({
                     Min Age
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="최소 나이를 입력해주세요"
                     value={minAgeField.value}
                     onChange={minAgeField.handleChange}
@@ -311,6 +324,7 @@ export function EventFormLayout({
                     Ticket Round Name
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="티켓 차수 이름을 입력해주세요"
                     value={ticketRoundNameField.value}
                     onChange={ticketRoundNameField.handleChange}
@@ -325,6 +339,7 @@ export function EventFormLayout({
                     Exposure Start Date
                   </Typography>
                   <Select
+                    disabled={isReadOnlyMode}
                     type="calendar"
                     placeholder="티켓 차수 판매 시작 날짜를 선택해주세요"
                     {...roundSalesStartDate}
@@ -335,6 +350,7 @@ export function EventFormLayout({
                     Exposure End Date
                   </Typography>
                   <Select
+                    disabled={isReadOnlyMode}
                     type="calendar"
                     placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
                     {...roundSalesEndDate}
@@ -348,6 +364,7 @@ export function EventFormLayout({
                     Exposure Start Time
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="티켓 차수 판매 시작 시간을 입력해주세요 (hh:mm:ss)"
                     value={roundSalesStartTime.value}
                     onChange={roundSalesStartTime.handleChange}
@@ -359,6 +376,7 @@ export function EventFormLayout({
                     Exposure End Time
                   </Typography>
                   <TextField
+                    readOnly={isReadOnlyMode}
                     placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (hh:mm:ss)"
                     value={roundSalesEndTime.value}
                     onChange={roundSalesEndTime.handleChange}
@@ -426,23 +444,6 @@ export function EventFormLayout({
             </>
           )}
         </div>
-      </div>
-
-      <div className={cx("floating")}>
-        <Button
-          className={cx("button")}
-          variant="cta"
-          size="md"
-          onClick={() => {
-            if (currentStep === "basic") {
-              setCurrentStep("ticket");
-            } else {
-              onSubmit();
-            }
-          }}
-        >
-          Next
-        </Button>
       </div>
     </>
   );
