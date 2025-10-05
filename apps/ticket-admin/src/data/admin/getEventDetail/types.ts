@@ -15,8 +15,8 @@ export type EventDetailResponse = {
   endDate: string;
   endTime: string;
   venue: string;
-  lineup?: string;
-  details?: string;
+  lineup: string;
+  details: string;
   images: {
     imageUrl: string;
   }[];
