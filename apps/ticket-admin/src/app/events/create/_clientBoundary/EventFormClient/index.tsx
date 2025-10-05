@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useSelect, useTextField } from "@permit/design-system/hooks";
 import { EventRequest, useEventMutation } from "@/data/admin/postEvents/mutation";
@@ -28,7 +29,10 @@ const initialFormData: EventRequest = {
   lineup: "",
   details: "",
   minAge: 0,
-  images: [{ imageUrl: "" }],
+  // TODO: 이미지 업로드 기능으로 변경
+  images: [
+    { imageUrl: "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap0.jpg" },
+  ],
   ticketRoundName: "",
   roundSalesStartDate: "",
   roundSalesEndDate: "",
@@ -38,6 +42,7 @@ const initialFormData: EventRequest = {
 };
 
 export function EventFormClient() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<"basic" | "ticket">("basic");
   const [formData, setFormData] = useState<FormData>(initialFormData as FormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -396,14 +401,12 @@ export function EventFormClient() {
         ticketTypes: formData.ticketTypes.map(({ id: _id, ...ticket }) => ticket),
       };
 
-      console.log("Form data:", formData);
-      console.log("API data:", apiData);
-
       await createEvent(apiData);
 
       // 성공 시 이벤트 목록으로 이동
-      //   router.push("/events");
+      router.push("/events");
     } catch (error) {
+      alert("이벤트 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
       console.error("Error creating event:", error);
     } finally {
       setIsSubmitting(false);
