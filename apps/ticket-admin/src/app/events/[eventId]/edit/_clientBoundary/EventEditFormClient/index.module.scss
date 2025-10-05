@@ -1,6 +1,52 @@
 @use "@permit/design-system/styles/variables" as theme;
 @use "@permit/design-system/styles/typography" as typography;
 
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 200px;
+  margin-top: 72px;
+}
+
+.sidebar_item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+
+  background: none;
+  cursor: pointer;
+  border: none;
+}
+
+.sidebar_indicator {
+  width: 4px;
+  height: 28px;
+
+  &.active {
+    flex-shrink: 0;
+
+    background-color: #fafafa;
+    border-radius: 8px;
+  }
+}
+
+.sidebar_text {
+  color: #636363;
+  font-weight: 700;
+  font-size: 24px;
+  font-family: Roboto, sans-serif;
+  line-height: 100%;
+
+  &.active {
+    color: #fafafa;
+  }
+}
+
 .floating {
   position: fixed;
   right: 0;

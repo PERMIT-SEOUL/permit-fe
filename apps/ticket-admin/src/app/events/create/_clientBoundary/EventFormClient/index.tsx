@@ -423,8 +423,26 @@ export function EventFormClient() {
   return (
     <>
       <EventFormLayout
+        sideBar={
+          <>
+            {/* Sidebar */}
+            <div className={cx("sidebar")}>
+              <button className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
+                <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
+                <span className={cx("sidebar_text", currentStep === "basic" && "active")}>
+                  Add Basic
+                </span>
+              </button>
+              <button className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
+                <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
+                <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>
+                  Add Ticket
+                </span>
+              </button>
+            </div>
+          </>
+        }
         currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
         eventExposureStartDateField={eventExposureStartDateField.selectProps}
         eventExposureEndDateField={eventExposureEndDateField.selectProps}
         eventExposureStartTimeField={eventExposureStartTimeField}

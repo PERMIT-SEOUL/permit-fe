@@ -16,13 +16,13 @@ type SelectField = {
 };
 
 type EventFormLayoutProps = {
+  sideBar: React.ReactNode;
   formData: EventFormData;
   onFileChange: (files: FileList | null) => void;
   onDelete?: () => void;
   isSubmitting: boolean;
   isReadOnlyMode?: boolean;
   currentStep: "basic" | "ticket";
-  setCurrentStep: (step: "basic" | "ticket") => void;
   eventExposureStartDateField: SelectField;
   eventExposureEndDateField: SelectField;
   eventVerificationCodeField: UseTextFieldReturn;
@@ -48,13 +48,13 @@ type EventFormLayoutProps = {
 };
 
 export function EventFormLayout({
+  sideBar,
   formData,
   onFileChange,
   onDelete,
   isSubmitting,
   isReadOnlyMode = false,
   currentStep,
-  setCurrentStep,
   eventExposureStartDateField,
   eventExposureEndDateField,
   eventVerificationCodeField,
@@ -81,21 +81,7 @@ export function EventFormLayout({
   return (
     <>
       <div className={cx("container")}>
-        {/* Sidebar */}
-        <div className={cx("sidebar")}>
-          <button className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
-            <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
-            <span className={cx("sidebar_text", currentStep === "basic" && "active")}>
-              Add Basic
-            </span>
-          </button>
-          <button className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
-            <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
-            <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>
-              Add Ticket
-            </span>
-          </button>
-        </div>
+        {sideBar}
 
         {/* Main */}
         <div className={cx("main")}>
