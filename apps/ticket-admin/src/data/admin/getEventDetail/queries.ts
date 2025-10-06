@@ -18,7 +18,7 @@ export const eventDetailOptions = (
   params: EventDetailParams,
 ): PermitQueryOptions<EventDetailResponse> => {
   return {
-    queryKey: [ADMIN_QUERY_KEYS.EVENT_DETAIL],
+    queryKey: [ADMIN_QUERY_KEYS.EVENT_DETAIL, params.eventId],
     queryFn: () => {
       const url = getPathUrl(API_URL.ADMIN.EVENT_DETAIL, { eventId: params.eventId });
 

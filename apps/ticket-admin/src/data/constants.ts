@@ -6,5 +6,7 @@ export const API_URL = {
     EVENTS: "/api/admin/events",
     /** 이벤트 상세 조회 API */
     EVENT_DETAIL: "/api/admin/events/:eventId/details",
+    /** 행사 티켓 라운드+타입 전체 조회 API */
+    TICKETS: "/api/admin/tickets/:eventId",
   },
 } as const;
