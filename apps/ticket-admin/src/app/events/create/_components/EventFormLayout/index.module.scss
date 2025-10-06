@@ -1,13 +1,6 @@
 @use "@permit/design-system/styles/variables" as theme;
 @use "@permit/design-system/styles/typography" as typography;
 
-.container {
-  display: flex;
-  max-width: 1200px;
-  min-height: 100vh;
-  margin: 0 auto;
-}
-
 .main {
   display: flex;
   flex-direction: column;

@@ -1,0 +1,198 @@
+.container {
+  min-height: 100vh;
+  padding: 24px;
+
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  background-color: #000;
+}
+
+.ticketRound {
+  margin-bottom: 32px;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.titleSection {
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 16px;
+
+  color: #fff;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.salesPeriod {
+  display: flex;
+  gap: 32px;
+}
+
+.salesInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  color: #ccc;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.datetime {
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.actionSection {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.editButton {
+  padding: 8px 16px;
+
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+
+  background-color: #4ade80;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #22c55e;
+  }
+}
+
+.ticketTypes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ticketTypeCard {
+  padding: 20px;
+
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+}
+
+.ticketTypeHeader {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+
+  border-bottom: 1px solid #333;
+}
+
+.headerCell {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: left;
+}
+
+.ticketTypeData {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.dataCell {
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
+  text-align: left;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .salesPeriod {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .actionSection {
+    align-self: flex-end;
+  }
+
+  .ticketTypeHeader,
+  .ticketTypeData {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .headerCell,
+  .dataCell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &::before {
+      color: #ccc;
+      font-weight: 600;
+
+      content: attr(data-label);
+    }
+  }
+
+  .ticketTypeHeader {
+    display: none;
+  }
+
+  .ticketTypeData {
+    .dataCell:nth-child(1)::before {
+      content: "Ticket type: ";
+    }
+
+    .dataCell:nth-child(2)::before {
+      content: "Price: ";
+    }
+
+    .dataCell:nth-child(3)::before {
+      content: "Refund: ";
+    }
+
+    .dataCell:nth-child(4)::before {
+      content: "Ticket sold: ";
+    }
+
+    .dataCell:nth-child(5)::before {
+      content: "Ticket used: ";
+    }
+
+    .dataCell:nth-child(6)::before {
+      content: "Ticket sold amount: ";
+    }
+  }
+}

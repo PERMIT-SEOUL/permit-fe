@@ -16,7 +16,6 @@ type SelectField = {
 };
 
 type EventFormLayoutProps = {
-  sideBar: React.ReactNode;
   formData: EventFormData;
   onFileChange: (files: FileList | null) => void;
   onDelete?: () => void;
@@ -48,7 +47,6 @@ type EventFormLayoutProps = {
 };
 
 export function EventFormLayout({
-  sideBar,
   formData,
   onFileChange,
   onDelete,
@@ -80,356 +78,352 @@ export function EventFormLayout({
 }: EventFormLayoutProps) {
   return (
     <>
-      <div className={cx("container")}>
-        {sideBar}
-
-        {/* Main */}
-        <div className={cx("main")}>
-          {currentStep === "basic" && (
-            <>
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Event Exposure Start Date
-                  </Typography>
-                  <Select
-                    disabled={isReadOnlyMode}
-                    type="calendar"
-                    placeholder="노출 시작 날짜를 선택해주세요"
-                    {...eventExposureStartDateField}
-                  />
-                </Flex>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Event Exposure End Date
-                  </Typography>
-                  <Select
-                    disabled={isReadOnlyMode}
-                    type="calendar"
-                    placeholder="노출 종료 날짜를 선택해주세요"
-                    {...eventExposureEndDateField}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Event Exposure Start Time
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="이벤트 노출 시작 시간을 입력해주세요 (hh:mm:ss)"
-                    value={eventExposureStartTimeField.value}
-                    onChange={eventExposureStartTimeField.handleChange}
-                    error={eventExposureStartTimeField.error}
-                  />
-                </Flex>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Event Exposure End Time
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="이벤트 노출 종료 시간을 입력해주세요 (hh:mm:ss)"
-                    value={eventExposureEndTimeField.value}
-                    onChange={eventExposureEndTimeField.handleChange}
-                    error={eventExposureEndTimeField.error}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Event Verification Code
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="입장 코드를 입력해주세요"
-                    value={eventVerificationCodeField.value}
-                    onChange={eventVerificationCodeField.handleChange}
-                    error={eventVerificationCodeField.error}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Event Name
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="이벤트 이름을 입력해주세요"
-                    value={eventNameField.value}
-                    onChange={eventNameField.handleChange}
-                    error={eventNameField.error}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Start Date
-                  </Typography>
-                  <Select
-                    disabled={isReadOnlyMode}
-                    type="calendar"
-                    placeholder="이벤트 시작 날짜를 선택해주세요"
-                    {...eventStartDateField}
-                  />
-                </Flex>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    End Date
-                  </Typography>
-                  <Select
-                    disabled={isReadOnlyMode}
-                    type="calendar"
-                    placeholder="이벤트 종료 날짜를 선택해주세요"
-                    {...eventEndDateField}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Start Time
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="이벤트 시작 시간을 입력해주세요 (hh:mm:ss)"
-                    value={eventStartTimeField.value}
-                    onChange={eventStartTimeField.handleChange}
-                    error={eventStartTimeField.error}
-                  />
-                </Flex>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    End Time
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="이벤트 종료 시간을 입력해주세요 (hh:mm:ss)"
-                    value={eventEndTimeField.value}
-                    onChange={eventEndTimeField.handleChange}
-                    error={eventEndTimeField.error}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Venue
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="장소를 입력해주세요"
-                    value={venueField.value}
-                    onChange={venueField.handleChange}
-                    error={venueField.error}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Lineup
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    multiline
-                    rows={6}
-                    placeholder="라인업을 입력해주세요"
-                    value={lineupField.value}
-                    onChange={lineupField.handleChange}
-                    error={lineupField.error}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Details
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    multiline
-                    rows={6}
-                    placeholder="상세 내용을 입력해주세요"
-                    value={detailsField.value}
-                    onChange={detailsField.handleChange}
-                    error={detailsField.error}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Image
-                  </Typography>
-                  {/* TODO: 이미지 업로드 기능 추후 추가 */}
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    className={cx("textarea")}
-                    multiline
-                    rows={3}
-                    placeholder="이미지를 업로드하거나 URL을 입력해주세요"
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Min Age
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="최소 나이를 입력해주세요"
-                    value={minAgeField.value}
-                    onChange={minAgeField.handleChange}
-                    error={minAgeField.error}
-                  />
-                </Flex>
-              </Flex>
-            </>
-          )}
-          {currentStep === "ticket" && (
-            <>
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Ticket Round Name
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="티켓 차수 이름을 입력해주세요"
-                    value={ticketRoundNameField.value}
-                    onChange={ticketRoundNameField.handleChange}
-                    error={ticketRoundNameField.error}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Exposure Start Date
-                  </Typography>
-                  <Select
-                    disabled={isReadOnlyMode}
-                    type="calendar"
-                    placeholder="티켓 차수 판매 시작 날짜를 선택해주세요"
-                    {...roundSalesStartDate}
-                  />
-                </Flex>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Exposure End Date
-                  </Typography>
-                  <Select
-                    disabled={isReadOnlyMode}
-                    type="calendar"
-                    placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
-                    {...roundSalesEndDate}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex gap={24}>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Exposure Start Time
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="티켓 차수 판매 시작 시간을 입력해주세요 (hh:mm:ss)"
-                    value={roundSalesStartTime.value}
-                    onChange={roundSalesStartTime.handleChange}
-                    error={roundSalesStartTime.error}
-                  />
-                </Flex>
-                <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Exposure End Time
-                  </Typography>
-                  <TextField
-                    readOnly={isReadOnlyMode}
-                    placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (hh:mm:ss)"
-                    value={roundSalesEndTime.value}
-                    onChange={roundSalesEndTime.handleChange}
-                    error={roundSalesEndTime.error}
-                  />
-                </Flex>
-              </Flex>
-
-              {/* 티켓 추가 버튼 */}
-              <Button variant="cta" size="md" onClick={onAddTicket}>
-                Add
-              </Button>
-
-              {/* 티켓 폼들 */}
-              {formData.ticketTypes.map((ticket) => (
-                <TicketForm
-                  key={ticket.id}
-                  ticketData={ticket}
-                  onUpdate={(updatedTicket) => onUpdateTicket(ticket.id, updatedTicket)}
-                  onDelete={() => onDeleteTicket(ticket.id)}
-                  ticketNameField={{
-                    value: ticket.ticketName,
-                    handleChange: (e) => {
-                      onUpdateTicket(ticket.id, { ...ticket, ticketName: e.target.value });
-                    },
-                  }}
-                  priceField={{
-                    value: ticket.price.toString(),
-                    handleChange: (e) => {
-                      onUpdateTicket(ticket.id, { ...ticket, price: Number(e.target.value) });
-                    },
-                  }}
-                  ticketCountField={{
-                    value: ticket.ticketCount.toString(),
-                    handleChange: (e) => {
-                      onUpdateTicket(ticket.id, { ...ticket, ticketCount: Number(e.target.value) });
-                    },
-                  }}
-                  ticketStartDateField={{
-                    value: ticket.ticketStartDate,
-                    onChange: (value: string) => {
-                      onUpdateTicket(ticket.id, { ...ticket, ticketStartDate: value });
-                    },
-                  }}
-                  ticketEndDateField={{
-                    value: ticket.ticketEndDate,
-                    onChange: (value: string) => {
-                      onUpdateTicket(ticket.id, { ...ticket, ticketEndDate: value });
-                    },
-                  }}
-                  ticketStartTimeField={{
-                    value: ticket.ticketStartTime,
-                    handleChange: (e) => {
-                      onUpdateTicket(ticket.id, { ...ticket, ticketStartTime: e.target.value });
-                    },
-                  }}
-                  ticketEndTimeField={{
-                    value: ticket.ticketEndTime,
-                    handleChange: (e) => {
-                      onUpdateTicket(ticket.id, { ...ticket, ticketEndTime: e.target.value });
-                    },
-                  }}
+      {/* Main */}
+      <div className={cx("main")}>
+        {currentStep === "basic" && (
+          <>
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Event Exposure Start Date
+                </Typography>
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="노출 시작 날짜를 선택해주세요"
+                  {...eventExposureStartDateField}
                 />
-              ))}
-            </>
-          )}
-        </div>
+              </Flex>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Event Exposure End Date
+                </Typography>
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="노출 종료 날짜를 선택해주세요"
+                  {...eventExposureEndDateField}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Event Exposure Start Time
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="이벤트 노출 시작 시간을 입력해주세요 (hh:mm:ss)"
+                  value={eventExposureStartTimeField.value}
+                  onChange={eventExposureStartTimeField.handleChange}
+                  error={eventExposureStartTimeField.error}
+                />
+              </Flex>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Event Exposure End Time
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="이벤트 노출 종료 시간을 입력해주세요 (hh:mm:ss)"
+                  value={eventExposureEndTimeField.value}
+                  onChange={eventExposureEndTimeField.handleChange}
+                  error={eventExposureEndTimeField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Event Verification Code
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="입장 코드를 입력해주세요"
+                  value={eventVerificationCodeField.value}
+                  onChange={eventVerificationCodeField.handleChange}
+                  error={eventVerificationCodeField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Event Name
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="이벤트 이름을 입력해주세요"
+                  value={eventNameField.value}
+                  onChange={eventNameField.handleChange}
+                  error={eventNameField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Start Date
+                </Typography>
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="이벤트 시작 날짜를 선택해주세요"
+                  {...eventStartDateField}
+                />
+              </Flex>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  End Date
+                </Typography>
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="이벤트 종료 날짜를 선택해주세요"
+                  {...eventEndDateField}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Start Time
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="이벤트 시작 시간을 입력해주세요 (hh:mm:ss)"
+                  value={eventStartTimeField.value}
+                  onChange={eventStartTimeField.handleChange}
+                  error={eventStartTimeField.error}
+                />
+              </Flex>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  End Time
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="이벤트 종료 시간을 입력해주세요 (hh:mm:ss)"
+                  value={eventEndTimeField.value}
+                  onChange={eventEndTimeField.handleChange}
+                  error={eventEndTimeField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Venue
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="장소를 입력해주세요"
+                  value={venueField.value}
+                  onChange={venueField.handleChange}
+                  error={venueField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Lineup
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  multiline
+                  rows={6}
+                  placeholder="라인업을 입력해주세요"
+                  value={lineupField.value}
+                  onChange={lineupField.handleChange}
+                  error={lineupField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Details
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  multiline
+                  rows={6}
+                  placeholder="상세 내용을 입력해주세요"
+                  value={detailsField.value}
+                  onChange={detailsField.handleChange}
+                  error={detailsField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Image
+                </Typography>
+                {/* TODO: 이미지 업로드 기능 추후 추가 */}
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  className={cx("textarea")}
+                  multiline
+                  rows={3}
+                  placeholder="이미지를 업로드하거나 URL을 입력해주세요"
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Min Age
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="최소 나이를 입력해주세요"
+                  value={minAgeField.value}
+                  onChange={minAgeField.handleChange}
+                  error={minAgeField.error}
+                />
+              </Flex>
+            </Flex>
+          </>
+        )}
+        {currentStep === "ticket" && (
+          <>
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Ticket Round Name
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="티켓 차수 이름을 입력해주세요"
+                  value={ticketRoundNameField.value}
+                  onChange={ticketRoundNameField.handleChange}
+                  error={ticketRoundNameField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Exposure Start Date
+                </Typography>
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="티켓 차수 판매 시작 날짜를 선택해주세요"
+                  {...roundSalesStartDate}
+                />
+              </Flex>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Exposure End Date
+                </Typography>
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
+                  {...roundSalesEndDate}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Exposure Start Time
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="티켓 차수 판매 시작 시간을 입력해주세요 (hh:mm:ss)"
+                  value={roundSalesStartTime.value}
+                  onChange={roundSalesStartTime.handleChange}
+                  error={roundSalesStartTime.error}
+                />
+              </Flex>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Exposure End Time
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (hh:mm:ss)"
+                  value={roundSalesEndTime.value}
+                  onChange={roundSalesEndTime.handleChange}
+                  error={roundSalesEndTime.error}
+                />
+              </Flex>
+            </Flex>
+
+            {/* 티켓 추가 버튼 */}
+            <Button variant="cta" size="md" onClick={onAddTicket}>
+              Add
+            </Button>
+
+            {/* 티켓 폼들 */}
+            {formData.ticketTypes.map((ticket) => (
+              <TicketForm
+                key={ticket.id}
+                ticketData={ticket}
+                onUpdate={(updatedTicket) => onUpdateTicket(ticket.id, updatedTicket)}
+                onDelete={() => onDeleteTicket(ticket.id)}
+                ticketNameField={{
+                  value: ticket.ticketName,
+                  handleChange: (e) => {
+                    onUpdateTicket(ticket.id, { ...ticket, ticketName: e.target.value });
+                  },
+                }}
+                priceField={{
+                  value: ticket.price.toString(),
+                  handleChange: (e) => {
+                    onUpdateTicket(ticket.id, { ...ticket, price: Number(e.target.value) });
+                  },
+                }}
+                ticketCountField={{
+                  value: ticket.ticketCount.toString(),
+                  handleChange: (e) => {
+                    onUpdateTicket(ticket.id, { ...ticket, ticketCount: Number(e.target.value) });
+                  },
+                }}
+                ticketStartDateField={{
+                  value: ticket.ticketStartDate,
+                  onChange: (value: string) => {
+                    onUpdateTicket(ticket.id, { ...ticket, ticketStartDate: value });
+                  },
+                }}
+                ticketEndDateField={{
+                  value: ticket.ticketEndDate,
+                  onChange: (value: string) => {
+                    onUpdateTicket(ticket.id, { ...ticket, ticketEndDate: value });
+                  },
+                }}
+                ticketStartTimeField={{
+                  value: ticket.ticketStartTime,
+                  handleChange: (e) => {
+                    onUpdateTicket(ticket.id, { ...ticket, ticketStartTime: e.target.value });
+                  },
+                }}
+                ticketEndTimeField={{
+                  value: ticket.ticketEndTime,
+                  handleChange: (e) => {
+                    onUpdateTicket(ticket.id, { ...ticket, ticketEndTime: e.target.value });
+                  },
+                }}
+              />
+            ))}
+          </>
+        )}
       </div>
     </>
   );

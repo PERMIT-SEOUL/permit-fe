@@ -7,6 +7,7 @@ import classNames from "classnames/bind";
 import { Button } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
 import { EventFormData } from "@/app/events/create/_clientBoundary/EventFormClient";
+import { TicketManagementClient } from "@/app/events/create/_clientBoundary/TicketManagementClient";
 import { EventFormLayout } from "@/app/events/create/_components/EventFormLayout";
 import { type TicketData } from "@/app/events/create/_components/TicketForm";
 import { useEventDetailSuspenseQuery } from "@/data/admin/getEventDetail/queries";
@@ -513,57 +514,51 @@ export function EventEditFormClient({ eventId }: Props) {
   };
 
   return (
-    <>
-      <EventFormLayout
-        sideBar={
-          <>
-            {/* Sidebar */}
-            <div className={cx("sidebar")}>
-              <button className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
-                <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
-                <span className={cx("sidebar_text", currentStep === "basic" && "active")}>
-                  Basic
-                </span>
-              </button>
-              <button className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
-                <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
-                <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>
-                  Ticket
-                </span>
-              </button>
-            </div>
-          </>
-        }
-        currentStep={currentStep}
-        eventExposureStartDateField={eventExposureStartDateField.selectProps}
-        eventExposureEndDateField={eventExposureEndDateField.selectProps}
-        eventExposureStartTimeField={eventExposureStartTimeField}
-        eventExposureEndTimeField={eventExposureEndTimeField}
-        eventVerificationCodeField={eventVerificationCodeField}
-        eventNameField={eventNameField}
-        eventStartDateField={eventStartDateField.selectProps}
-        eventEndDateField={eventEndDateField.selectProps}
-        eventStartTimeField={eventStartTimeField}
-        eventEndTimeField={eventEndTimeField}
-        venueField={venueField}
-        lineupField={lineupField}
-        detailsField={detailsField}
-        minAgeField={minAgeField}
-        formData={formData}
-        onFileChange={handleFileChange}
-        ticketRoundNameField={ticketRoundNameField}
-        roundSalesStartDate={roundSalesStartDate.selectProps}
-        roundSalesEndDate={roundSalesEndDate.selectProps}
-        roundSalesStartTime={roundSalesStartTime}
-        roundSalesEndTime={roundSalesEndTime}
-        onDelete={handleDelete}
-        isSubmitting={isSubmitting}
-        isReadOnlyMode={isReadOnlyMode}
-        onAddTicket={addTicket}
-        onUpdateTicket={updateTicket}
-        onDeleteTicket={deleteTicket}
-      />
-
+    <div className={cx("container")}>
+      {/* Sidebar */}
+      <div className={cx("sidebar")}>
+        <button className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
+          <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
+          <span className={cx("sidebar_text", currentStep === "basic" && "active")}>Basic</span>
+        </button>
+        <button className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
+          <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
+          <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>Ticket</span>
+        </button>
+      </div>
+      {currentStep === "basic" && (
+        <EventFormLayout
+          currentStep={currentStep}
+          eventExposureStartDateField={eventExposureStartDateField.selectProps}
+          eventExposureEndDateField={eventExposureEndDateField.selectProps}
+          eventExposureStartTimeField={eventExposureStartTimeField}
+          eventExposureEndTimeField={eventExposureEndTimeField}
+          eventVerificationCodeField={eventVerificationCodeField}
+          eventNameField={eventNameField}
+          eventStartDateField={eventStartDateField.selectProps}
+          eventEndDateField={eventEndDateField.selectProps}
+          eventStartTimeField={eventStartTimeField}
+          eventEndTimeField={eventEndTimeField}
+          venueField={venueField}
+          lineupField={lineupField}
+          detailsField={detailsField}
+          minAgeField={minAgeField}
+          formData={formData}
+          onFileChange={handleFileChange}
+          ticketRoundNameField={ticketRoundNameField}
+          roundSalesStartDate={roundSalesStartDate.selectProps}
+          roundSalesEndDate={roundSalesEndDate.selectProps}
+          roundSalesStartTime={roundSalesStartTime}
+          roundSalesEndTime={roundSalesEndTime}
+          onDelete={handleDelete}
+          isSubmitting={isSubmitting}
+          isReadOnlyMode={isReadOnlyMode}
+          onAddTicket={addTicket}
+          onUpdateTicket={updateTicket}
+          onDeleteTicket={deleteTicket}
+        />
+      )}
+      {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
       <div className={cx("floating")}>
         <Button
           className={cx("button")}
@@ -583,6 +578,6 @@ export function EventEditFormClient({ eventId }: Props) {
           {isReadOnlyMode ? "edit" : "save"}
         </Button>
       </div>
-    </>
+    </div>
   );
 }
