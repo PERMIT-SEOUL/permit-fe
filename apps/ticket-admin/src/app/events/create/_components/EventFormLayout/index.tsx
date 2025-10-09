@@ -4,6 +4,7 @@ import { Button, Flex, Select, TextField, Typography } from "@permit/design-syst
 import type { UseTextFieldReturn } from "@permit/design-system/hooks";
 
 import { EventFormData } from "../../_clientBoundary/EventFormClient";
+import ImageUploader, { PreviewMedia } from "../ImageUploader";
 import { type TicketData, TicketForm } from "../TicketForm";
 import styles from "./index.module.scss";
 
@@ -16,8 +17,27 @@ type SelectField = {
 };
 
 type EventFormLayoutProps = {
-  formData: EventFormData;
-  onFileChange: (files: FileList | null) => void;
+  formData: Omit<
+    EventFormData,
+    | "eventType"
+    | "images"
+    | "ticketTypes"
+    | "ticketRoundName"
+    | "roundSalesStartDate"
+    | "roundSalesEndDate"
+    | "roundSalesStartTime"
+    | "roundSalesEndTime"
+  > & {
+    eventType?: "PERMIT" | "CEILING" | "OLYMPAN";
+    images?: { imageUrl?: string }[];
+    ticketTypes?: TicketData[];
+    ticketRoundName?: string;
+    roundSalesStartDate?: string;
+    roundSalesEndDate?: string;
+    roundSalesStartTime?: string;
+    roundSalesEndTime?: string;
+  };
+  onFileChange?: (files: FileList | null) => void;
   onDelete?: () => void;
   isSubmitting: boolean;
   isReadOnlyMode?: boolean;
@@ -41,16 +61,16 @@ type EventFormLayoutProps = {
   roundSalesEndDate: SelectField;
   roundSalesStartTime: UseTextFieldReturn;
   roundSalesEndTime: UseTextFieldReturn;
-  onAddTicket: () => void;
-  onUpdateTicket: (ticketId: string, updatedTicket: TicketData) => void;
-  onDeleteTicket: (ticketId: string) => void;
+  onAddTicket?: () => void;
+  onUpdateTicket?: (ticketId: string, updatedTicket: TicketData) => void;
+  onDeleteTicket?: (ticketId: string) => void;
 };
 
 export function EventFormLayout({
   formData,
   onFileChange,
-  onDelete,
-  isSubmitting,
+  onDelete: _onDelete,
+  isSubmitting: _isSubmitting,
   isReadOnlyMode = false,
   currentStep,
   eventExposureStartDateField,
@@ -265,21 +285,25 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Image
-                </Typography>
-                {/* TODO: 이미지 업로드 기능 추후 추가 */}
-                <TextField
-                  readOnly={isReadOnlyMode}
-                  className={cx("textarea")}
-                  multiline
-                  rows={3}
-                  placeholder="이미지를 업로드하거나 URL을 입력해주세요"
-                />
+            {onFileChange && (
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Image
+                  </Typography>
+                  <ImageUploader
+                    disabled={isReadOnlyMode}
+                    value={(formData.images as unknown as PreviewMedia[] | null) || null}
+                    onImagesUpload={(_images) => {
+                      // formData에 맞게 반영 (EventFormClient가 내려준 formData 구조에 맞춰 조정)
+                      // images는 dataURL 미리보기이며, 저장 시 서버 업로드 로직에서 변환 필요
+                      // 여기서는 상위 onFileChange와의 호환을 유지하기 위해 noop 처리
+                    }}
+                    onFileSelect={onFileChange}
+                  />
+                </Flex>
               </Flex>
-            </Flex>
+            )}
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
@@ -372,56 +396,59 @@ export function EventFormLayout({
             </Button>
 
             {/* 티켓 폼들 */}
-            {formData.ticketTypes.map((ticket) => (
-              <TicketForm
-                key={ticket.id}
-                ticketData={ticket}
-                onUpdate={(updatedTicket) => onUpdateTicket(ticket.id, updatedTicket)}
-                onDelete={() => onDeleteTicket(ticket.id)}
-                ticketNameField={{
-                  value: ticket.ticketName,
-                  handleChange: (e) => {
-                    onUpdateTicket(ticket.id, { ...ticket, ticketName: e.target.value });
-                  },
-                }}
-                priceField={{
-                  value: ticket.price.toString(),
-                  handleChange: (e) => {
-                    onUpdateTicket(ticket.id, { ...ticket, price: Number(e.target.value) });
-                  },
-                }}
-                ticketCountField={{
-                  value: ticket.ticketCount.toString(),
-                  handleChange: (e) => {
-                    onUpdateTicket(ticket.id, { ...ticket, ticketCount: Number(e.target.value) });
-                  },
-                }}
-                ticketStartDateField={{
-                  value: ticket.ticketStartDate,
-                  onChange: (value: string) => {
-                    onUpdateTicket(ticket.id, { ...ticket, ticketStartDate: value });
-                  },
-                }}
-                ticketEndDateField={{
-                  value: ticket.ticketEndDate,
-                  onChange: (value: string) => {
-                    onUpdateTicket(ticket.id, { ...ticket, ticketEndDate: value });
-                  },
-                }}
-                ticketStartTimeField={{
-                  value: ticket.ticketStartTime,
-                  handleChange: (e) => {
-                    onUpdateTicket(ticket.id, { ...ticket, ticketStartTime: e.target.value });
-                  },
-                }}
-                ticketEndTimeField={{
-                  value: ticket.ticketEndTime,
-                  handleChange: (e) => {
-                    onUpdateTicket(ticket.id, { ...ticket, ticketEndTime: e.target.value });
-                  },
-                }}
-              />
-            ))}
+            {onAddTicket &&
+              onUpdateTicket &&
+              onDeleteTicket &&
+              formData?.ticketTypes?.map((ticket) => (
+                <TicketForm
+                  key={ticket.id}
+                  ticketData={ticket}
+                  onUpdate={(updatedTicket) => onUpdateTicket(ticket.id, updatedTicket)}
+                  onDelete={() => onDeleteTicket(ticket.id)}
+                  ticketNameField={{
+                    value: ticket.ticketName,
+                    handleChange: (e) => {
+                      onUpdateTicket(ticket.id, { ...ticket, ticketName: e.target.value });
+                    },
+                  }}
+                  priceField={{
+                    value: ticket.price.toString(),
+                    handleChange: (e) => {
+                      onUpdateTicket(ticket.id, { ...ticket, price: Number(e.target.value) });
+                    },
+                  }}
+                  ticketCountField={{
+                    value: ticket.ticketCount.toString(),
+                    handleChange: (e) => {
+                      onUpdateTicket(ticket.id, { ...ticket, ticketCount: Number(e.target.value) });
+                    },
+                  }}
+                  ticketStartDateField={{
+                    value: ticket.ticketStartDate,
+                    onChange: (value: string) => {
+                      onUpdateTicket(ticket.id, { ...ticket, ticketStartDate: value });
+                    },
+                  }}
+                  ticketEndDateField={{
+                    value: ticket.ticketEndDate,
+                    onChange: (value: string) => {
+                      onUpdateTicket(ticket.id, { ...ticket, ticketEndDate: value });
+                    },
+                  }}
+                  ticketStartTimeField={{
+                    value: ticket.ticketStartTime,
+                    handleChange: (e) => {
+                      onUpdateTicket(ticket.id, { ...ticket, ticketStartTime: e.target.value });
+                    },
+                  }}
+                  ticketEndTimeField={{
+                    value: ticket.ticketEndTime,
+                    handleChange: (e) => {
+                      onUpdateTicket(ticket.id, { ...ticket, ticketEndTime: e.target.value });
+                    },
+                  }}
+                />
+              ))}
           </>
         )}
       </div>

@@ -36,10 +36,7 @@ const initialFormData: EventRequest = {
   lineup: "",
   details: "",
   minAge: 0,
-  // TODO: 이미지 업로드 기능으로 변경
-  images: [
-    { imageUrl: "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap0.jpg" },
-  ],
+  // images: [],
   ticketRoundName: "",
   roundSalesStartDate: "",
   roundSalesEndDate: "",
@@ -276,7 +273,6 @@ export function EventFormClient() {
     },
   });
 
-  // TODO: 이미지 업로드 기능 추가
   const handleFileChange = (files: FileList | null) => {
     if (files) {
       setFormData((prev) => ({
@@ -452,7 +448,7 @@ export function EventFormClient() {
         detailsField={detailsField}
         minAgeField={minAgeField}
         formData={formData}
-        onFileChange={handleFileChange}
+        // onFileChange={handleFileChange}
         ticketRoundNameField={ticketRoundNameField}
         roundSalesStartDate={roundSalesStartDate.selectProps}
         roundSalesEndDate={roundSalesEndDate.selectProps}

@@ -18,9 +18,10 @@ export type EventRequest = {
   venue: string;
   lineup?: string;
   details?: string;
-  images: {
-    imageUrl: string;
-  }[];
+  // TODO: 이미지 등록 스펙에서 제거 (생성에서만 등록 가능)
+  // images: {
+  //   imageUrl: string;
+  // }[];
   minAge: number;
   ticketRoundName: string;
   roundSalesStartDate: string;

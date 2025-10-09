@@ -9,7 +9,7 @@ import styles from "./index.module.scss";
 const cx = classNames.bind(styles);
 
 type Props = {
-  eventId: string;
+  eventId: number;
 };
 
 export function TicketManagementClient({ eventId }: Props) {
