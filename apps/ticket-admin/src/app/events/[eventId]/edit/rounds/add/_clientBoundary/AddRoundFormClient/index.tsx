@@ -6,6 +6,9 @@ import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
+import { type TicketData, TicketForm } from "@/app/events/create/_components/TicketForm";
+import { useEventDetailQuery } from "@/data/admin/getEventDetail/queries";
+import { useTicketsMutation } from "@/data/admin/postTickets/mutation";
 
 import styles from "./index.module.scss";
 
@@ -23,6 +26,16 @@ export function AddRoundFormClient({ eventId }: Props) {
     roundSalesEndDate: "",
     roundSalesStartTime: "",
     roundSalesEndTime: "",
+  });
+
+  const [ticketTypes, setTicketTypes] = useState<TicketData[]>([]);
+
+  const { mutateAsync: createTickets } = useTicketsMutation({
+    eventId,
+  });
+
+  const { data: eventDetailData } = useEventDetailQuery({
+    eventId,
   });
 
   // 티켓 라운드 이름 필드
@@ -98,9 +111,53 @@ export function AddRoundFormClient({ eventId }: Props) {
     },
   });
 
-  const handleAddRound = () => {
-    // TODO: API 호출로 라운드 저장
-    console.log("Saving new round:", newRoundData);
+  const handleAddTicket = () => {
+    const newTicket: TicketData = {
+      id: `ticket-${Date.now()}`,
+      ticketName: "",
+      price: 0,
+      ticketCount: 0,
+      ticketStartDate: "",
+      ticketStartTime: "",
+      ticketEndDate: "",
+      ticketEndTime: "",
+    };
+
+    setTicketTypes((prev) => [...prev, newTicket]);
+  };
+
+  const handleUpdateTicket = (ticketId: string, updatedTicket: TicketData) => {
+    setTicketTypes((prev) =>
+      prev.map((ticket) => (ticket.id === ticketId ? updatedTicket : ticket)),
+    );
+  };
+
+  const handleDeleteTicket = (ticketId: string) => {
+    setTicketTypes((prev) => prev.filter((ticket) => ticket.id !== ticketId));
+  };
+
+  const handleSubmit = async () => {
+    const requestData = {
+      ticketRoundName: newRoundData.ticketRoundName,
+      ticketRoundSalesStartDate: `${newRoundData.roundSalesStartDate} ${newRoundData.roundSalesStartTime}`,
+      ticketRoundSalesEndDate: `${newRoundData.roundSalesEndDate} ${newRoundData.roundSalesEndTime}`,
+      ticketTypes: ticketTypes.map((ticket) => ({
+        name: ticket.ticketName,
+        price: ticket.price,
+        totalCount: ticket.ticketCount,
+        startDate: `${ticket.ticketStartDate} ${ticket.ticketStartTime}`,
+        endDate: `${ticket.ticketEndDate} ${ticket.ticketEndTime}`,
+      })),
+    };
+
+    try {
+      await createTickets(requestData);
+      alert("티켓(라운드)이 성공적으로 등록되었습니다.");
+      router.replace(`/events/${eventId}/edit`);
+    } catch (error) {
+      alert("티켓 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("Error creating tickets:", error);
+    }
   };
 
   return (
@@ -109,9 +166,8 @@ export function AddRoundFormClient({ eventId }: Props) {
 
       <div className={cx("content")}>
         <div className={cx("header")}>
-          <Typography type="title24">새 티켓 라운드 추가</Typography>
-          <Typography type="body16" className={cx("subtitle")}>
-            이벤트 ID: {eventId}
+          <Typography type="title24">
+            {eventDetailData?.name} <span className={cx("subtitle")}>티켓 라운드 추가</span>
           </Typography>
         </div>
 
@@ -187,9 +243,68 @@ export function AddRoundFormClient({ eventId }: Props) {
             </Flex>
           </Flex>
 
-          <Button variant="cta" size="md" onClick={handleAddRound}>
-            Add Round
+          {/* 티켓 추가 버튼 */}
+          <Button variant="cta" size="md" onClick={handleAddTicket}>
+            Add Ticket
           </Button>
+
+          {/* 티켓 폼들 */}
+          {ticketTypes.map((ticket) => (
+            <TicketForm
+              key={ticket.id}
+              ticketData={ticket}
+              onUpdate={(updatedTicket) => handleUpdateTicket(ticket.id, updatedTicket)}
+              onDelete={() => handleDeleteTicket(ticket.id)}
+              ticketNameField={{
+                value: ticket.ticketName,
+                handleChange: (e) => {
+                  handleUpdateTicket(ticket.id, { ...ticket, ticketName: e.target.value });
+                },
+              }}
+              priceField={{
+                value: ticket.price.toString(),
+                handleChange: (e) => {
+                  handleUpdateTicket(ticket.id, { ...ticket, price: Number(e.target.value) });
+                },
+              }}
+              ticketCountField={{
+                value: ticket.ticketCount.toString(),
+                handleChange: (e) => {
+                  handleUpdateTicket(ticket.id, { ...ticket, ticketCount: Number(e.target.value) });
+                },
+              }}
+              ticketStartDateField={{
+                value: ticket.ticketStartDate,
+                onChange: (value: string) => {
+                  handleUpdateTicket(ticket.id, { ...ticket, ticketStartDate: value });
+                },
+              }}
+              ticketEndDateField={{
+                value: ticket.ticketEndDate,
+                onChange: (value: string) => {
+                  handleUpdateTicket(ticket.id, { ...ticket, ticketEndDate: value });
+                },
+              }}
+              ticketStartTimeField={{
+                value: ticket.ticketStartTime,
+                handleChange: (e) => {
+                  handleUpdateTicket(ticket.id, { ...ticket, ticketStartTime: e.target.value });
+                },
+              }}
+              ticketEndTimeField={{
+                value: ticket.ticketEndTime,
+                handleChange: (e) => {
+                  handleUpdateTicket(ticket.id, { ...ticket, ticketEndTime: e.target.value });
+                },
+              }}
+            />
+          ))}
+
+          <div className={cx("floating")}>
+            <Button variant="cta" size="md" onClick={handleSubmit}>
+              Save Round
+            </Button>
+          </div>
         </Flex>
       </div>
     </div>
