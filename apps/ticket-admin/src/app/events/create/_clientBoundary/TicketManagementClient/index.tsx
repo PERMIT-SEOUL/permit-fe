@@ -2,6 +2,7 @@
 
 import classNames from "classnames/bind";
 
+import { Button, Typography } from "@permit/design-system";
 import { useTicketsQuery } from "@/data/admin/getTickets/queries";
 
 import styles from "./index.module.scss";
@@ -25,8 +26,65 @@ export function TicketManagementClient({ eventId }: Props) {
 
   const { ticketRoundsWithTypes } = data;
 
+  // 전체 티켓 통계 계산
+  const totalStats = ticketRoundsWithTypes.reduce(
+    (acc, ticketRound) => {
+      const roundStats = ticketRound.ticketTypes.reduce(
+        (roundAcc, ticketType) => ({
+          totalSold: roundAcc.totalSold + ticketType.ticketTypeSoldCount,
+          totalCount: roundAcc.totalCount + ticketType.ticketTypeTotalCount,
+          totalAmount: roundAcc.totalAmount + ticketType.ticketTypeSoldAmount,
+        }),
+        { totalSold: 0, totalCount: 0, totalAmount: 0 },
+      );
+
+      return {
+        totalSold: acc.totalSold + roundStats.totalSold,
+        totalCount: acc.totalCount + roundStats.totalCount,
+        totalAmount: acc.totalAmount + roundStats.totalAmount,
+      };
+    },
+    { totalSold: 0, totalCount: 0, totalAmount: 0 },
+  );
+
   return (
     <div className={cx("container")}>
+      <div className={cx("headerSection")}>
+        <Typography type="title24">Your tickets</Typography>
+
+        <div className={cx("statsSection")}>
+          <div className={cx("statsGrid")}>
+            <div className={cx("statColumn")}>
+              <Typography type="body14" className={cx("statLabel")}>
+                Total ticket sold / Total ticket count
+              </Typography>
+              <Typography type="title18" className={cx("statValue")}>
+                {totalStats.totalSold} / {totalStats.totalCount}
+              </Typography>
+            </div>
+
+            <div className={cx("statColumn")}>
+              <Typography type="body14" className={cx("statLabel")}>
+                Total sold amount
+              </Typography>
+              <Typography type="title18" className={cx("statValue")}>
+                ₩ {totalStats.totalAmount.toLocaleString()}
+              </Typography>
+            </div>
+          </div>
+
+          <Button
+            variant="cta"
+            size="sm"
+            onClick={() => {
+              console.log("add ticket");
+            }}
+          >
+            Add round
+          </Button>
+        </div>
+      </div>
+
       {ticketRoundsWithTypes.map((ticketRound) => (
         <div key={ticketRound.ticketRoundId} className={cx("ticketRound")}>
           {/* 헤더 섹션 */}

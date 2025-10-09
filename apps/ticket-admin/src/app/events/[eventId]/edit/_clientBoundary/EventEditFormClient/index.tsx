@@ -61,7 +61,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 노출 시작 날짜
   const eventExposureStartDateField = useSelect({
-    initialValue: "2025-10-09",
+    initialValue: eventDetailData.eventExposureStartDate,
     onChange: (value: string) => {
       setFormData((prev) => ({
         ...prev,
@@ -594,22 +594,24 @@ export function EventEditFormClient({ eventId }: Props) {
         />
       )}
       {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
-      <div className={cx("floating")}>
-        <Button
-          className={cx("button")}
-          variant="cta"
-          size="md"
-          onClick={() => {
-            if (isReadOnlyMode) {
-              setIsReadOnlyMode(false);
-            } else {
-              handleSubmit();
-            }
-          }}
-        >
-          {isReadOnlyMode ? "edit" : "save"}
-        </Button>
-      </div>
+      {currentStep === "basic" && (
+        <div className={cx("floating")}>
+          <Button
+            className={cx("button")}
+            variant={isReadOnlyMode ? "primary" : "cta"}
+            size="md"
+            onClick={() => {
+              if (isReadOnlyMode) {
+                setIsReadOnlyMode(false);
+              } else {
+                handleSubmit();
+              }
+            }}
+          >
+            {isReadOnlyMode ? "edit" : "save"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

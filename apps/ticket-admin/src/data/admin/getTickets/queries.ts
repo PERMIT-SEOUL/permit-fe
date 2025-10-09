@@ -20,8 +20,6 @@ export const ticketsOptions = (params: TicketsParams): PermitQueryOptions<Ticket
     queryFn: () => {
       const url = getPathUrl(API_URL.ADMIN.TICKETS, { eventId: params.eventId });
 
-      console.log("@@", url);
-
       return instance.get<TicketsResponse>(url).then((res) => res.data);
     },
   };

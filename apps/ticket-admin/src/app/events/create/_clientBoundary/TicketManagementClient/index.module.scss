@@ -8,8 +8,54 @@
   background-color: #000;
 }
 
-.ticketRound {
+.headerSection {
   margin-bottom: 32px;
+}
+
+.statsSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding: 24px;
+
+  background-color: #1a1a1a;
+  border-radius: 12px;
+}
+
+.statsGrid {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+.statColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statLabel {
+  color: #ccc;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.statValue {
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.ticketRound {
+  padding-bottom: 32px;
+
+  &:not(:last-child) {
+    margin-bottom: 32px;
+
+    border-bottom: 4px solid #333;
+  }
 }
 
 .header {
@@ -130,6 +176,17 @@
 @media (max-width: 768px) {
   .container {
     padding: 16px;
+  }
+
+  .statsSection {
+    flex-direction: column;
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 
   .header {
