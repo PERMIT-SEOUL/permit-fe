@@ -6,32 +6,39 @@ import classNames from "classnames/bind";
 
 import { Button } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
-import { EventFormData } from "@/app/events/create/_clientBoundary/EventFormClient";
 import { TicketManagementClient } from "@/app/events/create/_clientBoundary/TicketManagementClient";
 import { EventFormLayout } from "@/app/events/create/_components/EventFormLayout";
-import { type TicketData } from "@/app/events/create/_components/TicketForm";
+import { PreviewMedia } from "@/app/events/create/_components/ImageUploader";
 import { useEventDetailSuspenseQuery } from "@/data/admin/getEventDetail/queries";
+import { EventDetailResponse } from "@/data/admin/getEventDetail/types";
+import { useEventMutation } from "@/data/admin/patchEvents/mutation";
+import {
+  usePostPresignedUrlsMutation,
+  usePutS3Upload,
+} from "@/data/admin/postPresignedUrls/mutation";
 
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
 type Props = {
-  eventId: string;
+  eventId: number;
 };
 
 export function EventEditFormClient({ eventId }: Props) {
   const router = useRouter();
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true); // 수정 모드 여부
   const [currentStep, setCurrentStep] = useState<"basic" | "ticket">("basic");
-  const [formData, setFormData] = useState<EventFormData>({
+  const [formData, setFormData] = useState<
+    Omit<EventDetailResponse, "images"> & { images: PreviewMedia[] }
+  >({
+    eventId: 0,
     eventExposureStartDate: "",
     eventExposureEndDate: "",
     eventExposureStartTime: "",
     eventExposureEndTime: "",
     verificationCode: "",
     name: "",
-    eventType: "PERMIT",
     startDate: "",
     endDate: "",
     startTime: "",
@@ -41,23 +48,20 @@ export function EventEditFormClient({ eventId }: Props) {
     details: "",
     minAge: 0,
     images: [],
-    ticketRoundName: "",
-    roundSalesStartDate: "",
-    roundSalesEndDate: "",
-    roundSalesStartTime: "",
-    roundSalesEndTime: "",
-    ticketTypes: [],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: eventDetailData } = useEventDetailSuspenseQuery({
     eventId,
-    options: { refetchOnWindowFocus: true },
   });
+
+  const { mutateAsync: postPresignedUrls } = usePostPresignedUrlsMutation({});
+  const { mutateAsync: putS3Upload } = usePutS3Upload();
+  const { mutateAsync: patchEvent } = useEventMutation({});
 
   // 이벤트 노출 시작 날짜
   const eventExposureStartDateField = useSelect({
-    initialValue: eventDetailData.eventExposureStartDate,
+    initialValue: "2025-10-09",
     onChange: (value: string) => {
       setFormData((prev) => ({
         ...prev,
@@ -369,19 +373,20 @@ export function EventEditFormClient({ eventId }: Props) {
     },
   });
 
-  console.log(eventDetailData);
+  console.log("@@formData", formData.eventExposureStartDate);
+
   // API 응답 데이터를 폼 필드에 설정
   useEffect(() => {
     if (eventDetailData) {
       // 폼 데이터 설정
       setFormData({
+        eventId: eventDetailData.eventId,
         eventExposureStartDate: eventDetailData.eventExposureStartDate,
         eventExposureEndDate: eventDetailData.eventExposureEndDate,
         eventExposureStartTime: eventDetailData.eventExposureStartTime,
         eventExposureEndTime: eventDetailData.eventExposureEndTime,
         verificationCode: eventDetailData.verificationCode,
         name: eventDetailData.name,
-        eventType: "PERMIT", // TODO: API 응답에 eventType이 없으므로 기본값 사용
         startDate: eventDetailData.startDate,
         endDate: eventDetailData.endDate,
         startTime: eventDetailData.startTime,
@@ -391,12 +396,6 @@ export function EventEditFormClient({ eventId }: Props) {
         details: eventDetailData.details || "",
         minAge: eventDetailData.minAge,
         images: eventDetailData.images || [],
-        ticketRoundName: "", // TODO: API 응답에 티켓 관련 데이터가 없으므로 빈 값 사용
-        roundSalesStartDate: "",
-        roundSalesEndDate: "",
-        roundSalesStartTime: "",
-        roundSalesEndTime: "",
-        ticketTypes: [], // TODO: API 응답에 티켓 타입 데이터가 없으므로 빈 배열 사용
       });
 
       // 각 필드의 value를 설정
@@ -438,49 +437,36 @@ export function EventEditFormClient({ eventId }: Props) {
   }, [eventDetailData]);
 
   const handleFileChange = (files: FileList | null) => {
-    if (files) {
-      setFormData((prev) => ({
-        ...prev,
-        images: Array.from(files).map((file) => ({
-          imageUrl: URL.createObjectURL(file),
-        })),
-      }));
-    }
-  };
+    if (!files || files.length === 0) return;
 
-  // 티켓 관리 함수들
-  const addTicket = () => {
-    const newTicket: TicketData = {
-      id: Date.now().toString(),
-      ticketName: "",
-      price: 0,
-      ticketCount: 0,
-      ticketStartDate: "",
-      ticketStartTime: "",
-      ticketEndDate: "",
-      ticketEndTime: "",
-    };
+    const toPreview = (file: File) =>
+      new Promise<{ id: number; url: string; mediaType: "IMAGE" | "VIDEO" }>((resolve) => {
+        const isVideo = file.type.startsWith("video/");
+        const reader = new FileReader();
 
-    setFormData((prev) => ({
-      ...prev,
-      ticketTypes: [...prev.ticketTypes, newTicket],
-    }));
-  };
+        reader.onload = (ev) => {
+          const dataUrl = (ev.target?.result as string) ?? "";
 
-  const updateTicket = (ticketId: string, updatedTicket: TicketData) => {
-    setFormData((prev) => ({
-      ...prev,
-      ticketTypes: prev.ticketTypes.map((ticket) =>
-        ticket.id === ticketId ? updatedTicket : ticket,
-      ),
-    }));
-  };
+          resolve({
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            url: dataUrl,
+            mediaType: isVideo ? "VIDEO" : "IMAGE",
+          });
+        };
+        reader.readAsDataURL(file);
+      });
 
-  const deleteTicket = (ticketId: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      ticketTypes: prev.ticketTypes.filter((ticket) => ticket.id !== ticketId),
-    }));
+    Promise.all(Array.from(files).map(toPreview)).then((appended) => {
+      setFormData((prev) => {
+        const prevImages = (prev.images as PreviewMedia[] | undefined) ?? [];
+        const merged = [...prevImages, ...appended];
+
+        return {
+          ...prev,
+          images: merged,
+        };
+      });
+    });
   };
 
   const handleSubmit = async () => {
@@ -488,7 +474,61 @@ export function EventEditFormClient({ eventId }: Props) {
 
     try {
       // TODO: API 호출로 이벤트 수정
-      console.log("Updated form data:", formData);
+      console.log("Updated form data:!!!", formData);
+
+      const toUpload = (
+        formData.images as { id?: number; url?: string; mediaType?: "IMAGE" | "VIDEO" }[]
+      ).filter((m) => !!m?.url && !!m?.mediaType);
+
+      const mediaInfoRequests = toUpload.map((m) => {
+        const mediaName = `${m.id}`;
+
+        return { mediaName, mediaType: m.mediaType! };
+      });
+
+      console.log("@@", toUpload, mediaInfoRequests);
+
+      const presignedUrls = await postPresignedUrls({
+        eventId: eventDetailData.eventId,
+        mediaInfoRequests,
+      });
+
+      await Promise.all(
+        presignedUrls.preSignedUrlInfoList.map(async (url, index) => {
+          const file = toUpload[index];
+
+          const response = await fetch(file.url!);
+          const blob = await response.blob();
+          const newFile = new File([blob], `fileName-${file.id}`, { type: blob.type });
+
+          return putS3Upload({ url: url.preSignedUrl, file: newFile });
+        }),
+      );
+
+      const imagesData = formData.images.map((m) => {
+        if (m.id) {
+          const url = presignedUrls.preSignedUrlInfoList.find(
+            (info) => info.mediaName === m.id?.toString(),
+          )?.preSignedUrl;
+
+          const imageUrl = url?.split("?")[0];
+
+          return {
+            imageUrl: imageUrl as string,
+          };
+        }
+
+        return {
+          imageUrl: m.imageUrl as string,
+        };
+      });
+
+      await patchEvent({
+        ...formData,
+        eventId: eventDetailData.eventId,
+        eventType: "PERMIT", // TODO: 확인
+        images: imagesData,
+      });
 
       // 성공 시 이벤트 목록으로 이동
       // router.push("/events");
@@ -528,6 +568,7 @@ export function EventEditFormClient({ eventId }: Props) {
       </div>
       {currentStep === "basic" && (
         <EventFormLayout
+          formData={formData}
           currentStep={currentStep}
           eventExposureStartDateField={eventExposureStartDateField.selectProps}
           eventExposureEndDateField={eventExposureEndDateField.selectProps}
@@ -543,7 +584,6 @@ export function EventEditFormClient({ eventId }: Props) {
           lineupField={lineupField}
           detailsField={detailsField}
           minAgeField={minAgeField}
-          formData={formData}
           onFileChange={handleFileChange}
           ticketRoundNameField={ticketRoundNameField}
           roundSalesStartDate={roundSalesStartDate.selectProps}
@@ -553,9 +593,6 @@ export function EventEditFormClient({ eventId }: Props) {
           onDelete={handleDelete}
           isSubmitting={isSubmitting}
           isReadOnlyMode={isReadOnlyMode}
-          onAddTicket={addTicket}
-          onUpdateTicket={updateTicket}
-          onDeleteTicket={deleteTicket}
         />
       )}
       {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
@@ -565,14 +602,11 @@ export function EventEditFormClient({ eventId }: Props) {
           variant="cta"
           size="md"
           onClick={() => {
-            setIsReadOnlyMode((prev) => {
-              if (prev) {
-                // 현재 편집 모드라면 저장 시도
-                handleSubmit();
-              }
-
-              return !prev;
-            });
+            if (isReadOnlyMode) {
+              setIsReadOnlyMode(false);
+            } else {
+              handleSubmit();
+            }
           }}
         >
           {isReadOnlyMode ? "edit" : "save"}

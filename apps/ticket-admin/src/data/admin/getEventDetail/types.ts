@@ -1,9 +1,9 @@
 export type EventDetailParams = {
-  eventId: string;
+  eventId: number;
 };
 
 export type EventDetailResponse = {
-  eventId: string;
+  eventId: number;
   eventExposureStartDate: string;
   eventExposureStartTime: string;
   eventExposureEndDate: string;
@@ -18,7 +18,7 @@ export type EventDetailResponse = {
   lineup: string;
   details: string;
   images: {
-    imageUrl: string;
+    imageUrl?: string;
   }[];
   minAge: number;
 };

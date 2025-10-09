@@ -1,7 +1,7 @@
 import { EventEditFormClient } from "../../_clientBoundary/EventEditFormClient";
 
 interface EventEditFormProps {
-  eventId: string;
+  eventId: number;
 }
 
 export function EventEditForm({ eventId }: EventEditFormProps) {

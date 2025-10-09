@@ -4,7 +4,7 @@ import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 import { EventEditForm } from "./_components/EventEditForm";
 
 type Props = {
-  params: Promise<{ eventId: string }>;
+  params: Promise<{ eventId: number }>;
 };
 
 export default async function EditEventPage({ params }: Props) {

@@ -1,5 +1,5 @@
 export type TicketsParams = {
-  eventId: string;
+  eventId: number;
 };
 
 export type TicketsResponse = {
