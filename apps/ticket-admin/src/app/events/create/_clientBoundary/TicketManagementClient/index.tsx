@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
 import { Button, Typography } from "@permit/design-system";
@@ -14,7 +15,12 @@ type Props = {
 };
 
 export function TicketManagementClient({ eventId }: Props) {
+  const router = useRouter();
   const { data, isLoading, error } = useTicketsQuery({ eventId });
+
+  const handleAddRound = () => {
+    router.push(`/events/${eventId}/edit/rounds/add`);
+  };
 
   if (isLoading) {
     return <div className={cx("container")}>로딩 중...</div>;
@@ -73,13 +79,7 @@ export function TicketManagementClient({ eventId }: Props) {
             </div>
           </div>
 
-          <Button
-            variant="cta"
-            size="sm"
-            onClick={() => {
-              console.log("add ticket");
-            }}
-          >
+          <Button variant="cta" size="sm" onClick={handleAddRound}>
             Add round
           </Button>
         </div>
