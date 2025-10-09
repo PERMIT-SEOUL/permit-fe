@@ -373,8 +373,6 @@ export function EventEditFormClient({ eventId }: Props) {
     },
   });
 
-  console.log("@@formData", formData.eventExposureStartDate);
-
   // API 응답 데이터를 폼 필드에 설정
   useEffect(() => {
     if (eventDetailData) {
