@@ -1,0 +1,58 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.container {
+  display: flex;
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.sidebar {
+  width: 200px;
+  margin-top: 72px;
+}
+
+.content {
+  flex: 1;
+  margin-top: 72px;
+  margin-bottom: 100px;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.subtitle {
+  color: #8a8a8a;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.form {
+  max-width: 800px;
+}
+
+.row {
+  flex: 1;
+}
+
+.floating {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 160px;
+
+  background-color: theme.$gray-800;
+  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
+  border-top: 1px solid theme.$gray-600;
+}
+
+.button {
+  padding: 0 100px;
+
+  @include typography.body-bold-14;
+}

@@ -22,6 +22,10 @@ export function TicketManagementClient({ eventId }: Props) {
     router.push(`/events/${eventId}/edit/rounds/add`);
   };
 
+  const handleEditRound = (ticketRoundId: number) => {
+    router.push(`/events/${eventId}/edit/ticket-detail?ticketRoundId=${ticketRoundId}`);
+  };
+
   if (isLoading) {
     return <div className={cx("container")}>로딩 중...</div>;
   }
@@ -108,7 +112,12 @@ export function TicketManagementClient({ eventId }: Props) {
             </div>
 
             <div className={cx("actionSection")}>
-              <button className={cx("editButton")}>edit</button>
+              <button
+                className={cx("editButton")}
+                onClick={() => handleEditRound(ticketRound.ticketRoundId)}
+              >
+                edit
+              </button>
             </div>
           </div>
 
@@ -117,7 +126,7 @@ export function TicketManagementClient({ eventId }: Props) {
             {ticketRound.ticketTypes.map((ticketType) => (
               <div key={ticketType.ticketTypeId} className={cx("ticketTypeCard")}>
                 <div className={cx("ticketTypeHeader")}>
-                  <div className={cx("headerCell")}>Ticket type {ticketType.ticketTypeId}</div>
+                  <div className={cx("headerCell")}>Ticket Name</div>
                   <div className={cx("headerCell")}>Price</div>
                   <div className={cx("headerCell")}>Refund</div>
                   <div className={cx("headerCell")}>Ticket sold</div>
@@ -126,7 +135,7 @@ export function TicketManagementClient({ eventId }: Props) {
                 </div>
 
                 <div className={cx("ticketTypeData")}>
-                  <div className={cx("dataCell")}>Ticket type {ticketType.ticketTypeId}</div>
+                  <div className={cx("dataCell")}>{ticketType.ticketTypeName}</div>
                   <div className={cx("dataCell")}>
                     ₩ {ticketType.ticketTypePrice.toLocaleString()}
                   </div>

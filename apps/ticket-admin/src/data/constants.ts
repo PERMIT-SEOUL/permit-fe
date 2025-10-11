@@ -10,6 +10,8 @@ export const API_URL = {
     TICKETS: "/api/admin/tickets/:eventId",
     /** 행사 티켓 라운드+타입 상세 조회 API */
     TICKETS_DETAIL: "/api/admin/tickets/details/:ticketRoundId",
+    /** 행사 티켓 라운드+타입 수정 API */
+    TICKETS_UPDATE: "/api/admin/tickets",
     /** 미디어 업로드 presigned URL 발급 API */
     PRESIGNED_URLS: "/api/admin/images/url",
   },
