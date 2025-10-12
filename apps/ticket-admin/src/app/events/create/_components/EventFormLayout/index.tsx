@@ -38,6 +38,7 @@ type EventFormLayoutProps = {
     roundSalesEndTime?: string;
   };
   onFileChange?: (files: FileList | null) => void;
+  onRemoveOriginalImage?: (url: string) => void;
   onDelete?: () => void;
   isSubmitting: boolean;
   isReadOnlyMode?: boolean;
@@ -69,6 +70,7 @@ type EventFormLayoutProps = {
 export function EventFormLayout({
   formData,
   onFileChange,
+  onRemoveOriginalImage,
   onDelete: _onDelete,
   isSubmitting: _isSubmitting,
   isReadOnlyMode = false,
@@ -300,6 +302,7 @@ export function EventFormLayout({
                       // 여기서는 상위 onFileChange와의 호환을 유지하기 위해 noop 처리
                     }}
                     onFileSelect={onFileChange}
+                    onRemoveOriginalImage={onRemoveOriginalImage}
                   />
                 </Flex>
               </Flex>

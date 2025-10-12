@@ -468,6 +468,13 @@ export function EventEditFormClient({ eventId }: Props) {
     });
   };
 
+  const handleRemoveOriginalImage = (url: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((m) => m.imageUrl !== url),
+    }));
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
@@ -482,10 +489,12 @@ export function EventEditFormClient({ eventId }: Props) {
       const mediaInfoRequests = toUpload.map((m) => {
         const mediaName = `${m.id}`;
 
+        console.log("@@m", m);
+
         return { mediaName, mediaType: m.mediaType! };
       });
 
-      console.log("@@", toUpload, mediaInfoRequests);
+      console.log("@@toUpload", toUpload, mediaInfoRequests);
 
       const presignedUrls = await postPresignedUrls({
         eventId: eventDetailData.eventId,
@@ -522,6 +531,8 @@ export function EventEditFormClient({ eventId }: Props) {
         };
       });
 
+      console.log("@@imagesData", imagesData);
+
       await patchEvent({
         ...formData,
         eventId: eventDetailData.eventId,
@@ -529,8 +540,9 @@ export function EventEditFormClient({ eventId }: Props) {
         images: imagesData,
       });
 
+      alert("이벤트 수정이 완료되었습니다.");
       // 성공 시 이벤트 목록으로 이동
-      // router.push("/events");
+      router.push("/events");
     } catch (error) {
       console.error("Error updating event:", error);
     } finally {
@@ -574,6 +586,7 @@ export function EventEditFormClient({ eventId }: Props) {
           detailsField={detailsField}
           minAgeField={minAgeField}
           onFileChange={handleFileChange}
+          onRemoveOriginalImage={handleRemoveOriginalImage}
           ticketRoundNameField={ticketRoundNameField}
           roundSalesStartDate={roundSalesStartDate.selectProps}
           roundSalesEndDate={roundSalesEndDate.selectProps}

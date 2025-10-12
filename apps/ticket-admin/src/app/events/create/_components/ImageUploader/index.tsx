@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 
 export type PreviewMedia = {
   id?: number;
+  originalId?: number;
   url?: string; // preview url (data URL for images, object URL for videos)
   mediaType?: "IMAGE" | "VIDEO";
 } & { imageUrl?: string };
@@ -20,9 +21,16 @@ type Props = {
   onImagesUpload?: (images: PreviewMedia[]) => void;
   // 원본 파일을 상위 로직으로 전달하고 싶을 때 사용 (기존 onFileChange 호환)
   onFileSelect?: (files: FileList | null) => void;
+  onRemoveOriginalImage?: (url: string) => void;
 };
 
-export function ImageUploader({ value = null, disabled, onImagesUpload, onFileSelect }: Props) {
+export function ImageUploader({
+  value = null,
+  disabled,
+  onImagesUpload,
+  onFileSelect,
+  onRemoveOriginalImage,
+}: Props) {
   const [previewImgs, setPreviewImgs] = useState<PreviewMedia[] | null>(value);
   const [inputKey, setInputKey] = useState<number>(Date.now());
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -93,17 +101,23 @@ export function ImageUploader({ value = null, disabled, onImagesUpload, onFileSe
     processAllFiles();
   };
 
-  const removeImage = (id: number) => {
+  const removeImage = (id: number | string) => {
     if (disabled) return;
 
+    if (String(id).startsWith("http")) {
+      onRemoveOriginalImage?.(id as string);
+
+      return;
+    }
+
     const current = previewImgs ?? [];
-    const target = current.find((m) => m.id === id);
+    const target = current.find((m) => m.id === id || m.originalId === id);
 
     if (target && target.mediaType === "VIDEO") {
       URL.revokeObjectURL(target.url!);
     }
 
-    const next = current.filter((img) => img.id !== id);
+    const next = current.filter((img) => img.id !== id && img.originalId !== id);
 
     setPreviewImgs(next);
     onImagesUpload?.(next);
@@ -152,7 +166,7 @@ export function ImageUploader({ value = null, disabled, onImagesUpload, onFileSe
               <button
                 type="button"
                 className={cx("removeBtn", disabled && "disabled")}
-                onClick={() => removeImage(preview.id!)}
+                onClick={() => removeImage((preview.id || preview.imageUrl)!)}
                 aria-label="remove-media"
               />
             </div>
