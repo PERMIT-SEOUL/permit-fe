@@ -1,6 +1,6 @@
 export const API_URL = {
   ADMIN: {
-    /** 게스트 전체 조회 API */
+    /** 게스트 전체 조회/생성 API */
     GUESTS: "/api/admin/guests",
     /** 이벤트 리스트 조회/생성/수정 API */
     EVENTS: "/api/admin/events",
