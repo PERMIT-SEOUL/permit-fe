@@ -471,7 +471,9 @@ export function EventEditFormClient({ eventId }: Props) {
   const handleRemoveOriginalImage = (url: string) => {
     setFormData((prev) => ({
       ...prev,
-      images: prev.images.filter((m) => m.imageUrl !== url),
+      images: prev.images.filter((m) => {
+        return (m.id as unknown as string) !== url && m.imageUrl !== url;
+      }),
     }));
   };
 

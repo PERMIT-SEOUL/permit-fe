@@ -104,12 +104,6 @@ export function ImageUploader({
   const removeImage = (id: number | string) => {
     if (disabled) return;
 
-    if (String(id).startsWith("http")) {
-      onRemoveOriginalImage?.(id as string);
-
-      return;
-    }
-
     const current = previewImgs ?? [];
     const target = current.find((m) => m.id === id || m.originalId === id);
 
@@ -120,6 +114,7 @@ export function ImageUploader({
     const next = current.filter((img) => img.id !== id && img.originalId !== id);
 
     setPreviewImgs(next);
+    onRemoveOriginalImage?.(id as string);
     onImagesUpload?.(next);
     setInputKey(Date.now());
   };
