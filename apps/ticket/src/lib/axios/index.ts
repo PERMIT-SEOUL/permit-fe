@@ -56,6 +56,7 @@ instance.interceptors.response.use(
       if (error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED) {
         alert("로그인이 필요한 페이지입니다.");
 
+        safeLocalStorage.remove(IS_LOGINED);
         window.location.href = "/login";
       }
     }
@@ -76,6 +77,8 @@ instance.interceptors.response.use(
         return instance(originalRequest);
       } catch (error) {
         if (typeof window !== "undefined") {
+          alert("로그인이 필요한 페이지입니다.");
+
           // 엑세스 토큰 재발급 실패시 로그인 페이지로 이동
           safeLocalStorage.remove(IS_LOGINED);
 

@@ -1,5 +1,12 @@
 export const API_URL = {
+  USER: {
+    /** 액세스토큰 재발급 API */
+    REISSUE_ACCESS_TOKEN: "/api/users/reissue",
+  },
+
   ADMIN: {
+    /** 접근 권한 검증 API */
+    VALIDATE: "/api/admin/validate",
     /** 게스트 전체 조회/생성 API */
     GUESTS: "/api/admin/guests",
     /** 게스트 티켓 생성 API */
