@@ -1,1 +1,1 @@
-export const IS_LOGINED = "isLogined";
+export const IS_LOGINED = "PERMIT_isLogined";
