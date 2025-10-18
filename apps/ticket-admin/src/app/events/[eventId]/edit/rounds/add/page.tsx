@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
+
 import { AddRoundFormClient } from "./_clientBoundary/AddRoundFormClient";
 
 type Props = {
@@ -10,7 +12,7 @@ export default async function AddRoundPage({ params }: Props) {
   const { eventId } = await params;
 
   return (
-    <Suspense fallback={<div>로딩 중...</div>}>
+    <Suspense fallback={<LoadingWithLayout />}>
       <AddRoundFormClient eventId={eventId} />
     </Suspense>
   );

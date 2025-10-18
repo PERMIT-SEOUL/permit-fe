@@ -8,6 +8,7 @@ import { Button, Typography } from "@permit/design-system";
 import { useDeleteTicketRoundMutation } from "@/data/admin/deleteTicketRound/mutation";
 import { useDeleteTicketTypeMutation } from "@/data/admin/deleteTicketType/mutation";
 import { useTicketsQuery } from "@/data/admin/getTickets/queries";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import styles from "./index.module.scss";
 
@@ -78,7 +79,7 @@ export function TicketManagementClient({ eventId }: Props) {
   };
 
   if (isLoading) {
-    return <div className={cx("container")}>로딩 중...</div>;
+    return <LoadingWithLayout />;
   }
 
   if (error || !data) {

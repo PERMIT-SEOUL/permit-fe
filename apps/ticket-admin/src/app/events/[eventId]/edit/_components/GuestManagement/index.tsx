@@ -6,6 +6,7 @@ import classNames from "classnames/bind";
 import { Button, Typography } from "@permit/design-system";
 import { useGuestListQuery } from "@/data/admin/getGuestList/queries";
 import { usePostGuestTicketsMutation } from "@/data/admin/postGuestTickets/mutation";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import styles from "./index.module.scss";
 
@@ -80,7 +81,7 @@ export function GuestManagement({ eventId }: Props) {
 
   // TODO: 로딩 컴포넌트 변경
   if (!guestListData || isLoading) {
-    return <div style={{ color: "white" }}>Loading...</div>;
+    return <LoadingWithLayout />;
   }
 
   return (

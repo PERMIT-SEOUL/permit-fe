@@ -5,6 +5,7 @@ import classNames from "classnames/bind";
 
 import { Button, Typography } from "@permit/design-system";
 import { useEventsListQuery } from "@/data/admin/getEvents/queries";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import styles from "./page.module.scss";
 
@@ -14,7 +15,7 @@ export default function EventsPage() {
   const { data: eventsListData, isLoading } = useEventsListQuery({});
 
   if (!eventsListData || isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingWithLayout />;
   }
 
   const totalEventNumber = eventsListData.reduce((acc, event) => acc + event.events.length, 0);

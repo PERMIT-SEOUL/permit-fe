@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 
 import { Button, Typography } from "@permit/design-system";
 import { useGuestListQuery } from "@/data/admin/getGuestList/queries";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { useModal } from "@/shared/hooks/useModal";
 
 import { AddGuestModal } from "./_components/AddGuestModal";
@@ -26,7 +27,7 @@ export default function GuestsPage() {
 
   // TODO: 로딩 컴포넌트 변경
   if (!guestListData || isLoading) {
-    return <div style={{ color: "white" }}>Loading...</div>;
+    return <LoadingWithLayout />;
   }
 
   return (

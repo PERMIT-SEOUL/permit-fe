@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
+
 import { EditTicketDetailFormClient } from "./_clientBoundary/EditTicketDetailFormClient";
 
 type Props = {
@@ -17,7 +19,7 @@ export default async function EditTicketDetailPage({ params, searchParams }: Pro
   const { ticketRoundId } = await searchParams;
 
   return (
-    <Suspense fallback={<div style={{ color: "#fff" }}>Loading...</div>}>
+    <Suspense fallback={<LoadingWithLayout />}>
       <EditTicketDetailFormClient eventId={Number(eventId)} ticketRoundId={Number(ticketRoundId)} />
     </Suspense>
   );
