@@ -3,13 +3,11 @@ import { Suspense } from "react";
 import { AddRoundFormClient } from "./_clientBoundary/AddRoundFormClient";
 
 type Props = {
-  params: {
-    eventId: string;
-  };
+  params: Promise<{ eventId: number }>;
 };
 
-export default function AddRoundPage({ params }: Props) {
-  const eventId = Number(params.eventId);
+export default async function AddRoundPage({ params }: Props) {
+  const { eventId } = await params;
 
   return (
     <Suspense fallback={<div>로딩 중...</div>}>
