@@ -112,12 +112,13 @@ export function TicketManagementClient({ eventId }: Props) {
             </div>
 
             <div className={cx("actionSection")}>
-              <button
-                className={cx("editButton")}
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={() => handleEditRound(ticketRound.ticketRoundId)}
               >
-                edit
-              </button>
+                Edit
+              </Button>
             </div>
           </div>
 
