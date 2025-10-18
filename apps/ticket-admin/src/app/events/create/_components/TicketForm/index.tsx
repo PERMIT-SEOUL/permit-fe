@@ -54,9 +54,11 @@ export function TicketForm({
         <Typography type="body16" weight="bold">
           Add
         </Typography>
-        <Button variant="error" size="sm" onClick={onDelete}>
-          delete
-        </Button>
+        {ticketData.id.startsWith("ticket-") && (
+          <Button variant="error" size="sm" onClick={onDelete}>
+            delete
+          </Button>
+        )}
       </div>
 
       <div className={cx("ticket_form_content")}>
