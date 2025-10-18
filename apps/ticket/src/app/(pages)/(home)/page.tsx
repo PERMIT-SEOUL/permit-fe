@@ -7,6 +7,8 @@ import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import { EventListClient } from "./_clientBoundary/EventListClient";
 
+export const dynamic = "force-dynamic";
+
 const HomePage = async () => {
   const qc = getQueryClient();
 
