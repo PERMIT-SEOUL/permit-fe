@@ -115,6 +115,7 @@
 }
 
 .ticketTypeCard {
+  position: relative;
   padding: 20px;
 
   background-color: #1a1a1a;
@@ -232,5 +233,107 @@
     .dataCell:nth-child(6)::before {
       content: "Ticket sold amount: ";
     }
+
+    .dataCell:nth-child(7)::before {
+      content: "Actions: ";
+    }
+
+    // 모바일에서 액션 셀에 케밥 메뉴 표시
+    .actionCell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
+}
+
+// 케밥 메뉴 스타일
+.kebabMenu {
+  position: relative;
+  display: inline-block;
+}
+
+.ticketTypeKebabMenu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+}
+
+.kebabButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  color: #ccc;
+  font-weight: bold;
+  font-size: 18px;
+
+  background-color: #333;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #444;
+  }
+
+  &:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+  }
+}
+
+.kebabDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 10;
+  min-width: 120px;
+  overflow: hidden;
+
+  background-color: #2a2a2a;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
+  border: 1px solid #555;
+  border-radius: 6px;
+}
+
+.menuItem {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+
+  color: #ccc;
+  font-size: 14px;
+  text-align: left;
+
+  background: none;
+  cursor: pointer;
+  border: none;
+
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #333;
+  }
+
+  &.deleteItem {
+    color: #f44;
+
+    &:hover {
+      background-color: #3a1a1a;
+    }
+  }
+}
+
+// 티켓 타입 액션 셀 스타일
+.actionCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
 }

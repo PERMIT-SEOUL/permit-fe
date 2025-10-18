@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
@@ -17,13 +18,49 @@ type Props = {
 export function TicketManagementClient({ eventId }: Props) {
   const router = useRouter();
   const { data, isLoading, error } = useTicketsQuery({ eventId });
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
 
   const handleAddRound = () => {
     router.push(`/events/${eventId}/edit/rounds/add`);
   };
 
   const handleEditRound = (ticketRoundId: number) => {
+    console.log("Edit clicked for ticketRoundId:", ticketRoundId);
     router.push(`/events/${eventId}/edit/ticket-detail?ticketRoundId=${ticketRoundId}`);
+  };
+
+  const handleDeleteRound = (ticketRoundId: number) => {
+    console.log("Delete clicked for ticketRoundId:", ticketRoundId);
+
+    if (confirm("정말로 이 티켓 라운드를 삭제하시겠습니까?")) {
+      // TODO: API 호출로 티켓 라운드 삭제
+      console.log("Deleting ticket round:", ticketRoundId);
+      alert("티켓 라운드가 삭제되었습니다.");
+    }
+  };
+
+  const handleKebabClick = (ticketRoundId: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Kebab clicked for ticketRoundId:", ticketRoundId);
+    setOpenMenuId(openMenuId === ticketRoundId ? null : ticketRoundId);
+  };
+
+  const handleTicketTypeKebabClick = (ticketTypeId: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Ticket type kebab clicked for ticketTypeId:", ticketTypeId);
+    setOpenMenuId(openMenuId === ticketTypeId ? null : ticketTypeId);
+  };
+
+  const handleDeleteTicketType = (ticketTypeId: number) => {
+    console.log("Delete ticket type clicked for ticketTypeId:", ticketTypeId);
+
+    if (confirm("정말로 이 티켓 타입을 삭제하시겠습니까?")) {
+      // TODO: API 호출로 티켓 타입 삭제
+      console.log("Deleting ticket type:", ticketTypeId);
+      alert("티켓 타입이 삭제되었습니다.");
+    }
   };
 
   if (isLoading) {
@@ -112,13 +149,41 @@ export function TicketManagementClient({ eventId }: Props) {
             </div>
 
             <div className={cx("actionSection")}>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => handleEditRound(ticketRound.ticketRoundId)}
-              >
-                Edit
-              </Button>
+              <div className={cx("kebabMenu")}>
+                <button
+                  className={cx("kebabButton")}
+                  onClick={(e) => handleKebabClick(ticketRound.ticketRoundId, e)}
+                >
+                  ⋯
+                </button>
+
+                {openMenuId === ticketRound.ticketRoundId && (
+                  <div className={cx("kebabDropdown")}>
+                    <button
+                      className={cx("menuItem")}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setOpenMenuId(null); // 직접 메뉴 닫기
+                        handleEditRound(ticketRound.ticketRoundId);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className={cx("menuItem", "deleteItem")}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setOpenMenuId(null); // 직접 메뉴 닫기
+                        handleDeleteRound(ticketRound.ticketRoundId);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -150,6 +215,31 @@ export function TicketManagementClient({ eventId }: Props) {
                   <div className={cx("dataCell")}>
                     ₩ {ticketType.ticketTypeSoldAmount.toLocaleString()}
                   </div>
+                </div>
+
+                <div className={cx("ticketTypeKebabMenu")}>
+                  <button
+                    className={cx("kebabButton")}
+                    onClick={(e) => handleTicketTypeKebabClick(ticketType.ticketTypeId, e)}
+                  >
+                    ⋯
+                  </button>
+
+                  {openMenuId === ticketType.ticketTypeId && (
+                    <div className={cx("kebabDropdown")}>
+                      <button
+                        className={cx("menuItem", "deleteItem")}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setOpenMenuId(null);
+                          handleDeleteTicketType(ticketType.ticketTypeId);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
