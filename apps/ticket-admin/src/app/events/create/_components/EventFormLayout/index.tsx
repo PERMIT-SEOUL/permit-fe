@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
 import type { UseTextFieldReturn } from "@permit/design-system/hooks";
 
-import { EventFormData } from "../../_clientBoundary/EventFormClient";
+import { EventFormData, eventTypeOptions } from "../../_clientBoundary/EventFormClient";
 import ImageUploader, { PreviewMedia } from "../ImageUploader";
 import { type TicketData, TicketForm } from "../TicketForm";
 import styles from "./index.module.scss";
@@ -28,7 +28,7 @@ type EventFormLayoutProps = {
     | "roundSalesStartTime"
     | "roundSalesEndTime"
   > & {
-    eventType?: "PERMIT" | "CEILING" | "OLYMPAN";
+    eventType?: string;
     images?: { imageUrl?: string }[];
     ticketTypes?: TicketData[];
     ticketRoundName?: string;
@@ -45,6 +45,7 @@ type EventFormLayoutProps = {
   currentStep: "basic" | "ticket";
   eventExposureStartDateField: SelectField;
   eventExposureEndDateField: SelectField;
+  eventTypeSelect: SelectField;
   eventVerificationCodeField: UseTextFieldReturn;
   eventNameField: UseTextFieldReturn;
   eventExposureStartTimeField: UseTextFieldReturn;
@@ -77,6 +78,7 @@ export function EventFormLayout({
   currentStep,
   eventExposureStartDateField,
   eventExposureEndDateField,
+  eventTypeSelect,
   eventVerificationCodeField,
   eventNameField,
   eventExposureStartTimeField,
@@ -157,6 +159,17 @@ export function EventFormLayout({
             </Flex>
 
             <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Event Type
+                </Typography>
+                <Select
+                  disabled={isReadOnlyMode}
+                  placeholder="이벤트 타입을 선택해주세요"
+                  options={eventTypeOptions}
+                  {...eventTypeSelect}
+                />
+              </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Typography type="body16" weight="bold">
                   Event Verification Code

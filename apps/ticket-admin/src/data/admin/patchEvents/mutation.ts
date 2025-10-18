@@ -11,7 +11,7 @@ export type EventRequest = {
   eventExposureEndTime: string;
   verificationCode: string;
   name: string;
-  eventType: "PERMIT" | "CEILING" | "OLYMPAN";
+  eventType: string;
   startDate: string;
   startTime: string;
   endDate: string;

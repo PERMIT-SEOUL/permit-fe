@@ -10,7 +10,7 @@ export type EventRequest = {
   eventExposureEndTime: string;
   verificationCode: string;
   name: string;
-  eventType: "PERMIT" | "CEILING" | "OLYMPAN";
+  eventType: string;
   startDate: string;
   startTime: string;
   endDate: string;
@@ -19,9 +19,9 @@ export type EventRequest = {
   lineup?: string;
   details?: string;
   // TODO: 이미지 등록 스펙에서 제거 (생성에서만 등록 가능)
-  // images: {
-  //   imageUrl: string;
-  // }[];
+  images: {
+    imageUrl: string;
+  }[];
   minAge: number;
   ticketRoundName: string;
   roundSalesStartDate: string;

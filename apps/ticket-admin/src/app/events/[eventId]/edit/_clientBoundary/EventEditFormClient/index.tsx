@@ -18,6 +18,7 @@ import {
   usePostPresignedUrlsMutation,
   usePutS3Upload,
 } from "@/data/admin/postPresignedUrls/mutation";
+import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
 
 import styles from "./index.module.scss";
 
@@ -39,6 +40,7 @@ export function EventEditFormClient({ eventId }: Props) {
     eventExposureEndDate: "",
     eventExposureStartTime: "",
     eventExposureEndTime: "",
+    eventType: "",
     verificationCode: "",
     name: "",
     startDate: "",
@@ -129,6 +131,21 @@ export function EventEditFormClient({ eventId }: Props) {
       setFormData((prev) => ({
         ...prev,
         eventExposureEndTime: value,
+      }));
+    },
+  });
+
+  const eventTypeSelect = useSelect({
+    initialValue: eventDetailData.eventType,
+    validate: (value) => {
+      if (!value) return "이벤트 타입을 선택해주세요.";
+
+      return undefined;
+    },
+    onChange: (value) => {
+      setFormData((prev) => ({
+        ...prev,
+        eventType: value as "PERMIT" | "CEILING" | "OLYMPAN",
       }));
     },
   });
@@ -385,6 +402,7 @@ export function EventEditFormClient({ eventId }: Props) {
         eventExposureEndDate: eventDetailData.eventExposureEndDate,
         eventExposureStartTime: eventDetailData.eventExposureStartTime,
         eventExposureEndTime: eventDetailData.eventExposureEndTime,
+        eventType: eventDetailData.eventType,
         verificationCode: eventDetailData.verificationCode,
         name: eventDetailData.name,
         startDate: eventDetailData.startDate,
@@ -407,6 +425,7 @@ export function EventEditFormClient({ eventId }: Props) {
       eventExposureEndTimeField.handleChange({
         target: { value: eventDetailData.eventExposureEndTime },
       } as React.ChangeEvent<HTMLInputElement>);
+      eventTypeSelect.selectProps.onChange(eventDetailData.eventType);
       eventVerificationCodeField.handleChange({
         target: { value: eventDetailData.verificationCode },
       } as React.ChangeEvent<HTMLInputElement>);
@@ -522,7 +541,7 @@ export function EventEditFormClient({ eventId }: Props) {
             (info) => info.mediaName === m.id?.toString(),
           )?.preSignedUrl;
 
-          const imageUrl = url?.split("?")[0];
+          const imageUrl = toCDNUrl(url?.split("?")[0] as string);
 
           return {
             imageUrl: imageUrl as string,
@@ -539,7 +558,6 @@ export function EventEditFormClient({ eventId }: Props) {
       await patchEvent({
         ...formData,
         eventId: eventDetailData.eventId,
-        eventType: "PERMIT", // TODO: 확인
         images: imagesData,
       });
 
@@ -589,6 +607,7 @@ export function EventEditFormClient({ eventId }: Props) {
             eventExposureEndDateField={eventExposureEndDateField.selectProps}
             eventExposureStartTimeField={eventExposureStartTimeField}
             eventExposureEndTimeField={eventExposureEndTimeField}
+            eventTypeSelect={eventTypeSelect.selectProps}
             eventVerificationCodeField={eventVerificationCodeField}
             eventNameField={eventNameField}
             eventStartDateField={eventStartDateField.selectProps}
@@ -627,6 +646,7 @@ export function EventEditFormClient({ eventId }: Props) {
               <Button
                 className={cx("button")}
                 variant={isReadOnlyMode ? "primary" : "cta"}
+                isLoading={isSubmitting}
                 size="md"
                 onClick={() => {
                   if (isReadOnlyMode) {

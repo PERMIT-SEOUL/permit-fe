@@ -8,6 +8,7 @@ export type EventDetailResponse = {
   eventExposureStartTime: string;
   eventExposureEndDate: string;
   eventExposureEndTime: string;
+  eventType: string;
   verificationCode: string;
   name: string;
   startDate: string;

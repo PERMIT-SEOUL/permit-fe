@@ -2,20 +2,29 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { Button } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
+import { eventsListOptions } from "@/data/admin/getEvents/queries";
 import { EventRequest, useEventMutation } from "@/data/admin/postEvents/mutation";
+import {
+  usePostPresignedUrlsMutation,
+  usePutS3Upload,
+} from "@/data/admin/postPresignedUrls/mutation";
+import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
 
 import { EventFormLayout } from "../../_components/EventFormLayout";
+import { PreviewMedia } from "../../_components/ImageUploader";
 import type { TicketData } from "../../_components/TicketForm";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-export type EventFormData = Omit<EventRequest, "ticketTypes"> & {
+export type EventFormData = Omit<EventRequest, "ticketTypes" | "images"> & {
   ticketTypes: TicketData[];
+  images: PreviewMedia[];
 };
 
 type FormData = EventFormData;
@@ -27,7 +36,7 @@ const initialFormData: EventRequest = {
   eventExposureEndTime: "",
   verificationCode: "",
   name: "",
-  eventType: "PERMIT", // TODO: 입력 받을 수 있도록 변경 (select)
+  eventType: "",
   startDate: "",
   endDate: "",
   startTime: "",
@@ -36,7 +45,7 @@ const initialFormData: EventRequest = {
   lineup: "",
   details: "",
   minAge: 0,
-  // images: [],
+  images: [],
   ticketRoundName: "",
   roundSalesStartDate: "",
   roundSalesEndDate: "",
@@ -45,12 +54,21 @@ const initialFormData: EventRequest = {
   ticketTypes: [],
 };
 
+export const eventTypeOptions = [
+  { value: "PERMIT", label: "PERMIT" },
+  { value: "CEILING", label: "CEILING" },
+  { value: "OLYMPAN", label: "OLYMPAN" },
+];
+
 export function EventFormClient() {
   const router = useRouter();
+  const qc = useQueryClient();
   const [currentStep, setCurrentStep] = useState<"basic" | "ticket">("basic");
   const [formData, setFormData] = useState<FormData>(initialFormData as FormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { mutateAsync: postPresignedUrls } = usePostPresignedUrlsMutation({});
+  const { mutateAsync: putS3Upload } = usePutS3Upload();
   const { mutateAsync: createEvent } = useEventMutation({});
 
   const eventExposureStartDateField = useSelect({
@@ -234,6 +252,21 @@ export function EventFormClient() {
     },
   });
 
+  const eventTypeSelect = useSelect({
+    initialValue: "",
+    validate: (value) => {
+      if (!value) return "이벤트 타입을 선택해주세요.";
+
+      return undefined;
+    },
+    onChange: (value) => {
+      setFormData((prev) => ({
+        ...prev,
+        eventType: value as "PERMIT" | "CEILING" | "OLYMPAN",
+      }));
+    },
+  });
+
   const lineupField = useTextField({
     initialValue: "",
     validate: (_value: string) => {
@@ -274,14 +307,36 @@ export function EventFormClient() {
   });
 
   const handleFileChange = (files: FileList | null) => {
-    if (files) {
-      setFormData((prev) => ({
-        ...prev,
-        images: Array.from(files).map((file) => ({
-          imageUrl: URL.createObjectURL(file),
-        })),
-      }));
-    }
+    if (!files || files.length === 0) return;
+
+    const toPreview = (file: File) =>
+      new Promise<{ id: number; url: string; mediaType: "IMAGE" | "VIDEO" }>((resolve) => {
+        const isVideo = file.type.startsWith("video/");
+        const reader = new FileReader();
+
+        reader.onload = (ev) => {
+          const dataUrl = (ev.target?.result as string) ?? "";
+
+          resolve({
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            url: dataUrl,
+            mediaType: isVideo ? "VIDEO" : "IMAGE",
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+
+    Promise.all(Array.from(files).map(toPreview)).then((appended) => {
+      setFormData((prev) => {
+        const prevImages = (prev.images as PreviewMedia[] | undefined) ?? [];
+        const merged = [...prevImages, ...appended];
+
+        return {
+          ...prev,
+          images: merged,
+        };
+      });
+    });
   };
 
   // 2단계 폼 필드
@@ -399,8 +454,60 @@ export function EventFormClient() {
     setIsSubmitting(true);
 
     try {
+      const data = await qc.fetchQuery(eventsListOptions());
+      const allEvents = data.flatMap((d) => d.events);
+      const maxEventIdAll = allEvents.length
+        ? Math.max(...allEvents.map((e) => e.eventId))
+        : undefined;
+
+      const toUpload = (
+        formData.images as { id?: number; url?: string; mediaType?: "IMAGE" | "VIDEO" }[]
+      ).filter((m) => !!m?.url && !!m?.mediaType);
+
+      const mediaInfoRequests = toUpload.map((m) => {
+        const mediaName = `${m.id}`;
+
+        return { mediaName, mediaType: m.mediaType! };
+      });
+
+      const presignedUrls = await postPresignedUrls({
+        eventId: maxEventIdAll as number,
+        mediaInfoRequests,
+      });
+
+      await Promise.all(
+        presignedUrls.preSignedUrlInfoList.map(async (url, index) => {
+          const file = toUpload[index];
+
+          const response = await fetch(file.url!);
+          const blob = await response.blob();
+          const newFile = new File([blob], `fileName-${file.id}`, { type: blob.type });
+
+          return putS3Upload({ url: url.preSignedUrl, file: newFile });
+        }),
+      );
+
+      const imagesData = formData.images.map((m) => {
+        if (m.id) {
+          const url = presignedUrls.preSignedUrlInfoList.find(
+            (info) => info.mediaName === m.id?.toString(),
+          )?.preSignedUrl;
+
+          const imageUrl = toCDNUrl(url?.split("?")[0] as string);
+
+          return {
+            imageUrl: imageUrl as string,
+          };
+        }
+
+        return {
+          imageUrl: m.imageUrl as string,
+        };
+      });
+
       const apiData: EventRequest = {
         ...formData,
+        images: imagesData,
         ticketTypes: formData.ticketTypes.map(({ id: _id, ...ticket }) => ticket),
       };
 
@@ -437,6 +544,7 @@ export function EventFormClient() {
         eventExposureEndDateField={eventExposureEndDateField.selectProps}
         eventExposureStartTimeField={eventExposureStartTimeField}
         eventExposureEndTimeField={eventExposureEndTimeField}
+        eventTypeSelect={eventTypeSelect.selectProps}
         eventVerificationCodeField={eventVerificationCodeField}
         eventNameField={eventNameField}
         eventStartDateField={eventStartDateField.selectProps}
@@ -448,7 +556,7 @@ export function EventFormClient() {
         detailsField={detailsField}
         minAgeField={minAgeField}
         formData={formData}
-        // onFileChange={handleFileChange}
+        onFileChange={handleFileChange}
         ticketRoundNameField={ticketRoundNameField}
         roundSalesStartDate={roundSalesStartDate.selectProps}
         roundSalesEndDate={roundSalesEndDate.selectProps}
@@ -463,6 +571,7 @@ export function EventFormClient() {
       <div className={cx("floating")}>
         <Button
           className={cx("button")}
+          isLoading={isSubmitting}
           variant="cta"
           size="md"
           onClick={() => {
@@ -473,7 +582,7 @@ export function EventFormClient() {
             }
           }}
         >
-          Next
+          {currentStep === "basic" ? "Next" : "Save"}
         </Button>
       </div>
     </div>

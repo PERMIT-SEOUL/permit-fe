@@ -37,7 +37,7 @@ export function ImageUploader({
 
   const isPreviewImage = (preview: PreviewMedia) => {
     if (preview.imageUrl) {
-      if (preview.imageUrl.includes("images")) {
+      if (preview.imageUrl.includes("images") || preview.imageUrl.includes("IMAGE")) {
         return true;
       }
 
