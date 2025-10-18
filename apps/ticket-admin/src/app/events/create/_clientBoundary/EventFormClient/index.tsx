@@ -465,7 +465,7 @@ export function EventFormClient() {
       ).filter((m) => !!m?.url && !!m?.mediaType);
 
       const mediaInfoRequests = toUpload.map((m) => {
-        const mediaName = `${m.id}-${Date.now()}`;
+        const mediaName = `${m.id}`;
 
         return { mediaName, mediaType: m.mediaType! };
       });

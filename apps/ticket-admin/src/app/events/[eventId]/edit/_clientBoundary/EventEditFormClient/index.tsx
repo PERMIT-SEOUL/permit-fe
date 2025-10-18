@@ -509,9 +509,7 @@ export function EventEditFormClient({ eventId }: Props) {
       ).filter((m) => !!m?.url && !!m?.mediaType);
 
       const mediaInfoRequests = toUpload.map((m) => {
-        const mediaName = `${m.id}-${Date.now()}`;
-
-        console.log("@@m", m);
+        const mediaName = `${m.id}`;
 
         return { mediaName, mediaType: m.mediaType! };
       });
@@ -535,11 +533,15 @@ export function EventEditFormClient({ eventId }: Props) {
         }),
       );
 
+      console.log("@@@", formData.images);
+
       const imagesData = formData.images.map((m) => {
         if (m.id) {
           const url = presignedUrls.preSignedUrlInfoList.find(
             (info) => info.mediaName === m.id?.toString(),
           )?.preSignedUrl;
+
+          console.log("@@", url);
 
           const imageUrl = toCDNUrl(url?.split("?")[0] as string);
 
