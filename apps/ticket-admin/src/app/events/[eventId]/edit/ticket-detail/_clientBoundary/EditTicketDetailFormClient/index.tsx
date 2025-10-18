@@ -312,9 +312,11 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
           ))}
 
           <div className={cx("floating")}>
-            <Button variant="cta" size="md" onClick={handleSubmit}>
-              Save Round
-            </Button>
+            <div className={cx("floating_content")}>
+              <Button variant="cta" size="md" onClick={handleSubmit}>
+                Save Round
+              </Button>
+            </div>
           </div>
         </Flex>
       </div>

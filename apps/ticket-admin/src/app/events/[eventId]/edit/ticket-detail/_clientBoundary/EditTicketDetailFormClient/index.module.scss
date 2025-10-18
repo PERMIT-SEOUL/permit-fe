@@ -42,13 +42,18 @@
   right: 0;
   bottom: 0;
   left: 0;
+
+  background-color: #2a2a2a;
+  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
+  border-top: 1px solid #555;
+}
+
+.floating_content {
   display: flex;
   justify-content: flex-end;
-  padding: 12px 160px;
-
-  background-color: theme.$gray-800;
-  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
-  border-top: 1px solid theme.$gray-600;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 0;
 }
 
 .button {

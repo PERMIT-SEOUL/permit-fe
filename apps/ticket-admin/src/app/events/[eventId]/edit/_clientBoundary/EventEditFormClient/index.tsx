@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
-import { Button } from "@permit/design-system";
+import { Button, Typography } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
 import { EditSidebar } from "@/app/events/[eventId]/edit/_components/EditSidebar";
+import { GuestManagement } from "@/app/events/[eventId]/edit/_components/GuestManagement";
 import { TicketManagementClient } from "@/app/events/create/_clientBoundary/TicketManagementClient";
 import { EventFormLayout } from "@/app/events/create/_components/EventFormLayout";
 import { PreviewMedia } from "@/app/events/create/_components/ImageUploader";
@@ -29,7 +30,7 @@ type Props = {
 export function EventEditFormClient({ eventId }: Props) {
   const router = useRouter();
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true); // 수정 모드 여부
-  const [currentStep, setCurrentStep] = useState<"basic" | "ticket">("basic");
+  const [currentStep, setCurrentStep] = useState<"basic" | "ticket" | "guest" | "coupon">("basic");
   const [formData, setFormData] = useState<
     Omit<EventDetailResponse, "images"> & { images: PreviewMedia[] }
   >({
@@ -543,8 +544,8 @@ export function EventEditFormClient({ eventId }: Props) {
       });
 
       alert("이벤트 수정이 완료되었습니다.");
-      // 성공 시 이벤트 목록으로 이동
-      router.push("/events");
+
+      window.location.reload();
     } catch (error) {
       console.error("Error updating event:", error);
     } finally {
@@ -567,57 +568,80 @@ export function EventEditFormClient({ eventId }: Props) {
   };
 
   return (
-    <div className={cx("container")}>
-      <EditSidebar currentStep={currentStep} onStepChange={setCurrentStep} />
-      {currentStep === "basic" && (
-        <EventFormLayout
-          formData={formData}
-          currentStep={currentStep}
-          eventExposureStartDateField={eventExposureStartDateField.selectProps}
-          eventExposureEndDateField={eventExposureEndDateField.selectProps}
-          eventExposureStartTimeField={eventExposureStartTimeField}
-          eventExposureEndTimeField={eventExposureEndTimeField}
-          eventVerificationCodeField={eventVerificationCodeField}
-          eventNameField={eventNameField}
-          eventStartDateField={eventStartDateField.selectProps}
-          eventEndDateField={eventEndDateField.selectProps}
-          eventStartTimeField={eventStartTimeField}
-          eventEndTimeField={eventEndTimeField}
-          venueField={venueField}
-          lineupField={lineupField}
-          detailsField={detailsField}
-          minAgeField={minAgeField}
-          onFileChange={handleFileChange}
-          onRemoveOriginalImage={handleRemoveOriginalImage}
-          ticketRoundNameField={ticketRoundNameField}
-          roundSalesStartDate={roundSalesStartDate.selectProps}
-          roundSalesEndDate={roundSalesEndDate.selectProps}
-          roundSalesStartTime={roundSalesStartTime}
-          roundSalesEndTime={roundSalesEndTime}
-          onDelete={handleDelete}
-          isSubmitting={isSubmitting}
-          isReadOnlyMode={isReadOnlyMode}
-        />
-      )}
-      {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
-      {currentStep === "basic" && (
-        <div className={cx("floating")}>
-          <Button
-            className={cx("button")}
-            variant={isReadOnlyMode ? "primary" : "cta"}
-            size="md"
-            onClick={() => {
-              if (isReadOnlyMode) {
-                setIsReadOnlyMode(false);
-              } else {
-                handleSubmit();
-              }
-            }}
-          >
-            {isReadOnlyMode ? "edit" : "save"}
-          </Button>
-        </div>
-      )}
+    <div>
+      <div className={cx("header")}>
+        <Typography type="title24" weight="bold">
+          {eventDetailData.name}
+        </Typography>
+        <Typography type="body16" color="gray200">
+          {eventDetailData.startDate}~{eventDetailData.endDate} / {eventDetailData.startTime}~
+          {eventDetailData.endTime}/{eventDetailData.venue}
+        </Typography>
+      </div>
+      <div className={cx("container")}>
+        <EditSidebar currentStep={currentStep} onStepChange={setCurrentStep} />
+
+        {currentStep === "basic" && (
+          <EventFormLayout
+            formData={formData}
+            currentStep={currentStep}
+            eventExposureStartDateField={eventExposureStartDateField.selectProps}
+            eventExposureEndDateField={eventExposureEndDateField.selectProps}
+            eventExposureStartTimeField={eventExposureStartTimeField}
+            eventExposureEndTimeField={eventExposureEndTimeField}
+            eventVerificationCodeField={eventVerificationCodeField}
+            eventNameField={eventNameField}
+            eventStartDateField={eventStartDateField.selectProps}
+            eventEndDateField={eventEndDateField.selectProps}
+            eventStartTimeField={eventStartTimeField}
+            eventEndTimeField={eventEndTimeField}
+            venueField={venueField}
+            lineupField={lineupField}
+            detailsField={detailsField}
+            minAgeField={minAgeField}
+            onFileChange={handleFileChange}
+            onRemoveOriginalImage={handleRemoveOriginalImage}
+            ticketRoundNameField={ticketRoundNameField}
+            roundSalesStartDate={roundSalesStartDate.selectProps}
+            roundSalesEndDate={roundSalesEndDate.selectProps}
+            roundSalesStartTime={roundSalesStartTime}
+            roundSalesEndTime={roundSalesEndTime}
+            onDelete={handleDelete}
+            isSubmitting={isSubmitting}
+            isReadOnlyMode={isReadOnlyMode}
+          />
+        )}
+        {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
+        {currentStep === "guest" && <GuestManagement eventId={eventId} />}
+        {currentStep === "coupon" && (
+          <div className={cx("placeholder")}>
+            <Typography type="title24">Coupon Management</Typography>
+            <Typography type="body16" color="gray200">
+              쿠폰 관리 기능은 준비 중입니다.
+            </Typography>
+          </div>
+        )}
+        {currentStep === "basic" && (
+          <div className={cx("floating")}>
+            <div className={cx("floating_content")}>
+              <Button
+                className={cx("button")}
+                variant={isReadOnlyMode ? "primary" : "cta"}
+                size="md"
+                onClick={() => {
+                  if (isReadOnlyMode) {
+                    setIsReadOnlyMode(false);
+                  } else {
+                    handleSubmit();
+                  }
+                }}
+              >
+                {isReadOnlyMode ? "edit" : "save"}
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
