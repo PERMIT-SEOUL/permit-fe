@@ -136,7 +136,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
-                  placeholder="이벤트 노출 시작 시간을 입력해주세요 (hh:mm:ss)"
+                  placeholder="이벤트 노출 시작 시간을 입력해주세요 (HH:MM)"
                   value={eventExposureStartTimeField.value}
                   onChange={eventExposureStartTimeField.handleChange}
                   error={eventExposureStartTimeField.error}
@@ -148,7 +148,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
-                  placeholder="이벤트 노출 종료 시간을 입력해주세요 (hh:mm:ss)"
+                  placeholder="이벤트 노출 종료 시간을 입력해주세요 (HH:MM)"
                   value={eventExposureEndTimeField.value}
                   onChange={eventExposureEndTimeField.handleChange}
                   error={eventExposureEndTimeField.error}
@@ -218,7 +218,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
-                  placeholder="이벤트 시작 시간을 입력해주세요 (hh:mm:ss)"
+                  placeholder="이벤트 시작 시간을 입력해주세요 (HH:MM)"
                   value={eventStartTimeField.value}
                   onChange={eventStartTimeField.handleChange}
                   error={eventStartTimeField.error}
@@ -230,7 +230,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
-                  placeholder="이벤트 종료 시간을 입력해주세요 (hh:mm:ss)"
+                  placeholder="이벤트 종료 시간을 입력해주세요 (HH:MM)"
                   value={eventEndTimeField.value}
                   onChange={eventEndTimeField.handleChange}
                   error={eventEndTimeField.error}
@@ -373,7 +373,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
-                  placeholder="티켓 차수 판매 시작 시간을 입력해주세요 (hh:mm:ss)"
+                  placeholder="티켓 차수 판매 시작 시간을 입력해주세요 (HH:MM)"
                   value={roundSalesStartTime.value}
                   onChange={roundSalesStartTime.handleChange}
                   error={roundSalesStartTime.error}
@@ -385,7 +385,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
-                  placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (hh:mm:ss)"
+                  placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (HH:MM)"
                   value={roundSalesEndTime.value}
                   onChange={roundSalesEndTime.handleChange}
                   error={roundSalesEndTime.error}
