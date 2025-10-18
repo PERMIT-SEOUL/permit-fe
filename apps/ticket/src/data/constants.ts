@@ -23,7 +23,7 @@ export const API_URL = {
     /** 행사 상세 정보 조회 API */
     DETAIL: "/api/events/detail/:eventId",
     /** 행사 티켓 정보 조회 API */
-    TICKETS: "/api/tickets/:eventId",
+    TICKETS: "/api/tickets/info/:eventId",
     /** 행사 타임테이블 정보 조회 API */
     TIMETABLES: "/api/events/:eventId/timetables",
     /** 행사 타임테이블 상세 정보 조회 API */
