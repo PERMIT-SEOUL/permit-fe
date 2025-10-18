@@ -12,6 +12,8 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
+import { Block, Stages } from "@/data/events/getTimetables/types";
+
 import { TimeTableDetailModal } from "../../_components/TimeTableDetailModal";
 import { TimeTableLayout } from "../../_components/TimeTableLayout";
 
@@ -40,9 +42,9 @@ export const TimeTableClient = ({ eventId }: Props) => {
     [timetables.startDate, timetables.endDate],
   );
 
-  const areas = useMemo(
-    () => timetables.areas.sort((a, b) => a.sequence - b.sequence),
-    [timetables.areas],
+  const stages = useMemo(
+    () => timetables.stages.sort((a, b) => a.sequence - b.sequence),
+    [timetables.stages],
   );
 
   const [currentTimePosition, setCurrentTimePosition] = useState<number | null>(null);
@@ -114,7 +116,7 @@ export const TimeTableClient = ({ eventId }: Props) => {
 
   // 블록 위치 계산된 데이터 준비
   const blocksWithPosition = timetables.blocks.map((block) => {
-    const { top, height, left } = calcBlockPosition(block, timeSlots, areas, columnWidth);
+    const { top, height, left } = calcBlockPosition(block, timeSlots, stages, columnWidth);
     const blockWidth = columnWidth - 20; // 좌우 마진 10px씩 제외
 
     return {
@@ -224,7 +226,7 @@ export const TimeTableClient = ({ eventId }: Props) => {
       </header>
       <TimeTableLayout
         timeSlots={timeSlots}
-        areas={areas}
+        stages={stages}
         blocks={blocksWithPosition}
         columnWidth={columnWidth}
         hourHeight={hourHeight}
@@ -296,28 +298,11 @@ export interface TimeSlot {
   label: string;
 }
 
-export interface Area {
-  areaId: number;
-  areaName: string;
-  sequence: number;
-}
-
-export interface Block {
-  blockId: string;
-  blockName: string;
-  blockLineColor: string;
-  blockBackgroundColor: string;
-  blockStartDate: string;
-  blockEndDate: string;
-  blockAreaId: number;
-  isUserLiked: boolean;
-}
-
 // 블록 위치 계산 함수
 function calcBlockPosition(
   block: Block,
   timeSlots: TimeSlot[],
-  areas: Area[],
+  stages: Stages[],
   columnWidth: number,
 ) {
   const start = parseCustomDate(block.blockStartDate);
@@ -333,15 +318,15 @@ function calcBlockPosition(
       ts.datetime.getHours() === start.getHours(),
   );
 
-  // 해당 area의 sequence 찾기
-  const area = areas.find((a) => a.areaId === block.blockAreaId);
-  const areaSequence = area ? area.sequence : 0;
+  // 해당 stage의 sequence 찾기
+  const stage = stages.find((a) => a.stageNotionId === block.blockStageNotionId);
+  const stageSequence = stage ? stage.sequence : 0;
 
   const DISABLE_DISPLAY_HEIGHT = -200;
 
   const top = slotIndex >= 0 ? slotIndex * hourHeight + start.getMinutes() : DISABLE_DISPLAY_HEIGHT; // -100보다 작으면 블록이 표시되지 않음
   const height = durationInHours * hourHeight;
-  const left = areaSequence * columnWidth;
+  const left = stageSequence * columnWidth;
 
   return { top, height, left };
 }

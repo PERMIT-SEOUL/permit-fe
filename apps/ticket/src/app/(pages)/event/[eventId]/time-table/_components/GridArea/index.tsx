@@ -1,13 +1,15 @@
 import classNames from "classnames/bind";
 
-import { Area, Block, TimeSlot } from "../../_clientBoundary/TimeTableClient";
+import { Block, Stages } from "@/data/events/getTimetables/types";
+
+import { TimeSlot } from "../../_clientBoundary/TimeTableClient";
 import TimeTableBlock from "../TimeTableBlock";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
 type GridAreaProps = {
-  areas: Area[];
+  stages: Stages[];
   blocks: Array<Block & { style: React.CSSProperties }>;
   columnWidth: number;
   hourHeight: number;
@@ -17,7 +19,7 @@ type GridAreaProps = {
 };
 
 const GridArea = ({
-  areas,
+  stages,
   blocks,
   columnWidth,
   hourHeight,
@@ -25,14 +27,14 @@ const GridArea = ({
   currentTimePosition,
   onBlockClick,
 }: GridAreaProps) => {
-  const totalWidth = areas.length * columnWidth;
+  const totalWidth = stages.length * columnWidth;
 
   return (
     <div className={cx("grid_area")} style={{ width: totalWidth }}>
       {/* 그리드 배경 라인들 */}
-      {areas.map((area, index) => (
+      {stages.map((stage, index) => (
         <div
-          key={area.areaId}
+          key={stage.stageNotionId}
           className={cx("grid_column")}
           style={{
             left: index * columnWidth,
@@ -53,7 +55,7 @@ const GridArea = ({
           className={cx("current_time_line")}
           style={{
             top: currentTimePosition,
-            width: `${areas.length * columnWidth}px`,
+            width: `${stages.length * columnWidth}px`,
           }}
         />
       )}
