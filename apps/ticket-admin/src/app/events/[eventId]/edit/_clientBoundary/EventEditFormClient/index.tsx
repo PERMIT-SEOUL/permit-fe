@@ -509,7 +509,7 @@ export function EventEditFormClient({ eventId }: Props) {
       ).filter((m) => !!m?.url && !!m?.mediaType);
 
       const mediaInfoRequests = toUpload.map((m) => {
-        const mediaName = `${m.id}`;
+        const mediaName = `${m.id}-${Date.now()}`;
 
         console.log("@@m", m);
 
