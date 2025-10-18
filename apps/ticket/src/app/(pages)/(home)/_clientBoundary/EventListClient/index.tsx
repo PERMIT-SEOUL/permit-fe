@@ -24,8 +24,6 @@ export const EventListClient = () => {
     setSelectedCategory(category);
   };
 
-  console.log("@@", process.env.NEXT_PUBLIC_ENV === "production", process.env.NEXT_PUBLIC_ENV);
-
   const getEventsWithCategory = (): EventWithCategory[] => {
     if (selectedCategory === CATEGORIES.ALL) {
       return Object.entries(eventsData).flatMap(([category, events]) =>
