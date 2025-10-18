@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
 import { Button, Typography } from "@permit/design-system";
+import { useDeleteTicketRoundMutation } from "@/data/admin/deleteTicketRound/mutation";
+import { useDeleteTicketTypeMutation } from "@/data/admin/deleteTicketType/mutation";
 import { useTicketsQuery } from "@/data/admin/getTickets/queries";
 
 import styles from "./index.module.scss";
@@ -17,8 +19,14 @@ type Props = {
 
 export function TicketManagementClient({ eventId }: Props) {
   const router = useRouter();
-  const { data, isLoading, error } = useTicketsQuery({ eventId });
+  const { data, isLoading, error, refetch } = useTicketsQuery({ eventId });
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const { mutateAsync: deleteTicketRound, isPending: isDeleting } = useDeleteTicketRoundMutation(
+    {},
+  );
+  const { mutateAsync: deleteTicketType, isPending: isDeletingType } = useDeleteTicketTypeMutation(
+    {},
+  );
 
   const handleAddRound = () => {
     router.push(`/events/${eventId}/edit/rounds/add`);
@@ -29,13 +37,16 @@ export function TicketManagementClient({ eventId }: Props) {
     router.push(`/events/${eventId}/edit/ticket-detail?ticketRoundId=${ticketRoundId}`);
   };
 
-  const handleDeleteRound = (ticketRoundId: number) => {
-    console.log("Delete clicked for ticketRoundId:", ticketRoundId);
-
+  const handleDeleteRound = async (ticketRoundId: number) => {
     if (confirm("정말로 이 티켓 라운드를 삭제하시겠습니까?")) {
-      // TODO: API 호출로 티켓 라운드 삭제
-      console.log("Deleting ticket round:", ticketRoundId);
-      alert("티켓 라운드가 삭제되었습니다.");
+      try {
+        await deleteTicketRound({ ticketRoundId });
+        alert("티켓 라운드가 삭제되었습니다.");
+        refetch(); // 데이터 새로고침
+      } catch (error) {
+        console.error("Error deleting ticket round:", error);
+        alert("티켓 라운드 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   };
 
@@ -53,13 +64,16 @@ export function TicketManagementClient({ eventId }: Props) {
     setOpenMenuId(openMenuId === ticketTypeId ? null : ticketTypeId);
   };
 
-  const handleDeleteTicketType = (ticketTypeId: number) => {
-    console.log("Delete ticket type clicked for ticketTypeId:", ticketTypeId);
-
-    if (confirm("정말로 이 티켓 타입을 삭제하시겠습니까?")) {
-      // TODO: API 호출로 티켓 타입 삭제
-      console.log("Deleting ticket type:", ticketTypeId);
-      alert("티켓 타입이 삭제되었습니다.");
+  const handleDeleteTicketType = async (ticketTypeId: number) => {
+    if (confirm("정말로 이 티켓을 삭제하시겠습니까?")) {
+      try {
+        await deleteTicketType({ ticketTypeId });
+        alert("티켓이 삭제되었습니다.");
+        refetch(); // 데이터 새로고침
+      } catch (error) {
+        console.error("Error deleting ticket type:", error);
+        alert("티켓 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   };
 
@@ -178,8 +192,9 @@ export function TicketManagementClient({ eventId }: Props) {
                         setOpenMenuId(null); // 직접 메뉴 닫기
                         handleDeleteRound(ticketRound.ticketRoundId);
                       }}
+                      disabled={isDeleting}
                     >
-                      Delete
+                      {isDeleting ? "Deleting..." : "Delete"}
                     </button>
                   </div>
                 )}
@@ -235,8 +250,9 @@ export function TicketManagementClient({ eventId }: Props) {
                           setOpenMenuId(null);
                           handleDeleteTicketType(ticketType.ticketTypeId);
                         }}
+                        disabled={isDeletingType}
                       >
-                        Delete
+                        {isDeletingType ? "Deleting..." : "Delete"}
                       </button>
                     </div>
                   )}
