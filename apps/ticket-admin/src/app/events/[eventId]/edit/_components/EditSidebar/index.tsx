@@ -6,7 +6,7 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-type Step = "basic" | "ticket";
+type Step = "basic" | "ticket" | "guest" | "coupon";
 
 type Props = {
   currentStep: Step;
@@ -23,6 +23,14 @@ export function EditSidebar({ currentStep, onStepChange }: Props) {
       <button className={cx("sidebar_item")} onClick={() => onStepChange("ticket")}>
         <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
         <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>Ticket</span>
+      </button>
+      <button className={cx("sidebar_item")} onClick={() => onStepChange("guest")}>
+        <div className={cx("sidebar_indicator", currentStep === "guest" && "active")} />
+        <span className={cx("sidebar_text", currentStep === "guest" && "active")}>Guest</span>
+      </button>
+      <button className={cx("sidebar_item")} onClick={() => onStepChange("coupon")}>
+        <div className={cx("sidebar_indicator", currentStep === "coupon" && "active")} />
+        <span className={cx("sidebar_text", currentStep === "coupon" && "active")}>Coupon</span>
       </button>
     </div>
   );
