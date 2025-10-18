@@ -17,12 +17,6 @@ export default function HomePage() {
         <Link href="/guests" className={cx("link")}>
           게스트 관리
         </Link>
-        <Link href="/1/dashboard" className={cx("link")}>
-          대시보드 1
-        </Link>
-        <Link href="/2/dashboard" className={cx("link")}>
-          대시보드 2
-        </Link>
       </div>
     </div>
   );
