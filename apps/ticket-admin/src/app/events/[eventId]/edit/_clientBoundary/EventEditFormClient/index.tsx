@@ -20,6 +20,7 @@ import {
 } from "@/data/admin/postPresignedUrls/mutation";
 import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
 
+import { CouponManagementClient } from "../../coupon/_clientBoundary/CouponManagementClient";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -634,14 +635,7 @@ export function EventEditFormClient({ eventId }: Props) {
         )}
         {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
         {currentStep === "guest" && <GuestManagement eventId={eventId} />}
-        {currentStep === "coupon" && (
-          <div className={cx("placeholder")}>
-            <Typography type="title24">Coupon Management</Typography>
-            <Typography type="body16" color="gray200">
-              쿠폰 관리 기능은 준비 중입니다.
-            </Typography>
-          </div>
-        )}
+        {currentStep === "coupon" && <CouponManagementClient />}
         {currentStep === "basic" && (
           <div className={cx("floating")}>
             <div className={cx("floating_content")}>
