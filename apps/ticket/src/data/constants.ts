@@ -53,4 +53,12 @@ export const API_URL = {
     /** 할인 쿠폰 검증 API */
     VALIDATE: "/api/coupons/validate/:eventId",
   },
+
+  // 티켓 관련 API
+  TICKET: {
+    /** 도어용 유저 티켓 유효성 검증 API */
+    VALIDATION: "/api/tickets/door/validation/:ticketCode",
+    /** 도어용 유저 스탭 티켓 확인 API */
+    CONFIRM: "/api/tickets/door/staff/confirm",
+  },
 } as const;
