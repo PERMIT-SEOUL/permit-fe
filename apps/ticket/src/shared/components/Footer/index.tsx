@@ -12,6 +12,7 @@ const cx = classNames.bind(styles);
 export const Footer = () => {
   const pathname = usePathname();
 
+  const isEntryPage = pathname.includes("/entry");
   const isEventPage = /^\/event\/[^/]+$/.test(pathname);
   const isTimeTablePage = /^\/event\/[^/]+\/time-table$/.test(pathname);
 
@@ -19,7 +20,7 @@ export const Footer = () => {
     <footer
       className={cx("container", {
         is_event_page: isEventPage,
-        is_time_table_page: isTimeTablePage,
+        no_footer: isTimeTablePage || isEntryPage,
       })}
     >
       <div className={cx("links")}>
