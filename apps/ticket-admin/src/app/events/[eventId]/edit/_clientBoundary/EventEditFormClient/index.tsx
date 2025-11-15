@@ -638,7 +638,7 @@ export function EventEditFormClient({ eventId }: Props) {
         )}
         {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
         {currentStep === "guest" && <GuestManagement eventId={eventId} />}
-        {currentStep === "coupon" && <CouponManagementClient />}
+        {currentStep === "coupon" && <CouponManagementClient eventId={eventId} />}
         {currentStep === "timeTable" && <TimeTableManagementClient eventId={eventId} />}
         {currentStep === "basic" && (
           <div className={cx("floating")}>

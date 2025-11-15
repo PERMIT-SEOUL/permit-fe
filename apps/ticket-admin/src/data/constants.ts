@@ -29,5 +29,9 @@ export const API_URL = {
     PRESIGNED_URLS: "/api/admin/images/url",
     /** 행사 타임테이블 최초 등록 API */
     TIME_TABLE_INITIAL: "/api/admin/events/:eventId/timetables/initial",
+    /** 쿠폰 생성 API */
+    COUPONS: "/api/admin/coupons",
+    /** 쿠폰 리스트 조회 API */
+    COUPONS_LIST: "/api/admin/coupons/:eventId",
   },
 } as const;

@@ -6,4 +6,5 @@ export const ADMIN_QUERY_KEYS = {
   EVENT_DETAIL: `${queryKeyPrefix}event_detail`,
   TICEKTS: `${queryKeyPrefix}tickets`,
   TICEKTS_DETAIL: `${queryKeyPrefix}tickets_detail`,
+  COUPONS: `${queryKeyPrefix}coupons`,
 } as const;
