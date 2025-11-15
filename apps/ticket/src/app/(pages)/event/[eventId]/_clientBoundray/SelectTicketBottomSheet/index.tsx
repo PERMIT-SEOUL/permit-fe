@@ -187,9 +187,9 @@ const SelectTicketBottomSheetContent = ({
     const couponCode = couponCodeField.value;
 
     try {
-      const { discountRate: rate } = await couponValidateMutateAsync({ couponCode });
+      const { discountRate } = await couponValidateMutateAsync({ couponCode });
 
-      setDiscountRate(rate);
+      setDiscountRate(discountRate);
       setCouponVerified(true);
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
@@ -215,7 +215,7 @@ const SelectTicketBottomSheetContent = ({
         totalAmount:
           calculateTotalPrice(selectedTickets) *
           (couponVerified && discountRate ? 1 - discountRate / 100 : 1),
-        couponCode: couponCodeField.value,
+        couponCode: discountRate ? couponCodeField.value : undefined,
         ticketTypeInfos: selectedTickets.map((ticket) => ({
           id: ticket.ticketTypeId,
           count: ticket.count,
