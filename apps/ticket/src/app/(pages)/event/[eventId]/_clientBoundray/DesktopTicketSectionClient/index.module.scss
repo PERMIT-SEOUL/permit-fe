@@ -129,6 +129,11 @@
   border-top: 2px solid theme.$gray-200;
 }
 
+.original_price {
+  color: theme.$gray-400;
+  text-decoration: line-through;
+}
+
 .buy_button {
   margin: 12px 0 28px;
 }

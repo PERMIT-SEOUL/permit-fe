@@ -42,6 +42,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
   const [selectedTickets, setSelectedTickets] = useState<SelectedTicket[]>([]);
   const [isPromocodeOpen, setIsPromocodeOpen] = useState(false);
   const [couponVerified, setCouponVerified] = useState(false);
+  const [discountRate, setDiscountRate] = useState<number | null>(null);
 
   const { mutateAsync: reservationReadyMutateAsync } = useReservationReadyMutation();
   const { mutateAsync: couponValidateMutateAsync } = useCouponValidateMutation(eventId);
@@ -79,6 +80,12 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
   const ticketSelect = useSelect({
     onChange: (value) => {
+      if (couponVerified) {
+        alert("쿠폰이 적용된 상태에서는 티켓을 추가할 수 없습니다.");
+
+        return;
+      }
+
       const selectedRound = eventTicketsData.rounds.find(
         (round) => round.roundId === selectedRoundId,
       );
@@ -107,7 +114,9 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
   const couponCodeField = useTextField({
     initialValue: "",
     validate: () => {
-      if (selectedTickets.length !== 1) return "Please select only one ticket.";
+      const totalCount = selectedTickets.reduce((sum, ticket) => sum + ticket.count, 0);
+
+      if (totalCount !== 1) return "Please select only one ticket.";
 
       return undefined;
     },
@@ -115,6 +124,12 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
   // TODO: 훅으로 분리하면 좋을 듯.......
   const handleTicketCountChange = (ticketTypeId: number, change: number) => {
+    if (couponVerified) {
+      alert("쿠폰이 적용된 상태에서는 티켓 개수를 변경할 수 없습니다.");
+
+      return;
+    }
+
     setSelectedTickets((prev) =>
       prev.map((ticket) => {
         if (ticket.ticketTypeId === ticketTypeId) {
@@ -132,7 +147,18 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
   };
 
   const handleRemoveTicket = (ticketTypeId: number) => {
-    setSelectedTickets((prev) => prev.filter((ticket) => ticket.ticketTypeId !== ticketTypeId));
+    setSelectedTickets((prev) => {
+      const filtered = prev.filter((ticket) => ticket.ticketTypeId !== ticketTypeId);
+
+      if (filtered.length === 0) {
+        setIsPromocodeOpen(false);
+        setCouponVerified(false);
+        setDiscountRate(null);
+        couponCodeField.reset();
+      }
+
+      return filtered;
+    });
   };
 
   const handleCouponValidate = useDebounce(async () => {
@@ -147,16 +173,13 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
     try {
       const { discountRate } = await couponValidateMutateAsync({ couponCode });
 
+      setDiscountRate(discountRate);
       setCouponVerified(true);
-
-      // const discountedPrice = totalPrice * (1 - discountRate / 100);
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
         const errorMessage = "Invalid promotion code.";
 
         couponCodeField.setError(errorMessage);
-
-        // couponCodeField.setError(error.message);
       }
     }
   }, 500);
@@ -171,8 +194,6 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
     try {
       const orderId = generateRandomString();
 
-      // TODO: 쿠폰 관련해서........... 하나를 적용완료하면 다른 건 클릭을 못하게? => 클릭 금지 상태 추가?
-      // TODO: totalPrice 보여주는 부분 수정하기.................
       const requestData = {
         eventId: eventId,
         totalAmount: calculateTotalPrice(selectedTickets),
@@ -214,6 +235,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
             type="default"
             placeholder="Ticket"
             options={ticketOptions}
+            disabled={couponVerified}
             {...ticketSelect.selectProps}
           />
         </Flex>
@@ -318,13 +340,29 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
               </Flex>
             </Flex>
 
-            <Flex className={cx("total_price_wrap")} align="center" justify="space-between" gap={8}>
-              <Typography type="body16" weight="medium">
-                Total
-              </Typography>
-              <Typography type="body14" weight="medium">
-                ₩ {calculateTotalPrice(selectedTickets).toLocaleString()}
-              </Typography>
+            <Flex className={cx("total_price_wrap")} direction="column" gap={4}>
+              <Flex align="center" justify="space-between" gap={8}>
+                <Typography type="body16" weight="medium">
+                  Total
+                </Typography>
+                {couponVerified && discountRate !== null ? (
+                  <Flex direction="column" align="flex-end" gap={4}>
+                    <Typography type="body14" weight="medium" className={cx("original_price")}>
+                      ₩ {calculateTotalPrice(selectedTickets).toLocaleString()}
+                    </Typography>
+                    <Typography type="body14" weight="medium">
+                      ₩{" "}
+                      {Math.round(
+                        calculateTotalPrice(selectedTickets) * (1 - discountRate / 100),
+                      ).toLocaleString()}
+                    </Typography>
+                  </Flex>
+                ) : (
+                  <Typography type="body14" weight="medium">
+                    ₩ {calculateTotalPrice(selectedTickets).toLocaleString()}
+                  </Typography>
+                )}
+              </Flex>
             </Flex>
           </div>
         )}
