@@ -210,8 +210,6 @@ const SelectTicketBottomSheetContent = ({
     try {
       const orderId = generateRandomString();
 
-      // TODO: 쿠폰 관련해서........... 하나를 적용완료하면 다른 건 클릭을 못하게? => 클릭 금지 상태 추가?
-      // TODO: totalPrice 보여주는 부분 수정하기.................
       const requestData = {
         eventId,
         totalAmount:

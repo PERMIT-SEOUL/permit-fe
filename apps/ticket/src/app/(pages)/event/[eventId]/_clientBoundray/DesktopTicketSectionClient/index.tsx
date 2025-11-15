@@ -196,7 +196,9 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
       const requestData = {
         eventId: eventId,
-        totalAmount: calculateTotalPrice(selectedTickets),
+        totalAmount:
+          calculateTotalPrice(selectedTickets) *
+          (couponVerified && discountRate ? 1 - discountRate / 100 : 1),
         couponCode: couponCodeField.value,
         ticketTypeInfos: selectedTickets.map((ticket) => ({
           id: ticket.ticketTypeId,
