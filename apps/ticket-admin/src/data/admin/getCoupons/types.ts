@@ -11,6 +11,4 @@ export type GetCouponsParams = {
   eventId: number;
 };
 
-export type GetCouponsResponse = {
-  data: CouponItem[];
-};
+export type GetCouponsResponse = CouponItem[];
