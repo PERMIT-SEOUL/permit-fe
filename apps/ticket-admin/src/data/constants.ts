@@ -27,5 +27,7 @@ export const API_URL = {
     DELETE_TICKET_TYPE: "/api/admin/tickets/types/:ticketTypeId",
     /** 미디어 업로드 presigned URL 발급 API */
     PRESIGNED_URLS: "/api/admin/images/url",
+    /** 행사 타임테이블 최초 등록 API */
+    TIME_TABLE_INITIAL: "/api/admin/events/:eventId/timetables/initial",
   },
 } as const;

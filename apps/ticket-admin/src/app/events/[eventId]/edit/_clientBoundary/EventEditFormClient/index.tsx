@@ -21,6 +21,7 @@ import {
 import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
 
 import { CouponManagementClient } from "../../coupon/_clientBoundary/CouponManagementClient";
+import { TimeTableManagementClient } from "../../timeTable/_clientBoundary/TimeTableManagementClient";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -32,7 +33,9 @@ type Props = {
 export function EventEditFormClient({ eventId }: Props) {
   const router = useRouter();
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true); // 수정 모드 여부
-  const [currentStep, setCurrentStep] = useState<"basic" | "ticket" | "guest" | "coupon">("basic");
+  const [currentStep, setCurrentStep] = useState<
+    "basic" | "ticket" | "guest" | "coupon" | "timeTable"
+  >("basic");
   const [formData, setFormData] = useState<
     Omit<EventDetailResponse, "images"> & { images: PreviewMedia[] }
   >({
@@ -636,6 +639,7 @@ export function EventEditFormClient({ eventId }: Props) {
         {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
         {currentStep === "guest" && <GuestManagement eventId={eventId} />}
         {currentStep === "coupon" && <CouponManagementClient />}
+        {currentStep === "timeTable" && <TimeTableManagementClient eventId={eventId} />}
         {currentStep === "basic" && (
           <div className={cx("floating")}>
             <div className={cx("floating_content")}>
