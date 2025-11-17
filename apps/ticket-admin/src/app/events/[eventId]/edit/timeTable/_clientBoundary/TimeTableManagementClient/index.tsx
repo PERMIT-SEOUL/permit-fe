@@ -95,10 +95,12 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
       await createTimeTable({
         timetableStartAt: `${timeTableStartDateField.value} ${timeTableStartTimeField.value}`,
         timetableEndAt: `${timeTableEndDateField.value} ${timeTableEndTimeField.value}`,
-        notionTimetableDataSourceId: "",
-        notionCategoryDataSourceId: "",
-        notionStageDataSourceId: "",
+        notionTimetableDataSourceId: notionDatabaseDataSourceIdField.value,
+        notionCategoryDataSourceId: notionCategoryDataSourceIdField.value,
+        notionStageDataSourceId: notionStageDataSourceIdField.value,
       });
+
+      alert("타임테이블 생성이 완료되었습니다.");
 
       window.location.reload();
     } catch (error) {

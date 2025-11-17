@@ -38,7 +38,7 @@ instance.interceptors.response.use(
     if (error.response?.status === ERROR_CODE.SERVER_ERROR) {
       alert("서버에러가 발생하였습니다. 관리자에게 문의해주세요.");
 
-      window.location.href = "/login";
+      return;
     }
 
     // 로그인이 필요한 요청이거나, 리프레시 토큰 모두 만료시 로그인 페이지로 이동

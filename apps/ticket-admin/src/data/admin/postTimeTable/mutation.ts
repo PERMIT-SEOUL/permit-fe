@@ -35,11 +35,7 @@ export const usePostTimeTableInitial = ({
   const url = getPathUrl(API_URL.ADMIN.TIME_TABLE_INITIAL, { eventId });
 
   return useMutation({
-    mutationFn: async () => {
-      const { data } = await instance.post<TimeTableResponse>(url);
-
-      return data;
-    },
+    mutationFn: (params) => instance.post(url, params).then((res) => res.data),
     ...options,
   });
 };
