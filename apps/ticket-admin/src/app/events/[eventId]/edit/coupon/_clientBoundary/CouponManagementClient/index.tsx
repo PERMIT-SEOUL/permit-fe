@@ -289,11 +289,11 @@ export const CouponManagementClient = ({ eventId }: Props) => {
                       <td>
                         <span
                           className={cx("state_badge", {
-                            usable: coupon.usable,
-                            used: !coupon.usable,
+                            usable: !coupon.usable,
+                            used: coupon.usable,
                           })}
                         >
-                          {coupon.usable ? "Usable" : "Used ticket"}
+                          {coupon.usable ? "Used ticket" : "Usable"}
                         </span>
                       </td>
                     </tr>
