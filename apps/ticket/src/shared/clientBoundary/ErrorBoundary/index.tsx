@@ -4,10 +4,12 @@ import React, { ReactNode } from "react";
 import { ErrorBoundary as ReactErrorBoundary, FallbackProps } from "react-error-boundary";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 
+import { AxiosErrorResponse } from "@/shared/types/axioxError";
+
 export { type FallbackProps };
 
 export type ErrorHandler = {
-  isError: (error: Error) => boolean;
+  isError: (error: Error | AxiosErrorResponse) => boolean;
   fallback: (props: FallbackProps) => ReactNode;
 };
 

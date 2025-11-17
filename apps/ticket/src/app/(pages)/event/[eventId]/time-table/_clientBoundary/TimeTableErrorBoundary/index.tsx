@@ -1,0 +1,47 @@
+"use client";
+
+import { ReactNode } from "react";
+
+import { Button, Flex, Typography } from "@permit/design-system";
+import { ErrorBoundary, ErrorHandler } from "@/shared/clientBoundary/ErrorBoundary";
+import { AxiosErrorResponse } from "@/shared/types/axioxError";
+
+type Props = {
+  children: ReactNode;
+};
+
+const NOT_FOUND_TIME_TABLE_ERROR_CODE = 40420;
+
+export const TimeTableErrorBoundary = ({ children }: Props) => {
+  return <ErrorBoundary handlers={timeTableErrorHandlers}>{children}</ErrorBoundary>;
+};
+
+const timeTableErrorHandlers: ErrorHandler[] = [
+  {
+    isError: (error) => isTimeTableNotRegisteredError(error as AxiosErrorResponse),
+    fallback: () => (
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        gap={16}
+        style={{ height: "calc(100vh - 150px)" }}
+      >
+        <Typography type="title20">아직 타임테이블이 등록되지 않았어요.</Typography>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={() => {
+            window.location.href = "/";
+          }}
+        >
+          홈으로 이동
+        </Button>
+      </Flex>
+    ),
+  },
+];
+
+const isTimeTableNotRegisteredError = (error: AxiosErrorResponse) => {
+  return error.code === NOT_FOUND_TIME_TABLE_ERROR_CODE;
+};
