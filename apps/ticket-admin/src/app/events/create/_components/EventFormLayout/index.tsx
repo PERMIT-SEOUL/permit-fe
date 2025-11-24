@@ -138,6 +138,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="이벤트 노출 시작 시간을 입력해주세요 (HH:MM)"
                   value={eventExposureStartTimeField.value}
                   onChange={eventExposureStartTimeField.handleChange}
@@ -150,6 +151,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="이벤트 노출 종료 시간을 입력해주세요 (HH:MM)"
                   value={eventExposureEndTimeField.value}
                   onChange={eventExposureEndTimeField.handleChange}
@@ -176,6 +178,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="입장 코드를 입력해주세요"
                   value={eventVerificationCodeField.value}
                   onChange={eventVerificationCodeField.handleChange}
@@ -191,6 +194,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="이벤트 이름을 입력해주세요"
                   value={eventNameField.value}
                   onChange={eventNameField.handleChange}
@@ -231,6 +235,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="이벤트 시작 시간을 입력해주세요 (HH:MM)"
                   value={eventStartTimeField.value}
                   onChange={eventStartTimeField.handleChange}
@@ -243,6 +248,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="이벤트 종료 시간을 입력해주세요 (HH:MM)"
                   value={eventEndTimeField.value}
                   onChange={eventEndTimeField.handleChange}
@@ -258,6 +264,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="장소를 입력해주세요"
                   value={venueField.value}
                   onChange={venueField.handleChange}
@@ -273,6 +280,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   multiline
                   rows={6}
                   placeholder="라인업을 입력해주세요"
@@ -290,6 +298,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   multiline
                   rows={6}
                   placeholder="상세 내용을 입력해주세요"
@@ -328,6 +337,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="최소 나이를 입력해주세요"
                   value={minAgeField.value}
                   onChange={minAgeField.handleChange}
@@ -346,6 +356,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="티켓 차수 이름을 입력해주세요"
                   value={ticketRoundNameField.value}
                   onChange={ticketRoundNameField.handleChange}
@@ -386,6 +397,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="티켓 차수 판매 시작 시간을 입력해주세요 (HH:MM)"
                   value={roundSalesStartTime.value}
                   onChange={roundSalesStartTime.handleChange}
@@ -398,6 +410,7 @@ export function EventFormLayout({
                 </Typography>
                 <TextField
                   readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
                   placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (HH:MM)"
                   value={roundSalesEndTime.value}
                   onChange={roundSalesEndTime.handleChange}
