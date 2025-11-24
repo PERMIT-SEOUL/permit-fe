@@ -418,7 +418,7 @@ export function EventFormClient() {
   // 티켓 관리 함수들
   const addTicket = () => {
     const newTicket: TicketData = {
-      id: Date.now().toString(),
+      id: `ticket-${Date.now()}`,
       ticketName: "",
       price: 0,
       ticketCount: 0,
