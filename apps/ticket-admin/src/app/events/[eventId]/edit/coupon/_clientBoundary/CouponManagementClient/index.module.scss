@@ -282,3 +282,18 @@
     background-color: rgb(244 67 54 / 10%);
   }
 }
+
+.memo_input {
+  width: 100%;
+  padding: 4px 8px;
+
+  font-size: 14px;
+
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+    border-color: #888;
+  }
+}

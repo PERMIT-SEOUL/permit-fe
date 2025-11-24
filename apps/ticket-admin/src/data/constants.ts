@@ -31,6 +31,8 @@ export const API_URL = {
     TIME_TABLE_INITIAL: "/api/admin/events/:eventId/timetables/initial",
     /** 쿠폰 생성 API */
     COUPONS: "/api/admin/coupons",
+    /** 쿠폰 메모 수정 API */
+    COUPONS_MEMO: "/api/admin/coupons/memos",
     /** 쿠폰 리스트 조회 API */
     COUPONS_LIST: "/api/admin/coupons/:eventId",
   },
