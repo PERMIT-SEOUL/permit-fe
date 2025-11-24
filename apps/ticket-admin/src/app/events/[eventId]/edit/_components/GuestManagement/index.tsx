@@ -97,6 +97,7 @@ export function GuestManagement({ eventId }: Props) {
           <table className={cx("guest_table")}>
             <thead>
               <tr>
+                <th>Type</th>
                 <th>Affiliation</th>
                 <th>Name</th>
                 <th>Phone Number</th>
@@ -115,9 +116,10 @@ export function GuestManagement({ eventId }: Props) {
                         onChange={() => handleGuestSelection(guest.guestId)}
                         className={cx("checkbox")}
                       />
-                      <span>{guest.affiliation}</span>
+                      <span>{guest.guestType}</span>
                     </label>
                   </td>
+                  <td>{guest.affiliation}</td>
                   <td>{guest.guestName}</td>
                   <td>{guest.phoneNumber}</td>
                   <td>{guest.email}</td>
