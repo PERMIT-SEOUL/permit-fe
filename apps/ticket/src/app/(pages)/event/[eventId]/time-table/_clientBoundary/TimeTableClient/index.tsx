@@ -269,7 +269,7 @@ function generateTimeSlots(startDateStr: string, endDateStr: string) {
   // 요일 배열 (일요일부터 시작)
   const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
 
-  while (current.getDate() <= end.getDate()) {
+  while (current.getTime() <= end.getTime()) {
     for (let h = 0; h < 24; h++) {
       const slot = new Date(current);
 
@@ -307,6 +307,7 @@ function calcBlockPosition(
 ) {
   const start = parseCustomDate(block.blockStartDate);
   const end = parseCustomDate(block.blockEndDate);
+
   const durationInHours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
 
   // 해당 시간 슬롯의 인덱스 찾기

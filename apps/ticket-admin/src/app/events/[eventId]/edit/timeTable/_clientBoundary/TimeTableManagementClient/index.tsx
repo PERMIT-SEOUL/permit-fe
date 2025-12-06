@@ -4,6 +4,8 @@ import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
+import { useTimeTableSuspenseQuery } from "@/data/admin/getTimeTables/queries";
+import { useTimeTableMutation } from "@/data/admin/patchTimeTables/mutation";
 import { usePostTimeTableInitial } from "@/data/admin/postTimeTable/mutation";
 
 import styles from "./index.module.scss";
@@ -15,12 +17,22 @@ type Props = {
 };
 
 export const TimeTableManagementClient = ({ eventId }: Props) => {
+  const { data: timeTableData } = useTimeTableSuspenseQuery({
+    eventId,
+    options: {
+      throwOnError: false,
+    },
+  });
+
+  console.log("@@timeTableData", timeTableData);
+
   const { mutateAsync: createTimeTable, isPending } = usePostTimeTableInitial({
     eventId,
   });
+  const { mutateAsync: updateTimeTable } = useTimeTableMutation({});
 
   const timeTableStartDateField = useSelect({
-    initialValue: "",
+    initialValue: timeTableData?.timetableStartDate,
     validate: (value: string) => {
       if (!value) return "타임테이블 시작 날짜를 선택해주세요.";
 
@@ -29,7 +41,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
   });
 
   const timeTableEndDateField = useSelect({
-    initialValue: "",
+    initialValue: timeTableData?.timetableEndDate,
     validate: (value: string) => {
       if (!value) return "타임테이블 종료 날짜를 선택해주세요.";
 
@@ -38,7 +50,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
   });
 
   const timeTableStartTimeField = useTextField({
-    initialValue: "",
+    initialValue: timeTableData?.timetableStartTime,
     validate: (value: string) => {
       if (!value.trim()) return "타임테이블 시작 시간을 입력해주세요.";
 
@@ -51,7 +63,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
   });
 
   const timeTableEndTimeField = useTextField({
-    initialValue: "",
+    initialValue: timeTableData?.timetableEndTime,
     validate: (value: string) => {
       if (!value.trim()) return "타임테이블 종료 시간을 입력해주세요.";
 
@@ -64,7 +76,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
   });
 
   const notionDatabaseDataSourceIdField = useTextField({
-    initialValue: "",
+    initialValue: timeTableData?.notionTimetableDataSourceId,
     validate: (value: string) => {
       if (!value.trim()) return "노션 database 데이터소스 아이디를 입력해주세요.";
 
@@ -73,7 +85,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
   });
 
   const notionCategoryDataSourceIdField = useTextField({
-    initialValue: "",
+    initialValue: timeTableData?.notionCategoryDataSourceId,
     validate: (value: string) => {
       if (!value.trim()) return "노션 category 데이터소스 아이디를 입력해주세요.";
 
@@ -82,7 +94,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
   });
 
   const notionStageDataSourceIdField = useTextField({
-    initialValue: "",
+    initialValue: timeTableData?.notionStageDataSourceId,
     validate: (value: string) => {
       if (!value.trim()) return "노션 stage 데이터소스 아이디를 입력해주세요.";
 
@@ -91,22 +103,45 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
   });
 
   const handleSave = async () => {
-    try {
-      await createTimeTable({
-        timetableStartAt: `${timeTableStartDateField.value} ${timeTableStartTimeField.value}`,
-        timetableEndAt: `${timeTableEndDateField.value} ${timeTableEndTimeField.value}`,
-        notionTimetableDataSourceId: notionDatabaseDataSourceIdField.value,
-        notionCategoryDataSourceId: notionCategoryDataSourceIdField.value,
-        notionStageDataSourceId: notionStageDataSourceIdField.value,
-      });
+    if (!timeTableData) {
+      try {
+        await createTimeTable({
+          timetableStartAt: `${timeTableStartDateField.value} ${timeTableStartTimeField.value}`,
+          timetableEndAt: `${timeTableEndDateField.value} ${timeTableEndTimeField.value}`,
+          notionTimetableDataSourceId: notionDatabaseDataSourceIdField.value,
+          notionCategoryDataSourceId: notionCategoryDataSourceIdField.value,
+          notionStageDataSourceId: notionStageDataSourceIdField.value,
+        });
 
-      alert("타임테이블 생성이 완료되었습니다.");
+        alert("타임테이블 생성이 완료되었습니다.");
 
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
+        window.location.reload();
+      } catch (error) {
+        console.error(error);
 
-      alert("타임테이블 생성에 실패했습니다. 다시 시도해주세요.");
+        alert("타임테이블 생성에 실패했습니다. 다시 시도해주세요.");
+      }
+    } else {
+      console.log("@@@@");
+
+      try {
+        await updateTimeTable({
+          timetableId: timeTableData.timetableId,
+          timetableStartAt: `${timeTableStartDateField.value} ${timeTableStartTimeField.value}`,
+          timetableEndAt: `${timeTableEndDateField.value} ${timeTableEndTimeField.value}`,
+          notionTimetableDataSourceId: notionDatabaseDataSourceIdField.value,
+          notionCategoryDataSourceId: notionCategoryDataSourceIdField.value,
+          notionStageDataSourceId: notionStageDataSourceIdField.value,
+        });
+
+        alert("타임테이블 수정이 완료되었습니다.");
+
+        window.location.reload();
+      } catch (error) {
+        console.error(error);
+
+        alert("타임테이블 수정에 실패했습니다. 다시 시도해주세요.");
+      }
     }
   };
 

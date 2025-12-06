@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 
@@ -18,6 +18,7 @@ import {
   usePostPresignedUrlsMutation,
   usePutS3Upload,
 } from "@/data/admin/postPresignedUrls/mutation";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
 
 import { CouponManagementClient } from "../../coupon/_clientBoundary/CouponManagementClient";
@@ -639,7 +640,11 @@ export function EventEditFormClient({ eventId }: Props) {
         {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
         {currentStep === "guest" && <GuestManagement eventId={eventId} />}
         {currentStep === "coupon" && <CouponManagementClient eventId={eventId} />}
-        {currentStep === "timeTable" && <TimeTableManagementClient eventId={eventId} />}
+        {currentStep === "timeTable" && (
+          <Suspense fallback={<LoadingWithLayout />}>
+            <TimeTableManagementClient eventId={eventId} />
+          </Suspense>
+        )}
         {currentStep === "basic" && (
           <div className={cx("floating")}>
             <div className={cx("floating_content")}>

@@ -155,12 +155,12 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                     </span>
                     <span>{timetableDetail.stage}</span>
                   </div>
-                  {/* <p className={cx("description")}>{timetableDetail.information}</p> */}
+                  <p className={cx("description")}>{timetableDetail.information}</p>
                 </div>
 
                 {timetableDetail.blockInfoUrl && (
                   <div className={cx("artist_info")}>
-                    <span className={cx("artist_label")}>예매링크</span>
+                    <span className={cx("artist_label")}>관련 링크</span>
                     <a
                       href={timetableDetail.blockInfoUrl}
                       target="_blank"
@@ -259,9 +259,7 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                     </div>
                   )}
                 </div>
-              ) : (
-                <div className={cx("image_placeholder")} />
-              )}
+              ) : null}
             </div>
           </div>
         </div>
