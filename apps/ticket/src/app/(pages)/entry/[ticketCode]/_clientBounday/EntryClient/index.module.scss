@@ -16,3 +16,24 @@
   justify-content: center;
   padding-bottom: 32px;
 }
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 115.43px;
+  height: 17px;
+  margin: 12px;
+
+  // Mobile responsive - 데스크톱과 동일한 크기 유지
+  @media (max-width: 768px) {
+    width: 115.43px;
+    height: 17px;
+  }
+}
+
+.logo_image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
