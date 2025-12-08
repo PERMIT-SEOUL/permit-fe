@@ -19,7 +19,7 @@
     "axios": "^1.10.0",
     "classnames": "^2.5.1",
     "import-in-the-middle": "^1.14.2",
-    "next": "15.3.3",
+    "next": "15.3.6",
     "qrcode.react": "^4.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
