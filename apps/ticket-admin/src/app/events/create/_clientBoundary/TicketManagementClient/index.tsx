@@ -14,6 +14,9 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
+/** ✅ 타입 분리 */
+type OpenMenu = { type: "round"; id: number } | { type: "ticketType"; id: number } | null;
+
 type Props = {
   eventId: number;
 };
@@ -21,7 +24,7 @@ type Props = {
 export function TicketManagementClient({ eventId }: Props) {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useTicketsQuery({ eventId });
-  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
   const { mutateAsync: deleteTicketRound, isPending: isDeleting } = useDeleteTicketRoundMutation(
     {},
   );
@@ -55,14 +58,22 @@ export function TicketManagementClient({ eventId }: Props) {
     e.preventDefault();
     e.stopPropagation();
     console.log("Kebab clicked for ticketRoundId:", ticketRoundId);
-    setOpenMenuId(openMenuId === ticketRoundId ? null : ticketRoundId);
+    setOpenMenu(
+      openMenu?.type === "round" && openMenu.id === ticketRoundId
+        ? null
+        : { type: "round", id: ticketRoundId },
+    );
   };
 
   const handleTicketTypeKebabClick = (ticketTypeId: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     console.log("Ticket type kebab clicked for ticketTypeId:", ticketTypeId);
-    setOpenMenuId(openMenuId === ticketTypeId ? null : ticketTypeId);
+    setOpenMenu(
+      openMenu?.type === "ticketType" && openMenu.id === ticketTypeId
+        ? null
+        : { type: "ticketType", id: ticketTypeId },
+    );
   };
 
   const handleDeleteTicketType = async (ticketTypeId: number) => {
@@ -172,14 +183,14 @@ export function TicketManagementClient({ eventId }: Props) {
                   ⋯
                 </button>
 
-                {openMenuId === ticketRound.ticketRoundId && (
+                {openMenu?.type === "round" && openMenu.id === ticketRound.ticketRoundId && (
                   <div className={cx("kebabDropdown")}>
                     <button
                       className={cx("menuItem")}
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        setOpenMenuId(null); // 직접 메뉴 닫기
+                        setOpenMenu(null); // 직접 메뉴 닫기
                         handleEditRound(ticketRound.ticketRoundId);
                       }}
                     >
@@ -190,7 +201,7 @@ export function TicketManagementClient({ eventId }: Props) {
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        setOpenMenuId(null); // 직접 메뉴 닫기
+                        setOpenMenu(null); // 직접 메뉴 닫기
                         handleDeleteRound(ticketRound.ticketRoundId);
                       }}
                       disabled={isDeleting}
@@ -241,14 +252,14 @@ export function TicketManagementClient({ eventId }: Props) {
                     ⋯
                   </button>
 
-                  {openMenuId === ticketType.ticketTypeId && (
+                  {openMenu?.type === "ticketType" && openMenu.id === ticketType.ticketTypeId && (
                     <div className={cx("kebabDropdown")}>
                       <button
                         className={cx("menuItem", "deleteItem")}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          setOpenMenuId(null);
+                          setOpenMenu(null);
                           handleDeleteTicketType(ticketType.ticketTypeId);
                         }}
                         disabled={isDeletingType}
