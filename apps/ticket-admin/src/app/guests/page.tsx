@@ -15,7 +15,11 @@ const cx = classNames.bind(styles);
 export default function GuestsPage() {
   const { show: openAddGuestModal } = useModal(AddGuestModal);
 
-  const { data: guestListData, isLoading, refetch } = useGuestListQuery({});
+  const {
+    data: guestListData,
+    isLoading,
+    refetch,
+  } = useGuestListQuery({ options: { refetchOnWindowFocus: true } });
 
   const handleAddGuest = async () => {
     const result = await openAddGuestModal({});

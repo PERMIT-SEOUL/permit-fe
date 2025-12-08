@@ -12,7 +12,9 @@ import styles from "./page.module.scss";
 const cx = classNames.bind(styles);
 
 export default function EventsPage() {
-  const { data: eventsListData, isLoading } = useEventsListQuery({});
+  const { data: eventsListData, isLoading } = useEventsListQuery({
+    options: { refetchOnWindowFocus: true },
+  });
 
   if (!eventsListData || isLoading) {
     return <LoadingWithLayout />;
