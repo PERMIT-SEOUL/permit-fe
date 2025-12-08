@@ -159,6 +159,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.1.0(react@19.1.0)
+      react-error-boundary:
+        specifier: ^6.0.0
+        version: 6.0.0(react@19.1.0)
     devDependencies:
       '@tanstack/eslint-plugin-query':
         specifier: ^5.83.1

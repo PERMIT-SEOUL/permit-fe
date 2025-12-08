@@ -2,12 +2,13 @@
 // eslint-disable-next-line simple-import-sort/imports
 import type { Metadata } from "next";
 
-import { OverlayProvider } from "@permit/design-system";
 import { QueryClientProviders } from "@/lib/queryClient/clientBoundary/QueryClientProvider";
 import { Header } from "@/shared/components/Header";
+import { OverlayProvider } from "@permit/design-system";
 
-import "@/styles/reset.css";
+import { GlobalErrorBoundary } from "@/shared/clientBoundary/ErrorBoundary/GlobalErrorBoundary";
 import "@/styles/globals.scss";
+import "@/styles/reset.css";
 
 export const metadata: Metadata = {
   title: "Ticket Admin",
@@ -18,12 +19,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body style={{ backgroundColor: "#000" }}>
-        <QueryClientProviders>
-          <OverlayProvider>
-            <Header />
-            {children}
-          </OverlayProvider>
-        </QueryClientProviders>
+        <GlobalErrorBoundary>
+          <QueryClientProviders>
+            <OverlayProvider>
+              <Header />
+              {children}
+            </OverlayProvider>
+          </QueryClientProviders>
+        </GlobalErrorBoundary>
       </body>
     </html>
   );
