@@ -269,11 +269,11 @@ export const UserProfileClient = () => {
           </Typography>
         </button>
         {/* TODO: 회원 탈퇴 기능 추가 */}
-        <button>
+        {/* <button>
           <Typography type="body14" color="white">
             Delete Account
           </Typography>
-        </button>
+        </button> */}
       </Flex>
     </div>
   );
