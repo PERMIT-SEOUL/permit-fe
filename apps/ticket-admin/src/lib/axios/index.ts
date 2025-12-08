@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
+import { API_URL } from "@/data/constants";
 import { EXTERNAL_PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
@@ -42,6 +43,10 @@ instance.interceptors.response.use(
       return;
     }
 
+    if (error.config?.url === API_URL.USER.REISSUE_ACCESS_TOKEN) {
+      return Promise.reject(error);
+    }
+
     if (isAxiosErrorResponse(error.response?.data)) {
       // 액세스 토큰 만료
       if (error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
@@ -58,6 +63,8 @@ instance.interceptors.response.use(
 
           return instance(originalRequest);
         } catch (error) {
+          console.log("@@refresh error", error);
+
           if (typeof window !== "undefined") {
             alert("로그인이 필요한 페이지입니다.");
 
