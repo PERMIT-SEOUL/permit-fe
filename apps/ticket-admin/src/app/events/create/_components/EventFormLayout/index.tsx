@@ -283,7 +283,7 @@ export function EventFormLayout({
                   showBorderinReadOnly={isReadOnlyMode}
                   multiline
                   rows={6}
-                  placeholder="라인업을 입력해주세요"
+                  placeholder="라인업 카테고리별로 줄바꿈 해야 됨. [라인업1] 도영, 성준 (줄바꿈) [라인업2] 창균, 민석"
                   value={lineupField.value}
                   onChange={lineupField.handleChange}
                   error={lineupField.error}
