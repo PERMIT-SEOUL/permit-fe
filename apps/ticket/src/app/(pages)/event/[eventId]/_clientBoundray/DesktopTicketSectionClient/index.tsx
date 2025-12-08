@@ -50,7 +50,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
   const roundOptions = eventTicketsData.rounds.map((round) => {
     return {
       value: String(round.roundId),
-      label: `${round.roundName} (${round.roundPrice})`,
+      label: `${round.roundName}`,
       disabled: !round.roundAvailable,
     };
   });
