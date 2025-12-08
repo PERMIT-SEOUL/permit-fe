@@ -7,7 +7,7 @@ import { useCouponValidateMutation } from "@/data/coupon/postCouponValidate/muta
 import { useEventTicketsSuspenseQuery } from "@/data/events/getEventTickets/queries";
 import { useReservationReadyMutation } from "@/data/reservations/postReservationReady/mutation";
 import { generateRandomString } from "@/shared/helpers/generateRandomString";
-import { isAxiosErrorResponse } from "@/shared/types/axioxError";
+import { isAxiosErrorResponse, isNotAuthErrorResponse } from "@/shared/types/axioxError";
 
 import { TitleSection } from "../../_components/TitleSection";
 import { calculateTotalPrice } from "../../_helpers/calculateTotalPrice";
@@ -211,9 +211,8 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
       window.location.href = `/order/${orderId}`;
     } catch (error) {
-      if (isAxiosErrorResponse(error)) {
+      if (isAxiosErrorResponse(error) && isNotAuthErrorResponse(error)) {
         // TODO: 토스트나 커스텀 모달로 변경
-        // 메시지 프론트 설정 필요
         alert(error.message);
       }
 

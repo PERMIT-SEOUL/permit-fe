@@ -16,7 +16,7 @@ import { EventTicketsResponse } from "@/data/events/getEventTickets/types";
 import { useReservationReadyMutation } from "@/data/reservations/postReservationReady/mutation";
 import { generateRandomString } from "@/shared/helpers/generateRandomString";
 import { BottomSheetComponentProps } from "@/shared/hooks";
-import { isAxiosErrorResponse } from "@/shared/types/axioxError";
+import { isAxiosErrorResponse, isNotAuthErrorResponse } from "@/shared/types/axioxError";
 
 import { calculateTotalPrice } from "../../_helpers/calculateTotalPrice";
 import { SelectedTicket } from "../DesktopTicketSectionClient";
@@ -226,9 +226,7 @@ const SelectTicketBottomSheetContent = ({
 
       window.location.href = `/order/${orderId}`;
     } catch (error) {
-      if (isAxiosErrorResponse(error)) {
-        // TODO: 토스트나 커스텀 모달로 변경
-        // 메시지 프론트 설정 필요
+      if (isAxiosErrorResponse(error) && isNotAuthErrorResponse(error)) {
         alert(error.message);
       }
 
