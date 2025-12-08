@@ -39,7 +39,9 @@ export type UsePermitSuspenseQueryOptions<
   TResponse,
   TError = AxiosErrorResponse,
   TData = TResponse,
-> = OmitQueryOptions<UseSuspenseQueryOptions<TResponse, TError, TData>>;
+> = OmitQueryOptions<UseSuspenseQueryOptions<TResponse, TError, TData>> & {
+  throwOnError?: boolean;
+};
 
 /**
  * useMutation() 의 options 타입

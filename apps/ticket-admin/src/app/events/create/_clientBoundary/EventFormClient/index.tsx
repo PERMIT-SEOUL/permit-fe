@@ -2,36 +2,41 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import classNames from "classnames/bind";
 
+import { Button } from "@permit/design-system";
 import { useSelect, useTextField } from "@permit/design-system/hooks";
+import { eventsListOptions } from "@/data/admin/getEvents/queries";
+import { EventRequest, useEventMutation } from "@/data/admin/postEvents/mutation";
+import {
+  usePostPresignedUrlsMutation,
+  usePutS3Upload,
+} from "@/data/admin/postPresignedUrls/mutation";
+import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
 
 import { EventFormLayout } from "../../_components/EventFormLayout";
+import { PreviewMedia } from "../../_components/ImageUploader";
+import type { TicketData } from "../../_components/TicketForm";
+import styles from "./index.module.scss";
 
-export type EventFormData = {
-  eventExposureStartDate: string;
-  eventExposureEndDate: string;
-  eventExposureStartTime: string;
-  eventExposureEndTime: string;
-  verificationCode: string;
-  eventName: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  venue: string;
-  lineup: string;
-  details: string;
-  minAge: number;
-  images: File[];
+const cx = classNames.bind(styles);
+
+export type EventFormData = Omit<EventRequest, "ticketTypes" | "images"> & {
+  ticketTypes: TicketData[];
+  images: PreviewMedia[];
 };
 
-const initialFormData: EventFormData = {
+type FormData = EventFormData;
+
+const initialFormData: EventRequest = {
   eventExposureStartDate: "",
   eventExposureEndDate: "",
   eventExposureStartTime: "",
   eventExposureEndTime: "",
   verificationCode: "",
-  eventName: "",
+  name: "",
+  eventType: "",
   startDate: "",
   endDate: "",
   startTime: "",
@@ -41,13 +46,30 @@ const initialFormData: EventFormData = {
   details: "",
   minAge: 0,
   images: [],
+  ticketRoundName: "",
+  roundSalesStartDate: "",
+  roundSalesEndDate: "",
+  roundSalesStartTime: "",
+  roundSalesEndTime: "",
+  ticketTypes: [],
 };
+
+export const eventTypeOptions = [
+  { value: "PERMIT", label: "PERMIT" },
+  { value: "CEILING", label: "CEILING" },
+  { value: "OLYMPAN", label: "OLYMPAN" },
+];
 
 export function EventFormClient() {
   const router = useRouter();
+  const qc = useQueryClient();
   const [currentStep, setCurrentStep] = useState<"basic" | "ticket">("basic");
-  const [formData, setFormData] = useState<EventFormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>(initialFormData as FormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { mutateAsync: postPresignedUrls } = usePostPresignedUrlsMutation({});
+  const { mutateAsync: putS3Upload } = usePutS3Upload();
+  const { mutateAsync: createEvent } = useEventMutation({});
 
   const eventExposureStartDateField = useSelect({
     initialValue: "",
@@ -142,7 +164,7 @@ export function EventFormClient() {
     onChange: (value: string) => {
       setFormData((prev) => ({
         ...prev,
-        eventName: value,
+        name: value,
       }));
     },
   });
@@ -230,9 +252,24 @@ export function EventFormClient() {
     },
   });
 
+  const eventTypeSelect = useSelect({
+    initialValue: "",
+    validate: (value) => {
+      if (!value) return "이벤트 타입을 선택해주세요.";
+
+      return undefined;
+    },
+    onChange: (value) => {
+      setFormData((prev) => ({
+        ...prev,
+        eventType: value as "PERMIT" | "CEILING" | "OLYMPAN",
+      }));
+    },
+  });
+
   const lineupField = useTextField({
     initialValue: "",
-    validate: (value: string) => {
+    validate: (_value: string) => {
       return undefined;
     },
     onChange: (value: string) => {
@@ -245,7 +282,7 @@ export function EventFormClient() {
 
   const detailsField = useTextField({
     initialValue: "",
-    validate: (value: string) => {
+    validate: (_value: string) => {
       return undefined;
     },
     onChange: (value: string) => {
@@ -258,7 +295,7 @@ export function EventFormClient() {
 
   const minAgeField = useTextField({
     initialValue: "",
-    validate: (value: string) => {
+    validate: (_value: string) => {
       return undefined;
     },
     onChange: (value: string) => {
@@ -270,24 +307,216 @@ export function EventFormClient() {
   });
 
   const handleFileChange = (files: FileList | null) => {
-    if (files) {
+    if (!files || files.length === 0) return;
+
+    const toPreview = (file: File) =>
+      new Promise<{ id: number; url: string; mediaType: "IMAGE" | "VIDEO" }>((resolve) => {
+        const isVideo = file.type.startsWith("video/");
+        const reader = new FileReader();
+
+        reader.onload = (ev) => {
+          const dataUrl = (ev.target?.result as string) ?? "";
+
+          resolve({
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            url: dataUrl,
+            mediaType: isVideo ? "VIDEO" : "IMAGE",
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+
+    Promise.all(Array.from(files).map(toPreview)).then((appended) => {
+      setFormData((prev) => {
+        const prevImages = (prev.images as PreviewMedia[] | undefined) ?? [];
+        const merged = [...prevImages, ...appended];
+
+        return {
+          ...prev,
+          images: merged,
+        };
+      });
+    });
+  };
+
+  // 2단계 폼 필드
+  const ticketRoundNameField = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 이름을 입력해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
       setFormData((prev) => ({
         ...prev,
-        images: Array.from(files),
+        ticketRoundName: value,
       }));
-    }
+    },
+  });
+
+  const roundSalesStartDate = useSelect({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 판매 시작 날짜를 선택해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        roundSalesStartDate: value,
+      }));
+    },
+  });
+
+  const roundSalesEndDate = useSelect({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 판매 종료 날짜를 선택해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        roundSalesEndDate: value,
+      }));
+    },
+  });
+
+  const roundSalesStartTime = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 판매 시작 시간을 입력해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        roundSalesStartTime: value,
+      }));
+    },
+  });
+
+  const roundSalesEndTime = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value) return "티켓 차수 판매 종료 시간을 입력해주세요.";
+
+      return undefined;
+    },
+    onChange: (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        roundSalesEndTime: value,
+      }));
+    },
+  });
+
+  // 티켓 관리 함수들
+  const addTicket = () => {
+    const newTicket: TicketData = {
+      id: `ticket-${Date.now()}`,
+      ticketName: "",
+      price: 0,
+      ticketCount: 0,
+      ticketStartDate: "",
+      ticketStartTime: "",
+      ticketEndDate: "",
+      ticketEndTime: "",
+    };
+
+    setFormData((prev) => ({
+      ...prev,
+      ticketTypes: [...prev.ticketTypes, newTicket],
+    }));
+  };
+
+  const updateTicket = (ticketId: string, updatedTicket: TicketData) => {
+    setFormData((prev) => ({
+      ...prev,
+      ticketTypes: prev.ticketTypes.map((ticket) =>
+        ticket.id === ticketId ? updatedTicket : ticket,
+      ),
+    }));
+  };
+
+  const deleteTicket = (ticketId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      ticketTypes: prev.ticketTypes.filter((ticket) => ticket.id !== ticketId),
+    }));
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: API 호출로 이벤트 생성
-      console.log("Form data:", formData);
+      const data = await qc.fetchQuery(eventsListOptions());
+      const allEvents = data.flatMap((d) => d.events);
+      const maxEventIdAll = allEvents.length
+        ? Math.max(...allEvents.map((e) => e.eventId))
+        : undefined;
+
+      const toUpload = (
+        formData.images as { id?: number; url?: string; mediaType?: "IMAGE" | "VIDEO" }[]
+      ).filter((m) => !!m?.url && !!m?.mediaType);
+
+      const mediaInfoRequests = toUpload.map((m) => {
+        const mediaName = `${m.id}`;
+
+        return { mediaName, mediaType: m.mediaType! };
+      });
+
+      const presignedUrls = await postPresignedUrls({
+        eventId: (maxEventIdAll as number) + 1 || 1,
+        mediaInfoRequests,
+      });
+
+      await Promise.all(
+        presignedUrls.preSignedUrlInfoList.map(async (url, index) => {
+          const file = toUpload[index];
+
+          const response = await fetch(file.url!);
+          const blob = await response.blob();
+          const newFile = new File([blob], `fileName-${file.id}`, { type: blob.type });
+
+          return putS3Upload({ url: url.preSignedUrl, file: newFile });
+        }),
+      );
+
+      const imagesData = formData.images.map((m) => {
+        if (m.id) {
+          const url = presignedUrls.preSignedUrlInfoList.find(
+            (info) => info.mediaName === m.id?.toString(),
+          )?.preSignedUrl;
+
+          const imageUrl = toCDNUrl(url?.split("?")[0] as string);
+
+          return {
+            imageUrl: imageUrl as string,
+          };
+        }
+
+        return {
+          imageUrl: m.imageUrl as string,
+        };
+      });
+
+      const apiData: EventRequest = {
+        ...formData,
+        images: imagesData,
+        ticketTypes: formData.ticketTypes.map(({ id: _id, ...ticket }) => ticket),
+      };
+
+      await createEvent(apiData);
 
       // 성공 시 이벤트 목록으로 이동
-      //   router.push("/events");
+      router.push("/events");
     } catch (error) {
+      alert("이벤트 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
       console.error("Error creating event:", error);
     } finally {
       setIsSubmitting(false);
@@ -295,27 +524,67 @@ export function EventFormClient() {
   };
 
   return (
-    <EventFormLayout
-      currentStep={currentStep}
-      setCurrentStep={setCurrentStep}
-      eventExposureStartDateField={eventExposureStartDateField.selectProps}
-      eventExposureEndDateField={eventExposureEndDateField.selectProps}
-      eventExposureStartTimeField={eventExposureStartTimeField}
-      eventExposureEndTimeField={eventExposureEndTimeField}
-      eventVerificationCodeField={eventVerificationCodeField}
-      eventNameField={eventNameField}
-      eventStartDateField={eventStartDateField.selectProps}
-      eventEndDateField={eventEndDateField.selectProps}
-      eventStartTimeField={eventStartTimeField}
-      eventEndTimeField={eventEndTimeField}
-      venueField={venueField}
-      lineupField={lineupField}
-      detailsField={detailsField}
-      minAgeField={minAgeField}
-      formData={formData}
-      onFileChange={handleFileChange}
-      onSubmit={handleSubmit}
-      isSubmitting={isSubmitting}
-    />
+    <div className={cx("container")}>
+      {/* Sidebar */}
+      <div className={cx("sidebar")}>
+        <button className={cx("sidebar_item")} onClick={() => setCurrentStep("basic")}>
+          <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
+          <span className={cx("sidebar_text", currentStep === "basic" && "active")}>Add Basic</span>
+        </button>
+        <button className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
+          <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
+          <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>
+            Add Ticket
+          </span>
+        </button>
+      </div>
+      <EventFormLayout
+        currentStep={currentStep}
+        eventExposureStartDateField={eventExposureStartDateField.selectProps}
+        eventExposureEndDateField={eventExposureEndDateField.selectProps}
+        eventExposureStartTimeField={eventExposureStartTimeField}
+        eventExposureEndTimeField={eventExposureEndTimeField}
+        eventTypeSelect={eventTypeSelect.selectProps}
+        eventVerificationCodeField={eventVerificationCodeField}
+        eventNameField={eventNameField}
+        eventStartDateField={eventStartDateField.selectProps}
+        eventEndDateField={eventEndDateField.selectProps}
+        eventStartTimeField={eventStartTimeField}
+        eventEndTimeField={eventEndTimeField}
+        venueField={venueField}
+        lineupField={lineupField}
+        detailsField={detailsField}
+        minAgeField={minAgeField}
+        formData={formData}
+        onFileChange={handleFileChange}
+        ticketRoundNameField={ticketRoundNameField}
+        roundSalesStartDate={roundSalesStartDate.selectProps}
+        roundSalesEndDate={roundSalesEndDate.selectProps}
+        roundSalesStartTime={roundSalesStartTime}
+        roundSalesEndTime={roundSalesEndTime}
+        isSubmitting={isSubmitting}
+        onAddTicket={addTicket}
+        onUpdateTicket={updateTicket}
+        onDeleteTicket={deleteTicket}
+      />
+
+      <div className={cx("floating")}>
+        <Button
+          className={cx("button")}
+          isLoading={isSubmitting}
+          variant="cta"
+          size="md"
+          onClick={() => {
+            if (currentStep === "basic") {
+              setCurrentStep("ticket");
+            } else {
+              handleSubmit();
+            }
+          }}
+        >
+          {currentStep === "basic" ? "Next" : "Save"}
+        </Button>
+      </div>
+    </div>
   );
 }

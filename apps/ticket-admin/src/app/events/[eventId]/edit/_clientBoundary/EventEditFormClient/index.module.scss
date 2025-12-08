@@ -1,0 +1,40 @@
+@use "@permit/design-system/styles/variables" as theme;
+@use "@permit/design-system/styles/typography" as typography;
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 24px;
+}
+
+.container {
+  display: flex;
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.floating {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: theme.$gray-800;
+  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
+  border-top: 1px solid theme.$gray-600;
+}
+
+.floating_content {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 0;
+}
+
+.button {
+  padding: 0 100px;
+
+  @include typography.body-bold-14;
+}

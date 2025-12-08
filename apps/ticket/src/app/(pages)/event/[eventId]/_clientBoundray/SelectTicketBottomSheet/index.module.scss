@@ -14,6 +14,10 @@
 
 .selected_tickets_wrap {
   height: calc(100% - 33px);
+
+  &.couponVerified {
+    height: calc(100% - 33px - 15px);
+  }
 }
 
 .promo_code_wrap {
@@ -122,4 +126,9 @@
   padding-top: 12px;
 
   border-top: 2px solid theme.$gray-200;
+}
+
+.original_price {
+  color: theme.$gray-400;
+  text-decoration: line-through;
 }

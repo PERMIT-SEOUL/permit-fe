@@ -20,6 +20,7 @@ export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const isEntryPage = pathname.includes("/entry");
   const isTimeTablePage = /^\/event\/[^/]+\/time-table(\/.*)?$/.test(pathname);
 
   const [isLogined, setIsLogined] = useState(false);
@@ -50,7 +51,7 @@ export const Header = () => {
   };
 
   return (
-    <header className={cx("header", { is_time_table_page: isTimeTablePage })}>
+    <header className={cx("header", { no_header: isTimeTablePage || isEntryPage })}>
       <div className={cx("content")}>
         <Link className={cx("logo")} href="/">
           <Image src={permitLogo} alt="PERMIT" className={cx("logo_image")} />

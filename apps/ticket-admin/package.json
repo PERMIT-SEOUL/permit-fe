@@ -15,7 +15,7 @@
     "@tanstack/react-query-devtools": "^5.80.10",
     "axios": "^1.10.0",
     "classnames": "^2.5.1",
-    "next": "15.3.3",
+    "next": "15.3.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

@@ -6,13 +6,13 @@ export type TimetablesResponse = {
   eventName: string;
   startDate: string;
   endDate: string;
-  areas: Area[];
+  stages: Stages[];
   blocks: Block[];
 };
 
-export type Area = {
-  areaId: number;
-  areaName: string;
+export type Stages = {
+  stageNotionId: string;
+  stageName: string;
   sequence: number;
 };
 
@@ -23,6 +23,6 @@ export type Block = {
   blockBackgroundColor: string;
   blockStartDate: string;
   blockEndDate: string;
-  blockAreaId: number;
+  blockStageNotionId: string;
   isUserLiked: boolean;
 };

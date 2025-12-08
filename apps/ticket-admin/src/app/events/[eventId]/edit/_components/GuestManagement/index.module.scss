@@ -1,0 +1,210 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  margin-top: 72px;
+
+  color: white;
+
+  background-color: #000;
+}
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.table_container {
+  overflow: hidden;
+
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+}
+
+.guest_table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+.guest_table th {
+  padding: 16px;
+
+  color: white;
+  font-weight: 600;
+  text-align: left;
+
+  background-color: #2a2a2a;
+  border-bottom: 1px solid #333;
+}
+
+.guest_table td {
+  padding: 16px;
+
+  color: #ccc;
+  vertical-align: middle;
+
+  border-bottom: 1px solid #333;
+}
+
+.guest_table tr:last-child td {
+  border-bottom: none;
+}
+
+.guest_table tr:hover {
+  background-color: #222;
+}
+
+.affiliation_cell {
+  // display: flex 제거하여 다른 td와 높이 일치
+}
+
+.checkbox_label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.checkbox {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+
+  background-color: #333;
+  cursor: pointer;
+  border: 2px solid #666;
+  border-radius: 4px;
+
+  // 기본 체크박스 스타일 완전 오버라이드
+  appearance: none;
+
+  &:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+
+    // 체크마크 표시
+    &::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 1;
+
+      transform: translate(-50%, -50%);
+
+      content: "✓";
+    }
+  }
+
+  &:hover {
+    background-color: #444;
+    border-color: #007bff;
+  }
+
+  &:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+  }
+}
+
+.tickets_cell {
+  // display: flex 제거하여 다른 td와 높이 일치
+  // 내부 요소들은 inline-flex로 처리
+}
+
+.ticket_button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 4px;
+
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+
+  background-color: #333;
+  cursor: pointer;
+  border: 1px solid #555;
+  border-radius: 50%;
+
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #444;
+  }
+
+  &:active {
+    background-color: #555;
+  }
+}
+
+.ticket_input {
+  width: 60px;
+  height: 32px;
+  margin: 0 4px;
+  padding: 0 8px;
+
+  color: white;
+  font-size: 14px;
+  text-align: center;
+
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    margin: 0;
+
+    appearance: none;
+  }
+
+  &[type="number"] {
+    appearance: textfield;
+  }
+}
+
+.floating {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: #2a2a2a;
+  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
+  border-top: 1px solid #555;
+}
+
+.floating_content {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 0;
+}
+
+.button {
+  padding: 0 48px;
+}

@@ -1,0 +1,279 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import classNames from "classnames/bind";
+
+import { Button, Typography } from "@permit/design-system";
+import { useDeleteTicketRoundMutation } from "@/data/admin/deleteTicketRound/mutation";
+import { useDeleteTicketTypeMutation } from "@/data/admin/deleteTicketType/mutation";
+import { useTicketsQuery } from "@/data/admin/getTickets/queries";
+import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
+
+import styles from "./index.module.scss";
+
+const cx = classNames.bind(styles);
+
+/** ✅ 타입 분리 */
+type OpenMenu = { type: "round"; id: number } | { type: "ticketType"; id: number } | null;
+
+type Props = {
+  eventId: number;
+};
+
+export function TicketManagementClient({ eventId }: Props) {
+  const router = useRouter();
+  const { data, isLoading, error, refetch } = useTicketsQuery({ eventId });
+  const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
+  const { mutateAsync: deleteTicketRound, isPending: isDeleting } = useDeleteTicketRoundMutation(
+    {},
+  );
+  const { mutateAsync: deleteTicketType, isPending: isDeletingType } = useDeleteTicketTypeMutation(
+    {},
+  );
+
+  const handleAddRound = () => {
+    router.push(`/events/${eventId}/edit/rounds/add`);
+  };
+
+  const handleEditRound = (ticketRoundId: number) => {
+    console.log("Edit clicked for ticketRoundId:", ticketRoundId);
+    router.push(`/events/${eventId}/edit/ticket-detail?ticketRoundId=${ticketRoundId}`);
+  };
+
+  const handleDeleteRound = async (ticketRoundId: number) => {
+    if (confirm("정말로 이 티켓 라운드를 삭제하시겠습니까?")) {
+      try {
+        await deleteTicketRound({ ticketRoundId });
+        alert("티켓 라운드가 삭제되었습니다.");
+        refetch(); // 데이터 새로고침
+      } catch (error) {
+        console.error("Error deleting ticket round:", error);
+        alert("티켓 라운드 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    }
+  };
+
+  const handleKebabClick = (ticketRoundId: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Kebab clicked for ticketRoundId:", ticketRoundId);
+    setOpenMenu(
+      openMenu?.type === "round" && openMenu.id === ticketRoundId
+        ? null
+        : { type: "round", id: ticketRoundId },
+    );
+  };
+
+  const handleTicketTypeKebabClick = (ticketTypeId: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Ticket type kebab clicked for ticketTypeId:", ticketTypeId);
+    setOpenMenu(
+      openMenu?.type === "ticketType" && openMenu.id === ticketTypeId
+        ? null
+        : { type: "ticketType", id: ticketTypeId },
+    );
+  };
+
+  const handleDeleteTicketType = async (ticketTypeId: number) => {
+    if (confirm("정말로 이 티켓을 삭제하시겠습니까?")) {
+      try {
+        await deleteTicketType({ ticketTypeId });
+        alert("티켓이 삭제되었습니다.");
+        refetch(); // 데이터 새로고침
+      } catch (error) {
+        console.error("Error deleting ticket type:", error);
+        alert("티켓 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingWithLayout />;
+  }
+
+  if (error || !data) {
+    return <div className={cx("container")}>데이터를 불러올 수 없습니다.</div>;
+  }
+
+  const { ticketRoundsWithTypes } = data;
+
+  // 전체 티켓 통계 계산
+  const totalStats = ticketRoundsWithTypes.reduce(
+    (acc, ticketRound) => {
+      const roundStats = ticketRound.ticketTypes.reduce(
+        (roundAcc, ticketType) => ({
+          totalSold: roundAcc.totalSold + ticketType.ticketTypeSoldCount,
+          totalCount: roundAcc.totalCount + ticketType.ticketTypeTotalCount,
+          totalAmount: roundAcc.totalAmount + ticketType.ticketTypeSoldAmount,
+        }),
+        { totalSold: 0, totalCount: 0, totalAmount: 0 },
+      );
+
+      return {
+        totalSold: acc.totalSold + roundStats.totalSold,
+        totalCount: acc.totalCount + roundStats.totalCount,
+        totalAmount: acc.totalAmount + roundStats.totalAmount,
+      };
+    },
+    { totalSold: 0, totalCount: 0, totalAmount: 0 },
+  );
+
+  return (
+    <div className={cx("container")}>
+      <div className={cx("headerSection")}>
+        <Typography type="title24">Your tickets</Typography>
+
+        <div className={cx("statsSection")}>
+          <div className={cx("statsGrid")}>
+            <div className={cx("statColumn")}>
+              <Typography type="body14" className={cx("statLabel")}>
+                Total ticket sold / Total ticket count
+              </Typography>
+              <Typography type="title18" className={cx("statValue")}>
+                {totalStats.totalSold} / {totalStats.totalCount}
+              </Typography>
+            </div>
+
+            <div className={cx("statColumn")}>
+              <Typography type="body14" className={cx("statLabel")}>
+                Total sold amount
+              </Typography>
+              <Typography type="title18" className={cx("statValue")}>
+                ₩ {totalStats.totalAmount.toLocaleString()}
+              </Typography>
+            </div>
+          </div>
+
+          <Button variant="cta" size="sm" onClick={handleAddRound}>
+            Add round
+          </Button>
+        </div>
+      </div>
+
+      {ticketRoundsWithTypes.map((ticketRound) => (
+        <div key={ticketRound.ticketRoundId} className={cx("ticketRound")}>
+          {/* 헤더 섹션 */}
+          <div className={cx("header")}>
+            <div className={cx("titleSection")}>
+              <h2 className={cx("title")}>{ticketRound.ticketRoundName}</h2>
+              <div className={cx("salesPeriod")}>
+                <div className={cx("salesInfo")}>
+                  <span className={cx("label")}>sales start</span>
+                  <span className={cx("datetime")}>
+                    {ticketRound.ticketRoundSalesStartDate} {ticketRound.ticketRoundSalesStartTime}
+                  </span>
+                </div>
+                <div className={cx("salesInfo")}>
+                  <span className={cx("label")}>sales end</span>
+                  <span className={cx("datetime")}>
+                    {ticketRound.ticketRoundSalesEndDate} {ticketRound.ticketRoundSalesEndTime}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className={cx("actionSection")}>
+              <div className={cx("kebabMenu")}>
+                <button
+                  className={cx("kebabButton")}
+                  onClick={(e) => handleKebabClick(ticketRound.ticketRoundId, e)}
+                >
+                  ⋯
+                </button>
+
+                {openMenu?.type === "round" && openMenu.id === ticketRound.ticketRoundId && (
+                  <div className={cx("kebabDropdown")}>
+                    <button
+                      className={cx("menuItem")}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setOpenMenu(null); // 직접 메뉴 닫기
+                        handleEditRound(ticketRound.ticketRoundId);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className={cx("menuItem", "deleteItem")}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setOpenMenu(null); // 직접 메뉴 닫기
+                        handleDeleteRound(ticketRound.ticketRoundId);
+                      }}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? "Deleting..." : "Delete"}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* 티켓 타입들 */}
+          <div className={cx("ticketTypes")}>
+            {ticketRound.ticketTypes.map((ticketType) => (
+              <div key={ticketType.ticketTypeId} className={cx("ticketTypeCard")}>
+                <div className={cx("ticketTypeHeader")}>
+                  <div className={cx("headerCell")}>Ticket Name</div>
+                  <div className={cx("headerCell")}>Price</div>
+                  <div className={cx("headerCell")}>Refund</div>
+                  <div className={cx("headerCell")}>Ticket sold</div>
+                  <div className={cx("headerCell")}>Ticket used</div>
+                  <div className={cx("headerCell")}>Ticket sold amount</div>
+                </div>
+
+                <div className={cx("ticketTypeData")}>
+                  <div className={cx("dataCell")}>{ticketType.ticketTypeName}</div>
+                  <div className={cx("dataCell")}>
+                    ₩ {ticketType.ticketTypePrice.toLocaleString()}
+                  </div>
+                  <div className={cx("dataCell")}>{ticketType.ticketTypeRefundCount}</div>
+                  <div className={cx("dataCell")}>
+                    {ticketType.ticketTypeSoldCount} / {ticketType.ticketTypeTotalCount}
+                  </div>
+                  <div className={cx("dataCell")}>
+                    {ticketType.ticketTypeUsedCount} / {ticketType.ticketTypeSoldCount}
+                  </div>
+                  <div className={cx("dataCell")}>
+                    ₩ {ticketType.ticketTypeSoldAmount.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className={cx("ticketTypeKebabMenu")}>
+                  <button
+                    className={cx("kebabButton")}
+                    onClick={(e) => handleTicketTypeKebabClick(ticketType.ticketTypeId, e)}
+                  >
+                    ⋯
+                  </button>
+
+                  {openMenu?.type === "ticketType" && openMenu.id === ticketType.ticketTypeId && (
+                    <div className={cx("kebabDropdown")}>
+                      <button
+                        className={cx("menuItem", "deleteItem")}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setOpenMenu(null);
+                          handleDeleteTicketType(ticketType.ticketTypeId);
+                        }}
+                        disabled={isDeletingType}
+                      >
+                        {isDeletingType ? "Deleting..." : "Delete"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

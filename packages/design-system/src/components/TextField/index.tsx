@@ -36,6 +36,11 @@ export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
    * @default 3
    */
   rows?: number;
+  /**
+   * 읽기 전용(ReadOnly) 상태일 때도 테두리를 표시할지 여부를 설정합니다.
+   * true로 설정하면 읽기 전용 상태에서도 테두리가 표시됩니다.
+   */
+  showBorderinReadOnly?: boolean;
 }
 
 export const TextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, TextFieldProps>(
@@ -50,6 +55,7 @@ export const TextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Text
       className,
       disabled,
       readOnly,
+      showBorderinReadOnly,
       ...props
     },
     ref,
@@ -75,6 +81,7 @@ export const TextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Text
             "textfield--disabled": disabled,
             "textfield--readonly": readOnly,
             "textfield--multiline": multiline,
+            "textfield--show-border-in-readonly": showBorderinReadOnly && readOnly,
           })}
           data-time-empty={isTimeInput ? (!hasValue).toString() : undefined}
           data-placeholder={isTimeInput ? props?.placeholder : undefined}

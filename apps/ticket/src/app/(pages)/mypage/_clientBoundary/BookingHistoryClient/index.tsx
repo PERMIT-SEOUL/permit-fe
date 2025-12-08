@@ -17,13 +17,19 @@ const cx = classNames.bind(styles);
  * 예약 히스토리 섹션
  */
 export const BookingHistoryClient = () => {
-  const { data: userTicketsData } = useUserTicketsSuspenseQuery();
+  const { data: userTicketsData, refetch } = useUserTicketsSuspenseQuery({
+    refetchOnWindowFocus: true,
+  });
 
   const { show: openCancelTicketModal } = useModal(CancelTicketModal);
   const { show: openQrTicketModal } = useModal(QrTicketModal);
 
-  const handleCancelOrder = (orderId: string, eventName: string) => {
-    openCancelTicketModal({ orderId, eventName });
+  const handleCancelOrder = async (orderId: string, eventName: string) => {
+    const result = await openCancelTicketModal({ orderId, eventName });
+
+    if (result) {
+      await refetch();
+    }
   };
 
   const handleClickQRCode = (ticketInfo: QrTicketInfo) => {

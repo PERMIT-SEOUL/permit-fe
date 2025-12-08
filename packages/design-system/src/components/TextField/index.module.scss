@@ -33,6 +33,11 @@
     border-color: transparent;
   }
 
+  &--show-border-in-readonly {
+    border: 1px solid #171717;
+    border-radius: 4px;
+  }
+
   &__input {
     flex: 1;
     width: 100%;

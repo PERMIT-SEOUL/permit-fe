@@ -3,7 +3,7 @@ export type GuestResponse = {
 };
 
 type Guest = {
-  id: number;
+  guestId: number;
   guestName: string;
   guestType: string;
   affiliation: string;

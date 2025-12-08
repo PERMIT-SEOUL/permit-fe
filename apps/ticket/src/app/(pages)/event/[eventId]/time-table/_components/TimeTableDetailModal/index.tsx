@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Icon } from "@permit/design-system";
 import { useTimetableUnlikeMutation } from "@/data/events/deleteTimetableLike/mutation";
 import { useTimetableDetailQuery } from "@/data/events/getTimetableDetail/queries";
+import { Block } from "@/data/events/getTimetables/types";
 import { useTimetableLikeMutation } from "@/data/events/postTimetableLike/mutation";
 import { EVENT_QUERY_KEYS } from "@/data/events/queryKeys";
 
@@ -18,7 +19,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import { Block } from "../../_clientBoundary/TimeTableClient";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -153,14 +153,14 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                     <span>
                       {timetableDetail.startDate} ~ {timetableDetail.endDate}
                     </span>
-                    <span>{timetableDetail.area}</span>
+                    <span>{timetableDetail.stage}</span>
                   </div>
-                  {/* <p className={cx("description")}>{timetableDetail.information}</p> */}
+                  <p className={cx("description")}>{timetableDetail.information}</p>
                 </div>
 
                 {timetableDetail.blockInfoUrl && (
                   <div className={cx("artist_info")}>
-                    <span className={cx("artist_label")}>예매링크</span>
+                    <span className={cx("artist_label")}>관련 링크</span>
                     <a
                       href={timetableDetail.blockInfoUrl}
                       target="_blank"
@@ -259,9 +259,7 @@ export const TimeTableDetailModal = ({ block, isOpen, onClose }: TimeTableDetail
                     </div>
                   )}
                 </div>
-              ) : (
-                <div className={cx("image_placeholder")} />
-              )}
+              ) : null}
             </div>
           </div>
         </div>

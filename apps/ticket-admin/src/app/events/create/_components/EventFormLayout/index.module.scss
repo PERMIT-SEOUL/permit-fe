@@ -1,57 +1,6 @@
 @use "@permit/design-system/styles/variables" as theme;
 @use "@permit/design-system/styles/typography" as typography;
 
-.container {
-  display: flex;
-  max-width: 1200px;
-  min-height: 100vh;
-  margin: 0 auto;
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 200px;
-  margin-top: 72px;
-}
-
-.sidebar_item {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-
-  cursor: pointer;
-}
-
-.sidebar_indicator {
-  width: 4px;
-  height: 28px;
-
-  &.active {
-    flex-shrink: 0;
-
-    background-color: #fafafa;
-    border-radius: 8px;
-  }
-}
-
-.sidebar_text {
-  color: #636363;
-  font-weight: 700;
-  font-size: 24px;
-  font-family: Roboto, sans-serif;
-  line-height: 100%;
-
-  &.active {
-    color: #fafafa;
-  }
-}
-
 .main {
   display: flex;
   flex-direction: column;
@@ -62,24 +11,4 @@
 
 .row {
   width: 100%;
-}
-
-.floating {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: flex-end;
-  padding: 12px 160px;
-
-  background-color: theme.$gray-800;
-  box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
-  border-top: 1px solid theme.$gray-600;
-}
-
-.button {
-  padding: 0 100px;
-
-  @include typography.body-bold-14;
 }

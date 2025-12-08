@@ -9,7 +9,7 @@ export type TimetableDetail = {
   categoryBackgroundColor: string;
   isLiked: boolean;
   information: string;
-  area: string;
+  stage: string;
   media: {
     mediaUrl: string;
   }[];

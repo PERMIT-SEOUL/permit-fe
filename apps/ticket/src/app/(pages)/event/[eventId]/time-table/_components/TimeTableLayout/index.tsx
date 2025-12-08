@@ -1,6 +1,8 @@
 import classNames from "classnames/bind";
 
-import { Area, Block, TimeSlot } from "../../_clientBoundary/TimeTableClient";
+import { Block, Stages } from "@/data/events/getTimetables/types";
+
+import { TimeSlot } from "../../_clientBoundary/TimeTableClient";
 import AreaHeaders from "../AreaHeaders";
 import GridArea from "../GridArea";
 import TimeColumn from "../TimeColumn";
@@ -10,7 +12,7 @@ const cx = classNames.bind(styles);
 
 type TimeTableLayoutProps = {
   timeSlots: TimeSlot[];
-  areas: Area[];
+  stages: Stages[];
   blocks: Array<Block & { style: React.CSSProperties }>;
   columnWidth: number;
   hourHeight: number;
@@ -22,7 +24,7 @@ type TimeTableLayoutProps = {
 
 export const TimeTableLayout = ({
   timeSlots,
-  areas,
+  stages,
   blocks,
   columnWidth,
   hourHeight,
@@ -44,7 +46,7 @@ export const TimeTableLayout = ({
         <div ref={rightScrollAreaRef} className={cx("scrollable_area")}>
           {/* 헤더 행 (스크롤과 함께 이동) */}
           <div className={cx("header_row")}>
-            <AreaHeaders areas={areas} columnWidth={columnWidth} />
+            <AreaHeaders stages={stages} columnWidth={columnWidth} />
           </div>
 
           {/* 컨텐츠 행 */}
@@ -61,7 +63,7 @@ export const TimeTableLayout = ({
             {/* 그리드 영역 */}
             <div className={cx("grid_wrapper")}>
               <GridArea
-                areas={areas}
+                stages={stages}
                 blocks={blocks}
                 columnWidth={columnWidth}
                 hourHeight={hourHeight}

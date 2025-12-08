@@ -7,6 +7,7 @@ import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import { TimeTableClient } from "./_clientBoundary/TimeTableClient";
+import { TimeTableErrorBoundary } from "./_clientBoundary/TimeTableErrorBoundary";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
@@ -26,13 +27,15 @@ const TimeTablePage = async ({ params }: Props) => {
   qc.prefetchQuery(timetablesOptions({ eventId }));
 
   return (
-    <HydrationBoundary state={dehydrate(qc)}>
-      <Suspense fallback={<LoadingWithLayout />}>
-        <div className={cx("container")}>
-          <TimeTableClient eventId={eventId} />
-        </div>
-      </Suspense>
-    </HydrationBoundary>
+    <TimeTableErrorBoundary>
+      <HydrationBoundary state={dehydrate(qc)}>
+        <Suspense fallback={<LoadingWithLayout />}>
+          <div className={cx("container")}>
+            <TimeTableClient eventId={eventId} />
+          </div>
+        </Suspense>
+      </HydrationBoundary>
+    </TimeTableErrorBoundary>
   );
 };
 

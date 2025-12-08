@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const isProd = process.env.VERCEL_ENV === "production";
+  const isProd = process.env.NEXT_PUBLIC_ENV === "production";
   const path = req.nextUrl.pathname;
 
   // 운영 환경에서만 특별한 제한을 적용

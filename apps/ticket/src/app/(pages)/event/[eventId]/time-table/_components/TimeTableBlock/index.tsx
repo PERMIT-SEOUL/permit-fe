@@ -1,6 +1,7 @@
 import classNames from "classnames/bind";
 
-import { Block } from "../../_clientBoundary/TimeTableClient";
+import { Block } from "@/data/events/getTimetables/types";
+
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);

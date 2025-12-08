@@ -137,6 +137,10 @@ export const UserProfileClient = () => {
   const handleSignout = async () => {
     try {
       // TODO: 로그아웃 여부 물어봐야할까?
+      if (!confirm("로그아웃 하시겠습니까?")) {
+        return;
+      }
+
       await mutateLogout();
 
       safeLocalStorage.remove(IS_LOGINED);
