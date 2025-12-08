@@ -471,7 +471,7 @@ export function EventFormClient() {
       });
 
       const presignedUrls = await postPresignedUrls({
-        eventId: maxEventIdAll as number,
+        eventId: (maxEventIdAll as number) + 1 || 1,
         mediaInfoRequests,
       });
 
