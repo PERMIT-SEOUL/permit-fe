@@ -28,6 +28,7 @@ instance.interceptors.request.use(
 );
 
 let isAlertShown = false;
+let isLoginAlertShown = false;
 
 // 응답 인터셉터
 instance.interceptors.response.use(
@@ -52,10 +53,13 @@ instance.interceptors.response.use(
     if (isAxiosErrorResponse(error.response?.data)) {
       // 엑세스 토큰 없음
       if (error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN) {
-        alert("로그인이 필요한 페이지입니다.");
+        if (error.config?.url === API_URL.USER.LOGOUT) {
+          safeLocalStorage.remove(IS_LOGINED);
 
-        safeLocalStorage.remove(IS_LOGINED);
-        window.location.href = "/login";
+          return;
+        }
+
+        redirectToLoginOnce();
 
         return;
       }
@@ -63,25 +67,32 @@ instance.interceptors.response.use(
       if (error.response?.data.code === ERROR_CODE.LOGIN_REQUIRED) {
         // 인증 페이지에서는 로그인 페이지로 이동하지 않음
         if (window.location.pathname !== "/auth") {
-          alert("로그인이 필요한 페이지입니다.");
+          redirectToLoginOnce();
 
-          safeLocalStorage.remove(IS_LOGINED);
-          window.location.href = "/login";
+          return;
         }
       }
 
       if (error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED) {
-        alert("로그인이 필요한 페이지입니다.");
+        redirectToLoginOnce();
 
-        safeLocalStorage.remove(IS_LOGINED);
-        window.location.href = "/login";
+        return;
       }
     }
 
     // 액세스 토큰 만료
     if (error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
       try {
-        if (isAlertShown) return;
+        if (isAlertShown) {
+          // 원래 요청 재시도
+          const originalRequest = error.config;
+
+          if (!originalRequest) {
+            return Promise.reject(error);
+          }
+
+          return instance(originalRequest);
+        }
 
         // 엑세스 토큰 재발급
         isAlertShown = true;
@@ -112,3 +123,13 @@ instance.interceptors.response.use(
     return Promise.reject(error.response?.data);
   },
 );
+
+function redirectToLoginOnce() {
+  if (isLoginAlertShown) return;
+
+  isLoginAlertShown = true;
+
+  alert("로그인이 필요한 페이지입니다.");
+  safeLocalStorage.remove(IS_LOGINED);
+  window.location.href = "/login";
+}

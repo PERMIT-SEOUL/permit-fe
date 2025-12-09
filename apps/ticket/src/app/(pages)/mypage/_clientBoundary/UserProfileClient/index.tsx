@@ -9,6 +9,7 @@ import { usePatchUserInfoMutation } from "@/data/users/patchUserInfo/mutation";
 import { useUserEmailCheckMutation } from "@/data/users/postUserEmailCheck/mutation";
 import { useLogoutMutation } from "@/data/users/postUserLogout/mutation";
 import { USER_QUERY_KEYS } from "@/data/users/queryKeys";
+import { ERROR_CODE } from "@/lib/axios/utils/errorCode";
 import { safeLocalStorage } from "@/lib/storage";
 import { IS_LOGINED } from "@/shared/constants/storage";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
@@ -147,6 +148,10 @@ export const UserProfileClient = () => {
       window.location.href = "/login";
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
+        if (error.code === ERROR_CODE.NO_ACCESS_TOKEN) {
+          return;
+        }
+
         alert(error.message);
       }
     }
