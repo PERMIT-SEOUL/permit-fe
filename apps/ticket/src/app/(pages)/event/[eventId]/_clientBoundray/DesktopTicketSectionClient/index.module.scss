@@ -18,6 +18,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: calc(100% - 77px - 44px - 28px - 12px);
+  scrollbar-color: #888 theme.$gray-600;
 }
 
 .select_section {
