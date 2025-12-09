@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
   // FIXME: 이미지 cdn 도메인으로 수정
   images: {
     domains: [
-      "d3c0v2xj3fc363.cloudfront.net",
+      process.env.NEXT_PUBLIC_CDN_DOMAIN as string,
       "avatars.githubusercontent.com",
       "scontent-icn2-1.cdninstagram.com",
       "images.unsplash.com",
