@@ -27,12 +27,21 @@ export const Footer = () => {
         <Typography type="body12" color="gray400">
           Copyright © 2024 PERMIT
         </Typography>
-        <Typography type="body12" color="gray400">
-          Instagram_Permit
-        </Typography>
-        <Typography type="body12" color="gray400">
-          Instagram_ceiling
-        </Typography>
+        <a href="https://www.instagram.com/permit_invites/" target="_blank" rel="noreferrer">
+          <Typography type="body12" color="gray400">
+            Instagram_Permit
+          </Typography>
+        </a>
+        <a href="https://www.instagram.com/ceilingservice/" target="_blank" rel="noreferrer">
+          <Typography type="body12" color="gray400">
+            Instagram_Ceiling
+          </Typography>
+        </a>
+        <a href="https://www.instagram.com/olympan.kr/" target="_blank" rel="noreferrer">
+          <Typography type="body12" color="gray400">
+            Instagram_Olympan
+          </Typography>
+        </a>
         <Typography type="body12" color="gray400">
           hello@permitseoul.com
         </Typography>
