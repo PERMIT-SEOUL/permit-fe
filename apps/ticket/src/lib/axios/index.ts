@@ -81,7 +81,16 @@ instance.interceptors.response.use(
     // 액세스 토큰 만료
     if (error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
       try {
-        if (isAlertShown) return;
+        if (isAlertShown) {
+          // 원래 요청 재시도
+          const originalRequest = error.config;
+
+          if (!originalRequest) {
+            return Promise.reject(error);
+          }
+
+          return instance(originalRequest);
+        }
 
         // 엑세스 토큰 재발급
         isAlertShown = true;

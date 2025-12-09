@@ -28,6 +28,8 @@ instance.interceptors.request.use(
   },
 );
 
+let isAlertShown = false;
+
 // 응답 인터셉터
 instance.interceptors.response.use(
   (response: AxiosResponse) => response.data,
@@ -52,9 +54,7 @@ instance.interceptors.response.use(
       if (error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN) {
         alert("로그인이 필요한 페이지입니다.");
 
-        // 엑세스 토큰 재발급 실패시 로그인 페이지로 이동
         safeLocalStorage.remove(IS_LOGINED);
-
         window.location.href = EXTERNAL_PATH.LOGIN;
 
         return;
@@ -63,8 +63,21 @@ instance.interceptors.response.use(
       // 액세스 토큰 만료
       if (error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
         try {
+          if (isAlertShown) {
+            // 원래 요청 재시도
+            const originalRequest = error.config;
+
+            if (!originalRequest) {
+              return Promise.reject(error);
+            }
+
+            return instance(originalRequest);
+          }
+
           // 엑세스 토큰 재발급
+          isAlertShown = true;
           await refreshAccessToken();
+          isAlertShown = false;
 
           // 원래 요청 재시도
           const originalRequest = error.config;
@@ -84,6 +97,7 @@ instance.interceptors.response.use(
             safeLocalStorage.remove(IS_LOGINED);
 
             window.location.href = EXTERNAL_PATH.LOGIN;
+            isAlertShown = false;
           }
         }
       }
@@ -95,7 +109,7 @@ instance.interceptors.response.use(
         window.location.href = "/login";
       }
 
-      if (error.response?.data.code === 40106) {
+      if (error.response?.data.code === ERROR_CODE.NO_ACCESS) {
         alert("접근 권한이 없는 페이지입니다.");
         window.location.href = EXTERNAL_PATH.HOME;
       }
