@@ -23,7 +23,9 @@ export const timeTableOptions = (
     queryFn: () => {
       const url = getPathUrl(API_URL.ADMIN.TIME_TABLE, { eventId: params.eventId });
 
-      return instance.get<TimeTableResponse>(url).then((res) => res.data);
+      return instance.get<TimeTableResponse>(url).then((res) => {
+        return res?.data || null;
+      });
     },
   };
 };
