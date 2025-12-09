@@ -32,7 +32,7 @@ let isAlertShown = false;
 
 // 응답 인터셉터
 instance.interceptors.response.use(
-  (response: AxiosResponse) => response.data,
+  (response: AxiosResponse) => response?.data,
   async (error: AxiosError) => {
     if (typeof window === "undefined") {
       // Server에서는 기본 전파

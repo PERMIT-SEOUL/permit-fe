@@ -222,8 +222,8 @@ export function TicketManagementClient({ eventId }: Props) {
                   <div className={cx("headerCell")}>Ticket Name</div>
                   <div className={cx("headerCell")}>Price</div>
                   <div className={cx("headerCell")}>Refund</div>
-                  <div className={cx("headerCell")}>Ticket sold</div>
-                  <div className={cx("headerCell")}>Ticket used</div>
+                  <div className={cx("headerCell")}>{"Ticket sold\n(팔린티켓 / 전체티켓)"}</div>
+                  <div className={cx("headerCell")}>{"Ticket used\n(사용된 티켓 / 팔린티켓)"}</div>
                   <div className={cx("headerCell")}>Ticket sold amount</div>
                 </div>
 
