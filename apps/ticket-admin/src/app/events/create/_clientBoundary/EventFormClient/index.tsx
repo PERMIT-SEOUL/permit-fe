@@ -22,9 +22,10 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-export type EventFormData = Omit<EventRequest, "ticketTypes" | "images"> & {
+export type EventFormData = Omit<EventRequest, "ticketTypes" | "images" | "siteMapImages"> & {
   ticketTypes: TicketData[];
   images: PreviewMedia[];
+  siteMapImages: PreviewMedia[];
 };
 
 type FormData = EventFormData;
@@ -52,6 +53,7 @@ const initialFormData: EventRequest = {
   roundSalesStartTime: "",
   roundSalesEndTime: "",
   ticketTypes: [],
+  siteMapImages: [],
 };
 
 export const eventTypeOptions = [
@@ -415,6 +417,40 @@ export function EventFormClient() {
     },
   });
 
+  // [사이트맵 이미지] 핸들러
+  const handleSiteMapFileChange = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+
+    const toPreview = (file: File) =>
+      new Promise<{ id: number; url: string; mediaType: "IMAGE" | "VIDEO" }>((resolve) => {
+        const isVideo = file.type.startsWith("video/");
+        const reader = new FileReader();
+
+        reader.onload = (ev) => {
+          const dataUrl = (ev.target?.result as string) ?? "";
+
+          resolve({
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            url: dataUrl,
+            mediaType: isVideo ? "VIDEO" : "IMAGE",
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+
+    Promise.all(Array.from(files).map(toPreview)).then((appended) => {
+      setFormData((prev) => {
+        const prevImages = (prev.siteMapImages as PreviewMedia[] | undefined) ?? [];
+        const merged = [...prevImages, ...appended];
+
+        return {
+          ...prev,
+          siteMapImages: merged,
+        };
+      });
+    });
+  };
+
   // 티켓 관리 함수들
   const addTicket = () => {
     const newTicket: TicketData = {
@@ -505,9 +541,55 @@ export function EventFormClient() {
         };
       });
 
+      const toUploadSiteMap = (
+        formData.siteMapImages as { id?: number; url?: string; mediaType?: "IMAGE" | "VIDEO" }[]
+      ).filter((m) => !!m?.url && !!m?.mediaType);
+
+      const mediaInfoRequestsSiteMap = toUploadSiteMap.map((m) => {
+        const mediaName = `${m.id}`;
+
+        return { mediaName, mediaType: m.mediaType! };
+      });
+
+      const presignedUrlsSiteMap = await postPresignedUrls({
+        eventId: (maxEventIdAll as number) + 1 || 1,
+        mediaInfoRequests: mediaInfoRequestsSiteMap,
+      });
+
+      await Promise.all(
+        presignedUrlsSiteMap.preSignedUrlInfoList.map(async (url, index) => {
+          const file = toUploadSiteMap[index];
+
+          const response = await fetch(file.url!);
+          const blob = await response.blob();
+          const newFile = new File([blob], `fileName-${file.id}`, { type: blob.type });
+
+          return putS3Upload({ url: url.preSignedUrl, file: newFile });
+        }),
+      );
+
+      const siteMapsData = formData.siteMapImages.map((m) => {
+        if (m.id) {
+          const url = presignedUrlsSiteMap.preSignedUrlInfoList.find(
+            (info) => info.mediaName === m.id?.toString(),
+          )?.preSignedUrl;
+
+          const imageUrl = toCDNUrl(url?.split("?")[0] as string);
+
+          return {
+            imageUrl: imageUrl as string,
+          };
+        }
+
+        return {
+          imageUrl: m.imageUrl as string,
+        };
+      });
+
       const apiData: EventRequest = {
         ...formData,
         images: imagesData,
+        siteMapImages: siteMapsData,
         ticketTypes: formData.ticketTypes.map(({ id: _id, ...ticket }) => ticket),
       };
 
@@ -562,6 +644,7 @@ export function EventFormClient() {
         roundSalesEndDate={roundSalesEndDate.selectProps}
         roundSalesStartTime={roundSalesStartTime}
         roundSalesEndTime={roundSalesEndTime}
+        onSiteMapFileChange={handleSiteMapFileChange}
         isSubmitting={isSubmitting}
         onAddTicket={addTicket}
         onUpdateTicket={updateTicket}

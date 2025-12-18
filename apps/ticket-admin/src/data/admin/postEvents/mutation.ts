@@ -22,6 +22,9 @@ export type EventRequest = {
   images: {
     imageUrl: string;
   }[];
+  siteMapImages?: {
+    imageUrl: string;
+  }[];
   minAge: number;
   ticketRoundName: string;
   roundSalesStartDate: string;
