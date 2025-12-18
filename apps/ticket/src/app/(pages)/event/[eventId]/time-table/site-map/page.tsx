@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-import { timetablesOptions } from "@/data/events/getTimetables/queries";
+import { siteMapOptions } from "@/data/events/getSiteMap/queries";
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
@@ -17,7 +17,7 @@ export default async function SiteMapPage({ params }: Props) {
 
   const qc = getQueryClient();
 
-  qc.prefetchQuery(timetablesOptions({ eventId }));
+  qc.prefetchQuery(siteMapOptions({ eventId }));
 
   return (
     <SiteMapErrorBoundary>

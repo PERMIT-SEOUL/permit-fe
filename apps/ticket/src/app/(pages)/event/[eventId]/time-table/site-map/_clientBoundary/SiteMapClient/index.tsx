@@ -7,7 +7,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Button, Flex, Typography } from "@permit/design-system";
-import { useTimetablesSuspenseQuery } from "@/data/events/getTimetables/queries";
+import { useSiteMapSuspenseQuery } from "@/data/events/getSiteMap/queries";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -21,17 +21,10 @@ type Props = {
   eventId: string;
 };
 
-// TODO: 임시 하드코딩
-const siteMapImages = [
-  "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap1.jpg",
-  "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap2.jpg",
-  "https://d3c0v2xj3fc363.cloudfront.net/events/testEventId/images/sitemap0.jpg",
-];
-
 export const SiteMapClient = ({ eventId }: Props) => {
   const router = useRouter();
 
-  const { data: timetablesData } = useTimetablesSuspenseQuery({
+  const { data: timetablesData } = useSiteMapSuspenseQuery({
     eventId,
     options: {
       refetchOnWindowFocus: true,
@@ -74,7 +67,7 @@ export const SiteMapClient = ({ eventId }: Props) => {
           loop={true}
           className={cx("swiper")}
         >
-          {siteMapImages.map((imageUrl, index) => (
+          {timetablesData.siteMapImages.map(({ imageUrl }, index) => (
             <SwiperSlide key={index} className={cx("swiper_slide")}>
               <div className={cx("image_container")}>
                 <Image
