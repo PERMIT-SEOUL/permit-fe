@@ -4,4 +4,5 @@ export const EVENT_QUERY_KEYS = {
   TICKETS: "eventTickets",
   TIMETABLES: "timetables",
   TIMETABLE_DETAIL: "timetableDetail",
+  SITE_MAP: "siteMap",
 } as const;

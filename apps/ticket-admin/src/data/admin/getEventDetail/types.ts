@@ -21,5 +21,8 @@ export type EventDetailResponse = {
   images: {
     imageUrl?: string;
   }[];
+  siteMapImages?: {
+    imageUrl?: string;
+  }[];
   minAge: number;
 };

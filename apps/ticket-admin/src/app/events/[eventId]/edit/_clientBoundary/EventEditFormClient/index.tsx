@@ -38,7 +38,10 @@ export function EventEditFormClient({ eventId }: Props) {
     "basic" | "ticket" | "guest" | "coupon" | "timeTable"
   >("basic");
   const [formData, setFormData] = useState<
-    Omit<EventDetailResponse, "images"> & { images: PreviewMedia[] }
+    Omit<EventDetailResponse, "images" | "siteMapImages"> & {
+      images: PreviewMedia[];
+      siteMapImages: PreviewMedia[];
+    }
   >({
     eventId: 0,
     eventExposureStartDate: "",
@@ -57,7 +60,54 @@ export function EventEditFormClient({ eventId }: Props) {
     details: "",
     minAge: 0,
     images: [],
+    siteMapImages: [],
   });
+
+  // [사이트맵 이미지] 핸들러
+  const handleSiteMapFileChange = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+
+    const toPreview = (file: File) =>
+      new Promise<{ id: number; url: string; mediaType: "IMAGE" | "VIDEO" }>((resolve) => {
+        const isVideo = file.type.startsWith("video/");
+        const reader = new FileReader();
+
+        reader.onload = (ev) => {
+          const dataUrl = (ev.target?.result as string) ?? "";
+
+          resolve({
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            url: dataUrl,
+            mediaType: isVideo ? "VIDEO" : "IMAGE",
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+
+    Promise.all(Array.from(files).map(toPreview)).then((appended) => {
+      setFormData((prev) => {
+        const prevImages = (prev.siteMapImages as PreviewMedia[] | undefined) ?? [];
+        const merged = [...prevImages, ...appended];
+
+        return {
+          ...prev,
+          siteMapImages: merged,
+        };
+      });
+    });
+  };
+  const handleRemoveSiteMapImage = (idOrUrl: number | string) => {
+    setFormData((prev) => {
+      const current = (prev.siteMapImages as PreviewMedia[] | undefined) ?? [];
+      const next = current.filter((img) => img.id !== idOrUrl && img.imageUrl !== idOrUrl);
+
+      return {
+        ...prev,
+        siteMapImages: next,
+      };
+    });
+  };
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: eventDetailData } = useEventDetailSuspenseQuery({
@@ -401,7 +451,8 @@ export function EventEditFormClient({ eventId }: Props) {
   useEffect(() => {
     if (eventDetailData) {
       // 폼 데이터 설정
-      setFormData({
+      setFormData((prev) => ({
+        ...prev,
         eventId: eventDetailData.eventId,
         eventExposureStartDate: eventDetailData.eventExposureStartDate,
         eventExposureEndDate: eventDetailData.eventExposureEndDate,
@@ -419,7 +470,8 @@ export function EventEditFormClient({ eventId }: Props) {
         details: eventDetailData.details || "",
         minAge: eventDetailData.minAge,
         images: eventDetailData.images || [],
-      });
+        siteMapImages: eventDetailData.siteMapImages || [],
+      }));
 
       // 각 필드의 value를 설정
       eventExposureStartDateField.selectProps.onChange(eventDetailData.eventExposureStartDate);
@@ -519,8 +571,6 @@ export function EventEditFormClient({ eventId }: Props) {
         return { mediaName, mediaType: m.mediaType! };
       });
 
-      console.log("@@toUpload", toUpload, mediaInfoRequests);
-
       const presignedUrls = await postPresignedUrls({
         eventId: eventDetailData.eventId,
         mediaInfoRequests,
@@ -537,8 +587,6 @@ export function EventEditFormClient({ eventId }: Props) {
           return putS3Upload({ url: url.preSignedUrl, file: newFile });
         }),
       );
-
-      console.log("@@@", formData.images);
 
       const imagesData = formData.images.map((m) => {
         if (m.id) {
@@ -560,12 +608,60 @@ export function EventEditFormClient({ eventId }: Props) {
         };
       });
 
-      console.log("@@imagesData", imagesData);
+      const toUploadSiteMap = (
+        formData.siteMapImages as { id?: number; url?: string; mediaType?: "IMAGE" | "VIDEO" }[]
+      ).filter((m) => !!m?.url && !!m?.mediaType);
+
+      const mediaInfoRequestsSiteMap = toUploadSiteMap.map((m) => {
+        const mediaName = `${m.id}`;
+
+        return { mediaName, mediaType: m.mediaType! };
+      });
+
+      const siteMapPresignedUrls = await postPresignedUrls({
+        eventId: eventDetailData.eventId,
+        mediaInfoRequests: mediaInfoRequestsSiteMap,
+      });
+
+      await Promise.all(
+        siteMapPresignedUrls.preSignedUrlInfoList.map(async (url, index) => {
+          const file = toUploadSiteMap[index];
+
+          const response = await fetch(file.url!);
+          const blob = await response.blob();
+          const newFile = new File([blob], `fileName-${file.id}`, { type: blob.type });
+
+          return putS3Upload({ url: url.preSignedUrl, file: newFile });
+        }),
+      );
+
+      const siteMapsData = formData.siteMapImages.map((m) => {
+        if (m.id) {
+          const url = siteMapPresignedUrls.preSignedUrlInfoList.find(
+            (info) => info.mediaName === m.id?.toString(),
+          )?.preSignedUrl;
+
+          console.log("@@", url);
+
+          const imageUrl = toCDNUrl(url?.split("?")[0] as string);
+
+          return {
+            imageUrl: imageUrl as string,
+          };
+        }
+
+        return {
+          imageUrl: m.imageUrl as string,
+        };
+      });
+
+      console.log("@@", siteMapsData);
 
       await patchEvent({
         ...formData,
         eventId: eventDetailData.eventId,
         images: imagesData,
+        siteMapImages: siteMapsData,
       });
 
       alert("이벤트 수정이 완료되었습니다.");
@@ -632,6 +728,8 @@ export function EventEditFormClient({ eventId }: Props) {
             roundSalesEndDate={roundSalesEndDate.selectProps}
             roundSalesStartTime={roundSalesStartTime}
             roundSalesEndTime={roundSalesEndTime}
+            onSiteMapFileChange={handleSiteMapFileChange}
+            onRemoveSiteMapImage={handleRemoveSiteMapImage}
             onDelete={handleDelete}
             isSubmitting={isSubmitting}
             isReadOnlyMode={isReadOnlyMode}

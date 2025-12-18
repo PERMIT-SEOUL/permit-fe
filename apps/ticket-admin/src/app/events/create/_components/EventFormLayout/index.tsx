@@ -21,6 +21,7 @@ type EventFormLayoutProps = {
     EventFormData,
     | "eventType"
     | "images"
+    | "siteMapImages"
     | "ticketTypes"
     | "ticketRoundName"
     | "roundSalesStartDate"
@@ -30,6 +31,7 @@ type EventFormLayoutProps = {
   > & {
     eventType?: string;
     images?: { imageUrl?: string }[];
+    siteMapImages?: { imageUrl?: string }[];
     ticketTypes?: TicketData[];
     ticketRoundName?: string;
     roundSalesStartDate?: string;
@@ -40,6 +42,8 @@ type EventFormLayoutProps = {
   onFileChange?: (files: FileList | null) => void;
   onRemoveOriginalImage?: (url: string) => void;
   onDelete?: () => void;
+  onSiteMapFileChange?: (files: FileList | null) => void;
+  onRemoveSiteMapImage?: (idOrUrl: number | string) => void;
   isSubmitting: boolean;
   isReadOnlyMode?: boolean;
   currentStep: "basic" | "ticket";
@@ -73,6 +77,8 @@ export function EventFormLayout({
   onFileChange,
   onRemoveOriginalImage,
   onDelete: _onDelete,
+  onSiteMapFileChange,
+  onRemoveSiteMapImage,
   isSubmitting: _isSubmitting,
   isReadOnlyMode = false,
   currentStep,
@@ -325,6 +331,27 @@ export function EventFormLayout({
                     }}
                     onFileSelect={onFileChange}
                     onRemoveOriginalImage={onRemoveOriginalImage}
+                  />
+                </Flex>
+              </Flex>
+            )}
+
+            {onSiteMapFileChange && (
+              <Flex gap={24}>
+                <Flex className={cx("row")} direction="column" gap={12}>
+                  <Typography type="body16" weight="bold">
+                    Site Map
+                  </Typography>
+                  <ImageUploader
+                    disabled={isReadOnlyMode}
+                    value={(formData.siteMapImages as unknown as PreviewMedia[] | null) || null}
+                    onImagesUpload={(_images) => {
+                      // formData에 맞게 반영 (EventFormClient가 내려준 formData 구조에 맞춰 조정)
+                      // images는 dataURL 미리보기이며, 저장 시 서버 업로드 로직에서 변환 필요
+                      // 여기서는 상위 onFileChange와의 호환을 유지하기 위해 noop 처리
+                    }}
+                    onFileSelect={onSiteMapFileChange}
+                    onRemoveOriginalImage={onRemoveSiteMapImage}
                   />
                 </Flex>
               </Flex>

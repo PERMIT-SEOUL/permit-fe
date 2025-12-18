@@ -32,6 +32,8 @@ export const API_URL = {
     TIMETABLE_LIKE: "/api/events/timetables/likes/:blockId",
     /** 행사 타임테이블 좋아요 삭제 API */
     TIMETABLE_UNLIKE: "/api/events/timetables/likes/:blockId",
+    /** 행사 사이트맵 조회 API */
+    SITE_MAP: "/api/events/:eventId/sitemap",
   },
 
   // 예매 관련 API

@@ -1,11 +1,12 @@
 import { Suspense } from "react";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-import { timetablesOptions } from "@/data/events/getTimetables/queries";
+import { siteMapOptions } from "@/data/events/getSiteMap/queries";
 import { getQueryClient } from "@/lib/queryClient/helpers/getQueryClient";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 
 import { SiteMapClient } from "./_clientBoundary/SiteMapClient";
+import { SiteMapErrorBoundary } from "./_clientBoundary/SiteMapErrorBoundary";
 
 type Props = {
   params: Promise<{ eventId: string }>;
@@ -16,13 +17,15 @@ export default async function SiteMapPage({ params }: Props) {
 
   const qc = getQueryClient();
 
-  qc.prefetchQuery(timetablesOptions({ eventId }));
+  qc.prefetchQuery(siteMapOptions({ eventId }));
 
   return (
-    <HydrationBoundary state={dehydrate(qc)}>
-      <Suspense fallback={<LoadingWithLayout />}>
-        <SiteMapClient eventId={eventId} />
-      </Suspense>
-    </HydrationBoundary>
+    <SiteMapErrorBoundary>
+      <HydrationBoundary state={dehydrate(qc)}>
+        <Suspense fallback={<LoadingWithLayout />}>
+          <SiteMapClient eventId={eventId} />
+        </Suspense>
+      </HydrationBoundary>
+    </SiteMapErrorBoundary>
   );
 }
