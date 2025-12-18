@@ -114,9 +114,13 @@ export function EventFormLayout({
           <>
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Exposure Start Date
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure Start Date
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
+
                 <Select
                   disabled={isReadOnlyMode}
                   type="calendar"
@@ -125,9 +129,12 @@ export function EventFormLayout({
                 />
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Exposure End Date
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure End Date
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <Select
                   disabled={isReadOnlyMode}
                   type="calendar"
@@ -139,9 +146,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Exposure Start Time
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure Start Time
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -152,9 +162,12 @@ export function EventFormLayout({
                 />
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Exposure End Time
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure End Time
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -168,9 +181,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Type
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Event Type
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <Select
                   disabled={isReadOnlyMode}
                   placeholder="이벤트 타입을 선택해주세요"
@@ -179,9 +195,12 @@ export function EventFormLayout({
                 />
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Verification Code
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Event Verification Code
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -195,9 +214,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Event Name
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Event Name
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -211,9 +233,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Start Date
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Start Date
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <Select
                   disabled={isReadOnlyMode}
                   type="calendar"
@@ -222,9 +247,12 @@ export function EventFormLayout({
                 />
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  End Date
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    End Date
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <Select
                   disabled={isReadOnlyMode}
                   type="calendar"
@@ -236,9 +264,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Start Time
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Start Time
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -249,9 +280,12 @@ export function EventFormLayout({
                 />
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  End Time
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    End Time
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -265,9 +299,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Venue
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Venue
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -318,9 +355,12 @@ export function EventFormLayout({
             {onFileChange && (
               <Flex gap={24}>
                 <Flex className={cx("row")} direction="column" gap={12}>
-                  <Typography type="body16" weight="bold">
-                    Image
-                  </Typography>
+                  <Flex align="flex-start" gap={8}>
+                    <Typography type="body16" weight="bold">
+                      Image
+                    </Typography>
+                    <div className={cx("required")}>*</div>
+                  </Flex>
                   <ImageUploader
                     disabled={isReadOnlyMode}
                     value={(formData.images as unknown as PreviewMedia[] | null) || null}
@@ -359,9 +399,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Min Age
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Min Age
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
