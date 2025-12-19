@@ -8,37 +8,40 @@ import { AxiosErrorResponse } from "@/shared/types/axioxError";
 
 type Props = {
   children: ReactNode;
+  eventId: string;
 };
 
 const NOT_FOUND_TIME_TABLE_ERROR_CODE = 40420;
 
-export const TimeTableErrorBoundary = ({ children }: Props) => {
-  return <ErrorBoundary handlers={timeTableErrorHandlers}>{children}</ErrorBoundary>;
+export const TimeTableErrorBoundary = ({ children, eventId }: Props) => {
+  return <ErrorBoundary handlers={timeTableErrorHandlers({ eventId })}>{children}</ErrorBoundary>;
 };
 
-const timeTableErrorHandlers: ErrorHandler[] = [
+const timeTableErrorHandlers = ({ eventId }: { eventId?: string }): ErrorHandler[] => [
   {
     isError: (error) => isTimeTableNotRegisteredError(error as AxiosErrorResponse),
-    fallback: () => (
-      <Flex
-        direction="column"
-        align="center"
-        justify="center"
-        gap={16}
-        style={{ height: "calc(100vh - 150px)" }}
-      >
-        <Typography type="title20">아직 타임테이블이 등록되지 않았어요.</Typography>
-        <Button
-          variant="primary"
-          size="md"
-          onClick={() => {
-            window.location.href = "/";
-          }}
+    fallback: () => {
+      return (
+        <Flex
+          direction="column"
+          align="center"
+          justify="center"
+          gap={16}
+          style={{ height: "calc(100vh - 150px)" }}
         >
-          홈으로 이동
-        </Button>
-      </Flex>
-    ),
+          <Typography type="title20">아직 타임테이블이 등록되지 않았어요.</Typography>
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() => {
+              window.location.href = `/event/${eventId}`;
+            }}
+          >
+            이벤트 보기
+          </Button>
+        </Flex>
+      );
+    },
   },
 ];
 

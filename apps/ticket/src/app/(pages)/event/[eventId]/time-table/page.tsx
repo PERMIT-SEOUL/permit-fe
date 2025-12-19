@@ -27,7 +27,7 @@ const TimeTablePage = async ({ params }: Props) => {
   qc.prefetchQuery(timetablesOptions({ eventId }));
 
   return (
-    <TimeTableErrorBoundary>
+    <TimeTableErrorBoundary eventId={eventId}>
       <HydrationBoundary state={dehydrate(qc)}>
         <Suspense fallback={<LoadingWithLayout />}>
           <div className={cx("container")}>

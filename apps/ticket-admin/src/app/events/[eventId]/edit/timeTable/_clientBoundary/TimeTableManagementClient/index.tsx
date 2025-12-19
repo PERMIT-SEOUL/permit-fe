@@ -122,8 +122,6 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
         alert("타임테이블 생성에 실패했습니다. 다시 시도해주세요.");
       }
     } else {
-      console.log("@@@@");
-
       try {
         await updateTimeTable({
           timetableId: timeTableData.timetableId,
