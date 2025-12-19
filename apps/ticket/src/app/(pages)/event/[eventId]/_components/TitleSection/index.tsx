@@ -1,7 +1,7 @@
 import Link from "next/link";
 import classNames from "classnames/bind";
 
-import { Button, Typography } from "@permit/design-system";
+import { Button, Flex, Typography } from "@permit/design-system";
 
 import styles from "./index.module.scss";
 
@@ -19,9 +19,14 @@ export const TitleSection = ({ eventName, eventId }: Props) => {
         {eventName}
       </Typography>
 
-      <Button asChild className={cx("time_table_button")} variant="secondary" size="sm">
-        <Link href={`/event/${eventId}/time-table`}>TIME TABLE</Link>
-      </Button>
+      <Flex gap={8}>
+        <Button asChild className={cx("time_table_button")} variant="secondary" size="sm">
+          <Link href={`/event/${eventId}/time-table`}>Timetable</Link>
+        </Button>
+        <Button asChild className={cx("time_table_button")} variant="secondary" size="sm">
+          <Link href={`/event/${eventId}/time-table/site-map`}>Sitemap</Link>
+        </Button>
+      </Flex>
     </div>
   );
 };
