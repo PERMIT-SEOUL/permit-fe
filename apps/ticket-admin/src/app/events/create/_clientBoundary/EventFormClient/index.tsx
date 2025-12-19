@@ -14,6 +14,7 @@ import {
   usePutS3Upload,
 } from "@/data/admin/postPresignedUrls/mutation";
 import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import { EventFormLayout } from "../../_components/EventFormLayout";
 import { PreviewMedia } from "../../_components/ImageUploader";
@@ -486,6 +487,27 @@ export function EventFormClient() {
     }));
   };
 
+  const handleRemoveOriginalImage = (url: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((m) => {
+        return (m.id as unknown as string) !== url && m.imageUrl !== url;
+      }),
+    }));
+  };
+
+  const handleRemoveSiteMapImage = (idOrUrl: number | string) => {
+    setFormData((prev) => {
+      const current = (prev.siteMapImages as PreviewMedia[] | undefined) ?? [];
+      const next = current.filter((img) => img.id !== idOrUrl && img.imageUrl !== idOrUrl);
+
+      return {
+        ...prev,
+        siteMapImages: next,
+      };
+    });
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
@@ -594,12 +616,17 @@ export function EventFormClient() {
       };
 
       await createEvent(apiData);
+      alert("이벤트가 생성되었습니다!");
 
       // 성공 시 이벤트 목록으로 이동
       router.push("/events");
     } catch (error) {
-      alert("이벤트 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
-      console.error("Error creating event:", error);
+      console.log(error);
+
+      if (isAxiosErrorResponse(error)) {
+        alert("이벤트 생성 중 오류가 발생했습니다. 다시 시도해주세요.\n" + error.message);
+        console.error("Error creating event:", error);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -649,6 +676,8 @@ export function EventFormClient() {
         onAddTicket={addTicket}
         onUpdateTicket={updateTicket}
         onDeleteTicket={deleteTicket}
+        onRemoveOriginalImage={handleRemoveOriginalImage}
+        onRemoveSiteMapImage={handleRemoveSiteMapImage}
       />
 
       <div className={cx("floating")}>

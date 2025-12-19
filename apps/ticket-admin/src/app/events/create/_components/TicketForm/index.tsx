@@ -113,16 +113,7 @@ export function TicketForm({
           </Flex>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body14" weight="medium">
-              end date
-            </Typography>
-            <Select type="calendar" placeholder="yy.mm.dd" {...ticketEndDateField} />
-          </Flex>
-        </Flex>
-
-        <Flex gap={24}>
-          <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body14" weight="medium">
-              Start time
+              start time
             </Typography>
             <TextField
               placeholder="시작 시간을 입력해주세요 (hh:mm)"
@@ -130,6 +121,15 @@ export function TicketForm({
               onChange={ticketStartTimeField.handleChange}
               error={ticketStartTimeField.error}
             />
+          </Flex>
+        </Flex>
+
+        <Flex gap={24}>
+          <Flex className={cx("row")} direction="column" gap={12}>
+            <Typography type="body14" weight="medium">
+              end date
+            </Typography>
+            <Select type="calendar" placeholder="yy.mm.dd" {...ticketEndDateField} />
           </Flex>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body14" weight="medium">

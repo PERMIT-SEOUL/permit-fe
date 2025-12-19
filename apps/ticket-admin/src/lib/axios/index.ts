@@ -114,5 +114,7 @@ instance.interceptors.response.use(
         window.location.href = EXTERNAL_PATH.HOME;
       }
     }
+
+    return Promise.reject(error.response?.data);
   },
 );

@@ -96,6 +96,7 @@ export function EventEditFormClient({ eventId }: Props) {
       });
     });
   };
+
   const handleRemoveSiteMapImage = (idOrUrl: number | string) => {
     setFormData((prev) => {
       const current = (prev.siteMapImages as PreviewMedia[] | undefined) ?? [];
