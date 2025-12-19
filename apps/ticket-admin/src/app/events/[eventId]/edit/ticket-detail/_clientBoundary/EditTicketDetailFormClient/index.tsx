@@ -219,19 +219,6 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
             </Flex>
             <Flex className={cx("row")} direction="column" gap={12}>
               <Typography type="body16" weight="bold">
-                Sales End Date
-              </Typography>
-              <Select
-                type="calendar"
-                placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
-                {...roundSalesEndDateField.selectProps}
-              />
-            </Flex>
-          </Flex>
-
-          <Flex gap={24}>
-            <Flex className={cx("row")} direction="column" gap={12}>
-              <Typography type="body16" weight="bold">
                 Sales Start Time
               </Typography>
               <TextField
@@ -239,6 +226,19 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
                 value={roundSalesStartTimeField.value}
                 onChange={roundSalesStartTimeField.handleChange}
                 error={roundSalesStartTimeField.error}
+              />
+            </Flex>
+          </Flex>
+
+          <Flex gap={24}>
+            <Flex className={cx("row")} direction="column" gap={12}>
+              <Typography type="body16" weight="bold">
+                Sales End Date
+              </Typography>
+              <Select
+                type="calendar"
+                placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
+                {...roundSalesEndDateField.selectProps}
               />
             </Flex>
             <Flex className={cx("row")} direction="column" gap={12}>

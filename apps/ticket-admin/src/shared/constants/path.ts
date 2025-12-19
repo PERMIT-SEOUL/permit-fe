@@ -8,4 +8,5 @@ const phase =
 export const EXTERNAL_PATH = {
   HOME: `https://${phase}.permitseoul.com`,
   LOGIN: `https://${phase}.permitseoul.com/login`,
+  TIMETABLE: `https://${phase}.permitseoul.com/event/:eventId/time-table`,
 } as const;

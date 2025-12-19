@@ -3,6 +3,7 @@ export type TimeTableParams = {
 };
 
 export type TimeTableResponse = {
+  eventId: string;
   timetableId: number;
   timetableStartDate: string;
   timetableStartTime: string;

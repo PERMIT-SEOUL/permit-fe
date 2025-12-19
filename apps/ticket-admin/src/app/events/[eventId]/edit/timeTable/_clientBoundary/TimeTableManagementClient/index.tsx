@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
@@ -7,6 +8,8 @@ import { useSelect, useTextField } from "@permit/design-system/hooks";
 import { useTimeTableSuspenseQuery } from "@/data/admin/getTimeTables/queries";
 import { useTimeTableMutation } from "@/data/admin/patchTimeTables/mutation";
 import { usePostTimeTableInitial } from "@/data/admin/postTimeTable/mutation";
+import { EXTERNAL_PATH } from "@/shared/constants/path";
+import { getPathUrl } from "@/shared/helpers/getPathUrl";
 
 import styles from "./index.module.scss";
 
@@ -23,8 +26,6 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
       throwOnError: false,
     },
   });
-
-  console.log("@@timeTableData", timeTableData);
 
   const { mutateAsync: createTimeTable, isPending } = usePostTimeTableInitial({
     eventId,
@@ -122,8 +123,6 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
         alert("타임테이블 생성에 실패했습니다. 다시 시도해주세요.");
       }
     } else {
-      console.log("@@@@");
-
       try {
         await updateTimeTable({
           timetableId: timeTableData.timetableId,
@@ -149,6 +148,13 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
     <div className={cx("container")}>
       <Typography type="title24">TimeTable</Typography>
       {/* TODO: 최초 등록에만 사용해주세요. */}
+      {timeTableData?.eventId && (
+        <Link href={getPathUrl(EXTERNAL_PATH.TIMETABLE, { eventId: timeTableData.eventId })}>
+          <Typography type="body16" weight="bold" style={{ marginTop: "12px", color: "#5640ff" }}>
+            TimeTable 로 이동하기
+          </Typography>
+        </Link>
+      )}
 
       <Flex direction="column" gap={24} style={{ marginTop: 32 }}>
         <Flex gap={24}>
@@ -164,19 +170,6 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
           </Flex>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body16" weight="bold">
-              TimeTable End Date
-            </Typography>
-            <Select
-              type="calendar"
-              placeholder="타임테이블 종료 날짜를 선택해주세요"
-              {...timeTableEndDateField.selectProps}
-            />
-          </Flex>
-        </Flex>
-
-        <Flex gap={24}>
-          <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body16" weight="bold">
               Start Time
             </Typography>
             <TextField
@@ -186,6 +179,20 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
               error={timeTableStartTimeField.error}
             />
           </Flex>
+        </Flex>
+
+        <Flex gap={24}>
+          <Flex className={cx("row")} direction="column" gap={12}>
+            <Typography type="body16" weight="bold">
+              TimeTable End Date
+            </Typography>
+            <Select
+              type="calendar"
+              placeholder="타임테이블 종료 날짜를 선택해주세요"
+              {...timeTableEndDateField.selectProps}
+            />
+          </Flex>
+
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body16" weight="bold">
               End Time

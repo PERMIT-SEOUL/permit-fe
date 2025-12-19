@@ -131,23 +131,6 @@ export function EventFormLayout({
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
-                    Event Exposure End Date
-                  </Typography>
-                  <div className={cx("required")}>*</div>
-                </Flex>
-                <Select
-                  disabled={isReadOnlyMode}
-                  type="calendar"
-                  placeholder="노출 종료 날짜를 선택해주세요"
-                  {...eventExposureEndDateField}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Flex align="flex-start" gap={8}>
-                  <Typography type="body16" weight="bold">
                     Event Exposure Start Time
                   </Typography>
                   <div className={cx("required")}>*</div>
@@ -161,6 +144,24 @@ export function EventFormLayout({
                   error={eventExposureStartTimeField.error}
                 />
               </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Event Exposure End Date
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="노출 종료 날짜를 선택해주세요"
+                  {...eventExposureEndDateField}
+                />
+              </Flex>
+
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -249,23 +250,6 @@ export function EventFormLayout({
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
-                    End Date
-                  </Typography>
-                  <div className={cx("required")}>*</div>
-                </Flex>
-                <Select
-                  disabled={isReadOnlyMode}
-                  type="calendar"
-                  placeholder="이벤트 종료 날짜를 선택해주세요"
-                  {...eventEndDateField}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Flex align="flex-start" gap={8}>
-                  <Typography type="body16" weight="bold">
                     Start Time
                   </Typography>
                   <div className={cx("required")}>*</div>
@@ -277,6 +261,23 @@ export function EventFormLayout({
                   value={eventStartTimeField.value}
                   onChange={eventStartTimeField.handleChange}
                   error={eventStartTimeField.error}
+                />
+              </Flex>
+            </Flex>
+
+            <Flex gap={24}>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    End Date
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="이벤트 종료 날짜를 선택해주세요"
+                  {...eventEndDateField}
                 />
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
@@ -449,13 +450,15 @@ export function EventFormLayout({
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Typography type="body16" weight="bold">
-                  Exposure End Date
+                  Exposure End Time
                 </Typography>
-                <Select
-                  disabled={isReadOnlyMode}
-                  type="calendar"
-                  placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
-                  {...roundSalesEndDate}
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
+                  placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (HH:MM)"
+                  value={roundSalesEndTime.value}
+                  onChange={roundSalesEndTime.handleChange}
+                  error={roundSalesEndTime.error}
                 />
               </Flex>
             </Flex>
@@ -474,17 +477,16 @@ export function EventFormLayout({
                   error={roundSalesStartTime.error}
                 />
               </Flex>
+
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Typography type="body16" weight="bold">
-                  Exposure End Time
+                  Exposure End Date
                 </Typography>
-                <TextField
-                  readOnly={isReadOnlyMode}
-                  showBorderinReadOnly={isReadOnlyMode}
-                  placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (HH:MM)"
-                  value={roundSalesEndTime.value}
-                  onChange={roundSalesEndTime.handleChange}
-                  error={roundSalesEndTime.error}
+                <Select
+                  disabled={isReadOnlyMode}
+                  type="calendar"
+                  placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
+                  {...roundSalesEndDate}
                 />
               </Flex>
             </Flex>

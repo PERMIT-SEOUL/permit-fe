@@ -43,13 +43,13 @@ export const SiteMapClient = ({ eventId }: Props) => {
                 variant="secondary"
                 onClick={() => router.push(`/event/${eventId}/time-table`)}
               >
-                {"TIME TABLE"}
+                {"Timetable"}
               </Button>
               <Button
                 variant="secondary"
                 onClick={() => router.push(`/event/${eventId}/time-table/site-map`)}
               >
-                {"SITE MAP"}
+                {"Sitemap"}
               </Button>
             </Flex>
           </Flex>

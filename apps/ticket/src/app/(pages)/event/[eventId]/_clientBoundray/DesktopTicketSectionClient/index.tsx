@@ -36,8 +36,8 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const selectedRound = eventTicketsData.rounds.find((round) => round.roundAvailable);
-  const [selectedRoundId, setSelectedRoundId] = useState<number>(
-    selectedRound?.roundId || eventTicketsData.rounds[0].roundId,
+  const [selectedRoundId, setSelectedRoundId] = useState<number | undefined>(
+    selectedRound?.roundId,
   );
   const [selectedTickets, setSelectedTickets] = useState<SelectedTicket[]>([]);
   const [isPromocodeOpen, setIsPromocodeOpen] = useState(false);

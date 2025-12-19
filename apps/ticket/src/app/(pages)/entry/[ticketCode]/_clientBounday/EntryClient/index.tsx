@@ -18,6 +18,7 @@ const cx = classNames.bind(styles);
 
 const NO_ENTRY_TIME = 40013;
 const ALREADY_USED_TICKET = 40906;
+const CANCELED_TICKET = 40015;
 
 type Props = {
   ticketCode: string;
@@ -84,6 +85,19 @@ export const EntryClient = ({ ticketCode }: Props) => {
         </Link>
         <Typography type="title20" weight="bold" color="white">
           이미 사용한 티켓입니다.
+        </Typography>
+      </Flex>
+    );
+  }
+
+  if (error?.code === CANCELED_TICKET) {
+    return (
+      <Flex direction="column" justify="center" align="center" style={{ height: "100vh" }}>
+        <Link className={cx("logo")} href="/">
+          <Image src={permitLogo} alt="PERMIT" className={cx("logo_image")} />
+        </Link>
+        <Typography type="title20" weight="bold" color="white">
+          취소된 티켓입니다.
         </Typography>
       </Flex>
     );

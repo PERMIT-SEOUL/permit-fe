@@ -96,6 +96,7 @@ export function EventEditFormClient({ eventId }: Props) {
       });
     });
   };
+
   const handleRemoveSiteMapImage = (idOrUrl: number | string) => {
     setFormData((prev) => {
       const current = (prev.siteMapImages as PreviewMedia[] | undefined) ?? [];
@@ -696,7 +697,7 @@ export function EventEditFormClient({ eventId }: Props) {
         </Typography>
         <Typography type="body16" color="gray200">
           {eventDetailData.startDate}~{eventDetailData.endDate} / {eventDetailData.startTime}~
-          {eventDetailData.endTime}/{eventDetailData.venue}
+          {eventDetailData.endTime} / {eventDetailData.venue}
         </Typography>
       </div>
       <div className={cx("container")}>

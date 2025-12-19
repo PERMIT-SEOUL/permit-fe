@@ -17,15 +17,16 @@ import { TimeTableParams, TimeTableResponse } from "./types";
 /** 행사 타임테이블 조회 API */
 export const timeTableOptions = (
   params: TimeTableParams,
-): PermitQueryOptions<TimeTableResponse> => {
+): PermitQueryOptions<TimeTableResponse | null> => {
   return {
     queryKey: [ADMIN_QUERY_KEYS.TICEKTS, params.eventId],
     queryFn: () => {
       const url = getPathUrl(API_URL.ADMIN.TIME_TABLE, { eventId: params.eventId });
 
-      return instance.get<TimeTableResponse>(url).then((res) => {
-        return res?.data || null;
-      });
+      return instance
+        .get<TimeTableResponse>(url)
+        .then((res) => res.data)
+        .catch(() => null);
     },
   };
 };
@@ -34,7 +35,7 @@ export const timeTableOptions = (
 export const useTimeTableQuery = ({
   eventId,
   options,
-}: TimeTableParams & OptionsObject<UsePermitQueryOptions<TimeTableResponse>>) => {
+}: TimeTableParams & OptionsObject<UsePermitQueryOptions<TimeTableResponse | null>>) => {
   return useQuery({
     ...timeTableOptions({ eventId }),
     ...options,
@@ -45,7 +46,7 @@ export const useTimeTableQuery = ({
 export const useTimeTableSuspenseQuery = ({
   eventId,
   options,
-}: TimeTableParams & OptionsObject<UsePermitSuspenseQueryOptions<TimeTableResponse>>) => {
+}: TimeTableParams & OptionsObject<UsePermitSuspenseQueryOptions<TimeTableResponse | null>>) => {
   return useSuspenseQuery({
     ...timeTableOptions({ eventId }),
     ...options,
