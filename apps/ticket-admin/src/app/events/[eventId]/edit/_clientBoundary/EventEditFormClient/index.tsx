@@ -697,7 +697,7 @@ export function EventEditFormClient({ eventId }: Props) {
         </Typography>
         <Typography type="body16" color="gray200">
           {eventDetailData.startDate}~{eventDetailData.endDate} / {eventDetailData.startTime}~
-          {eventDetailData.endTime}/{eventDetailData.venue}
+          {eventDetailData.endTime} / {eventDetailData.venue}
         </Typography>
       </div>
       <div className={cx("container")}>
