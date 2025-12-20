@@ -34,6 +34,9 @@ const PaymentProcessPage = () => {
         );
       } catch (error) {
         // 에러 메시지 세분화 요청
+        console.error(error);
+        alert(error);
+
         if (isAxiosError(error)) {
           alert(error.message);
         }
