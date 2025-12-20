@@ -318,6 +318,7 @@ function calcBlockPosition(
   }
 
   const tableStartTime = timeSlots[0].datetime.getTime();
+  const tableEndTime = timeSlots[timeSlots.length - 1].datetime.getTime();
   const blockStartTime = start.getTime();
 
   // 블록이 타임테이블 범위 내에 있는지 확인
@@ -333,8 +334,17 @@ function calcBlockPosition(
     };
   }
 
+  if (tableEndTime < blockStartTime) {
+    return {
+      top: -200,
+      height: 0,
+      left: 0,
+    };
+  }
+
   // 타임테이블 시작 시간부터 블록 시작/종료 시간까지의 차이를 시간 단위로 계산
   const blockEndTime = end.getTime();
+
   const timeDiffStartMs = blockStartTime - tableStartTime;
   const timeDiffEndMs = blockEndTime - tableStartTime;
   const timeDiffStartInHours = timeDiffStartMs / (1000 * 60 * 60);

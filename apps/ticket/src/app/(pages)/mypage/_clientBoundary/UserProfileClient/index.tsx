@@ -102,25 +102,34 @@ export const UserProfileClient = () => {
   };
 
   const handleSave = async () => {
-    if (!emailVerified) {
-      alert("이메일 확인을 먼저 해주세요.");
+    if (userInfoData.email === emailField.value) {
+      const isNameValid = nameField.validateValue();
+      const isGenderValid = genderField.validateValue();
 
-      return;
-    }
+      if (!isNameValid || !isGenderValid) {
+        return;
+      }
+    } else {
+      if (!emailVerified) {
+        alert("이메일 확인을 먼저 해주세요.");
 
-    const isNameValid = nameField.validateValue();
-    const isGenderValid = genderField.validateValue();
-    const isEmailValid = emailField.validateValue();
+        return;
+      }
 
-    if (!isNameValid || !isGenderValid || !isEmailValid) {
-      return;
+      const isNameValid = nameField.validateValue();
+      const isGenderValid = genderField.validateValue();
+      const isEmailValid = emailField.validateValue();
+
+      if (!isNameValid || !isGenderValid || !isEmailValid) {
+        return;
+      }
     }
 
     try {
       await mutatePatchUserInfo({
         name: nameField.value,
         gender: genderField.value,
-        email: emailField.value,
+        ...(emailVerified && { email: emailField.value }),
       });
 
       // TODO: 얼럿 디자인 변경
