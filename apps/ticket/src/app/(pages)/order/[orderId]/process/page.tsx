@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { isAxiosError } from "axios";
 
 import { usePaymentConfirmMutation } from "@/data/payments/postPaymentConfirm/mutation";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 /**
  * 결제 요청 페이지
@@ -35,9 +35,8 @@ const PaymentProcessPage = () => {
       } catch (error) {
         // 에러 메시지 세분화 요청
         console.error(error);
-        alert(error);
 
-        if (isAxiosError(error)) {
+        if (isAxiosErrorResponse(error)) {
           alert(error.message);
         }
 

@@ -42,14 +42,12 @@ instance.interceptors.response.use(
     if (error.response?.status === 500) {
       // 결제 에러는 공통 alert 미노출
       if (error.response?.data.code === ERROR_CODE.PAYMENT) {
-        console.log(error);
-
         return Promise.reject(error?.response?.data);
       }
 
       alert("서버에러가 발생하였습니다. 관리자에게 문의해주세요.");
 
-      return;
+      return Promise.reject(error?.response?.data);
     }
 
     if (error.config?.url === API_URL.USER.REISSUE_ACCESS_TOKEN) {
