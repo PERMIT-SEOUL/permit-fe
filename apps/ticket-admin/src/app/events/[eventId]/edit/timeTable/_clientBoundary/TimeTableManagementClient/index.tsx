@@ -149,10 +149,12 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
       <Typography type="title24">TimeTable</Typography>
       {/* TODO: 최초 등록에만 사용해주세요. */}
       {timeTableData?.eventId && (
-        <Link href={getPathUrl(EXTERNAL_PATH.TIMETABLE, { eventId: timeTableData.eventId })}>
-          <Typography type="body16" weight="bold" style={{ marginTop: "12px", color: "#5640ff" }}>
-            TimeTable 로 이동하기
-          </Typography>
+        <Link
+          href={getPathUrl(EXTERNAL_PATH.TIMETABLE, { eventId: timeTableData.eventId })}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button style={{ marginTop: "12px", color: "#5640ff" }}>TimeTable 로 이동하기</Button>
         </Link>
       )}
 

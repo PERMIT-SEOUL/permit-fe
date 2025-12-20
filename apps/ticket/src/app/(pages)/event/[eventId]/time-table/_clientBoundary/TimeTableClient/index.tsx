@@ -310,23 +310,47 @@ function calcBlockPosition(
 
   const durationInHours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
 
-  // 해당 시간 슬롯의 인덱스 찾기
-  const slotIndex = timeSlots.findIndex(
-    (ts) =>
-      ts.datetime.getFullYear() === start.getFullYear() &&
-      ts.datetime.getMonth() === start.getMonth() &&
-      ts.datetime.getDate() === start.getDate() &&
-      ts.datetime.getHours() === start.getHours(),
-  );
+  // 타임테이블 시작 시간을 기준으로 계산
+  if (timeSlots.length === 0) {
+    const DISABLE_DISPLAY_HEIGHT = -200;
+
+    return { top: DISABLE_DISPLAY_HEIGHT, height: durationInHours * hourHeight, left: 0 };
+  }
+
+  const tableStartTime = timeSlots[0].datetime.getTime();
+  const blockStartTime = start.getTime();
+
+  // 블록이 타임테이블 범위 내에 있는지 확인
+  if (blockStartTime < tableStartTime) {
+    const DISABLE_DISPLAY_HEIGHT = 0;
+    const stage = stages.find((a) => a.stageNotionId === block.blockStageNotionId);
+    const stageSequence = stage ? stage.sequence : 0;
+
+    return {
+      top: DISABLE_DISPLAY_HEIGHT,
+      height: durationInHours * hourHeight,
+      left: stageSequence * columnWidth,
+    };
+  }
+
+  // 타임테이블 시작 시간부터 블록 시작/종료 시간까지의 차이를 시간 단위로 계산
+  const blockEndTime = end.getTime();
+  const timeDiffStartMs = blockStartTime - tableStartTime;
+  const timeDiffEndMs = blockEndTime - tableStartTime;
+  const timeDiffStartInHours = timeDiffStartMs / (1000 * 60 * 60);
+  const timeDiffEndInHours = timeDiffEndMs / (1000 * 60 * 60);
+  const startMinutes = start.getMinutes();
+  const endMinutes = end.getMinutes();
 
   // 해당 stage의 sequence 찾기
   const stage = stages.find((a) => a.stageNotionId === block.blockStageNotionId);
   const stageSequence = stage ? stage.sequence : 0;
 
-  const DISABLE_DISPLAY_HEIGHT = -200;
-
-  const top = slotIndex >= 0 ? slotIndex * hourHeight + start.getMinutes() : DISABLE_DISPLAY_HEIGHT; // -100보다 작으면 블록이 표시되지 않음
-  const height = durationInHours * hourHeight;
+  // top 위치 = 시작 시간 차이(시간) * hourHeight + 시작 분 오프셋
+  const top = timeDiffStartInHours * hourHeight + (startMinutes / 60) * hourHeight;
+  // height = 종료 시간 위치 - 시작 시간 위치
+  const endTop = timeDiffEndInHours * hourHeight + (endMinutes / 60) * hourHeight;
+  const height = endTop - top;
   const left = stageSequence * columnWidth;
 
   return { top, height, left };

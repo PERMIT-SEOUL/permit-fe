@@ -450,22 +450,6 @@ export function EventFormLayout({
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Typography type="body16" weight="bold">
-                  Exposure End Time
-                </Typography>
-                <TextField
-                  readOnly={isReadOnlyMode}
-                  showBorderinReadOnly={isReadOnlyMode}
-                  placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (HH:MM)"
-                  value={roundSalesEndTime.value}
-                  onChange={roundSalesEndTime.handleChange}
-                  error={roundSalesEndTime.error}
-                />
-              </Flex>
-            </Flex>
-
-            <Flex gap={24}>
-              <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
                   Exposure Start Time
                 </Typography>
                 <TextField
@@ -477,7 +461,9 @@ export function EventFormLayout({
                   error={roundSalesStartTime.error}
                 />
               </Flex>
+            </Flex>
 
+            <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Typography type="body16" weight="bold">
                   Exposure End Date
@@ -487,6 +473,19 @@ export function EventFormLayout({
                   type="calendar"
                   placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
                   {...roundSalesEndDate}
+                />
+              </Flex>
+              <Flex className={cx("row")} direction="column" gap={12}>
+                <Typography type="body16" weight="bold">
+                  Exposure End Time
+                </Typography>
+                <TextField
+                  readOnly={isReadOnlyMode}
+                  showBorderinReadOnly={isReadOnlyMode}
+                  placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (HH:MM)"
+                  value={roundSalesEndTime.value}
+                  onChange={roundSalesEndTime.handleChange}
+                  error={roundSalesEndTime.error}
                 />
               </Flex>
             </Flex>
