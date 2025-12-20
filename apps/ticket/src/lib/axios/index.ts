@@ -42,6 +42,8 @@ instance.interceptors.response.use(
     if (error.response?.status === 500) {
       // 결제 에러는 공통 alert 미노출
       if (error.response?.data.code === ERROR_CODE.PAYMENT) {
+        console.log(error);
+
         return Promise.reject(error?.response?.data);
       }
 
