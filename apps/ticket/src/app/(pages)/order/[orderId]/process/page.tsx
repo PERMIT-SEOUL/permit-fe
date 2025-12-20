@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { isAxiosError } from "axios";
 
 import { usePaymentConfirmMutation } from "@/data/payments/postPaymentConfirm/mutation";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
@@ -32,15 +33,21 @@ const PaymentProcessPage = () => {
           `${window.location.origin}/order/${searchParams.get("orderId")}/success?eventName=${encodeURIComponent(eventName)}&eventDate=${encodeURIComponent(eventDate)}`,
         );
       } catch (error) {
-        // TODO: 에러 처리 로직 추가
         // 에러 메시지 세분화 요청
-        // 결제 실패 페이지로 라우팅
-        alert("결제 실패");
+        if (isAxiosError(error)) {
+          alert(error.message);
+        }
 
+        // 결제 실패 페이지로 라우팅
         window.location.replace(
           `${window.location.origin}/order/${searchParams.get("orderId")}/fail`,
         );
+
+        return;
       }
+
+      alert("알 수 없는 이유로 결제에 실패했습니다. 다시 시도해주세요.");
+      window.location.replace(`${window.location.origin}`);
     };
 
     handlePaymentConfirm();

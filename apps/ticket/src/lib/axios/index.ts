@@ -39,7 +39,10 @@ instance.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (error.response?.status === ERROR_CODE.SERVER_ERROR) {
+    if (error.response?.status === 500) {
+      // 결제 에러는 공통 alert 미노출
+      if (error.response?.data.code === ERROR_CODE.PAYMENT) return;
+
       alert("서버에러가 발생하였습니다. 관리자에게 문의해주세요.");
 
       return;
