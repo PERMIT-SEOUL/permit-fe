@@ -112,5 +112,8 @@ function redirectToLoginOnce() {
 
   alert("로그인이 필요한 페이지입니다.");
   safeLocalStorage.remove(IS_LOGINED);
-  window.location.href = EXTERNAL_PATH.LOGIN;
+
+  const redirectUrl = `${EXTERNAL_PATH.LOGIN}?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+
+  window.location.href = redirectUrl;
 }
