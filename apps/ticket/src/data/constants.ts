@@ -60,7 +60,11 @@ export const API_URL = {
   TICKET: {
     /** 도어용 유저 티켓 유효성 검증 API */
     VALIDATION: "/api/tickets/door/validation/:ticketCode",
+    /** 도어용 게스트 티켓 유효성 검증 API */
+    GUEST_VALIDATION: "/api/guests/tickets/door/validation/:ticketCode",
     /** 도어용 유저 스탭 티켓 확인 API */
     CONFIRM: "/api/tickets/door/staff/confirm",
+    /** 도어용 게스트 스탭 티켓 확인 API */
+    GUEST_CONFIRM: "/api/guests/tickets/door/staff/confirm",
   },
 } as const;
