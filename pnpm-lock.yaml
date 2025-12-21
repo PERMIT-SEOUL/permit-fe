@@ -65,6 +65,9 @@ importers:
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
+      html5-qrcode:
+        specifier: ^2.3.8
+        version: 2.3.8
       import-in-the-middle:
         specifier: ^1.14.2
         version: 1.14.2
@@ -3251,6 +3254,9 @@ packages:
   html-tags@3.3.1:
     resolution: {integrity: sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==}
     engines: {node: '>=8'}
+
+  html5-qrcode@2.3.8:
+    resolution: {integrity: sha512-jsr4vafJhwoLVEDW3n1KvPnCCXWaQfRng0/EEYk1vNcQGcG/htAdhJX0be8YyqMoSz7+hZvOZSTAepsabiuhiQ==}
 
   http-proxy-agent@7.0.2:
     resolution: {integrity: sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==}
@@ -8402,6 +8408,8 @@ snapshots:
   html-entities@2.6.0: {}
 
   html-tags@3.3.1: {}
+
+  html5-qrcode@2.3.8: {}
 
   http-proxy-agent@7.0.2:
     dependencies:

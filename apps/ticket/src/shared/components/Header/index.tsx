@@ -22,6 +22,7 @@ export const Header = () => {
 
   const isEntryPage = pathname.includes("/entry");
   const isTimeTablePage = /^\/event\/[^/]+\/time-table(\/.*)?$/.test(pathname);
+  const isTicketAuthPage = pathname.includes("/ticket-authorization");
 
   const [isLogined, setIsLogined] = useState(false);
 
@@ -51,7 +52,9 @@ export const Header = () => {
   };
 
   return (
-    <header className={cx("header", { no_header: isTimeTablePage || isEntryPage })}>
+    <header
+      className={cx("header", { no_header: isTimeTablePage || isEntryPage || isTicketAuthPage })}
+    >
       <div className={cx("content")}>
         <Link className={cx("logo")} href="/">
           <Image src={permitLogo} alt="PERMIT" className={cx("logo_image")} />
