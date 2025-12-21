@@ -7,7 +7,12 @@ import { useLoginMutation } from "@/data/users/postUserLogin/mutation";
 import { safeLocalStorage } from "@/lib/storage";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { PATH } from "@/shared/constants/path";
-import { IS_LOGINED, SOCIAL_LOGIN_TYPE_KEY, TOKEN_KEY } from "@/shared/constants/storage";
+import {
+  IS_LOGINED,
+  REDIRECT_URL_KEY,
+  SOCIAL_LOGIN_TYPE_KEY,
+  TOKEN_KEY,
+} from "@/shared/constants/storage";
 import { REDIRECT_URI } from "@/shared/hooks/useOAuth/constants";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
@@ -27,6 +32,7 @@ const AuthPage = () => {
   const authorizationCode = searchParams.get("code");
 
   const socialType = safeLocalStorage.get(SOCIAL_LOGIN_TYPE_KEY) as SocialLoginType;
+  const redirectUrl = safeLocalStorage.get(REDIRECT_URL_KEY);
 
   const { mutateAsync } = useLoginMutation();
 
@@ -40,8 +46,8 @@ const AuthPage = () => {
         });
         safeLocalStorage.set(IS_LOGINED, "true");
 
-        // TODO: redirect 로직 구체적으로 추가
-        router.replace(PATH.HOME);
+        router.replace(redirectUrl || PATH.HOME);
+        safeLocalStorage.remove(REDIRECT_URL_KEY);
       } catch (error) {
         safeLocalStorage.set(TOKEN_KEY, (error as Error).message);
         router.replace(PATH.SIGNUP);
@@ -50,7 +56,7 @@ const AuthPage = () => {
       // 인증 코드가 없는 경우 로그인 페이지로 리다이렉트
       router.replace(PATH.LOGIN);
     }
-  }, [authorizationCode, mutateAsync, router, socialType]);
+  }, [authorizationCode, mutateAsync, router, socialType, redirectUrl]);
 
   useEffect(() => {
     handleLogin();
