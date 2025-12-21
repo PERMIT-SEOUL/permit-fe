@@ -1,0 +1,61 @@
+@use "@permit/design-system/styles/variables" as theme;
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  margin-top: 120px;
+  padding: 24px;
+
+  background-color: theme.$black;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.camera_container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  overflow: hidden;
+
+  background-color: theme.$gray-900;
+  border-radius: 12px;
+}
+
+.qr_reader {
+  width: 100%;
+}
+
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  z-index: 9999;
+  padding: 16px 24px;
+
+  color: theme.$white;
+  font-weight: 500;
+  font-size: 16px;
+
+  background-color: theme.$gray-800;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
+  transform: translateX(-50%);
+  opacity: 1;
+  border-radius: 8px;
+
+  transition: opacity 0.3s ease;
+
+  &.success {
+    background-color: #0f0;
+  }
+
+  &.error {
+    background-color: theme.$red-100;
+  }
+
+  &.toast_hide {
+    opacity: 0;
+  }
+}
