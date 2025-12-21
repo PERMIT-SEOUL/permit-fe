@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
 import { API_URL } from "@/data/constants";
+import { PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 import { AxiosErrorResponse, isAxiosErrorResponse } from "@/shared/types/axioxError";
 
@@ -121,5 +122,10 @@ function redirectToLoginOnce() {
 
   alert("로그인이 필요한 페이지입니다.");
   safeLocalStorage.remove(IS_LOGINED);
-  window.location.href = "/login";
+
+  const redirectUrl = window.location.pathname + window.location.search;
+
+  const loginUrl = `${PATH.LOGIN}?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+
+  window.location.href = loginUrl;
 }
