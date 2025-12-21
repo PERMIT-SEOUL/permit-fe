@@ -77,7 +77,7 @@ instance.interceptors.response.use(
             await tokenRefreshPromise;
           } else {
             // 토큰 재발급 시작
-            refreshAccessToken()
+            tokenRefreshPromise = refreshAccessToken()
               .then(() => {
                 tokenRefreshPromise = null;
               })
