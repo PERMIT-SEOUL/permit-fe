@@ -46,7 +46,11 @@ instance.interceptors.response.use(
     // 로그인이 필요한 요청이거나, 리프레시 토큰 모두 만료시 로그인 페이지로 이동
     if (isAxiosErrorResponse(error.response?.data)) {
       // 엑세스 토큰 없음
-      if (error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN) {
+      if (
+        error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
+        error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED ||
+        error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED
+      ) {
         if (error.config?.url === API_URL.USER.LOGOUT) {
           safeLocalStorage.remove(IS_LOGINED);
         }
@@ -59,10 +63,6 @@ instance.interceptors.response.use(
         if (window.location.pathname !== "/auth") {
           redirectToLoginOnce();
         }
-      }
-
-      if (error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED) {
-        redirectToLoginOnce();
       }
 
       if (error.response?.data.code === ERROR_CODE.PAYMENT) {
@@ -109,6 +109,8 @@ instance.interceptors.response.use(
     if (error.response?.status === 500) {
       return Promise.reject(error?.response?.data);
     }
+
+    return Promise.reject(error?.response?.data);
   },
 );
 
