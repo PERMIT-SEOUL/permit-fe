@@ -28,7 +28,8 @@ instance.interceptors.request.use(
   },
 );
 
-let isAlertShown = false;
+let tokenRefreshPromise: Promise<void> | null = null;
+let isLoginAlertShown = false;
 
 // 응답 인터셉터
 instance.interceptors.response.use(
@@ -36,48 +37,47 @@ instance.interceptors.response.use(
   async (error: AxiosError) => {
     if (typeof window === "undefined") {
       // Server에서는 기본 전파
+      console.error(error);
+
       return Promise.reject(error);
     }
 
-    if (error.response?.status === ERROR_CODE.SERVER_ERROR) {
-      alert("서버에러가 발생하였습니다. 관리자에게 문의해주세요.");
-
-      return;
-    }
-
-    if (error.config?.url === API_URL.USER.REISSUE_ACCESS_TOKEN) {
-      return Promise.reject(error);
-    }
+    console.error("##error", JSON.stringify(error));
 
     if (isAxiosErrorResponse(error.response?.data)) {
       // 엑세스 토큰 없음
-      if (error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN) {
-        alert("로그인이 필요한 페이지입니다.");
+      if (
+        error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
+        error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED ||
+        error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED
+      ) {
+        redirectToLoginOnce();
+      }
 
-        safeLocalStorage.remove(IS_LOGINED);
-        window.location.href = EXTERNAL_PATH.LOGIN;
+      if (error?.response?.data.code === ERROR_CODE.NO_ACCESS) {
+        alert("접근 권한이 필요한 페이지입니다.");
 
-        return;
+        window.location.href = EXTERNAL_PATH.HOME;
       }
 
       // 액세스 토큰 만료
       if (error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
         try {
-          if (isAlertShown) {
-            // 원래 요청 재시도
-            const originalRequest = error.config;
+          // 이미 토큰 재발급이 진행 중이면 완료될 때까지 대기
+          if (tokenRefreshPromise) {
+            await tokenRefreshPromise;
+          } else {
+            // 토큰 재발급 시작
+            tokenRefreshPromise = refreshAccessToken()
+              .then(() => {
+                tokenRefreshPromise = null;
+              })
+              .catch((error) => {
+                tokenRefreshPromise = null;
 
-            if (!originalRequest) {
-              return Promise.reject(error);
-            }
-
-            return instance(originalRequest);
+                throw error;
+              });
           }
-
-          // 엑세스 토큰 재발급
-          isAlertShown = true;
-          await refreshAccessToken();
-          isAlertShown = false;
 
           // 원래 요청 재시도
           const originalRequest = error.config;
@@ -87,34 +87,30 @@ instance.interceptors.response.use(
           }
 
           return instance(originalRequest);
-        } catch (error) {
-          console.log("@@refresh error", error);
-
+        } catch {
           if (typeof window !== "undefined") {
-            alert("로그인이 필요한 페이지입니다.");
+            redirectToLoginOnce();
 
-            // 엑세스 토큰 재발급 실패시 로그인 페이지로 이동
-            safeLocalStorage.remove(IS_LOGINED);
-
-            window.location.href = EXTERNAL_PATH.LOGIN;
-            isAlertShown = false;
+            return Promise.reject(error?.response?.data);
           }
         }
       }
+    }
 
-      if (error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED) {
-        alert("로그인이 필요한 페이지입니다.");
-
-        safeLocalStorage.remove(IS_LOGINED);
-        window.location.href = "/login";
-      }
-
-      if (error.response?.data.code === ERROR_CODE.NO_ACCESS) {
-        alert("접근 권한이 없는 페이지입니다.");
-        window.location.href = EXTERNAL_PATH.HOME;
-      }
+    if (error.response?.status === 500) {
+      return Promise.reject(error?.response?.data);
     }
 
     return Promise.reject(error?.response?.data);
   },
 );
+
+function redirectToLoginOnce() {
+  if (isLoginAlertShown) return;
+
+  isLoginAlertShown = true;
+
+  alert("로그인이 필요한 페이지입니다.");
+  safeLocalStorage.remove(IS_LOGINED);
+  window.location.href = EXTERNAL_PATH.LOGIN;
+}
