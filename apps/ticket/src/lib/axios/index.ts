@@ -37,25 +37,25 @@ instance.interceptors.response.use(
   async (error: AxiosError<AxiosErrorResponse>) => {
     if (typeof window === "undefined") {
       // Server에서는 기본 전파
-      console.error(error);
+      // console.error(error);
 
       return Promise.reject(error);
     }
 
-    console.error("##error", JSON.stringify(error));
+    // console.error("##error", JSON.stringify(error));
+
+    if (error.config?.url === API_URL.USER.LOGOUT) {
+      safeLocalStorage.remove(IS_LOGINED);
+      window.location.href = PATH.LOGIN;
+    }
 
     // 로그인이 필요한 요청이거나, 리프레시 토큰 모두 만료시 로그인 페이지로 이동
     if (isAxiosErrorResponse(error.response?.data)) {
       // 엑세스 토큰 없음
       if (
         error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
-        error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED ||
         error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED
       ) {
-        if (error.config?.url === API_URL.USER.LOGOUT) {
-          safeLocalStorage.remove(IS_LOGINED);
-        }
-
         redirectToLoginOnce();
       }
 

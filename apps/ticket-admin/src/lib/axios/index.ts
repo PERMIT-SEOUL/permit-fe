@@ -47,7 +47,6 @@ instance.interceptors.response.use(
       // 엑세스 토큰 없음
       if (
         error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
-        error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED ||
         error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED
       ) {
         redirectToLoginOnce();
