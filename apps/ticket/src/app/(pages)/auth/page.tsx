@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useLoginMutation } from "@/data/users/postUserLogin/mutation";
-import { safeLocalStorage } from "@/lib/storage";
+import { safeLocalStorage, safeSessionStorage } from "@/lib/storage";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { PATH } from "@/shared/constants/path";
 import {
@@ -32,7 +32,7 @@ const AuthPage = () => {
   const authorizationCode = searchParams.get("code");
 
   const socialType = safeLocalStorage.get(SOCIAL_LOGIN_TYPE_KEY) as SocialLoginType;
-  const redirectUrl = safeLocalStorage.get(REDIRECT_URL_KEY);
+  const redirectUrl = safeSessionStorage.get(REDIRECT_URL_KEY);
 
   const { mutateAsync } = useLoginMutation();
 
@@ -47,7 +47,7 @@ const AuthPage = () => {
         safeLocalStorage.set(IS_LOGINED, "true");
 
         router.replace(redirectUrl || PATH.HOME);
-        safeLocalStorage.remove(REDIRECT_URL_KEY);
+        safeSessionStorage.remove(REDIRECT_URL_KEY);
       } catch (error) {
         safeLocalStorage.set(TOKEN_KEY, (error as Error).message);
         router.replace(PATH.SIGNUP);

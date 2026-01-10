@@ -5,7 +5,7 @@ import { PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 import { AxiosErrorResponse, isAxiosErrorResponse } from "@/shared/types/axioxError";
 
-import { safeLocalStorage } from "../storage";
+import { safeLocalStorage, safeSessionStorage } from "../storage";
 import { refreshAccessToken } from "./helpers";
 import { ERROR_CODE } from "./utils/errorCode";
 
@@ -121,7 +121,7 @@ function redirectToLoginOnce() {
   isLoginAlertShown = true;
 
   alert("로그인이 필요한 페이지입니다.");
-  safeLocalStorage.remove(IS_LOGINED);
+  safeSessionStorage.remove(IS_LOGINED);
 
   const redirectUrl = window.location.pathname + window.location.search;
 
