@@ -42,6 +42,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: [
       process.env.NEXT_PUBLIC_CDN_DOMAIN || "",
+      process.env.NEXT_PUBLIC_CDN_NOTION_DOMAIN || "",
       "avatars.githubusercontent.com",
       "scontent-icn2-1.cdninstagram.com",
       "images.unsplash.com",

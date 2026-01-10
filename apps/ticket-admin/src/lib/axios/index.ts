@@ -1,11 +1,10 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-import { API_URL } from "@/data/constants";
 import { EXTERNAL_PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
-import { safeLocalStorage } from "../storage";
+import { safeSessionStorage } from "../storage";
 import { refreshAccessToken } from "./helpers";
 import { ERROR_CODE } from "./utils/errorCode";
 
@@ -48,7 +47,6 @@ instance.interceptors.response.use(
       // 엑세스 토큰 없음
       if (
         error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
-        error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED ||
         error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED
       ) {
         redirectToLoginOnce();
@@ -111,9 +109,11 @@ function redirectToLoginOnce() {
   isLoginAlertShown = true;
 
   alert("로그인이 필요한 페이지입니다.");
-  safeLocalStorage.remove(IS_LOGINED);
+  safeSessionStorage.remove(IS_LOGINED);
 
-  const redirectUrl = `${EXTERNAL_PATH.LOGIN}?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  const redirectUrl = `${EXTERNAL_PATH.LOGIN}?redirectUrl=${encodeURIComponent(
+    window.location.origin + window.location.pathname + window.location.search,
+  )}`;
 
   window.location.href = redirectUrl;
 }
