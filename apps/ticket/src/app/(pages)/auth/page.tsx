@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useLoginMutation } from "@/data/users/postUserLogin/mutation";
@@ -36,7 +36,13 @@ const AuthPage = () => {
 
   const { mutateAsync } = useLoginMutation();
 
+  const isLoginProcessingRef = useRef(false);
+
   const handleLogin = useCallback(async () => {
+    if (isLoginProcessingRef.current) return;
+
+    isLoginProcessingRef.current = true;
+
     if (authorizationCode) {
       try {
         await mutateAsync({
