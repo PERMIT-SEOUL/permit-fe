@@ -66,5 +66,9 @@ export const API_URL = {
     CONFIRM: "/api/tickets/door/staff/confirm",
     /** 도어용 게스트 스탭 티켓 확인 API */
     GUEST_CONFIRM: "/api/guests/tickets/door/staff/confirm",
+    /** 도어용 유저 스탭 카메라 확인 API */
+    CAMERA_USER_TICKET_CONFIRM: "/api/staff/tickets/door/confirm",
+    /** 도어용 게스트 스탭 카메라 확인 API */
+    CAMERA_GUEST_TICKET_CONFIRM: "/api/staff/guests/door/confirm",
   },
 } as const;

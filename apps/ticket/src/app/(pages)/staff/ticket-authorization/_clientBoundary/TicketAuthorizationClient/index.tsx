@@ -7,6 +7,8 @@ import classNames from "classnames/bind";
 import { Flex, Typography } from "@permit/design-system";
 import { useGuestTicketDoorValidationQuery } from "@/data/tickets/getGuestTicketDoorValidation/queries";
 import { useTicketDoorValidationQuery } from "@/data/tickets/getTicketDoorValidation/queries";
+import { useGuestTicketCameraConfirmMutation } from "@/data/tickets/postStaffGuestTicketDoorConfirm/mutation";
+import { useUserTicketCameraConfirmMutation } from "@/data/tickets/postStaffTicketDoorConfirm/mutation";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import styles from "./index.module.scss";
@@ -143,6 +145,9 @@ export const TicketAuthorizationClient = () => {
   const qrCodeRef = useRef<any>(null);
   const scanningRef = useRef(false);
 
+  const { mutateAsync: userTicketCameraMutate } = useUserTicketCameraConfirmMutation();
+  const { mutateAsync: guestTicketCameraMutate } = useGuestTicketCameraConfirmMutation();
+
   // html5-qrcode 스타일 주입
   useEffect(() => {
     const styleId = "qr-reader-styles";
@@ -278,48 +283,47 @@ export const TicketAuthorizationClient = () => {
 
   // 검증 결과 처리
   useEffect(() => {
-    console.log(scannedTicketCode, scanningRef.current);
+    if (!scannedTicketCode || !scanningRef.current) return;
 
-    if (!scannedTicketCode || !scanningRef.current) {
-      return;
-    }
+    const verifyTicket = async () => {
+      try {
+        if (isGuest) {
+          await guestTicketCameraMutate({ ticketCode: scannedTicketCode });
+        } else {
+          await userTicketCameraMutate({ ticketCode: scannedTicketCode });
+        }
 
-    // staff 권한으로 ticketCode 에 대해서 입장 가능하다는 API 를 쏘면 해당 티켓 체크
+        // ✅ 성공
+        showToast("확인되었습니다.", "success");
+      } catch (error) {
+        // ❌ 실패
+        let message = "티켓 검증에 실패했습니다.";
 
-    // if (error) {
-    //   if (isAxiosErrorResponse(error)) {
-    //     let message = "티켓 검증에 실패했습니다.";
+        if (isAxiosErrorResponse(error)) {
+          if (error.code === NO_ENTRY_TIME) {
+            message = "해당 티켓의 유효 시간이 아닙니다.";
+          } else if (error.code === ALREADY_USED_TICKET) {
+            message = "이미 사용한 티켓입니다.";
+          } else if (error.code === CANCELED_TICKET) {
+            message = "취소된 티켓입니다.";
+          } else if (error.message) {
+            message = error.message;
+          }
+        }
 
-    //     if (error.code === NO_ENTRY_TIME) {
-    //       message = "해당 티켓의 유효 시간이 아닙니다.";
-    //     } else if (error.code === ALREADY_USED_TICKET) {
-    //       message = "이미 사용한 티켓입니다.";
-    //     } else if (error.code === CANCELED_TICKET) {
-    //       message = "취소된 티켓입니다.";
-    //     } else if (error.message) {
-    //       message = error.message;
-    //     }
+        showToast(message, "error");
+      } finally {
+        // 🔄 성공/실패 상관없이 스캔 재개
+        setTimeout(() => {
+          scanningRef.current = false;
+          setScannedTicketCode(null);
+          setLastScannedCode(null);
+        }, 2000);
+      }
+    };
 
-    //     showToast(message, "error");
-    //   } else {
-    //     showToast("티켓 검증에 실패했습니다.", "error");
-    //   }
-
-    // 검증 실패 후 스캔 재개
-    setTimeout(() => {
-      scanningRef.current = false;
-      setScannedTicketCode(null);
-    }, 2000);
-
-    showToast(`확인되었습니다.`, "success");
-
-    // 검증 성공 후 스캔 재개
-    setTimeout(() => {
-      scanningRef.current = false;
-      setScannedTicketCode(null);
-      setLastScannedCode(null);
-    }, 2000);
-  }, [scannedTicketCode, isGuest]);
+    verifyTicket();
+  }, [scannedTicketCode, isGuest, guestTicketCameraMutate, userTicketCameraMutate]);
 
   return (
     <div className={cx("container")}>
