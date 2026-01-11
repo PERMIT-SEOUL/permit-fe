@@ -5,8 +5,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { Flex, Typography } from "@permit/design-system";
-import { useGuestTicketDoorValidationQuery } from "@/data/tickets/getGuestTicketDoorValidation/queries";
-import { useTicketDoorValidationQuery } from "@/data/tickets/getTicketDoorValidation/queries";
 import { useGuestTicketCameraConfirmMutation } from "@/data/tickets/postStaffGuestTicketDoorConfirm/mutation";
 import { useUserTicketCameraConfirmMutation } from "@/data/tickets/postStaffTicketDoorConfirm/mutation";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";

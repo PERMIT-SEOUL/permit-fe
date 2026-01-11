@@ -36,6 +36,9 @@ export function AddRoundFormClient({ eventId }: Props) {
 
   const { data: eventDetailData } = useEventDetailQuery({
     eventId,
+    options: {
+      refetchOnWindowFocus: true,
+    },
   });
 
   // 티켓 라운드 이름 필드

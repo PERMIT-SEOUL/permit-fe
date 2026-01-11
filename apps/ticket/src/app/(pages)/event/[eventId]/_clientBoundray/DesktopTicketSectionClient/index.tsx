@@ -32,7 +32,12 @@ type Props = {
 };
 
 export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
-  const { data: eventTicketsData } = useEventTicketsSuspenseQuery({ eventId });
+  const { data: eventTicketsData } = useEventTicketsSuspenseQuery({
+    eventId,
+    options: {
+      refetchOnWindowFocus: true,
+    },
+  });
 
   const [isLoading, setIsLoading] = useState(false);
   const selectedRound = eventTicketsData.rounds.find((round) => round.roundAvailable);
@@ -60,10 +65,11 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
       return round.ticketTypes.map((ticket) => ({
         value: String(ticket.ticketTypeId),
         label: `${ticket.ticketTypeName} - ₩ ${ticket.ticketTypePrice}`,
+        disabled: ticket.isTicketSoldOut,
       }));
     }
 
-    return [];
+    return [{ value: "No Available Tickets", label: "No Available Tickets", disabled: true }];
   });
 
   const roundSelect = useSelect({

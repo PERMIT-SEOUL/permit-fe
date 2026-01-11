@@ -77,10 +77,11 @@ const SelectTicketBottomSheetContent = ({
       return round.ticketTypes.map((ticket) => ({
         value: String(ticket.ticketTypeId),
         label: `${ticket.ticketTypeName} - ₩ ${ticket.ticketTypePrice}`,
+        disabled: ticket.isTicketSoldOut,
       }));
     }
 
-    return [];
+    return [{ value: "No Available Tickets", label: "No Available Tickets", disabled: true }];
   });
 
   const roundSelect = useSelect({
