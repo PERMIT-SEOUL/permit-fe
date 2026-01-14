@@ -115,22 +115,23 @@ const showToast = (message: string, type: "success" | "error" = "success") => {
 
   toast.className = cx("toast", type);
   toast.textContent = message;
-  document.body.appendChild(toast);
+  // document.body.appendChild(toast);
 
-  // 3초 후 제거
-  setTimeout(() => {
-    toast.classList.add(cx("toast_hide"));
-    setTimeout(() => {
-      document.body.removeChild(toast);
-    }, 300);
-  }, 2000);
+  // // 3초 후 제거
+  // setTimeout(() => {
+  //   toast.classList.add(cx("toast_hide"));
+  //   setTimeout(() => {
+  //     document.body.removeChild(toast);
+  //   }, 300);
+  // }, 2000);
 
   if (type === "success") {
     playDing();
+    alert("확인되었습니다");
   } else {
-    // 실패 케이스에는 음성 알림
     playErrorDing();
-    speak(message);
+    // speak(message);
+    alert(message);
   }
 };
 
