@@ -19,7 +19,10 @@ type Props = {
 };
 
 export const EventDetailClient = ({ eventId }: Props) => {
-  const { data: eventDetailData } = useEventDetailSuspenseQuery({ eventId });
+  const { data: eventDetailData } = useEventDetailSuspenseQuery({
+    eventId,
+    options: { refetchOnWindowFocus: true },
+  });
 
   return (
     <>

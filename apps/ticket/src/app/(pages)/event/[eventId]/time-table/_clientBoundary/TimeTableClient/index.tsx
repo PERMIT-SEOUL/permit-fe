@@ -35,6 +35,7 @@ export const TimeTableClient = ({ eventId }: Props) => {
       refetchOnWindowFocus: true,
     },
   });
+
   const [timetables, setTimetables] = useState(timetablesData);
 
   const timeSlots = useMemo(
@@ -174,6 +175,14 @@ export const TimeTableClient = ({ eventId }: Props) => {
           <Flex direction="column" gap={16}>
             <Typography type="title20">{timetables.eventName}</Typography>
 
+            <Button
+              className={cx("back_button")}
+              variant="secondary"
+              onClick={handleBackButtonClick}
+            >
+              {"< back"}
+            </Button>
+
             <Flex gap={8}>
               <Button
                 variant="secondary"
@@ -188,14 +197,6 @@ export const TimeTableClient = ({ eventId }: Props) => {
                 {"Sitemap"}
               </Button>
             </Flex>
-
-            <Button
-              className={cx("back_button")}
-              variant="secondary"
-              onClick={handleBackButtonClick}
-            >
-              {"< back"}
-            </Button>
           </Flex>
           <>
             {/* 즐겨찾기 버튼 영역 (media query 로 분기) */}
