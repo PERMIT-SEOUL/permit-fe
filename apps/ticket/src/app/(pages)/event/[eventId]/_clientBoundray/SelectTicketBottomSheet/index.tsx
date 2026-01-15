@@ -53,8 +53,8 @@ const SelectTicketBottomSheetContent = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const selectedRound = eventTicketsData.rounds.find((round) => round.roundAvailable);
-  const [selectedRoundId, setSelectedRoundId] = useState<number>(
-    selectedRound?.roundId || eventTicketsData.rounds[0].roundId,
+  const [selectedRoundId, setSelectedRoundId] = useState<number | undefined>(
+    selectedRound?.roundId,
   );
   const [selectedTickets, setSelectedTickets] = useState<SelectedTicket[]>([]);
   const [isPromocodeOpen, setIsPromocodeOpen] = useState(false);
@@ -72,17 +72,26 @@ const SelectTicketBottomSheetContent = ({
     };
   });
 
-  const ticketOptions = eventTicketsData.rounds.flatMap((round) => {
-    if (round.roundAvailable) {
-      return round.ticketTypes.map((ticket) => ({
+  const availableTickets = eventTicketsData.rounds
+    .filter((round) => round.roundAvailable)
+    .flatMap((round) =>
+      round.ticketTypes.map((ticket) => ({
         value: String(ticket.ticketTypeId),
         label: `${ticket.ticketTypeName} - ₩ ${ticket.ticketTypePrice}`,
         disabled: ticket.isTicketSoldOut,
-      }));
-    }
+      })),
+    );
 
-    return [{ value: "No Available Tickets", label: "No Available Tickets", disabled: true }];
-  });
+  const ticketOptions =
+    availableTickets.length > 0
+      ? availableTickets
+      : [
+          {
+            value: "No Available Tickets",
+            label: "No Available Tickets",
+            disabled: true,
+          },
+        ];
 
   const roundSelect = useSelect({
     initialValue: selectedRoundId?.toString() || "",
