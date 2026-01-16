@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 import { Button, Flex, Typography } from "@permit/design-system";
 import { ErrorBoundary, ErrorHandler } from "@/shared/clientBoundary/ErrorBoundary";
-import { AxiosErrorResponse } from "@/shared/types/axioxError";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 type Props = {
   children: ReactNode;
@@ -19,7 +19,7 @@ export const TimeTableErrorBoundary = ({ children, eventId }: Props) => {
 
 const timeTableErrorHandlers = ({ eventId }: { eventId?: string }): ErrorHandler[] => [
   {
-    isError: (error) => isTimeTableNotRegisteredError(error as AxiosErrorResponse),
+    isError: (error) => isTimeTableNotRegisteredError(error),
     fallback: () => {
       return (
         <Flex
@@ -45,6 +45,8 @@ const timeTableErrorHandlers = ({ eventId }: { eventId?: string }): ErrorHandler
   },
 ];
 
-const isTimeTableNotRegisteredError = (error: AxiosErrorResponse) => {
-  return error.code === NOT_FOUND_TIME_TABLE_ERROR_CODE;
+const isTimeTableNotRegisteredError = (error: Error) => {
+  return (
+    isAxiosErrorResponse(error) && error.response?.data.code === NOT_FOUND_TIME_TABLE_ERROR_CODE
+  );
 };
