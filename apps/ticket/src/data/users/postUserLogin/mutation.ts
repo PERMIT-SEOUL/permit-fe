@@ -44,9 +44,7 @@ type LoginRequest = {
   redirectUrl: string;
 };
 
-type LoginResponse = {
-  data: null;
-};
+type LoginResponse = { code: number; message: string };
 
 export type LoginMutationOptions<TData> = Omit<
   UseMutationOptions<TData, Error, LoginRequest>,
@@ -58,12 +56,6 @@ export type LoginMutationOptions<TData> = Omit<
 export const useLoginMutation = (options?: LoginMutationOptions<LoginResponse>) => {
   return useMutation({
     mutationFn: async (params: LoginRequest) => {
-      // const response = await instance.post<LoginResponse>(API_URL.USER.LOGIN, params);
-
-      // document.cookie = "co:11";
-
-      // return response.data;
-
       const res = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -72,10 +64,6 @@ export const useLoginMutation = (options?: LoginMutationOptions<LoginResponse>) 
         credentials: "include",
         body: JSON.stringify(params),
       });
-
-      if (!res.ok) {
-        throw new Error("로그인 요청 실패");
-      }
 
       return res.json();
     },

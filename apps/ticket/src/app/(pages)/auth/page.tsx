@@ -46,25 +46,27 @@ const AuthPage = () => {
 
     if (authorizationCode) {
       try {
-        await mutateAsync({
+        const response = await mutateAsync({
           socialType,
           authorizationCode,
           redirectUrl: REDIRECT_URI || "",
         });
+
+        // 회원가입 필요
+        if (response.code === 40402) {
+          safeLocalStorage.set(TOKEN_KEY, response?.message || "");
+          router.replace(PATH.SIGNUP);
+
+          return;
+        }
 
         safeLocalStorage.set(IS_LOGINED, "true");
 
         router.replace(redirectUrl || PATH.HOME);
         safeSessionStorage.remove(REDIRECT_URL_KEY);
       } catch (error) {
-        if (isAxiosErrorResponse(error)) {
-          safeLocalStorage.set(TOKEN_KEY, error.response?.data.message || "");
-          router.replace(PATH.SIGNUP);
-
-          return;
-        }
-
-        console.log(error);
+        alert("에러가 발생했습니다.");
+        console.error(error);
         router.replace(PATH.HOME);
       }
     } else {
