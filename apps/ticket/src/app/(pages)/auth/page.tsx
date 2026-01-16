@@ -54,7 +54,7 @@ const AuthPage = () => {
 
         safeLocalStorage.set(IS_LOGINED, "true");
 
-        // router.replace(redirectUrl || PATH.HOME);
+        router.replace(redirectUrl || PATH.HOME);
         safeSessionStorage.remove(REDIRECT_URL_KEY);
       } catch (error) {
         if (isAxiosErrorResponse(error)) {
@@ -65,7 +65,6 @@ const AuthPage = () => {
         }
 
         console.log(error);
-
         router.replace(PATH.HOME);
       }
     } else {

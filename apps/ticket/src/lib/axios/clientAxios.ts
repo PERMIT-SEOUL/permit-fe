@@ -34,8 +34,6 @@ let isLoginAlertShown = false;
 // 응답 인터셉터
 clientAxios.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log("@@ interceptors", response, response.headers["set-cookie"]);
-
     return response.data;
   },
   async (error: AxiosErrorResponse) => {
