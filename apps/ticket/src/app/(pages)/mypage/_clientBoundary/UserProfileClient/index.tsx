@@ -96,7 +96,7 @@ export const UserProfileClient = () => {
       alert("이메일 확인이 완료되었습니다.");
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
-        alert(error.message);
+        alert(error.response?.data.message);
       }
     }
   };
@@ -139,7 +139,7 @@ export const UserProfileClient = () => {
       setEmailVerified(false);
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
-        alert(error.message);
+        alert(error.response?.data.message);
       }
     }
   };
@@ -157,11 +157,13 @@ export const UserProfileClient = () => {
       window.location.href = "/login";
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
-        if (error.code === ERROR_CODE.NO_ACCESS_TOKEN) {
+        if (error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN) {
+          window.location.href = "/login";
+
           return;
         }
 
-        alert(error.message);
+        alert(error.response?.data.message);
       }
     }
   };

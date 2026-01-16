@@ -15,6 +15,7 @@ import {
 } from "@/shared/constants/storage";
 import { REDIRECT_URI } from "@/shared/hooks/useOAuth/constants";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 /**
  * 인증 페이지
@@ -50,13 +51,22 @@ const AuthPage = () => {
           authorizationCode,
           redirectUrl: REDIRECT_URI || "",
         });
+
         safeLocalStorage.set(IS_LOGINED, "true");
 
-        router.replace(redirectUrl || PATH.HOME);
+        // router.replace(redirectUrl || PATH.HOME);
         safeSessionStorage.remove(REDIRECT_URL_KEY);
       } catch (error) {
-        safeLocalStorage.set(TOKEN_KEY, (error as Error).message);
-        router.replace(PATH.SIGNUP);
+        if (isAxiosErrorResponse(error)) {
+          safeLocalStorage.set(TOKEN_KEY, error.response?.data.message || "");
+          router.replace(PATH.SIGNUP);
+
+          return;
+        }
+
+        console.log(error);
+
+        router.replace(PATH.HOME);
       }
     } else {
       // 인증 코드가 없는 경우 로그인 페이지로 리다이렉트

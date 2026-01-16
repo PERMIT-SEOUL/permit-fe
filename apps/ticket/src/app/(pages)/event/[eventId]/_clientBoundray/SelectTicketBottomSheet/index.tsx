@@ -236,8 +236,15 @@ const SelectTicketBottomSheetContent = ({
 
       window.location.href = `/order/${orderId}`;
     } catch (error) {
-      if (isAxiosErrorResponse(error) && isNotAuthErrorResponse(error)) {
-        alert(error.message);
+      if (isNotAuthErrorResponse(error)) {
+        // TODO: 로그인 화면으로 이동하는 로직 추가해야함.
+        // 로그인 페이지로 이동해야함
+        // alert("로그인 후 이용해 주세요.");
+      }
+
+      if (isAxiosErrorResponse(error)) {
+        // TODO: 토스트나 커스텀 모달로 변경
+        alert(error.response?.data.message);
       }
 
       setIsLoading(false);

@@ -35,6 +35,7 @@ type Props = {
 
 /**
  * 티켓 선택 모달
+ * @deprecated
  */
 export const SelectTicketModal = ({ isOpen, close, title, eventId, ticketInfo }: Props) => {
   const router = useRouter();
@@ -133,8 +134,7 @@ export const SelectTicketModal = ({ isOpen, close, title, eventId, ticketInfo }:
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
         // TODO: 토스트나 커스텀 모달로 변경
-        // 메시지 프론트 설정 필요
-        alert(error.message);
+        alert(error.response?.data.message);
       }
 
       setIsLoading(false);

@@ -50,9 +50,9 @@ export const EntryClient = ({ ticketCode }: Props) => {
     try {
       await mutateCheckEntryCode({ ticketCode, checkCode: checkCodeField.value });
       alert("확인되었습니다.");
-    } catch (e) {
-      if (isAxiosErrorResponse(e)) {
-        alert(e.message || "An error occurred while verifying the code.");
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        alert(error.response?.data.message || "An error occurred while verifying the code.");
       }
     }
   };
@@ -61,7 +61,9 @@ export const EntryClient = ({ ticketCode }: Props) => {
     return <LoadingWithLayout />;
   }
 
-  if (error?.code === NO_ENTRY_TIME) {
+  const { code: errorCode } = error?.response?.data ?? {};
+
+  if (errorCode === NO_ENTRY_TIME) {
     return (
       <Flex direction="column" justify="center" align="center" gap={16} style={{ height: "100vh" }}>
         <Link className={cx("logo")} href="/">
@@ -77,7 +79,7 @@ export const EntryClient = ({ ticketCode }: Props) => {
     );
   }
 
-  if (error?.code === ALREADY_USED_TICKET) {
+  if (errorCode === ALREADY_USED_TICKET) {
     return (
       <Flex direction="column" justify="center" align="center" style={{ height: "100vh" }}>
         <Link className={cx("logo")} href="/">
@@ -90,7 +92,7 @@ export const EntryClient = ({ ticketCode }: Props) => {
     );
   }
 
-  if (error?.code === CANCELED_TICKET) {
+  if (errorCode === CANCELED_TICKET) {
     return (
       <Flex direction="column" justify="center" align="center" style={{ height: "100vh" }}>
         <Link className={cx("logo")} href="/">

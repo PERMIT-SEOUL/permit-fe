@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios, { isAxiosError } from "axios";
 import classNames from "classnames/bind";
 
 import { Button, Flex, Icon, Select, TextField, Typography } from "@permit/design-system";
@@ -7,7 +8,11 @@ import { useCouponValidateMutation } from "@/data/coupon/postCouponValidate/muta
 import { useEventTicketsSuspenseQuery } from "@/data/events/getEventTickets/queries";
 import { useReservationReadyMutation } from "@/data/reservations/postReservationReady/mutation";
 import { generateRandomString } from "@/shared/helpers/generateRandomString";
-import { isAxiosErrorResponse, isNotAuthErrorResponse } from "@/shared/types/axioxError";
+import {
+  AxiosErrorResponse,
+  isAxiosErrorResponse,
+  isNotAuthErrorResponse,
+} from "@/shared/types/axioxError";
 
 import { TitleSection } from "../../_components/TitleSection";
 import { calculateTotalPrice } from "../../_helpers/calculateTotalPrice";
@@ -226,9 +231,15 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
 
       window.location.href = `/order/${orderId}`;
     } catch (error) {
-      if (isAxiosErrorResponse(error) && isNotAuthErrorResponse(error)) {
+      if (isNotAuthErrorResponse(error)) {
+        // TODO: 로그인 화면으로 이동하는 로직 추가해야함.
+        // 로그인 페이지로 이동해야함
+        // alert("로그인 후 이용해 주세요.");
+      }
+
+      if (isAxiosErrorResponse(error)) {
         // TODO: 토스트나 커스텀 모달로 변경
-        alert(error.message);
+        alert(error.response?.data.message);
       }
 
       setIsLoading(false);

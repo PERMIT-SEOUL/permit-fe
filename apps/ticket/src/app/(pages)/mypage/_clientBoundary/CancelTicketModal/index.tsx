@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 import { Button, Dialog, Flex, Typography } from "@permit/design-system";
 import { usePaymentCancelMutation } from "@/data/payments/postPaymentCancel/mutation";
 import { ModalComponentProps } from "@/shared/hooks/useModal/types";
-import { isAxiosErrorResponse } from "@/shared/types/axioxError";
+import { isAxiosErrorResponse, isNotAuthErrorResponse } from "@/shared/types/axioxError";
 
 import styles from "./index.module.scss";
 
@@ -27,10 +27,15 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
 
       close({ result: true });
     } catch (error) {
+      if (isNotAuthErrorResponse(error)) {
+        // TODO: 로그인 화면으로 이동하는 로직 추가해야함. => 훅으로 분리하기
+        // 로그인 페이지로 이동해야함
+        // alert("로그인 후 이용해 주세요.");
+      }
+
       if (isAxiosErrorResponse(error)) {
         // TODO: 토스트나 커스텀 모달로 변경
-        // 메시지 프론트 설정 필요
-        alert(error.message);
+        alert(error.response?.data.message);
       }
     } finally {
       setIsLoading(false);

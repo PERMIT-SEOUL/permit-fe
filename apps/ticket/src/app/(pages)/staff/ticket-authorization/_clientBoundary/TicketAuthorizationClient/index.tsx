@@ -299,14 +299,14 @@ export const TicketAuthorizationClient = () => {
         let message = "티켓 검증에 실패했습니다.";
 
         if (isAxiosErrorResponse(error)) {
-          if (error.code === NO_ENTRY_TIME) {
+          if (error.response?.data.code === NO_ENTRY_TIME) {
             message = "해당 티켓의 유효 시간이 아닙니다.";
-          } else if (error.code === ALREADY_USED_TICKET) {
+          } else if (error.response?.data.code === ALREADY_USED_TICKET) {
             message = "이미 사용한 티켓입니다.";
-          } else if (error.code === CANCELED_TICKET) {
+          } else if (error.response?.data.code === CANCELED_TICKET) {
             message = "취소된 티켓입니다.";
-          } else if (error.message) {
-            message = error.message;
+          } else if (error.response?.data.message) {
+            message = error.response?.data.message;
           }
         }
 
