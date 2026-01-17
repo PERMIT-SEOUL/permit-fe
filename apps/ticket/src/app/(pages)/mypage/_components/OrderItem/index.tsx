@@ -107,7 +107,8 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
 
                 <Flex gap={30}>
                   <span className={cx("event_schedule")}>{ticket.ticketDate}</span>
-                  <span className={cx("event_schedule")}>{ticket.ticketTime}</span>
+                  {/* TODO: 추후 티켓 시간 보이도록 변경 */}
+                  {/* <span className={cx("event_schedule")}>{ticket.ticketTime}</span> */}
                 </Flex>
               </div>
             </div>
