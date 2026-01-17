@@ -304,7 +304,6 @@ export function EventFormLayout({
                   <Typography type="body16" weight="bold">
                     Venue
                   </Typography>
-                  <div className={cx("required")}>*</div>
                 </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}

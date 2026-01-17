@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useLoginMutation } from "@/data/users/postUserLogin/mutation";
+import { ERROR_CODE } from "@/lib/axios/utils/errorCode";
 import { safeLocalStorage, safeSessionStorage } from "@/lib/storage";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { PATH } from "@/shared/constants/path";
@@ -15,7 +16,6 @@ import {
 } from "@/shared/constants/storage";
 import { REDIRECT_URI } from "@/shared/hooks/useOAuth/constants";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
-import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 /**
  * 인증 페이지
@@ -53,7 +53,7 @@ const AuthPage = () => {
         });
 
         // 회원가입 필요
-        if (response.code === 40402) {
+        if (response.code === ERROR_CODE.LOGIN_REQUIRED) {
           safeLocalStorage.set(TOKEN_KEY, response?.message || "");
           router.replace(PATH.SIGNUP);
 
