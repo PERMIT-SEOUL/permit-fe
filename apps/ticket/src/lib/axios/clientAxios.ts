@@ -46,7 +46,7 @@ clientAxios.interceptors.response.use(
 
     // get 요청이 아닌 경우 즉시 refreshToken 재발급 및 요청
     if (original?.method !== "get" && !original?._retry) {
-      if (isAxiosErrorResponse(error.response?.data)) {
+      if (isAxiosErrorResponse(error)) {
         if (error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
           original._retry = true;
 
