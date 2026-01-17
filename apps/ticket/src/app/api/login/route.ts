@@ -21,7 +21,6 @@ export async function POST(req: Request) {
   });
 
   // API 서버가 내려준 모든 Set-Cookie를 그대로 전달
-
   for (const cookie of setCookies) {
     // 기존 쿠키 그대로 전달
     // SSR 환경에서 브라우저 쿠키 사용할 수 있도록 하기 위함
