@@ -40,6 +40,10 @@ clientAxios.interceptors.response.use(
   async (error: TempAxiosErrorResponse) => {
     const original = error.config;
 
+    console.log("@@ error.response?.data", error.response?.data);
+    console.log("@@ original?.method", original?.method);
+    console.log("@@ original?._retry", original?._retry);
+
     // get 요청이 아닌 경우 즉시 refreshToken 재발급 및 요청
     if (original?.method !== "get" && !original?._retry) {
       if (isAxiosErrorResponse(error.response?.data)) {
@@ -55,7 +59,11 @@ clientAxios.interceptors.response.use(
               credentials: "include",
             });
 
-            return res.json();
+            console.log("@@res ", res);
+
+            const originalRequest = error.config;
+
+            return clientAxios(originalRequest);
           } catch (e) {
             redirectToLoginOnce();
 
