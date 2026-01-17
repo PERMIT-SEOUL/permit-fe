@@ -16,7 +16,7 @@ export const EventInfo = ({ venue, date, time, minAge, details, lineup }: Props)
     <div className={cx("wrap")}>
       <div className={cx("info_section")}>
         <div className={cx("info_group")}>
-          <InfoText title="Venue" value={venue} />
+          <InfoText title="Venue" value={venue === "" ? "TBD" : venue} />
 
           <Flex direction="column" gap={8}>
             <InfoText title="Date" value={date} />

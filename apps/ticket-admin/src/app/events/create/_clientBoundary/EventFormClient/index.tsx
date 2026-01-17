@@ -243,8 +243,6 @@ export function EventFormClient() {
   const venueField = useTextField({
     initialValue: "",
     validate: (value: string) => {
-      if (!value.trim()) return "장소를 입력해주세요.";
-
       return undefined;
     },
     onChange: (value: string) => {
