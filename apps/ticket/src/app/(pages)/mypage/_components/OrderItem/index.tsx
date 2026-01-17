@@ -50,7 +50,7 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
         {order.refundedPrice && (
           <Flex gap={8}>
             <Typography className={cx("refund_price")} type="body14" color="gray300">
-              {order.refundedPrice}
+              ₩{order.refundedPrice}
             </Typography>
             <Typography type="body14" color="gray300">
               Refunded
