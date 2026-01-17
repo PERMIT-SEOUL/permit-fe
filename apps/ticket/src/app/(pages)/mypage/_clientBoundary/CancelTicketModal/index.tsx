@@ -52,16 +52,16 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
       <Dialog.Bottom>
         <Flex gap={12}>
           <Button
-            variant="secondary"
+            variant="error"
             size="sm"
             isLoading={isLoading}
             disabled={isLoading}
             onClick={handleCancelOrder}
           >
-            Cancel
+            Cancel ticket
           </Button>
-          <Button variant="primary" size="sm" onClick={() => close()}>
-            Done
+          <Button variant="secondary" size="sm" onClick={() => close()}>
+            Close
           </Button>
         </Flex>
       </Dialog.Bottom>
