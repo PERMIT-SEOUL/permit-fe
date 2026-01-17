@@ -38,12 +38,20 @@ instance.interceptors.response.use(
       // Server에서는 기본 전파
       console.error(error);
 
+      if (error?.response?.data) {
+        return Promise.reject({
+          ...error,
+          response: {
+            ...error.response,
+            data: error.response?.data,
+          },
+        });
+      }
+
       return Promise.reject(error);
     }
 
-    console.error("##error", JSON.stringify(error));
-
-    if (isAxiosErrorResponse(error.response?.data)) {
+    if (isAxiosErrorResponse(error)) {
       // 엑세스 토큰 없음
       if (
         error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
@@ -81,6 +89,16 @@ instance.interceptors.response.use(
           const originalRequest = error.config;
 
           if (!originalRequest) {
+            if (error?.response?.data) {
+              return Promise.reject({
+                ...error,
+                response: {
+                  ...error.response,
+                  data: error.response?.data,
+                },
+              });
+            }
+
             return Promise.reject(error);
           }
 
@@ -89,17 +107,33 @@ instance.interceptors.response.use(
           if (typeof window !== "undefined") {
             redirectToLoginOnce();
 
-            return Promise.reject(error?.response?.data);
+            if (error?.response?.data) {
+              return Promise.reject({
+                ...error,
+                response: {
+                  ...error.response,
+                  data: error.response?.data,
+                },
+              });
+            }
+
+            return Promise.reject(error);
           }
         }
       }
     }
 
-    if (error.response?.status === 500) {
-      return Promise.reject(error?.response?.data);
+    if (error?.response?.data) {
+      return Promise.reject({
+        ...error,
+        response: {
+          ...error.response,
+          data: error.response?.data,
+        },
+      });
     }
 
-    return Promise.reject(error?.response?.data);
+    return Promise.reject(error);
   },
 );
 
