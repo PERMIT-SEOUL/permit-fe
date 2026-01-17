@@ -40,10 +40,6 @@ clientAxios.interceptors.response.use(
   async (error: TempAxiosErrorResponse) => {
     const original = error.config;
 
-    console.log("@@ error.response?.data", error.response?.data);
-    console.log("@@ original?.method", original?.method);
-    console.log("@@ original?._retry", original?._retry);
-
     // get 요청이 아닌 경우 즉시 refreshToken 재발급 및 요청
     if (original?.method !== "get" && !original?._retry) {
       if (isAxiosErrorResponse(error)) {
@@ -51,15 +47,13 @@ clientAxios.interceptors.response.use(
           original._retry = true;
 
           try {
-            const res = await fetch("/api/reissue", {
+            await fetch("/api/reissue", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               credentials: "include",
             });
-
-            console.log("@@res ", res);
 
             const originalRequest = error.config;
 
@@ -96,43 +90,6 @@ clientAxios.interceptors.response.use(
       if (code === ERROR_CODE.PAYMENT) {
         return Promise.reject(error?.response?.data);
       }
-
-      // // 액세스 토큰 만료
-      // if (code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
-      //   try {
-      //     // 이미 토큰 재발급이 진행 중이면 완료될 때까지 대기
-      //     if (tokenRefreshPromise) {
-      //       console.log("@@@@@");
-      //       await tokenRefreshPromise;
-      //     } else {
-      //       // 토큰 재발급 시작
-      //       tokenRefreshPromise = refreshAccessToken()
-      //         .then(() => {
-      //           tokenRefreshPromise = null;
-      //         })
-      //         .catch((error) => {
-      //           tokenRefreshPromise = null;
-
-      //           throw error;
-      //         });
-      //     }
-
-      // 원래 요청 재시도
-      //     const originalRequest = error.config;
-
-      //     if (!originalRequest) {
-      //       return Promise.reject(error);
-      //     }
-
-      //     return clientAxios(originalRequest);
-      //   } catch {
-      //     if (typeof window !== "undefined") {
-      //       redirectToLoginOnce();
-
-      //       return Promise.reject(error?.response?.data);
-      //     }
-      //   }
-      // }
     }
 
     if (error?.response?.data) {
