@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { API_URL } from "@/data/constants";
+
 /**
  * 로그인 요청 API
  * NOTE: API 서버에서 Set-Cookie 설정해주는 것을 브라우저에서 동일하게 쿠키 설정하기 위함
@@ -7,7 +9,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const body = await req.json();
 
-  const apiRes = await fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + "/api/users/login", {
+  const apiRes = await fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.LOGIN, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

@@ -1,16 +1,21 @@
 import { NextResponse } from "next/server";
 
+import { API_URL } from "@/data/constants";
+
 export async function POST(req: Request) {
   const body = await req.json();
 
-  const apiRes = await fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + "/api/users/reissue", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-    credentials: "include",
-  });
+  const apiRes = await fetch(
+    process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.REISSUE_ACCESS_TOKEN,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      credentials: "include",
+    },
+  );
 
-  const setCookies = apiRes.headers.getSetCookie(); // 배열 반환
+  const setCookies = apiRes.headers.getSetCookie();
 
   const res = NextResponse.json(await apiRes.json(), {
     status: apiRes.status,
