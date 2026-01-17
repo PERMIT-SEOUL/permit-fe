@@ -75,16 +75,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
       })),
     );
 
-  const ticketOptions =
-    availableTickets.length > 0
-      ? availableTickets
-      : [
-          {
-            value: "No Available Tickets",
-            label: "No Available Tickets",
-            disabled: true,
-          },
-        ];
+  const ticketOptions = availableTickets.length > 0 ? availableTickets : [];
 
   const roundSelect = useSelect({
     initialValue: selectedRoundId?.toString() || "",
