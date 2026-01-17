@@ -65,6 +65,8 @@ clientAxios.interceptors.response.use(
       }
     }
 
+    console.log(error.response?.data);
+
     // 로그인이 필요한 요청이거나, 리프레시 토큰 모두 만료시 로그인 페이지로 이동
     if (isAxiosErrorResponse(error.response?.data)) {
       const { code } = error.response?.data ?? {};
@@ -72,12 +74,16 @@ clientAxios.interceptors.response.use(
       // 엑세스 토큰 없음
       if (code === ERROR_CODE.NO_ACCESS_TOKEN || code === ERROR_CODE.REFRESH_TOKEN_EXPIRED) {
         redirectToLoginOnce();
+
+        return;
       }
 
       if (code === ERROR_CODE.LOGIN_REQUIRED) {
         // 인증 페이지에서는 로그인 페이지로 이동하지 않음
         if (window.location.pathname !== "/auth") {
           redirectToLoginOnce();
+
+          return;
         }
       }
 
