@@ -1,3 +1,4 @@
+// lib/axios/server.ts
 import axios, { AxiosResponse } from "axios";
 
 export const serverAxios = axios.create({
