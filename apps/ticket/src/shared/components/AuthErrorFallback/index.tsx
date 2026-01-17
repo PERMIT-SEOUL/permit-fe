@@ -17,7 +17,7 @@ export const AuthErrorFallback = () => {
         credentials: "include",
       });
 
-      console.log("@@ reissue", res, JSON.stringify(res));
+      console.log("@@ reissue", res);
 
       // 토큰 재발급 후 reload()
       // window.location.reload();
