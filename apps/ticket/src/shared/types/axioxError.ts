@@ -32,6 +32,12 @@ export function isNotAuthErrorResponse(error: unknown): error is AxiosErrorRespo
   );
 }
 
+export function isAuthError(error: Error): error is AxiosErrorResponse {
+  return (
+    isAxiosErrorResponse(error) && error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED
+  );
+}
+
 export function isNetworkError(error: Error): error is AxiosErrorResponse {
   return isAxiosErrorResponse(error) && (error.response?.status ?? 0) >= 400;
 }
