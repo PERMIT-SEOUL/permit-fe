@@ -156,15 +156,9 @@ export const UserProfileClient = () => {
       safeLocalStorage.remove(IS_LOGINED);
       window.location.href = "/login";
     } catch (error) {
-      if (isAxiosErrorResponse(error)) {
-        if (error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN) {
-          window.location.href = "/login";
-
-          return;
-        }
-
-        alert(error.response?.data.message);
-      }
+      // 로그아웃 에러는 처리하지 않고, 로그인 페이지로 이동
+      safeLocalStorage.remove(IS_LOGINED);
+      window.location.href = "/login";
     }
   };
 
