@@ -3,14 +3,11 @@ import { NextResponse } from "next/server";
 import { API_URL } from "@/data/constants";
 
 export async function POST(req: Request) {
-  const body = await req.json();
-
   const apiRes = await fetch(
     process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.REISSUE_ACCESS_TOKEN,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
       credentials: "include",
     },
   );

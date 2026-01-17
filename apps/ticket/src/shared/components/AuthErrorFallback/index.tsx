@@ -9,7 +9,7 @@ export const AuthErrorFallback = () => {
 
   useEffect(() => {
     const tokenReissue = async () => {
-      await fetch("/api/reissue", {
+      const res = await fetch("/api/reissue", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -17,8 +17,10 @@ export const AuthErrorFallback = () => {
         credentials: "include",
       });
 
+      console.log("@@ reissue", res, JSON.stringify(res));
+
       // 토큰 재발급 후 reload()
-      window.location.reload();
+      // window.location.reload();
     };
 
     tokenReissue();
