@@ -1,13 +1,33 @@
 import { useState } from "react";
 
 import { Button, Dialog, Flex } from "@permit/design-system";
+import { usePutUserRoleMutation } from "@/data/admin/putUserRole/mutation";
 import { ModalComponentProps } from "@/shared/hooks/useModal/types";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
-type Props = {} & ModalComponentProps<{ result: boolean }>;
+type Props = { userId: number } & ModalComponentProps<{ result: boolean }>;
 
-// TODO: 수정
-export const ChangeRoleModal = ({ isOpen, close }: Props) => {
+export const ChangeRoleModal = ({ userId, isOpen, close }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { mutateAsync } = usePutUserRoleMutation({ userId });
+
+  const changeUserRole = async (role: "ADMIN" | "STAFF" | "USER") => {
+    setIsSubmitting(true);
+
+    try {
+      await mutateAsync({ role });
+      alert(`${role}으로 권한 변경에 성공하였습니다.`);
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        alert(error.response?.data.message || "Failed to change user role.");
+
+        return;
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleClose = () => {
     if (!isSubmitting) {
@@ -22,8 +42,7 @@ export const ChangeRoleModal = ({ isOpen, close }: Props) => {
           <Button
             variant="primary"
             size="md"
-            onClick={() => {}}
-            isLoading={isSubmitting}
+            onClick={() => changeUserRole("ADMIN")}
             disabled={isSubmitting}
           >
             ADMIN
@@ -31,8 +50,7 @@ export const ChangeRoleModal = ({ isOpen, close }: Props) => {
           <Button
             variant="primary"
             size="md"
-            onClick={() => {}}
-            isLoading={isSubmitting}
+            onClick={() => changeUserRole("STAFF")}
             disabled={isSubmitting}
           >
             STAFF
@@ -40,8 +58,7 @@ export const ChangeRoleModal = ({ isOpen, close }: Props) => {
           <Button
             variant="primary"
             size="md"
-            onClick={() => {}}
-            isLoading={isSubmitting}
+            onClick={() => changeUserRole("USER")}
             disabled={isSubmitting}
           >
             USER

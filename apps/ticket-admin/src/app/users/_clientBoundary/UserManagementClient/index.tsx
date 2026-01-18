@@ -1,9 +1,15 @@
 "use client";
 
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { Button, Flex, TextField, Typography } from "@permit/design-system";
+import { useTextField } from "@permit/design-system/hooks";
+import { userOptions } from "@/data/admin/getUser/queries";
+import { UserResponse } from "@/data/admin/getUser/types";
 import { useModal } from "@/shared/hooks/useModal";
+import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import { ChangeRoleModal } from "../ChangeRoleModal";
 import styles from "./index.module.scss";
@@ -11,10 +17,38 @@ import styles from "./index.module.scss";
 const cx = classNames.bind(styles);
 
 export const UserManagementClient = () => {
-  const { show } = useModal(ChangeRoleModal);
+  const qc = useQueryClient();
+  const { show: changeUserRoleModal } = useModal(ChangeRoleModal);
 
-  const searchUser = () => {
-    alert("hi");
+  const [userInfo, setUserInfo] = useState<UserResponse | null>(null);
+
+  const userEmail = useTextField({
+    initialValue: "",
+    validate: (value: string) => {
+      if (!value.trim()) return "유저 이메일을 입력해주세요.";
+
+      return undefined;
+    },
+  });
+
+  const searchUser = async () => {
+    const userEmailValid = userEmail.validateValue();
+
+    if (!userEmailValid) {
+      return;
+    }
+
+    try {
+      const userInfoData = await qc.fetchQuery(userOptions({ email: userEmail.value }));
+
+      setUserInfo(userInfoData);
+    } catch (error) {
+      if (isAxiosErrorResponse(error)) {
+        setUserInfo(null);
+
+        alert(error.response?.data.message || "유저를 찾을 수 없습니다.");
+      }
+    }
   };
 
   return (
@@ -27,23 +61,34 @@ export const UserManagementClient = () => {
       </header>
       <main>
         <Flex gap={20}>
-          <TextField className={cx("input")} placeholder="이메일을 입력해주세요" />
+          <TextField
+            className={cx("input")}
+            placeholder="이메일을 입력해주세요"
+            value={userEmail.value}
+            onChange={userEmail.handleChange}
+            error={userEmail.error}
+          />
           <Button variant="cta" onClick={searchUser}>
             Search
           </Button>
         </Flex>
 
-        <div className={cx("serach_area")}>
-          <Flex justify="space-between">
-            <Flex direction="column">
-              <Typography type="title20">userName: hi</Typography>
-              <Typography type="title20">current Role: USER</Typography>
+        {userInfo && (
+          <div className={cx("serach_area")}>
+            <Flex justify="space-between">
+              <Flex direction="column">
+                <Typography type="title20">userName: {userInfo.userName}</Typography>
+                <Typography type="title20">current Role: {userInfo.currentUserRole}</Typography>
+              </Flex>
+              <Button
+                variant="primary"
+                onClick={() => changeUserRoleModal({ userId: userInfo.userId })}
+              >
+                Change Role
+              </Button>
             </Flex>
-            <Button variant="primary" onClick={show}>
-              Change Role
-            </Button>
-          </Flex>
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );
