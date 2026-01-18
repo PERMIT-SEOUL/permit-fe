@@ -281,7 +281,7 @@ export const CouponManagementClient = ({ eventId }: Props) => {
                             used: coupon.usable,
                           })}
                         >
-                          {coupon.usable ? "Used ticket" : "Usable"}
+                          {coupon.usable ? "Used" : "Usable"}
                         </span>
                       </td>
                     </tr>

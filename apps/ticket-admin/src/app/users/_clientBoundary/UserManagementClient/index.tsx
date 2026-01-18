@@ -54,9 +54,9 @@ export const UserManagementClient = () => {
   return (
     <div className={cx("container")}>
       <header className={cx("header")}>
-        <Typography type="title32">User Management</Typography>
+        <Typography type="title32">Staff Management</Typography>
         <Typography type="body14" color="gray300">
-          * 권한을 바꾼 후 적용하려면 로그인을 다시 해주세요.
+          * 권한을 바꾼 후 적용하려면 해당 스태프가 다시 로그인하게 해주세요.
         </Typography>
       </header>
       <main>

@@ -19,7 +19,7 @@ export const timeTableOptions = (
   params: TimeTableParams,
 ): PermitQueryOptions<TimeTableResponse | null> => {
   return {
-    queryKey: [ADMIN_QUERY_KEYS.TICEKTS, params.eventId],
+    queryKey: [ADMIN_QUERY_KEYS.TIMETABLE, params.eventId],
     queryFn: () => {
       const url = getPathUrl(API_URL.ADMIN.TIME_TABLE, { eventId: params.eventId });
 

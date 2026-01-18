@@ -294,59 +294,33 @@ function calcBlockPosition(
   const start = parseCustomDate(block.blockStartDate);
   const end = parseCustomDate(block.blockEndDate);
 
-  const durationInHours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-
-  // 타임테이블 시작 시간을 기준으로 계산
   if (timeSlots.length === 0) {
-    const DISABLE_DISPLAY_HEIGHT = -200;
-
-    return { top: DISABLE_DISPLAY_HEIGHT, height: durationInHours * hourHeight, left: 0 };
+    return { top: -9999, height: 0, left: 0 };
   }
 
   const tableStartTime = timeSlots[0].datetime.getTime();
   const tableEndTime = timeSlots[timeSlots.length - 1].datetime.getTime();
   const blockStartTime = start.getTime();
-
-  // 블록이 타임테이블 범위 내에 있는지 확인
-  if (blockStartTime < tableStartTime) {
-    const DISABLE_DISPLAY_HEIGHT = 0;
-    const stage = stages.find((a) => a.stageNotionId === block.blockStageNotionId);
-    const stageSequence = stage ? stage.sequence : 0;
-
-    return {
-      top: DISABLE_DISPLAY_HEIGHT,
-      height: durationInHours * hourHeight,
-      left: stageSequence * columnWidth,
-    };
-  }
-
-  if (tableEndTime < blockStartTime) {
-    return {
-      top: -200,
-      height: 0,
-      left: 0,
-    };
-  }
-
-  // 타임테이블 시작 시간부터 블록 시작/종료 시간까지의 차이를 시간 단위로 계산
   const blockEndTime = end.getTime();
 
-  const timeDiffStartMs = blockStartTime - tableStartTime;
-  const timeDiffEndMs = blockEndTime - tableStartTime;
-  const timeDiffStartInHours = timeDiffStartMs / (1000 * 60 * 60);
-  const timeDiffEndInHours = timeDiffEndMs / (1000 * 60 * 60);
-  const startMinutes = start.getMinutes();
-  const endMinutes = end.getMinutes();
+  // 완전히 범위 밖이면 숨김 처리
+  if (blockEndTime <= tableStartTime || blockStartTime >= tableEndTime) {
+    return { top: -9999, height: 0, left: 0 };
+  }
+
+  // 일부만 겹치는 경우는 클리핑
+  const displayStart = Math.max(blockStartTime, tableStartTime);
+  const displayEnd = Math.min(blockEndTime, tableEndTime);
+
+  const timeDiffStartInHours = (displayStart - tableStartTime) / (1000 * 60 * 60);
+  const timeDiffEndInHours = (displayEnd - tableStartTime) / (1000 * 60 * 60);
 
   // 해당 stage의 sequence 찾기
   const stage = stages.find((a) => a.stageNotionId === block.blockStageNotionId);
   const stageSequence = stage ? stage.sequence : 0;
 
-  // top 위치 = 시작 시간 차이(시간) * hourHeight + 시작 분 오프셋
-  const top = timeDiffStartInHours * hourHeight + (startMinutes / 60) * hourHeight;
-  // height = 종료 시간 위치 - 시작 시간 위치
-  const endTop = timeDiffEndInHours * hourHeight + (endMinutes / 60) * hourHeight;
-  const height = endTop - top;
+  const top = timeDiffStartInHours * hourHeight;
+  const height = Math.max((timeDiffEndInHours - timeDiffStartInHours) * hourHeight, 2); // 최소 높이 보장
   const left = stageSequence * columnWidth;
 
   return { top, height, left };
