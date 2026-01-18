@@ -210,7 +210,7 @@ export const TicketAuthorizationClient = () => {
         qrCodeRef.current = html5QrCode;
 
         await html5QrCode.start(
-          { facingMode: "user" }, // 전면 카메라
+          { facingMode: "environment" }, // 전면 카메라
           {
             fps: 10, // 초당 프레임
             qrbox: (viewfinderWidth: number, viewfinderHeight: number) => {
