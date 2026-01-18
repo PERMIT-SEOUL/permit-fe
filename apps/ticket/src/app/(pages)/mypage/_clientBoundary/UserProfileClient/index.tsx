@@ -201,7 +201,7 @@ export const UserProfileClient = () => {
         )}
       </Flex>
 
-      <Flex direction="column" gap={16}>
+      <Flex direction="column" gap={4}>
         <Flex gap={40} align="center">
           <Typography className={cx("label")} type="body14" color="gray400">
             Age
