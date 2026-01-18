@@ -166,7 +166,6 @@ export const TicketAuthorizationClient = () => {
       #qr-reader video {
         width: 100% !important;
         height: auto !important;
-        transform: scaleX(-1);
       }
       #qr-reader__dashboard {
         display: none !important;
