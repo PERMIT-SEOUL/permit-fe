@@ -62,7 +62,7 @@ export const Header = () => {
             type="body16"
             color="gray400"
           >
-            Users
+            Staff
           </Typography>
         </Link>
 
