@@ -23,12 +23,12 @@ export const AuthErrorFallback = () => {
           window.location.reload();
         } else {
           // 재발급 실패 → 로그인
-          alert("인증 시간이 만료되었습니다. 다시 로그인해주세요.");
+          alert("인증이 만료되었습니다. 다시 로그인해주세요.");
           window.location.href = "/login";
         }
       } catch (error) {
         console.error("토큰 재발급 실패:", error);
-        alert("인증 시간이 만료되었습니다. 다시 로그인해주세요.");
+        alert("인증이 만료되었습니다. 다시 로그인해주세요.");
         window.location.href = "/login";
       }
     };
