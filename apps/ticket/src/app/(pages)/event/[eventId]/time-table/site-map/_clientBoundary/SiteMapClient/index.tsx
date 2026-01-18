@@ -31,12 +31,24 @@ export const SiteMapClient = ({ eventId }: Props) => {
     },
   });
 
+  const handleBackButtonClick = () => {
+    router.push(`/event/${eventId}`);
+  };
+
   return (
     <div className={cx("container")}>
       <header className={cx("header")}>
         <Flex gap={8} justify="space-between">
           <Flex direction="column" gap={16}>
             <Typography type="title20">{timetablesData.eventName}</Typography>
+
+            <Button
+              className={cx("back_button")}
+              variant="secondary"
+              onClick={handleBackButtonClick}
+            >
+              {"< back"}
+            </Button>
 
             <Flex gap={8}>
               <Button

@@ -150,21 +150,6 @@ export const TimeTableClient = ({ eventId }: Props) => {
   };
 
   const handleBackButtonClick = () => {
-    // 히스토리가 있는지 확인
-    if (window.history.length > 1 && document.referrer) {
-      // 이전 페이지가 같은 도메인이고, 이벤트 디테일 페이지인지 확인
-      const referrerUrl = new URL(document.referrer);
-      const currentUrl = new URL(window.location.href);
-
-      if (referrerUrl.origin === currentUrl.origin) {
-        // 같은 도메인에서 온 경우 뒤로가기
-        router.back();
-
-        return;
-      }
-    }
-
-    // 직접 접근이거나 외부에서 온 경우 이벤트 디테일 페이지로 이동
     router.push(`/event/${eventId}`);
   };
 

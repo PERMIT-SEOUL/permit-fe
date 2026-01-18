@@ -2,14 +2,14 @@
 @use "@permit/design-system/styles/typography" as typography;
 
 .container {
-  height: 80px;
+  height: 140px;
   padding: 20px 40px;
 
   @include typography.body-reg-12;
   font-family: theme.$font-family-roboto;
 
   @media (max-width: 768px) {
-    height: 152px;
+    height: 210px;
     padding: 20px 28px;
 
     // NOTE: 이벤트 페이지에서 Floating Button 때문에 푸터 높이 조정
