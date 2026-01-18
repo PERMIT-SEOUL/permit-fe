@@ -2,23 +2,17 @@
 
 import { Suspense } from "react";
 
-import { AuthErrorFallback } from "@/shared/components/AuthErrorFallback";
 import { NetworkErrorFallback } from "@/shared/components/NetworkErrorFallback";
-import { isAuthError, isNetworkError } from "@/shared/types/axioxError";
+import { isNetworkError } from "@/shared/types/axioxError";
 
 import { ErrorBoundary, ErrorHandler } from "..";
 import { GlobalErrorPage } from "./components/GlobalErrorPage";
 
 export const GlobalErrorBoundary = ({ children }: { children: React.ReactNode }) => (
-  <ErrorBoundary handlers={[authErrorHandler, networkErrorHandler, globalErrorHandler]}>
+  <ErrorBoundary handlers={[networkErrorHandler, globalErrorHandler]}>
     <Suspense>{children}</Suspense>
   </ErrorBoundary>
 );
-
-const authErrorHandler: ErrorHandler = {
-  isError: (error) => isAuthError(error),
-  fallback: () => <AuthErrorFallback />,
-};
 
 const networkErrorHandler: ErrorHandler = {
   isError: (error) => isNetworkError(error),
