@@ -42,9 +42,10 @@ export const QrTicketModal = ({ isOpen, close, ticketInfo }: Props) => {
             <Typography type="body14" color="gray300">
               {ticketInfo.eventDate}
             </Typography>
-            <Typography type="body14" color="gray300">
+            {/* TODO: 추후 eventTime 보이도록 변경 */}
+            {/* <Typography type="body14" color="gray300">
               {ticketInfo.eventTime}
-            </Typography>
+            </Typography> */}
           </Flex>
           <div className={cx("qr_code_wrap")}>
             <QRCodeSVG value={qrCodeUrl} size={isMobile ? 180 : 224} />
