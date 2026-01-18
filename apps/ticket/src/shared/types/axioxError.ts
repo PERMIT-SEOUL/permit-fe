@@ -27,7 +27,8 @@ export function isAxiosErrorResponse(error: unknown): error is AxiosErrorRespons
 export function isNotAuthErrorResponse(error: unknown): error is AxiosErrorResponse {
   return (
     isAxiosErrorResponse(error) &&
-    (error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
+    (error.response?.data.code === ERROR_CODE.LOGIN_REQUIRED ||
+      error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
       error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED)
   );
 }

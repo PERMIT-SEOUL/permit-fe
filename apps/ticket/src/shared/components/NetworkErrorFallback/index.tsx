@@ -12,7 +12,7 @@ export const NetworkErrorFallback = () => {
       gap={16}
       style={{ height: "calc(100vh - 150px)" }}
     >
-      <Typography type="title24">서비스에 문제가 발생했어요</Typography>
+      <Typography type="title20">네트워크 에러가 발생했어요</Typography>
       <Typography type="body14">잠시 후 다시 시도해주세요</Typography>
       <Button
         variant="primary"
