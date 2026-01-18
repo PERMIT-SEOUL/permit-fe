@@ -276,8 +276,7 @@ export const TicketAuthorizationClient = () => {
           });
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [lastScannedCode]);
 
   // 검증 결과 처리
   useEffect(() => {
