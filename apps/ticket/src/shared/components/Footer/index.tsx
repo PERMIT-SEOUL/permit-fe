@@ -29,22 +29,27 @@ export const Footer = () => {
           Copyright © 2024 PERMIT
         </Typography>
         <a href="https://www.instagram.com/permit_invites/" target="_blank" rel="noreferrer">
-          <Typography type="body12" color="gray400">
+          <Typography type="body12" color="gray400" style={{ textDecoration: "underline" }}>
             Instagram_Permit
           </Typography>
         </a>
         <a href="https://www.instagram.com/ceilingservice/" target="_blank" rel="noreferrer">
-          <Typography type="body12" color="gray400">
+          <Typography type="body12" color="gray400" style={{ textDecoration: "underline" }}>
             Instagram_Ceiling
           </Typography>
         </a>
         <a href="https://www.instagram.com/olympan.kr/" target="_blank" rel="noreferrer">
-          <Typography type="body12" color="gray400">
+          <Typography type="body12" color="gray400" style={{ textDecoration: "underline" }}>
             Instagram_Olympan
           </Typography>
         </a>
         <Typography type="body12" color="gray400">
-          hello@permitseoul.com
+          <a
+            href="mailto:hello@permitseoul.com"
+            style={{ color: "inherit", textDecoration: "underline" }}
+          >
+            hello@permitseoul.com
+          </a>
         </Typography>
       </div>
       <Typography className={cx("info")} type="body12" color="gray400">
