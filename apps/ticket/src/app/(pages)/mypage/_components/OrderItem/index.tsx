@@ -35,6 +35,12 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
           <Typography className={cx("order_id")} type="body14" color="gray500">
             {`ORD_${order.orderId}`}
           </Typography>
+
+          {!order.refundedPrice && (
+            <Typography type="body14" color="gray500">
+              ₩{order.paymentPrice}
+            </Typography>
+          )}
         </div>
 
         {order.canCancel && (
@@ -46,11 +52,6 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
           >
             Cancel Order
           </Button>
-        )}
-        {!order.refundedPrice && (
-          <Typography type="body14" color="gray300">
-            ₩{order.paymentPrice}
-          </Typography>
         )}
         {order.refundedPrice && (
           <Flex gap={8}>
