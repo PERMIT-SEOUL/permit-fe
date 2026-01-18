@@ -166,6 +166,7 @@ export const TicketAuthorizationClient = () => {
       #qr-reader video {
         width: 100% !important;
         height: auto !important;
+        transform: scaleX(-1);
       }
       #qr-reader__dashboard {
         display: none !important;
@@ -276,11 +277,12 @@ export const TicketAuthorizationClient = () => {
           });
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [lastScannedCode]);
 
   // 검증 결과 처리
   useEffect(() => {
+    alert("scannedTicketCode 변경됨: " + scannedTicketCode + scanningRef.current);
+
     if (!scannedTicketCode || !scanningRef.current) return;
 
     const verifyTicket = async () => {
