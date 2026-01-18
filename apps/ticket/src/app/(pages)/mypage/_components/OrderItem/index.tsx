@@ -47,6 +47,11 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
             Cancel Order
           </Button>
         )}
+        {!order.refundedPrice && (
+          <Typography type="body14" color="gray300">
+            ₩{order.paymentPrice}
+          </Typography>
+        )}
         {order.refundedPrice && (
           <Flex gap={8}>
             <Typography className={cx("refund_price")} type="body14" color="gray300">

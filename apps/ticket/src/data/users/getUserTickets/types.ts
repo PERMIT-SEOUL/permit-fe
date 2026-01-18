@@ -11,6 +11,8 @@ export type Order = {
   eventName: string;
   /** 이벤트 장소 */
   eventVenue: string;
+  /** 구매 가격 */
+  paymentPrice: string;
   /** 환불 가격 */
   refundedPrice?: string;
   /** 취소 가능 여부 */
