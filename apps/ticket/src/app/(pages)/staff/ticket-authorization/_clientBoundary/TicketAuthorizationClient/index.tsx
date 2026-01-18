@@ -276,12 +276,11 @@ export const TicketAuthorizationClient = () => {
           });
       }
     };
-  }, [lastScannedCode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 검증 결과 처리
   useEffect(() => {
-    alert("scannedTicketCode 변경됨: " + scannedTicketCode + scanningRef.current);
-
     if (!scannedTicketCode || !scanningRef.current) return;
 
     const verifyTicket = async () => {
