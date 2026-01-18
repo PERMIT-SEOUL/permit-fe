@@ -5,7 +5,6 @@ import { IS_LOGINED } from "@/shared/constants/storage";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import { safeSessionStorage } from "../storage";
-import { refreshAccessToken } from "./helpers";
 import { ERROR_CODE } from "./utils/errorCode";
 
 export const instance = axios.create({
@@ -74,7 +73,13 @@ instance.interceptors.response.use(
             await tokenRefreshPromise;
           } else {
             // 토큰 재발급 시작
-            tokenRefreshPromise = refreshAccessToken()
+            tokenRefreshPromise = fetch("/api/reissue", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            })
               .then(() => {
                 tokenRefreshPromise = null;
               })

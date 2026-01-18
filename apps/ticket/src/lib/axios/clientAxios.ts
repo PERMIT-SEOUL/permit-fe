@@ -35,7 +35,7 @@ interface TempAxiosErrorResponse extends AxiosErrorResponse {
 // 응답 인터셉터
 clientAxios.interceptors.response.use(
   (response: AxiosResponse) => {
-    return response.data;
+    return response?.data;
   },
   async (error: TempAxiosErrorResponse) => {
     const original = error.config;
