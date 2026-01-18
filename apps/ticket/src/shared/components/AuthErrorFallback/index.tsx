@@ -9,16 +9,27 @@ export const AuthErrorFallback = () => {
 
   useEffect(() => {
     const tokenReissue = async () => {
-      const res = await fetch("/api/reissue", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      try {
+        const res = await fetch("/api/reissue", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
 
-      // 토큰 재발급 후 reload()
-      window.location.reload();
+        if (res.ok) {
+          // 토큰 재발급 성공 → 새로고침
+          window.location.reload();
+        } else {
+          // 재발급 실패 → 로그인
+          window.location.href = "/login";
+        }
+      } catch (error) {
+        console.error("토큰 재발급 실패:", error);
+        alert("인증 오류가 발생했습니다. 다시 로그인해주세요.");
+        window.location.href = "/login";
+      }
     };
 
     tokenReissue();
