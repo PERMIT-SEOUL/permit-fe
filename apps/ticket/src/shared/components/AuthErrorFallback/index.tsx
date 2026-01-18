@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { LoadingWithLayout } from "../LoadingWithLayout";
 
 export const AuthErrorFallback = () => {
-  const [isLoading, setIsLoaidng] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const tokenReissue = async () => {
