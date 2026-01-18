@@ -69,6 +69,6 @@ export const API_URL = {
     /** 도어용 유저 스탭 카메라 확인 API */
     CAMERA_USER_TICKET_CONFIRM: "/api/staff/tickets/door/confirm",
     /** 도어용 게스트 스탭 카메라 확인 API */
-    CAMERA_GUEST_TICKET_CONFIRM: "/api/staff/guests/door/confirm",
+    CAMERA_GUEST_TICKET_CONFIRM: "/api/staff/guests/tickets/door/confirm",
   },
 } as const;

@@ -20,4 +20,5 @@ type TicketType = {
   ticketTypeDate: string;
   ticketTypeTime: string;
   ticketTypePrice: string;
+  isTicketSoldOut: boolean;
 };

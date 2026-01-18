@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useLoginMutation } from "@/data/users/postUserLogin/mutation";
+import { ERROR_CODE } from "@/lib/axios/utils/errorCode";
 import { safeLocalStorage, safeSessionStorage } from "@/lib/storage";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { PATH } from "@/shared/constants/path";
@@ -36,21 +37,37 @@ const AuthPage = () => {
 
   const { mutateAsync } = useLoginMutation();
 
+  const isLoginProcessingRef = useRef(false);
+
   const handleLogin = useCallback(async () => {
+    if (isLoginProcessingRef.current) return;
+
+    isLoginProcessingRef.current = true;
+
     if (authorizationCode) {
       try {
-        await mutateAsync({
+        const response = await mutateAsync({
           socialType,
           authorizationCode,
           redirectUrl: REDIRECT_URI || "",
         });
+
+        // 회원가입 필요
+        if (response.code === ERROR_CODE.LOGIN_REQUIRED) {
+          safeLocalStorage.set(TOKEN_KEY, response?.message || "");
+          router.replace(PATH.SIGNUP);
+
+          return;
+        }
+
         safeLocalStorage.set(IS_LOGINED, "true");
 
         router.replace(redirectUrl || PATH.HOME);
         safeSessionStorage.remove(REDIRECT_URL_KEY);
       } catch (error) {
-        safeLocalStorage.set(TOKEN_KEY, (error as Error).message);
-        router.replace(PATH.SIGNUP);
+        alert("에러가 발생했습니다.");
+        console.error(error);
+        router.replace(PATH.HOME);
       }
     } else {
       // 인증 코드가 없는 경우 로그인 페이지로 리다이렉트

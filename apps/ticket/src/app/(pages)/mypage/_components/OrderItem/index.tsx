@@ -50,7 +50,7 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
         {order.refundedPrice && (
           <Flex gap={8}>
             <Typography className={cx("refund_price")} type="body14" color="gray300">
-              {order.refundedPrice}
+              ₩{order.refundedPrice}
             </Typography>
             <Typography type="body14" color="gray300">
               Refunded
@@ -107,7 +107,8 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
 
                 <Flex gap={30}>
                   <span className={cx("event_schedule")}>{ticket.ticketDate}</span>
-                  <span className={cx("event_schedule")}>{ticket.ticketTime}</span>
+                  {/* TODO: 추후 티켓 시간 보이도록 변경 */}
+                  {/* <span className={cx("event_schedule")}>{ticket.ticketTime}</span> */}
                 </Flex>
               </div>
             </div>

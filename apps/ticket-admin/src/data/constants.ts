@@ -39,5 +39,9 @@ export const API_URL = {
     COUPONS_MEMO: "/api/admin/coupons/memos",
     /** 쿠폰 리스트 조회 API */
     COUPONS_LIST: "/api/admin/coupons/:eventId",
+    /** 유저 권한 정보 조회 API */
+    USER: "/api/admin/users", // ?email (필수)
+    /** 유저 권한 변경 API */
+    USER_ROLE: "/api/admin/users/:userId/role",
   },
 } as const;

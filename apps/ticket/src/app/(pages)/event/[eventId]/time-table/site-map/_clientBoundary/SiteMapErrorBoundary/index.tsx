@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 import { Button, Flex, Typography } from "@permit/design-system";
 import { ErrorBoundary, ErrorHandler } from "@/shared/clientBoundary/ErrorBoundary";
-import { AxiosErrorResponse } from "@/shared/types/axioxError";
+import { AxiosErrorResponse, isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 type Props = {
   children: ReactNode;
@@ -43,5 +43,5 @@ const siteMapErrorHandlers: ErrorHandler[] = [
 ];
 
 const isSiteMapNotRegisteredError = (error: AxiosErrorResponse) => {
-  return error.code === NOT_FOUND_SITE_MAP_ERROR_CODE;
+  return isAxiosErrorResponse(error) && error.response?.data.code === NOT_FOUND_SITE_MAP_ERROR_CODE;
 };

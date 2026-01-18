@@ -25,10 +25,16 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
 
   const { data: eventDetailData } = useEventDetailSuspenseQuery({
     eventId,
+    options: {
+      refetchOnWindowFocus: true,
+    },
   });
 
   const { data: ticketsDetail } = useTicketsDetailSuspenseQuery({
     ticketRoundId,
+    options: {
+      refetchOnWindowFocus: true,
+    },
   });
 
   const { mutateAsync: updateTickets } = usePatchTicketsMutation({});

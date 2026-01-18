@@ -18,7 +18,7 @@ export const EventListClient = () => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>(CATEGORIES.ALL);
   const { handleEventHover, isEventDimmed } = useEventHover();
 
-  const { data: eventsData } = useEventsSuspenseQuery();
+  const { data: eventsData } = useEventsSuspenseQuery({ refetchOnWindowFocus: true });
 
   const handleCategoryClick = (category: CategoryType) => {
     setSelectedCategory(category);

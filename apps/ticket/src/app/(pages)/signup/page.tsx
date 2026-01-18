@@ -96,7 +96,7 @@ const SignupPage = () => {
       alert("이메일 확인이 완료되었습니다.");
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
-        alert(error.message);
+        alert(error.response?.data.message);
       }
     }
   };
@@ -141,7 +141,7 @@ const SignupPage = () => {
       router.replace(PATH.HOME);
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
-        alert(error.message);
+        alert(error.response?.data.message);
       }
     }
   };

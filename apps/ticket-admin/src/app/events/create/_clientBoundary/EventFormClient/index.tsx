@@ -243,8 +243,6 @@ export function EventFormClient() {
   const venueField = useTextField({
     initialValue: "",
     validate: (value: string) => {
-      if (!value.trim()) return "장소를 입력해주세요.";
-
       return undefined;
     },
     onChange: (value: string) => {
@@ -624,8 +622,9 @@ export function EventFormClient() {
       console.log(error);
 
       if (isAxiosErrorResponse(error)) {
-        alert("이벤트 생성 중 오류가 발생했습니다. 다시 시도해주세요.\n" + error.message);
-        console.error("Error creating event:", error);
+        alert(
+          "이벤트 생성 중 오류가 발생했습니다. 다시 시도해주세요.\n" + error.response?.data.message,
+        );
       }
     } finally {
       setIsSubmitting(false);

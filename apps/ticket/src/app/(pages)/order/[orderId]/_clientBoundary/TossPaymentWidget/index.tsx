@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import classNames from "classnames/bind";
 
+import { Typography } from "@permit/design-system";
 import { useReservationReadyQuery } from "@/data/reservations/getReservationReady/queries";
 import { LoadingIndicator } from "@/shared/components/LoadingIndicator";
 
@@ -110,6 +111,11 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
         <button id="payment-button" className={cx("payment_button", { hidden: !isWidgetRendered })}>
           결제하기
         </button>
+        <br />
+        <br />
+        <Typography type="body14" color="gray300">
+          * 환불 정책은 아래를 참고해주세요.
+        </Typography>
       </div>
     </>
   );

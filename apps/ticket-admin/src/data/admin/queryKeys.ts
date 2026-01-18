@@ -7,4 +7,5 @@ export const ADMIN_QUERY_KEYS = {
   TICEKTS: `${queryKeyPrefix}tickets`,
   TICEKTS_DETAIL: `${queryKeyPrefix}tickets_detail`,
   COUPONS: `${queryKeyPrefix}coupons`,
+  USER: `${queryKeyPrefix}user`,
 } as const;

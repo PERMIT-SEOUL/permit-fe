@@ -53,8 +53,8 @@ const SelectTicketBottomSheetContent = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const selectedRound = eventTicketsData.rounds.find((round) => round.roundAvailable);
-  const [selectedRoundId, setSelectedRoundId] = useState<number>(
-    selectedRound?.roundId || eventTicketsData.rounds[0].roundId,
+  const [selectedRoundId, setSelectedRoundId] = useState<number | undefined>(
+    selectedRound?.roundId,
   );
   const [selectedTickets, setSelectedTickets] = useState<SelectedTicket[]>([]);
   const [isPromocodeOpen, setIsPromocodeOpen] = useState(false);
@@ -72,16 +72,17 @@ const SelectTicketBottomSheetContent = ({
     };
   });
 
-  const ticketOptions = eventTicketsData.rounds.flatMap((round) => {
-    if (round.roundAvailable) {
-      return round.ticketTypes.map((ticket) => ({
+  const availableTickets = eventTicketsData.rounds
+    .filter((round) => round.roundAvailable)
+    .flatMap((round) =>
+      round.ticketTypes.map((ticket) => ({
         value: String(ticket.ticketTypeId),
         label: `${ticket.ticketTypeName} - ₩ ${ticket.ticketTypePrice}`,
-      }));
-    }
+        disabled: ticket.isTicketSoldOut,
+      })),
+    );
 
-    return [];
-  });
+  const ticketOptions = availableTickets.length > 0 ? availableTickets : [];
 
   const roundSelect = useSelect({
     initialValue: selectedRoundId?.toString() || "",
@@ -226,8 +227,15 @@ const SelectTicketBottomSheetContent = ({
 
       window.location.href = `/order/${orderId}`;
     } catch (error) {
-      if (isAxiosErrorResponse(error) && isNotAuthErrorResponse(error)) {
-        alert(error.message);
+      if (isNotAuthErrorResponse(error)) {
+        // TODO: 로그인 화면으로 이동하는 로직 추가해야함.
+        // 로그인 페이지로 이동해야함
+        // alert("로그인 후 이용해 주세요.");
+      }
+
+      if (isAxiosErrorResponse(error)) {
+        // TODO: 토스트나 커스텀 모달로 변경
+        alert(error.response?.data.message);
       }
 
       setIsLoading(false);

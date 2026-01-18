@@ -31,8 +31,11 @@ const RefundPolicyPage = () => {
         <b>영업일 기준 3~5일 내 원결제 수단으로 환불</b>
         됩니다.
         <br />
-        <br />※ 본 환불 정책은 [전자상거래 등에서의 소비자 보호에 관한 법률] 제17조 및 제21조를
-        준수합니다.
+        <br />
+        <Typography type="body14" color="gray400">
+          ※ 본 환불 정책은 [전자상거래 등에서의 소비자 보호에 관한 법률] 제17조 및 제21조를
+          준수합니다.
+        </Typography>
       </Typography>
     </Flex>
   );

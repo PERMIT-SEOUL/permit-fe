@@ -18,7 +18,16 @@ type Props = {
 };
 
 export const CouponManagementClient = ({ eventId }: Props) => {
-  const { data: couponsData, isLoading, refetch } = useCouponsQuery({ eventId });
+  const {
+    data: couponsData,
+    isLoading,
+    refetch,
+  } = useCouponsQuery({
+    eventId,
+    options: {
+      refetchOnWindowFocus: true,
+    },
+  });
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 

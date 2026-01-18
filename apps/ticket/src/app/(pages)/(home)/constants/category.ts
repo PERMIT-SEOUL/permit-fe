@@ -12,6 +12,6 @@ export type CategoryType = ObjectValues<typeof CATEGORIES>;
 export const CATEGORY_LABELS = {
   [CATEGORIES.ALL]: "ALL",
   [CATEGORIES.PERMIT]: "Permit",
-  [CATEGORIES.CEILING_SERVICE]: "ceilingservice",
+  [CATEGORIES.CEILING_SERVICE]: "Ceilingservice",
   [CATEGORIES.FESTIVAL]: "Festival",
 } as const;

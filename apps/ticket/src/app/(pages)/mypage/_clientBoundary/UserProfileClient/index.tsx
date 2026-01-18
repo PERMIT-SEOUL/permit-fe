@@ -96,7 +96,7 @@ export const UserProfileClient = () => {
       alert("이메일 확인이 완료되었습니다.");
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
-        alert(error.message);
+        alert(error.response?.data.message);
       }
     }
   };
@@ -139,7 +139,7 @@ export const UserProfileClient = () => {
       setEmailVerified(false);
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
-        alert(error.message);
+        alert(error.response?.data.message);
       }
     }
   };
@@ -156,13 +156,9 @@ export const UserProfileClient = () => {
       safeLocalStorage.remove(IS_LOGINED);
       window.location.href = "/login";
     } catch (error) {
-      if (isAxiosErrorResponse(error)) {
-        if (error.code === ERROR_CODE.NO_ACCESS_TOKEN) {
-          return;
-        }
-
-        alert(error.message);
-      }
+      // 로그아웃 에러는 처리하지 않고, 로그인 페이지로 이동
+      safeLocalStorage.remove(IS_LOGINED);
+      window.location.href = "/login";
     }
   };
 
@@ -205,7 +201,7 @@ export const UserProfileClient = () => {
         )}
       </Flex>
 
-      <Flex direction="column" gap={16}>
+      <Flex direction="column" gap={4}>
         <Flex gap={40} align="center">
           <Typography className={cx("label")} type="body14" color="gray400">
             Age

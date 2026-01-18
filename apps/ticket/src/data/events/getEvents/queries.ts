@@ -1,7 +1,8 @@
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { API_URL } from "@/data/constants";
 import { instance } from "@/lib/axios";
+import { useSuspenseQuery } from "@/shared/hooks/useSuspenseQuery";
 import {
   PermitQueryOptions,
   UsePermitQueryOptions,

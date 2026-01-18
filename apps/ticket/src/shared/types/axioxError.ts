@@ -1,24 +1,44 @@
+import { AxiosError } from "axios";
+
 import { ERROR_CODE } from "@/lib/axios/utils/errorCode";
 
-export type AxiosErrorResponse = {
+type ErrorResponse = {
   code: number;
   message: string;
 };
 
+export type AxiosErrorResponse = AxiosError<ErrorResponse>;
+
 export function isAxiosErrorResponse(error: unknown): error is AxiosErrorResponse {
+  if (error === null || typeof error !== "object") {
+    return false;
+  }
+
+  const hasOwnproperty = Object.prototype.hasOwnProperty;
+
   return (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    "message" in error &&
-    typeof (error as AxiosErrorResponse).code === "number" &&
-    typeof (error as AxiosErrorResponse).message === "string"
+    hasOwnproperty.call(error, "isAxiosError") ||
+    (hasOwnproperty.call(error, "config") &&
+      hasOwnproperty.call(error, "request") &&
+      hasOwnproperty.call(error, "response"))
   );
 }
 
-export function isNotAuthErrorResponse(error: AxiosErrorResponse) {
-  return !(
-    error.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED ||
-    error.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED
+export function isNotAuthErrorResponse(error: unknown): error is AxiosErrorResponse {
+  return (
+    isAxiosErrorResponse(error) &&
+    (error.response?.data.code === ERROR_CODE.LOGIN_REQUIRED ||
+      error.response?.data.code === ERROR_CODE.NO_ACCESS_TOKEN ||
+      error.response?.data.code === ERROR_CODE.REFRESH_TOKEN_EXPIRED)
   );
+}
+
+export function isAuthError(error: Error): error is AxiosErrorResponse {
+  return (
+    isAxiosErrorResponse(error) && error.response?.data.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED
+  );
+}
+
+export function isNetworkError(error: Error): error is AxiosErrorResponse {
+  return isAxiosErrorResponse(error) && (error.response?.status ?? 0) >= 400;
 }

@@ -16,13 +16,17 @@ const cx = classNames.bind(styles);
 export const Header = () => {
   const pathname = usePathname();
 
-  const [isActiveTab, setIsActiveTab] = useState<"event" | "guest" | undefined>(undefined);
+  const [isActiveTab, setIsActiveTab] = useState<"event" | "guest" | "users" | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     if (pathname.includes("/events")) {
       setIsActiveTab("event");
     } else if (pathname.includes("/guests")) {
       setIsActiveTab("guest");
+    } else if (pathname.includes("/users")) {
+      setIsActiveTab("users");
     }
   }, [pathname]);
 
@@ -49,6 +53,16 @@ export const Header = () => {
             color="gray400"
           >
             Guest
+          </Typography>
+        </Link>
+
+        <Link href="/users">
+          <Typography
+            className={cx("tab", { active: isActiveTab === "users" })}
+            type="body16"
+            color="gray400"
+          >
+            Users
           </Typography>
         </Link>
 
