@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { API_URL } from "@/data/constants";
@@ -6,9 +7,14 @@ import { API_URL } from "@/data/constants";
  * 로그아웃 요청 API
  */
 export async function POST(req: Request) {
+  const cookiesStore = await cookies();
+
   const apiRes = await fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.LOGOUT, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `accessToken=${cookiesStore.get("accessToken")?.value}; refreshToken=${cookiesStore.get("refreshToken")?.value}`,
+    },
     credentials: "include",
   });
 
