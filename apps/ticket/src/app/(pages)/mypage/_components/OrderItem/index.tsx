@@ -32,15 +32,17 @@ export const OrderItem = ({ order, onCancelOrderClick, onClickQRCode }: Props) =
       <div className={cx("header_section")}>
         <div className={cx("order_info")}>
           <span className={cx("order_date")}>{order.orderDate}</span>
-          <Typography className={cx("order_id")} type="body14" color="gray500">
-            {`ORD_${order.orderId}`}
-          </Typography>
-
-          {!order.refundedPrice && (
-            <Typography type="body14" color="gray500">
-              ₩{order.paymentPrice}
+          <Flex gap={8} align="center">
+            <Typography className={cx("order_id")} type="body14" color="gray500">
+              {`ORD_${order.orderId}`}
             </Typography>
-          )}
+
+            {!order.refundedPrice && (
+              <Typography type="body14" color="gray500">
+                ₩{order.paymentPrice}
+              </Typography>
+            )}
+          </Flex>
         </div>
 
         {order.canCancel && (
