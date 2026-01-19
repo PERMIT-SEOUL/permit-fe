@@ -20,7 +20,7 @@ export default async function SiteMapPage({ params }: Props) {
   qc.prefetchQuery(siteMapOptions({ eventId }));
 
   return (
-    <SiteMapErrorBoundary>
+    <SiteMapErrorBoundary eventId={eventId}>
       <HydrationBoundary state={dehydrate(qc)}>
         <Suspense fallback={<LoadingWithLayout />}>
           <SiteMapClient eventId={eventId} />
