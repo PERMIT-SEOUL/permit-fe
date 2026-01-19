@@ -14,6 +14,7 @@ type Props = {
 
 /**
  * 이벤트 예매 확정 페이지
+ * @deprecated
  */
 const ConfirmedPage = async ({ params }: Props) => {
   const { bookingId } = await params;
