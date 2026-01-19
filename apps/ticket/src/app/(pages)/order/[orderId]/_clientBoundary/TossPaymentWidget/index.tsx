@@ -114,7 +114,7 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
         <br />
         <br />
         <Typography type="body14" color="gray300">
-          * 환불 정책은 아래를 참고해주세요.
+          * 환불 정책은 페이지 하단을 참고해주세요.
         </Typography>
       </div>
     </>

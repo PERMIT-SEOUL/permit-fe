@@ -47,7 +47,7 @@
 .content_wrap {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 28px;
 }
 
 .content_section {
@@ -98,7 +98,7 @@
   @media (min-width: 768px) {
     margin-left: auto;
   }
-  color: theme.$gray-500;
+  color: theme.$gray-300;
 
   @include typography.body-reg-12;
 
