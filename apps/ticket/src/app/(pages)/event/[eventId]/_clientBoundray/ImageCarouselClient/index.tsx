@@ -38,7 +38,7 @@ export const ImageCarouselClient = ({ images }: Props) => {
 
   return (
     <div className={cx("carousel")}>
-      <div className={cx("image_container")}>
+      <div className={cx("image_container", { is_single: isSingleImage })}>
         {!isSingleImage && (
           <button
             className={cx("icon_button")}

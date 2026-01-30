@@ -26,6 +26,14 @@
   align-items: center;
   justify-content: center;
   width: 500px;
+
+  &.is_single {
+    @media (min-width: 767px) {
+      margin-left: 24px;
+      width: 438px;
+    }
+  }
+
   height: 580px; // 확인
   spect-ratio: 3 / 4;
 
