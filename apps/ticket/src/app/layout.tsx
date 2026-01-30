@@ -10,6 +10,7 @@ import "@/styles/reset.css";
 import "@/styles/global.scss";
 import { Header } from "@/shared/components/Header";
 import { Footer } from "@/shared/components/Footer";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Permit",
@@ -21,8 +22,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isProd = process.env.NODE_ENV === "production";
+
   return (
     <html lang="ko">
+      <head>
+        {isProd && (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-R0HMHE4ZHF"
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-R0HMHE4ZHF');
+              `}
+            </Script>
+          </>
+        )}
+      </head>
       <body>
         <GlobalErrorBoundary>
           <QueryClientProviders>
