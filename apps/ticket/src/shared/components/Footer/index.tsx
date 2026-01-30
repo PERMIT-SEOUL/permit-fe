@@ -35,7 +35,7 @@ export const Footer = () => {
         </a>
         <a href="https://www.instagram.com/ceilingservice/" target="_blank" rel="noreferrer">
           <Typography type="body12" color="gray400" style={{ textDecoration: "underline" }}>
-            Instagram_ceilingservice
+            Instagram_ceiling service
           </Typography>
         </a>
         <a href="https://www.instagram.com/olympan.kr/" target="_blank" rel="noreferrer">
