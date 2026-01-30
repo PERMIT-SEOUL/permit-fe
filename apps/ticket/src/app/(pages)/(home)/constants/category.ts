@@ -4,14 +4,14 @@ export const CATEGORIES = {
   ALL: "all",
   PERMIT: "permit",
   CEILING_SERVICE: "ceilingService",
-  FESTIVAL: "festival",
+  OLYMPAN: "festival",
 } as const;
 
 export type CategoryType = ObjectValues<typeof CATEGORIES>;
 
 export const CATEGORY_LABELS = {
   [CATEGORIES.ALL]: "ALL",
-  [CATEGORIES.PERMIT]: "Permit",
+  [CATEGORIES.PERMIT]: "PERMIT",
   [CATEGORIES.CEILING_SERVICE]: "Ceilingservice",
-  [CATEGORIES.FESTIVAL]: "Festival",
+  [CATEGORIES.OLYMPAN]: "Olympan",
 } as const;

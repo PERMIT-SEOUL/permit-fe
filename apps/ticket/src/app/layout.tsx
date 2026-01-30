@@ -13,7 +13,7 @@ import { Footer } from "@/shared/components/Footer";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "Permit",
+  title: "PERMIT",
   description: "Permit Ticket",
 };
 
