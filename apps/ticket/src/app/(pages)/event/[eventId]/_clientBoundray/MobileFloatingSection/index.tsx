@@ -15,9 +15,10 @@ const cx = classNames.bind(styles);
 
 type Props = {
   eventId: string;
+  minAge: number;
 };
 
-export const MobileFloatingSection = ({ eventId }: Props) => {
+export const MobileFloatingSection = ({ eventId, minAge }: Props) => {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const { show: openBottomSheet } = useBottomSheet(SelectTicketBottomSheet);
@@ -31,6 +32,7 @@ export const MobileFloatingSection = ({ eventId }: Props) => {
         title: "티켓 선택",
         eventTicketsData,
         eventId,
+        minAge,
       });
 
       if (!result) {
