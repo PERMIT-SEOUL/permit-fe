@@ -30,9 +30,10 @@ export type SelectedTicket = {
 type Props = {
   eventId: string;
   eventName: string;
+  minAge: number;
 };
 
-export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
+export const DesktopTicketSectionClient = ({ eventId, eventName, minAge }: Props) => {
   const { data: eventTicketsData } = useEventTicketsSuspenseQuery({
     eventId,
     options: {
@@ -214,6 +215,10 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
         })),
       };
 
+      if (!confirm(`저는 만 ${minAge}세 이상입니다.`)) {
+        return;
+      }
+
       await reservationReadyMutateAsync({ ...requestData, orderId });
 
       window.location.href = `/order/${orderId}`;
@@ -228,7 +233,7 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
         // TODO: 토스트나 커스텀 모달로 변경
         alert(error.response?.data.message);
       }
-
+    } finally {
       setIsLoading(false);
     }
   });
@@ -383,16 +388,20 @@ export const DesktopTicketSectionClient = ({ eventId, eventName }: Props) => {
         )}
       </div>
 
-      <Button
-        className={cx("buy_button")}
-        variant="cta"
-        isLoading={isLoading}
-        disabled={selectedTickets.length === 0}
-        onClick={handleBuyTicket}
-        fullWidth
-      >
-        {selectedTickets.length === 0 ? "Select Ticket Type" : "Buy Ticket"}
-      </Button>
+      <div className={cx("buy_button")}>
+        <Button
+          variant="cta"
+          isLoading={isLoading}
+          disabled={selectedTickets.length === 0}
+          onClick={handleBuyTicket}
+          fullWidth
+        >
+          {selectedTickets.length === 0 ? "Select Ticket Type" : "Buy Ticket"}
+        </Button>
+        <Typography className={cx("minage")} type="body12" weight="bold" color="gray400">
+          *만 {minAge}세 이상 구입 가능
+        </Typography>
+      </div>
     </div>
   );
 };

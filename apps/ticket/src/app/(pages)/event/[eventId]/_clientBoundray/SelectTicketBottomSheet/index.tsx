@@ -29,6 +29,7 @@ type Props = {
   title: string;
   eventTicketsData: EventTicketsResponse;
   eventId: string;
+  minAge: number;
 } & BottomSheetComponentProps<string>;
 
 export const SelectTicketBottomSheet = ({
@@ -36,11 +37,16 @@ export const SelectTicketBottomSheet = ({
   close,
   title,
   eventId,
+  minAge,
   eventTicketsData,
 }: Props) => {
   return (
     <BottomSheet open={isOpen} onClose={() => close("cancelled")} title={title}>
-      <SelectTicketBottomSheetContent eventTicketsData={eventTicketsData} eventId={eventId} />
+      <SelectTicketBottomSheetContent
+        eventTicketsData={eventTicketsData}
+        eventId={eventId}
+        minAge={minAge}
+      />
     </BottomSheet>
   );
 };
@@ -48,9 +54,11 @@ export const SelectTicketBottomSheet = ({
 const SelectTicketBottomSheetContent = ({
   eventTicketsData,
   eventId,
+  minAge,
 }: {
   eventTicketsData: EventTicketsResponse;
   eventId: string;
+  minAge: number;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const selectedRound = eventTicketsData.rounds.find((round) => round.roundAvailable);
@@ -224,6 +232,10 @@ const SelectTicketBottomSheetContent = ({
         })),
       };
 
+      if (!confirm(`저는 만 ${minAge}세 이상입니다.`)) {
+        return;
+      }
+
       await reservationReadyMutateAsync({ ...requestData, orderId });
 
       window.location.href = `/order/${orderId}`;
@@ -393,6 +405,9 @@ const SelectTicketBottomSheetContent = ({
         >
           {selectedTickets.length === 0 ? "Select Ticket Type" : "Buy Ticket"}
         </Button>
+        <Typography className={cx("minage")} type="body12" weight="bold" color="gray400">
+          *만 {minAge}세 이상 구입 가능
+        </Typography>
       </BottomSheet.Bottom>
     </>
   );

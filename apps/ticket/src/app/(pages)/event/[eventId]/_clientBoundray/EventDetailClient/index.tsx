@@ -34,7 +34,11 @@ export const EventDetailClient = ({ eventId }: Props) => {
 
           <ImageCarouselClient images={eventDetailData.images} />
 
-          <DesktopTicketSectionClient eventId={eventId} eventName={eventDetailData.eventName} />
+          <DesktopTicketSectionClient
+            eventId={eventId}
+            eventName={eventDetailData.eventName}
+            minAge={eventDetailData.minAge}
+          />
 
           <div className={cx("info_section")}>
             <EventInfo
@@ -50,7 +54,7 @@ export const EventDetailClient = ({ eventId }: Props) => {
         </div>
       </Flex>
 
-      <MobileFloatingSection eventId={eventId} />
+      <MobileFloatingSection eventId={eventId} minAge={eventDetailData.minAge} />
     </>
   );
 };
