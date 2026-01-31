@@ -250,29 +250,22 @@ function generateTimeSlots(startDateStr: string, endDateStr: string) {
   const start = parseCustomDate(startDateStr);
   const end = parseCustomDate(endDateStr);
   const timeSlots = [];
-  const current = new Date(start);
-
-  // 요일 배열 (일요일부터 시작)
   const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
 
-  while (current.getTime() <= end.getTime()) {
-    for (let h = 0; h < 24; h++) {
-      const slot = new Date(current);
+  const current = new Date(start);
 
-      slot.setHours(h, 0, 0, 0);
+  while (current <= end) {
+    const dayOfWeek = dayNames[current.getDay()];
+    const hour = current.getHours();
 
-      // 범위 내의 시간만 추가
-      if (slot >= start && slot <= end) {
-        const dayOfWeek = dayNames[slot.getDay()];
+    timeSlots.push({
+      datetime: new Date(current),
+      label: `${current.getMonth() + 1}/${current.getDate()} ${hour
+        .toString()
+        .padStart(2, "0")}:00 (${dayOfWeek})`,
+    });
 
-        timeSlots.push({
-          datetime: new Date(slot),
-          label: `${slot.getMonth() + 1}/${slot.getDate()} ${h.toString().padStart(2, "0")}:00 (${dayOfWeek})`,
-        });
-      }
-    }
-
-    current.setDate(current.getDate() + 1);
+    current.setHours(current.getHours() + 1);
   }
 
   return timeSlots;
