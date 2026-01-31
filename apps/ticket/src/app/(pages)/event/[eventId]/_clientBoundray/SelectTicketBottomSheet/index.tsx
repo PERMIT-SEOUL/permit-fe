@@ -15,6 +15,7 @@ import { useCouponValidateMutation } from "@/data/coupon/postCouponValidate/muta
 import { EventTicketsResponse } from "@/data/events/getEventTickets/types";
 import { useReservationReadyMutation } from "@/data/reservations/postReservationReady/mutation";
 import { generateRandomString } from "@/shared/helpers/generateRandomString";
+import { redirectToLoginOnce } from "@/shared/helpers/redirectToLoginOnce";
 import { BottomSheetComponentProps } from "@/shared/hooks";
 import { isAxiosErrorResponse, isNotAuthErrorResponse } from "@/shared/types/axioxError";
 
@@ -228,9 +229,9 @@ const SelectTicketBottomSheetContent = ({
       window.location.href = `/order/${orderId}`;
     } catch (error) {
       if (isNotAuthErrorResponse(error)) {
-        // TODO: 로그인 화면으로 이동하는 로직 추가해야함.
-        // 로그인 페이지로 이동해야함
-        // alert("로그인 후 이용해 주세요.");
+        redirectToLoginOnce();
+
+        return;
       }
 
       if (isAxiosErrorResponse(error)) {

@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames/bind";
 
 import { Button, Dialog, Flex, Typography } from "@permit/design-system";
 import { usePaymentCancelMutation } from "@/data/payments/postPaymentCancel/mutation";
+import { USER_QUERY_KEYS } from "@/data/users/queryKeys";
+import { redirectToLoginOnce } from "@/shared/helpers/redirectToLoginOnce";
 import { ModalComponentProps } from "@/shared/hooks/useModal/types";
 import { isAxiosErrorResponse, isNotAuthErrorResponse } from "@/shared/types/axioxError";
 
@@ -16,6 +19,7 @@ type Props = {
 } & ModalComponentProps<{ result: boolean }>;
 
 export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) => {
+  const qc = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const { mutateAsync } = usePaymentCancelMutation();
 
@@ -23,14 +27,16 @@ export const CancelTicketModal = ({ isOpen, close, orderId, eventName }: Props) 
     try {
       setIsLoading(true);
       await mutateAsync({ orderId });
-      // TODO: 예매 취소 후 티켓 목록 업데이트(쿼리 키 무효화)
+      qc.invalidateQueries({
+        queryKey: [USER_QUERY_KEYS.TICKETS],
+      });
 
       close({ result: true });
     } catch (error) {
       if (isNotAuthErrorResponse(error)) {
-        // TODO: 로그인 화면으로 이동하는 로직 추가해야함. => 훅으로 분리하기
-        // 로그인 페이지로 이동해야함
-        // alert("로그인 후 이용해 주세요.");
+        redirectToLoginOnce();
+
+        return;
       }
 
       if (isAxiosErrorResponse(error)) {
