@@ -8,6 +8,7 @@ import { Flex, Typography } from "@permit/design-system";
 import { useGuestTicketCameraConfirmMutation } from "@/data/tickets/postStaffGuestTicketDoorConfirm/mutation";
 import { useUserTicketCameraConfirmMutation } from "@/data/tickets/postStaffTicketDoorConfirm/mutation";
 import { useUserInfoSuspenseQuery } from "@/data/users/getUserInfo/queries";
+import { ERROR_CODE } from "@/lib/axios/utils/errorCode";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import styles from "./index.module.scss";
@@ -307,6 +308,8 @@ export const TicketAuthorizationClient = () => {
             message = "이미 사용한 티켓입니다.";
           } else if (error.response?.data.code === CANCELED_TICKET) {
             message = "취소된 티켓입니다.";
+          } else if (error.response?.data.code === ERROR_CODE.SECURITY_ENTRY) {
+            message = "권한 업데이트를 위해 로그아웃 후 재 로그인 해주세요.";
           } else if (error.response?.data.message) {
             message = error.response?.data.message;
           }
