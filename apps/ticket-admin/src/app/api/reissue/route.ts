@@ -18,6 +18,10 @@ export async function POST(req: Request) {
     },
   );
 
+  if (!apiRes.ok) {
+    throw new Error("Token reissue failed");
+  }
+
   const setCookies = apiRes.headers.getSetCookie();
 
   const res = NextResponse.json(await apiRes.json(), {
