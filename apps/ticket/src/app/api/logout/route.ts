@@ -1,15 +1,12 @@
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { API_URL } from "@/data/constants";
+import { ERROR_CODE } from "@/lib/axios/utils/errorCode";
 
-/**
- * 로그아웃 요청 API
- */
-export async function POST(req: Request) {
-  const cookiesStore = await cookies();
-
-  const apiRes = await fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.LOGOUT, {
+async function requestLogout(cookiesStore: ReadonlyRequestCookies) {
+  return fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.LOGOUT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,6 +14,36 @@ export async function POST(req: Request) {
     },
     credentials: "include",
   });
+}
+
+export async function POST() {
+  const cookiesStore = await cookies();
+  let apiRes: Response;
+
+  try {
+    // 첫 로그아웃 요청
+    apiRes = await requestLogout(cookiesStore);
+
+    const data = await apiRes.clone().json();
+
+    // accessToken 만료라면
+    if (data?.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
+      // 재발급 요청
+      const reissueRes = await fetch(`/api/reissue`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!reissueRes.ok) {
+        throw new Error("Token reissue failed");
+      }
+
+      // 재발급 성공 → 로그아웃 재시도
+      apiRes = await requestLogout(cookiesStore);
+    }
+  } catch (error) {
+    return NextResponse.json({ success: false }, { status: 401 });
+  }
 
   const setCookies = apiRes.headers.getSetCookie();
 
@@ -24,14 +51,9 @@ export async function POST(req: Request) {
     status: apiRes.status,
   });
 
-  // API 서버가 내려준 모든 Set-Cookie를 그대로 전달
+  // Set-Cookie 그대로 전달
   for (const cookie of setCookies) {
-    // 기존 쿠키 그대로 전달
-    // SSR 환경에서 브라우저 쿠키 사용할 수 있도록 하기 위함
     res.headers.append("Set-Cookie", cookie);
-
-    // Domain 추가한 쿠키 한 번 더 전달
-    // 브라우저 단에서 자동으로 쿠키가 포함한 요청이 갈 수 있도록 하기 위함
     res.headers.append("Set-Cookie", `${cookie}; Domain=.permitseoul.com`);
   }
 
