@@ -17,45 +17,46 @@ async function requestLogout(cookiesStore: ReadonlyRequestCookies) {
 }
 
 export async function POST() {
-  const cookiesStore = await cookies();
-  let apiRes: Response;
+  let apiRes: Response | null = null;
 
   try {
-    // 첫 로그아웃 요청
+    const cookiesStore = await cookies();
+
     apiRes = await requestLogout(cookiesStore);
 
     const data = await apiRes.clone().json();
 
-    // accessToken 만료라면
     if (data?.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
-      // 재발급 요청
-      const reissueRes = await fetch(`/api/reissue`, {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reissue`, {
         method: "POST",
         credentials: "include",
       });
 
-      if (!reissueRes.ok) {
-        throw new Error("Token reissue failed");
-      }
-
-      // 재발급 성공 → 로그아웃 재시도
-      apiRes = await requestLogout(cookiesStore);
+      apiRes = await requestLogout(await cookies());
     }
-  } catch (error) {
-    return NextResponse.json({ success: false }, { status: 401 });
+  } catch (e) {
+    // ❗ 실패해도 무시
   }
 
-  const setCookies = apiRes.headers.getSetCookie();
+  const res = NextResponse.json({ success: true }, { status: 200 });
 
-  const res = NextResponse.json(await apiRes.json(), {
-    status: apiRes.status,
-  });
-
-  // Set-Cookie 그대로 전달
-  for (const cookie of setCookies) {
-    res.headers.append("Set-Cookie", cookie);
-    res.headers.append("Set-Cookie", `${cookie}; Domain=.permitseoul.com`);
-  }
+  // 성공/실패 무관하게 쿠키 제거
+  clearAuthCookies(res);
 
   return res;
+}
+
+function clearAuthCookies(res: NextResponse) {
+  for (const name of ["accessToken", "refreshToken"]) {
+    res.headers.append(
+      "Set-Cookie",
+      `${name}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None`,
+    );
+
+    // 도메인 쿠키까지 같이 제거
+    res.headers.append(
+      "Set-Cookie",
+      `${name}=; Path=/; Domain=.permitseoul.com; Max-Age=0; HttpOnly; Secure; SameSite=None`,
+    );
+  }
 }
