@@ -22,6 +22,10 @@ export const useLogoutMutation = (options?: LogoutMutationOptions<LogoutResponse
         credentials: "include",
       });
 
+      if (!res.ok) {
+        throw new Error("Logout failed");
+      }
+
       return res.json();
     },
     ...options,

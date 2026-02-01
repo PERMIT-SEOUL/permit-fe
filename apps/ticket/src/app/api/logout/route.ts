@@ -1,15 +1,12 @@
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { API_URL } from "@/data/constants";
+import { ERROR_CODE } from "@/lib/axios/utils/errorCode";
 
-/**
- * 로그아웃 요청 API
- */
-export async function POST(req: Request) {
-  const cookiesStore = await cookies();
-
-  const apiRes = await fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.LOGOUT, {
+async function requestLogout(cookiesStore: ReadonlyRequestCookies) {
+  return fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.LOGOUT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,23 +14,49 @@ export async function POST(req: Request) {
     },
     credentials: "include",
   });
+}
 
-  const setCookies = apiRes.headers.getSetCookie();
+export async function POST() {
+  let apiRes: Response | null = null;
 
-  const res = NextResponse.json(await apiRes.json(), {
-    status: apiRes.status,
-  });
+  try {
+    const cookiesStore = await cookies();
 
-  // API 서버가 내려준 모든 Set-Cookie를 그대로 전달
-  for (const cookie of setCookies) {
-    // 기존 쿠키 그대로 전달
-    // SSR 환경에서 브라우저 쿠키 사용할 수 있도록 하기 위함
-    res.headers.append("Set-Cookie", cookie);
+    apiRes = await requestLogout(cookiesStore);
 
-    // Domain 추가한 쿠키 한 번 더 전달
-    // 브라우저 단에서 자동으로 쿠키가 포함한 요청이 갈 수 있도록 하기 위함
-    res.headers.append("Set-Cookie", `${cookie}; Domain=.permitseoul.com`);
+    const data = await apiRes.clone().json();
+
+    if (data?.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED) {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reissue`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      apiRes = await requestLogout(await cookies());
+    }
+  } catch (e) {
+    // ❗ 실패해도 무시
   }
 
+  const res = NextResponse.json({ success: true }, { status: 200 });
+
+  // 성공/실패 무관하게 쿠키 제거
+  clearAuthCookies(res);
+
   return res;
+}
+
+function clearAuthCookies(res: NextResponse) {
+  for (const name of ["accessToken", "refreshToken"]) {
+    res.headers.append(
+      "Set-Cookie",
+      `${name}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None`,
+    );
+
+    // 도메인 쿠키까지 같이 제거
+    res.headers.append(
+      "Set-Cookie",
+      `${name}=; Path=/; Domain=.permitseoul.com; Max-Age=0; HttpOnly; Secure; SameSite=None`,
+    );
+  }
 }

@@ -7,4 +7,6 @@ export type UserInfo = {
   gender: string;
   /** 회원 이메일 */
   email: string;
+  /** 회원 role */
+  role: "USER" | "ADMIN" | "STAFF";
 };

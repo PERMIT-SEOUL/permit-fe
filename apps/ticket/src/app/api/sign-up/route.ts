@@ -1,26 +1,20 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { API_URL } from "@/data/constants";
 
+/**
+ * 회원가입 요청 API
+ * NOTE: API 서버에서 Set-Cookie 설정해주는 것을 브라우저에서 동일하게 쿠키 설정하기 위함
+ */
 export async function POST(req: Request) {
-  const cookiesStore = await cookies();
+  const body = await req.json();
 
-  const apiRes = await fetch(
-    process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.REISSUE_ACCESS_TOKEN,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `accessToken=${cookiesStore.get("accessToken")?.value}; refreshToken=${cookiesStore.get("refreshToken")?.value}`,
-      },
-      credentials: "include",
-    },
-  );
-
-  if (!apiRes.ok) {
-    throw new Error("Token reissue failed");
-  }
+  const apiRes = await fetch(process.env.NEXT_PUBLIC_TICKET_API_BASE_URL + API_URL.USER.SIGNUP, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    credentials: "include",
+  });
 
   const setCookies = apiRes.headers.getSetCookie();
 

@@ -116,6 +116,9 @@ export const TossPaymentWidget = ({ orderId }: Props) => {
         <Typography type="body14" color="gray300">
           * 환불 정책은 페이지 하단을 참고해주세요.
         </Typography>
+        <Typography type="body14" color="gray300">
+          * 결제창이 계속해서 보이지 않는다면 새로고침 해주세요.
+        </Typography>
       </div>
     </>
   );

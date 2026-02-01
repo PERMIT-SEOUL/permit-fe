@@ -250,7 +250,7 @@ const SelectTicketBottomSheetContent = ({
         // TODO: 토스트나 커스텀 모달로 변경
         alert(error.response?.data.message);
       }
-
+    } finally {
       setIsLoading(false);
     }
   });

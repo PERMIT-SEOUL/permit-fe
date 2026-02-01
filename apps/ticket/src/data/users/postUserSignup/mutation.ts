@@ -1,7 +1,5 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 
-import { API_URL } from "@/data/constants";
-import { instance } from "@/lib/axios";
 import { SocialLoginType } from "@/shared/hooks/useOAuth/types";
 
 type SignupRequest = {
@@ -27,9 +25,16 @@ export type SignupMutationOptions<TData> = Omit<
 export const useSignupMutation = (options?: SignupMutationOptions<SignupResponse>) => {
   return useMutation({
     mutationFn: async (params: SignupRequest) => {
-      const { data } = await instance.post<SignupResponse>(API_URL.USER.SIGNUP, params);
+      const res = await fetch("/api/sign-up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(params),
+      });
 
-      return data;
+      return res.json();
     },
     ...options,
   });
