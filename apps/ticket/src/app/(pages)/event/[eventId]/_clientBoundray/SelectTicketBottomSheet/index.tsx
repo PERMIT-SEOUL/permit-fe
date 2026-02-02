@@ -327,8 +327,7 @@ const SelectTicketBottomSheetContent = ({
                         {selectedTicket.ticketInfo.ticketTypeName}
                       </Typography>
                       <Typography type="body12" color="gray500">
-                        {selectedTicket.ticketInfo.ticketTypeDate},{" "}
-                        {selectedTicket.ticketInfo.ticketTypeTime}
+                        {selectedTicket.ticketInfo.ticketTypeDate}
                       </Typography>
                     </Flex>
 
