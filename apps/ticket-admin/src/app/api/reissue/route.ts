@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     throw new Error("Token reissue failed");
   }
 
-  const setCookies = apiRes.headers.getSetCookie();
+  const setCookies = apiRes.headers.getSetCookie?.() ?? [];
 
   const res = NextResponse.json(await apiRes.json(), {
     status: apiRes.status,
