@@ -4,7 +4,7 @@ import { PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 import { AxiosErrorResponse, isAxiosErrorResponse } from "@/shared/types/axioxError";
 
-import { safeSessionStorage } from "../storage";
+import { safeLocalStorage } from "../storage";
 import { ERROR_CODE } from "./utils/errorCode";
 
 export const clientAxios = axios.create({
@@ -87,7 +87,7 @@ function redirectToLoginOnce() {
   isLoginAlertShown = true;
 
   alert("로그인 후 이용해 주세요.");
-  safeSessionStorage.remove(IS_LOGINED);
+  safeLocalStorage.remove(IS_LOGINED);
 
   const redirectUrl = window.location.pathname + window.location.search;
 

@@ -1,4 +1,4 @@
-import { safeSessionStorage } from "@/lib/storage";
+import { safeLocalStorage } from "@/lib/storage";
 import { PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 
@@ -13,7 +13,7 @@ export function redirectToLoginOnce() {
   isLoginAlertShown = true;
 
   alert("로그인 후 이용해 주세요.");
-  safeSessionStorage.remove(IS_LOGINED);
+  safeLocalStorage.remove(IS_LOGINED);
 
   const redirectUrl = window.location.pathname + window.location.search;
   const loginUrl = `${PATH.LOGIN}?redirectUrl=${encodeURIComponent(redirectUrl)}`;

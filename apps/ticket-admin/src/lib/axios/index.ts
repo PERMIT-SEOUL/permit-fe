@@ -4,7 +4,7 @@ import { EXTERNAL_PATH } from "@/shared/constants/path";
 import { IS_LOGINED } from "@/shared/constants/storage";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
-import { safeSessionStorage } from "../storage";
+import { safeLocalStorage } from "../storage";
 import { ERROR_CODE } from "./utils/errorCode";
 
 export const instance = axios.create({
@@ -152,7 +152,7 @@ function redirectToLoginOnce() {
   isLoginAlertShown = true;
 
   alert("로그인이 필요한 페이지입니다.");
-  safeSessionStorage.remove(IS_LOGINED);
+  safeLocalStorage.remove(IS_LOGINED);
 
   const redirectUrl = `${EXTERNAL_PATH.LOGIN}?redirectUrl=${encodeURIComponent(
     window.location.origin + window.location.pathname + window.location.search,
