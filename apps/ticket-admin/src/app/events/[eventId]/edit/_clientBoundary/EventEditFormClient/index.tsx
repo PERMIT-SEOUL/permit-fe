@@ -11,10 +11,7 @@ import { GuestManagement } from "@/app/events/[eventId]/edit/_components/GuestMa
 import { TicketManagementClient } from "@/app/events/create/_clientBoundary/TicketManagementClient";
 import { EventFormLayout } from "@/app/events/create/_components/EventFormLayout";
 import { PreviewMedia } from "@/app/events/create/_components/ImageUploader";
-import {
-  useEventDetailQuery,
-  useEventDetailSuspenseQuery,
-} from "@/data/admin/getEventDetail/queries";
+import { useEventDetailSuspenseQuery } from "@/data/admin/getEventDetail/queries";
 import { EventDetailResponse } from "@/data/admin/getEventDetail/types";
 import { useEventMutation } from "@/data/admin/patchEvents/mutation";
 import {
@@ -114,7 +111,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { data: eventDetailData } = useEventDetailQuery({
+  const { data: eventDetailData } = useEventDetailSuspenseQuery({
     eventId,
   });
 
@@ -124,7 +121,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 노출 시작 날짜
   const eventExposureStartDateField = useSelect({
-    initialValue: eventDetailData?.eventExposureStartDate,
+    initialValue: eventDetailData.eventExposureStartDate,
     onChange: (value: string) => {
       setFormData((prev) => ({
         ...prev,
@@ -140,7 +137,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 노출 종료 날짜
   const eventExposureEndDateField = useSelect({
-    initialValue: eventDetailData?.eventExposureEndDate,
+    initialValue: eventDetailData.eventExposureEndDate,
     validate: (value: string) => {
       if (!value) return "이벤트 노출 종료 날짜를 선택해주세요.";
 
@@ -156,7 +153,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 노출 시작 시간
   const eventExposureStartTimeField = useTextField({
-    initialValue: eventDetailData?.eventExposureStartTime,
+    initialValue: eventDetailData.eventExposureStartTime,
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 노출 시작 시간을 입력해주세요.";
 
@@ -176,7 +173,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 노출 종료 시간
   const eventExposureEndTimeField = useTextField({
-    initialValue: eventDetailData?.eventExposureEndTime,
+    initialValue: eventDetailData.eventExposureEndTime,
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 노출 종료 시간을 입력해주세요.";
 
@@ -195,7 +192,7 @@ export function EventEditFormClient({ eventId }: Props) {
   });
 
   const eventTypeSelect = useSelect({
-    initialValue: eventDetailData?.eventType,
+    initialValue: eventDetailData.eventType,
     validate: (value) => {
       if (!value) return "이벤트 타입을 선택해주세요.";
 
@@ -243,7 +240,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 시작 날짜
   const eventStartDateField = useSelect({
-    initialValue: eventDetailData?.startDate,
+    initialValue: eventDetailData.startDate,
     validate: (value: string) => {
       if (!value) return "이벤트 시작 날짜를 선택해주세요.";
 
@@ -259,7 +256,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 종료 날짜
   const eventEndDateField = useSelect({
-    initialValue: eventDetailData?.endDate,
+    initialValue: eventDetailData.endDate,
     validate: (value: string) => {
       if (!value) return "이벤트 종료 날짜를 선택해주세요.";
 
@@ -275,7 +272,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 시작 시간
   const eventStartTimeField = useTextField({
-    initialValue: eventDetailData?.startTime,
+    initialValue: eventDetailData.startTime,
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 시작 시간을 입력해주세요.";
 
@@ -295,7 +292,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
   // 이벤트 종료 시간
   const eventEndTimeField = useTextField({
-    initialValue: eventDetailData?.endTime,
+    initialValue: eventDetailData.endTime,
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 종료 시간을 입력해주세요.";
 
@@ -576,7 +573,7 @@ export function EventEditFormClient({ eventId }: Props) {
       });
 
       const presignedUrls = await postPresignedUrls({
-        eventId: eventDetailData?.eventId as number,
+        eventId: eventDetailData.eventId,
         mediaInfoRequests,
       });
 
@@ -623,7 +620,7 @@ export function EventEditFormClient({ eventId }: Props) {
       });
 
       const siteMapPresignedUrls = await postPresignedUrls({
-        eventId: eventDetailData?.eventId as number,
+        eventId: eventDetailData.eventId,
         mediaInfoRequests: mediaInfoRequestsSiteMap,
       });
 
@@ -663,7 +660,7 @@ export function EventEditFormClient({ eventId }: Props) {
 
       await patchEvent({
         ...formData,
-        eventId: eventDetailData?.eventId as number,
+        eventId: eventDetailData.eventId,
         images: imagesData,
         siteMapImages: siteMapsData,
       });
@@ -691,10 +688,6 @@ export function EventEditFormClient({ eventId }: Props) {
       }
     }
   };
-
-  if (eventDetailData === undefined) {
-    return <LoadingWithLayout />;
-  }
 
   return (
     <div>
