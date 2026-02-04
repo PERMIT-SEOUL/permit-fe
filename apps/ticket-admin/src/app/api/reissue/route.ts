@@ -18,8 +18,17 @@ export async function POST(req: Request) {
     },
   );
 
+  const responseText = await apiRes.text(); // 본문을 텍스트로 읽기
+
+  console.error("Token reissue failed: Response Body:", apiRes, " @@@:", responseText);
+  console.error(
+    "Cookie:",
+    cookiesStore.get("accessToken")?.value,
+    +" @@@@ ",
+    cookiesStore.get("refreshToken")?.value,
+  );
+
   if (!apiRes.ok) {
-    console.error("Token reissue failed:", apiRes.statusText);
     console.error("Token reissue failed:", JSON.stringify(apiRes));
 
     throw new Error("Token reissue failed");
