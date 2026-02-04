@@ -82,9 +82,12 @@ instance.interceptors.response.use(
             })
               .then(() => {
                 tokenRefreshPromise = null;
+                console.log("@@@ hi then");
               })
               .catch((error) => {
-                tokenRefreshPromise = null;
+                // redirectToLoginOnce();
+
+                console.log("@@@ hi catch");
 
                 throw error;
               });
