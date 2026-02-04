@@ -10,9 +10,9 @@ type Props = {
 export default async function EditEventPage({ params }: Props) {
   const { eventId } = await params;
 
-  const qc = getQueryClient();
+  // const qc = getQueryClient();
 
-  qc.prefetchQuery(eventDetailOptions({ eventId }));
+  // qc.prefetchQuery(eventDetailOptions({ eventId }));
 
   return <EventEditForm eventId={eventId} />;
 }

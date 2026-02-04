@@ -79,18 +79,19 @@ instance.interceptors.response.use(
                 "Content-Type": "application/json",
               },
               credentials: "include",
-            })
-              .then(() => {
-                tokenRefreshPromise = null;
-                console.log("@@@ hi then");
-              })
-              .catch((error) => {
-                // redirectToLoginOnce();
+            }).then((res) => {
+              if (!res.ok) {
+                redirectToLoginOnce();
 
-                console.log("@@@ hi catch");
-
-                throw error;
-              });
+                return Promise.reject({
+                  ...error,
+                  response: {
+                    ...error.response,
+                    data: error.response?.data,
+                  },
+                });
+              }
+            });
           }
 
           // 원래 요청 재시도
