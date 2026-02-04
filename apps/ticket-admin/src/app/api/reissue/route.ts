@@ -19,6 +19,9 @@ export async function POST(req: Request) {
   );
 
   if (!apiRes.ok) {
+    console.error("Token reissue failed:", apiRes.statusText);
+    console.error("Token reissue failed:", JSON.stringify(apiRes));
+
     throw new Error("Token reissue failed");
   }
 
