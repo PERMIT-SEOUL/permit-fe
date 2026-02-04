@@ -47,13 +47,17 @@ clientAxios.interceptors.response.use(
           original._retry = true;
 
           try {
-            await fetch("/api/reissue", {
+            const res = await fetch("/api/reissue", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               credentials: "include",
             });
+
+            if (!res.ok) {
+              redirectToLoginOnce();
+            }
 
             const originalRequest = error.config;
 

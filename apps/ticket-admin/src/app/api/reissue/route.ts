@@ -18,10 +18,6 @@ export async function POST(req: Request) {
     },
   );
 
-  if (!apiRes.ok) {
-    return NextResponse.json({ ok: false, message: "Token reissue failed" }, { status: 500 });
-  }
-
   const setCookies = apiRes.headers.getSetCookie?.() ?? [];
 
   const res = NextResponse.json(await apiRes.json(), {
