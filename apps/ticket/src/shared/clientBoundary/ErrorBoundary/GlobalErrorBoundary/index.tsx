@@ -12,7 +12,7 @@ import { GlobalErrorPage } from "./components/GlobalErrorPage";
 
 export const GlobalErrorBoundary = ({ children }: { children: React.ReactNode }) => (
   <ErrorBoundary
-    handlers={[requiredLoginHandler, authErrorHandler, networkErrorHandler, globalErrorHandler]}
+    handlers={[authErrorHandler, requiredLoginHandler, networkErrorHandler, globalErrorHandler]}
   >
     <Suspense>{children}</Suspense>
   </ErrorBoundary>
