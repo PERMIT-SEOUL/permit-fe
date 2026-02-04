@@ -35,5 +35,24 @@ export async function POST(req: Request) {
     res.headers.append("Set-Cookie", `${cookie}; Domain=.permitseoul.com`);
   }
 
+  if (!res.ok) {
+    clearAuthCookies(res);
+  }
+
   return res;
+}
+
+function clearAuthCookies(res: NextResponse) {
+  for (const name of ["accessToken", "refreshToken"]) {
+    res.headers.append(
+      "Set-Cookie",
+      `${name}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None`,
+    );
+
+    // 도메인 쿠키까지 같이 제거
+    res.headers.append(
+      "Set-Cookie",
+      `${name}=; Path=/; Domain=.permitseoul.com; Max-Age=0; HttpOnly; Secure; SameSite=None`,
+    );
+  }
 }
