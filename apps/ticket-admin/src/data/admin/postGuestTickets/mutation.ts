@@ -30,6 +30,9 @@ export const usePostGuestTicketsMutation = (
       const { data } = await instance.post<PostGuestTicketsResponse>(
         API_URL.ADMIN.GUEST_TICKETS,
         params,
+        // MEMO: guest 티켓 생성 API는 처리 시간이 길어질 수 있어 타임아웃을 60초로 설정
+        // 추후 성준이가 비동기로 메일 보내도록 변경하면 제거할 것
+        { timeout: 60_000 },
       );
 
       return data;
