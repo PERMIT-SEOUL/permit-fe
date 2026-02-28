@@ -3,6 +3,10 @@ import { NextResponse } from "next/server";
 
 import { API_URL } from "@/data/constants";
 
+export async function HEAD() {
+  return new Response(null, { status: 200 });
+}
+
 /**
  * vercel Lambda 깨우기 용 ping API (5분 주기로 호출)
  * 브라우저에서 주기적으로 호출하여 Lambda 깨우기 (Cold Start 방지)
