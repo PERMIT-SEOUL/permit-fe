@@ -11,6 +11,7 @@ import "@/styles/global.scss";
 import { Header } from "@/shared/components/Header";
 import { Footer } from "@/shared/components/Footer";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "PERMIT",
@@ -57,6 +58,7 @@ export default function RootLayout({
             </OverlayProvider>
           </QueryClientProviders>
         </GlobalErrorBoundary>
+        <SpeedInsights />
       </body>
     </html>
   );
