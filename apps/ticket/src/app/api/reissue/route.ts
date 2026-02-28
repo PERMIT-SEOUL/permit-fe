@@ -3,7 +3,33 @@ import { NextResponse } from "next/server";
 
 import { API_URL } from "@/data/constants";
 
+/**
+ * vercel Lambda 깨우기 용 ping API
+ * 브라우저에서 주기적으로 호출하여 Lambda 깨우기 (Cold Start 방지)
+ */
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+
+  if (searchParams.get("warm") === "y") {
+    // 내부 POST 호출 → POST handler까지 깨우기
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reissue?warm=y`, {
+      method: "POST",
+    });
+
+    return new Response("warm", { status: 200 });
+  }
+
+  return new Response("Method Not Allowed", { status: 405 });
+}
+
 export async function POST(req: Request) {
+  const { searchParams } = new URL(req.url);
+
+  // warm 호출이면 실제 로직 skip
+  if (searchParams.get("warm") === "y") {
+    return NextResponse.json({ warm: true });
+  }
+
   const cookiesStore = await cookies();
 
   const apiRes = await fetch(
