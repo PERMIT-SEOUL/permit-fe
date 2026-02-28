@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/reissue?warm=y",
-      "schedule": "*/2 * * * *"
-    }
-  ]
-}
