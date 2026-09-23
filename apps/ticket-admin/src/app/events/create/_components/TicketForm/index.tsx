@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
 import type { UseTextFieldReturn } from "@permit/design-system/hooks";
+import type { TicketErrors } from "@/shared/helpers/validation";
 
 import styles from "./index.module.scss";
 
@@ -34,6 +35,7 @@ type TicketFormProps = {
   ticketEndDateField: SelectField;
   ticketStartTimeField: Partial<UseTextFieldReturn>;
   ticketEndTimeField: Partial<UseTextFieldReturn>;
+  errors?: TicketErrors;
 };
 
 export function TicketForm({
@@ -47,6 +49,7 @@ export function TicketForm({
   ticketEndDateField,
   ticketStartTimeField,
   ticketEndTimeField,
+  errors,
 }: TicketFormProps) {
   return (
     <div className={cx("ticket_form")}>
@@ -64,82 +67,113 @@ export function TicketForm({
       <div className={cx("ticket_form_content")}>
         <Flex gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body14" weight="medium">
-              티켓 종류, 이름
-            </Typography>
+            <Flex align="flex-start" gap={8}>
+              <Typography type="body14" weight="medium">
+                티켓 종류, 이름
+              </Typography>
+              <div className={cx("required")}>*</div>
+            </Flex>
             <TextField
               placeholder="티켓 이름을 입력해주세요"
               value={ticketNameField.value}
               onChange={ticketNameField.handleChange}
-              error={ticketNameField.error}
+              error={errors?.ticketName ?? ticketNameField.error}
             />
           </Flex>
         </Flex>
 
         <Flex gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body14" weight="medium">
-              Price
-            </Typography>
+            <Flex align="flex-start" gap={8}>
+              <Typography type="body14" weight="medium">
+                Price
+              </Typography>
+              <div className={cx("required")}>*</div>
+            </Flex>
             <TextField
               placeholder="가격을 입력해주세요"
               value={priceField.value}
               onChange={priceField.handleChange}
-              error={priceField.error}
+              error={errors?.price ?? priceField.error}
             />
           </Flex>
         </Flex>
 
         <Flex gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body14" weight="medium">
-              티켓수
-            </Typography>
+            <Flex align="flex-start" gap={8}>
+              <Typography type="body14" weight="medium">
+                티켓수
+              </Typography>
+              <div className={cx("required")}>*</div>
+            </Flex>
             <TextField
               placeholder="티켓 개수를 입력해주세요"
               value={ticketCountField.value}
               onChange={ticketCountField.handleChange}
-              error={ticketCountField.error}
+              error={errors?.ticketCount ?? ticketCountField.error}
             />
           </Flex>
         </Flex>
 
         <Flex gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body14" weight="medium">
-              start date
-            </Typography>
-            <Select type="calendar" placeholder="yy.mm.dd" {...ticketStartDateField} />
+            <Flex align="flex-start" gap={8}>
+              <Typography type="body14" weight="medium">
+                start entry date
+              </Typography>
+              <div className={cx("required")}>*</div>
+            </Flex>
+            <Select
+              type="calendar"
+              placeholder="yy.mm.dd"
+              {...ticketStartDateField}
+              error={errors?.ticketStartDate}
+            />
           </Flex>
           <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body14" weight="medium">
-              start time
-            </Typography>
+            <Flex align="flex-start" gap={8}>
+              <Typography type="body14" weight="medium">
+                start entry time
+              </Typography>
+              <div className={cx("required")}>*</div>
+            </Flex>
             <TextField
-              placeholder="시작 시간을 입력해주세요 (hh:mm)"
+              placeholder="티켓 입장 시작 시간을 입력해주세요 (hh:mm)"
               value={ticketStartTimeField.value}
               onChange={ticketStartTimeField.handleChange}
-              error={ticketStartTimeField.error}
+              error={errors?.ticketStartTime ?? ticketStartTimeField.error}
             />
           </Flex>
         </Flex>
 
         <Flex gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body14" weight="medium">
-              end date
-            </Typography>
-            <Select type="calendar" placeholder="yy.mm.dd" {...ticketEndDateField} />
+            <Flex align="flex-start" gap={8}>
+              <Typography type="body14" weight="medium">
+                end entry date
+              </Typography>
+              <div className={cx("required")}>*</div>
+            </Flex>
+            <Select
+              type="calendar"
+              placeholder="yy.mm.dd"
+              {...ticketEndDateField}
+              error={errors?.ticketEndDate}
+            />
           </Flex>
           <Flex className={cx("row")} direction="column" gap={12}>
-            <Typography type="body14" weight="medium">
-              end time
-            </Typography>
+            <Flex align="flex-start" gap={8}>
+              <Typography type="body14" weight="medium">
+                end entry time
+              </Typography>
+              <div className={cx("required")}>*</div>
+            </Flex>
             <TextField
-              placeholder="종료 시간을 입력해주세요 (hh:mm)"
+              placeholder="티켓 입장 종료 시간을 입력해주세요 (hh:mm)"
               value={ticketEndTimeField.value}
               onChange={ticketEndTimeField.handleChange}
-              error={ticketEndTimeField.error}
+              error={errors?.ticketEndTime ?? ticketEndTimeField.error}
             />
           </Flex>
         </Flex>

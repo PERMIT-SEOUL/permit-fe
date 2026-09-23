@@ -14,6 +14,13 @@ import {
   usePutS3Upload,
 } from "@/data/admin/postPresignedUrls/mutation";
 import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
+import {
+  isValidTime,
+  REQUIRED_FIELDS_MESSAGE,
+  type TicketErrors,
+  validateTicket,
+  validateTickets,
+} from "@/shared/helpers/validation";
 import { isAxiosErrorResponse } from "@/shared/types/axioxError";
 
 import { EventFormLayout } from "../../_components/EventFormLayout";
@@ -69,6 +76,8 @@ export function EventFormClient() {
   const [currentStep, setCurrentStep] = useState<"basic" | "ticket">("basic");
   const [formData, setFormData] = useState<FormData>(initialFormData as FormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageError, setImageError] = useState<string>();
+  const [ticketErrors, setTicketErrors] = useState<Record<string, TicketErrors>>({});
 
   const { mutateAsync: postPresignedUrls } = usePostPresignedUrlsMutation({});
   const { mutateAsync: putS3Upload } = usePutS3Upload();
@@ -109,9 +118,7 @@ export function EventFormClient() {
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 노출 시작 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -128,9 +135,7 @@ export function EventFormClient() {
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 노출 종료 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -207,9 +212,7 @@ export function EventFormClient() {
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 시작 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -226,9 +229,7 @@ export function EventFormClient() {
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 종료 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -296,7 +297,11 @@ export function EventFormClient() {
 
   const minAgeField = useTextField({
     initialValue: "",
-    validate: (_value: string) => {
+    validate: (value: string) => {
+      if (!value.trim()) return "최소 나이를 입력해주세요.";
+
+      if (!/^\d+$/.test(value.trim())) return "숫자만 입력해주세요.";
+
       return undefined;
     },
     onChange: (value: string) => {
@@ -337,6 +342,7 @@ export function EventFormClient() {
           images: merged,
         };
       });
+      setImageError(undefined);
     });
   };
 
@@ -344,7 +350,7 @@ export function EventFormClient() {
   const ticketRoundNameField = useTextField({
     initialValue: "",
     validate: (value: string) => {
-      if (!value) return "티켓 차수 이름을 입력해주세요.";
+      if (!value.trim()) return "티켓 차수 이름을 입력해주세요.";
 
       return undefined;
     },
@@ -389,7 +395,9 @@ export function EventFormClient() {
   const roundSalesStartTime = useTextField({
     initialValue: "",
     validate: (value: string) => {
-      if (!value) return "티켓 차수 판매 시작 시간을 입력해주세요.";
+      if (!value.trim()) return "티켓 차수 판매 시작 시간을 입력해주세요.";
+
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -404,7 +412,9 @@ export function EventFormClient() {
   const roundSalesEndTime = useTextField({
     initialValue: "",
     validate: (value: string) => {
-      if (!value) return "티켓 차수 판매 종료 시간을 입력해주세요.";
+      if (!value.trim()) return "티켓 차수 판매 종료 시간을 입력해주세요.";
+
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -476,6 +486,11 @@ export function EventFormClient() {
         ticket.id === ticketId ? updatedTicket : ticket,
       ),
     }));
+
+    // 에러가 표시된 티켓은 수정할 때마다 다시 검증
+    if (ticketErrors[ticketId]) {
+      setTicketErrors((prev) => ({ ...prev, [ticketId]: validateTicket(updatedTicket) }));
+    }
   };
 
   const deleteTicket = (ticketId: string) => {
@@ -483,6 +498,71 @@ export function EventFormClient() {
       ...prev,
       ticketTypes: prev.ticketTypes.filter((ticket) => ticket.id !== ticketId),
     }));
+    setTicketErrors(({ [ticketId]: _removed, ...rest }) => rest);
+  };
+
+  // Add Basic 단계 필수값 검증
+  const validateBasicStep = () => {
+    const results = [
+      eventExposureStartDateField.validateValue(),
+      eventExposureEndDateField.validateValue(),
+      eventExposureStartTimeField.validateValue(),
+      eventExposureEndTimeField.validateValue(),
+      eventTypeSelect.validateValue(),
+      eventVerificationCodeField.validateValue(),
+      eventNameField.validateValue(),
+      eventStartDateField.validateValue(),
+      eventStartTimeField.validateValue(),
+      eventEndDateField.validateValue(),
+      eventEndTimeField.validateValue(),
+      minAgeField.validateValue(),
+    ];
+
+    const nextImageError =
+      formData.images.length === 0 ? "이벤트 이미지를 1개 이상 등록해주세요." : undefined;
+
+    setImageError(nextImageError);
+
+    return results.every(Boolean) && !nextImageError;
+  };
+
+  // Add Ticket 단계 필수값 검증
+  const validateTicketStep = () => {
+    const results = [
+      ticketRoundNameField.validateValue(),
+      roundSalesStartDate.validateValue(),
+      roundSalesStartTime.validateValue(),
+      roundSalesEndDate.validateValue(),
+      roundSalesEndTime.validateValue(),
+    ];
+
+    const nextTicketErrors = validateTickets(formData.ticketTypes);
+
+    setTicketErrors(nextTicketErrors);
+
+    return results.every(Boolean) && Object.keys(nextTicketErrors).length === 0;
+  };
+
+  // Basic을 통과해야 Ticket 단계로 이동
+  const goToTicketStep = () => {
+    if (!validateBasicStep()) {
+      alert(REQUIRED_FIELDS_MESSAGE);
+
+      return;
+    }
+
+    setCurrentStep("ticket");
+  };
+
+  // 저장 전 전체 검증. 실패하면 첫 에러가 있는 단계로 이동
+  const validateForm = () => {
+    const isBasicValid = validateBasicStep();
+    const isTicketValid = validateTicketStep();
+
+    if (!isBasicValid) setCurrentStep("basic");
+    else if (!isTicketValid) setCurrentStep("ticket");
+
+    return isBasicValid && isTicketValid;
   };
 
   const handleRemoveOriginalImage = (url: string) => {
@@ -507,6 +587,12 @@ export function EventFormClient() {
   };
 
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      alert(REQUIRED_FIELDS_MESSAGE);
+
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -639,7 +725,7 @@ export function EventFormClient() {
           <div className={cx("sidebar_indicator", currentStep === "basic" && "active")} />
           <span className={cx("sidebar_text", currentStep === "basic" && "active")}>Add Basic</span>
         </button>
-        <button className={cx("sidebar_item")} onClick={() => setCurrentStep("ticket")}>
+        <button className={cx("sidebar_item")} onClick={goToTicketStep}>
           <div className={cx("sidebar_indicator", currentStep === "ticket" && "active")} />
           <span className={cx("sidebar_text", currentStep === "ticket" && "active")}>
             Add Ticket
@@ -677,6 +763,8 @@ export function EventFormClient() {
         onDeleteTicket={deleteTicket}
         onRemoveOriginalImage={handleRemoveOriginalImage}
         onRemoveSiteMapImage={handleRemoveSiteMapImage}
+        imageError={imageError}
+        ticketErrors={ticketErrors}
       />
 
       <div className={cx("floating")}>
@@ -687,7 +775,7 @@ export function EventFormClient() {
           size="md"
           onClick={() => {
             if (currentStep === "basic") {
-              setCurrentStep("ticket");
+              goToTicketStep();
             } else {
               handleSubmit();
             }

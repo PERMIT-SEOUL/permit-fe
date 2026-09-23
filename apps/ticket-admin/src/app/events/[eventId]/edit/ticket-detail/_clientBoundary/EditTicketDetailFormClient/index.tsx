@@ -10,6 +10,14 @@ import { type TicketData, TicketForm } from "@/app/events/create/_components/Tic
 import { useEventDetailSuspenseQuery } from "@/data/admin/getEventDetail/queries";
 import { useTicketsDetailSuspenseQuery } from "@/data/admin/getTicketsDetail/queries";
 import { usePatchTicketsMutation } from "@/data/admin/patchTickets/mutation";
+import {
+  isValidTime,
+  REQUIRED_FIELDS_MESSAGE,
+  TICKET_REQUIREMENT_NOTICE,
+  type TicketErrors,
+  validateTicket,
+  validateTickets,
+} from "@/shared/helpers/validation";
 
 import styles from "./index.module.scss";
 
@@ -39,6 +47,7 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
 
   const { mutateAsync: updateTickets } = usePatchTicketsMutation({});
 
+  const [ticketErrors, setTicketErrors] = useState<Record<string, TicketErrors>>({});
   const [ticketTypes, setTicketTypes] = useState<TicketData[]>(() => {
     return ticketsDetail.ticketTypes.map((ticket) => ({
       id: ticket.ticketTypeId.toString(),
@@ -104,9 +113,7 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
     validate: (value: string) => {
       if (!value.trim()) return "티켓 차수 판매 시작 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다. (HH:MM)";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다. (HH:MM)";
 
       return undefined;
     },
@@ -118,9 +125,7 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
     validate: (value: string) => {
       if (!value.trim()) return "티켓 차수 판매 종료 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다. (HH:MM)";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다. (HH:MM)";
 
       return undefined;
     },
@@ -145,13 +150,42 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
     setTicketTypes((prev) =>
       prev.map((ticket) => (ticket.id === ticketId ? updatedTicket : ticket)),
     );
+
+    // 에러가 표시된 티켓은 수정할 때마다 다시 검증
+    if (ticketErrors[ticketId]) {
+      setTicketErrors((prev) => ({ ...prev, [ticketId]: validateTicket(updatedTicket) }));
+    }
   };
 
   const handleDeleteTicket = (ticketId: string) => {
     setTicketTypes((prev) => prev.filter((ticket) => ticket.id !== ticketId));
+    setTicketErrors(({ [ticketId]: _removed, ...rest }) => rest);
+  };
+
+  // 필수값 검증. 실패하면 각 필드 아래에 에러 표시
+  const validateForm = () => {
+    const results = [
+      ticketRoundNameField.validateValue(),
+      roundSalesStartDateField.validateValue(),
+      roundSalesStartTimeField.validateValue(),
+      roundSalesEndDateField.validateValue(),
+      roundSalesEndTimeField.validateValue(),
+    ];
+
+    const nextTicketErrors = validateTickets(ticketTypes);
+
+    setTicketErrors(nextTicketErrors);
+
+    return results.every(Boolean) && Object.keys(nextTicketErrors).length === 0;
   };
 
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      alert(REQUIRED_FIELDS_MESSAGE);
+
+      return;
+    }
+
     const requestData = {
       ticketRoundId,
       ticketRoundName: ticketRoundNameField.value,
@@ -186,14 +220,20 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
           <Typography type="title24">
             {eventDetailData.name} <span className={cx("subtitle")}>티켓 라운드 수정</span>
           </Typography>
+          <Typography type="body14" color="red">
+            {TICKET_REQUIREMENT_NOTICE}
+          </Typography>
         </div>
 
         <Flex className={cx("form")} direction="column" gap={24}>
           <Flex gap={24}>
             <Flex className={cx("row")} direction="column" gap={12}>
-              <Typography type="body16" weight="bold">
-                Ticket Round Name
-              </Typography>
+              <Flex align="flex-start" gap={8}>
+                <Typography type="body16" weight="bold">
+                  Ticket Round Name
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
               <TextField
                 placeholder="티켓 차수 이름을 입력해주세요"
                 value={ticketRoundNameField.value}
@@ -214,9 +254,12 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
 
           <Flex gap={24}>
             <Flex className={cx("row")} direction="column" gap={12}>
-              <Typography type="body16" weight="bold">
-                Sales Start Date
-              </Typography>
+              <Flex align="flex-start" gap={8}>
+                <Typography type="body16" weight="bold">
+                  Sales Start Date
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
               <Select
                 type="calendar"
                 placeholder="티켓 차수 판매 시작 날짜를 선택해주세요"
@@ -224,9 +267,12 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
               />
             </Flex>
             <Flex className={cx("row")} direction="column" gap={12}>
-              <Typography type="body16" weight="bold">
-                Sales Start Time
-              </Typography>
+              <Flex align="flex-start" gap={8}>
+                <Typography type="body16" weight="bold">
+                  Sales Start Time
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
               <TextField
                 placeholder="티켓 차수 판매 시작 시간을 입력해주세요 (HH:MM)"
                 value={roundSalesStartTimeField.value}
@@ -238,9 +284,12 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
 
           <Flex gap={24}>
             <Flex className={cx("row")} direction="column" gap={12}>
-              <Typography type="body16" weight="bold">
-                Sales End Date
-              </Typography>
+              <Flex align="flex-start" gap={8}>
+                <Typography type="body16" weight="bold">
+                  Sales End Date
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
               <Select
                 type="calendar"
                 placeholder="티켓 차수 판매 종료 날짜를 선택해주세요"
@@ -248,9 +297,12 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
               />
             </Flex>
             <Flex className={cx("row")} direction="column" gap={12}>
-              <Typography type="body16" weight="bold">
-                Sales End Time
-              </Typography>
+              <Flex align="flex-start" gap={8}>
+                <Typography type="body16" weight="bold">
+                  Sales End Time
+                </Typography>
+                <div className={cx("required")}>*</div>
+              </Flex>
               <TextField
                 placeholder="티켓 차수 판매 종료 시간을 입력해주세요 (HH:MM)"
                 value={roundSalesEndTimeField.value}
@@ -272,6 +324,7 @@ export function EditTicketDetailFormClient({ eventId, ticketRoundId }: Props) {
               ticketData={ticket}
               onUpdate={(updatedTicket) => handleUpdateTicket(ticket.id, updatedTicket)}
               onDelete={() => handleDeleteTicket(ticket.id)}
+              errors={ticketErrors[ticket.id]}
               ticketNameField={{
                 value: ticket.ticketName,
                 handleChange: (e) => {
