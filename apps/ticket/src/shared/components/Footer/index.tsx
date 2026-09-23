@@ -38,9 +38,13 @@ export const Footer = () => {
             Instagram_ceiling service
           </Typography>
         </a>
-        <a href="https://www.instagram.com/olympan.kr/" target="_blank" rel="noreferrer">
+        <a
+          href="https://www.instagram.com/sunnfestival?stkn=MTJicmd1bzF6ajc3Ng=="
+          target="_blank"
+          rel="noreferrer"
+        >
           <Typography type="body12" color="gray400" style={{ textDecoration: "underline" }}>
-            Instagram_Olympan
+            Instagram_Sunn
           </Typography>
         </a>
         <Typography type="body12" color="gray400">

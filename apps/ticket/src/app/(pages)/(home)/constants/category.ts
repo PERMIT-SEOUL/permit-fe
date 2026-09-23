@@ -13,5 +13,5 @@ export const CATEGORY_LABELS = {
   [CATEGORIES.ALL]: "ALL",
   [CATEGORIES.PERMIT]: "PERMIT",
   [CATEGORIES.CEILING_SERVICE]: "ceiling service",
-  [CATEGORIES.OLYMPAN]: "Olympan",
+  [CATEGORIES.OLYMPAN]: "Sunn",
 } as const;
