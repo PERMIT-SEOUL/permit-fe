@@ -159,7 +159,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
       )}
 
       <Flex direction="column" gap={24} style={{ marginTop: 32 }}>
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body16" weight="bold">
               TimeTable Start Date
@@ -183,7 +183,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
           </Flex>
         </Flex>
 
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body16" weight="bold">
               TimeTable End Date
@@ -208,7 +208,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
           </Flex>
         </Flex>
 
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body16" weight="bold">
               노션 database 데이터소스 아이디
@@ -221,7 +221,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
             />
           </Flex>
         </Flex>
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body16" weight="bold">
               노션 category 데이터소스 아이디
@@ -234,7 +234,7 @@ export const TimeTableManagementClient = ({ eventId }: Props) => {
             />
           </Flex>
         </Flex>
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Typography type="body16" weight="bold">
               노션 stage 데이터소스 아이디

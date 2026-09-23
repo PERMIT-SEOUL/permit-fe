@@ -60,7 +60,7 @@ export const UserManagementClient = () => {
         </Typography>
       </header>
       <main>
-        <Flex gap={20}>
+        <Flex className={cx("search_row")} gap={20}>
           <TextField
             className={cx("input")}
             placeholder="이메일을 입력해주세요"
@@ -75,7 +75,7 @@ export const UserManagementClient = () => {
 
         {userInfo && (
           <div className={cx("serach_area")}>
-            <Flex justify="space-between">
+            <Flex className={cx("result_row")} justify="space-between">
               <Flex direction="column">
                 <Typography type="title20">userName: {userInfo.userName}</Typography>
                 <Typography type="title20">current Role: {userInfo.currentUserRole}</Typography>

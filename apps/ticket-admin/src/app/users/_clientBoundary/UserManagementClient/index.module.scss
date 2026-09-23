@@ -1,5 +1,6 @@
 .container {
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -7,10 +8,30 @@
   margin-bottom: 16px;
 }
 
+.search_row {
+  @media (max-width: 768px) {
+    gap: 12px !important;
+  }
+}
+
 .input {
   width: 400px;
+
+  @media (max-width: 768px) {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
 }
 
 .serach_area {
   margin-top: 40px;
+}
+
+// design-system Flex 가 inline style 로 방향/간격을 주므로 !important 로 덮어씀
+.result_row {
+  @media (max-width: 768px) {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
 }

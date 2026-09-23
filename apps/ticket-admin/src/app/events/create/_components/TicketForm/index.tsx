@@ -65,7 +65,7 @@ export function TicketForm({
       </div>
 
       <div className={cx("ticket_form_content")}>
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Flex align="flex-start" gap={8}>
               <Typography type="body14" weight="medium">
@@ -82,7 +82,7 @@ export function TicketForm({
           </Flex>
         </Flex>
 
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Flex align="flex-start" gap={8}>
               <Typography type="body14" weight="medium">
@@ -99,7 +99,7 @@ export function TicketForm({
           </Flex>
         </Flex>
 
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Flex align="flex-start" gap={8}>
               <Typography type="body14" weight="medium">
@@ -116,7 +116,7 @@ export function TicketForm({
           </Flex>
         </Flex>
 
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Flex align="flex-start" gap={8}>
               <Typography type="body14" weight="medium">
@@ -147,7 +147,7 @@ export function TicketForm({
           </Flex>
         </Flex>
 
-        <Flex gap={24}>
+        <Flex className={cx("form_row")} gap={24}>
           <Flex className={cx("row")} direction="column" gap={12}>
             <Flex align="flex-start" gap={8}>
               <Typography type="body14" weight="medium">

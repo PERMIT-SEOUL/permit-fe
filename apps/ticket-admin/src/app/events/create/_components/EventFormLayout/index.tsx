@@ -124,7 +124,7 @@ export function EventFormLayout({
 
         {currentStep === "basic" && (
           <>
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -158,7 +158,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -192,7 +192,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -225,7 +225,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -244,7 +244,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -277,7 +277,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -310,7 +310,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -328,7 +328,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Typography type="body16" weight="bold">
                   Lineup
@@ -346,7 +346,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Typography type="body16" weight="bold">
                   Details
@@ -365,7 +365,7 @@ export function EventFormLayout({
             </Flex>
 
             {onFileChange && (
-              <Flex gap={24}>
+              <Flex className={cx("form_row")} gap={24}>
                 <Flex className={cx("row")} direction="column" gap={12}>
                   <Flex align="flex-start" gap={8}>
                     <Typography type="body16" weight="bold">
@@ -394,7 +394,7 @@ export function EventFormLayout({
             )}
 
             {onSiteMapFileChange && (
-              <Flex gap={24}>
+              <Flex className={cx("form_row")} gap={24}>
                 <Flex className={cx("row")} direction="column" gap={12}>
                   <Typography type="body16" weight="bold">
                     Site Map
@@ -414,7 +414,7 @@ export function EventFormLayout({
               </Flex>
             )}
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -439,7 +439,7 @@ export function EventFormLayout({
             <Typography type="body14" color="red">
               {TICKET_REQUIREMENT_NOTICE}
             </Typography>
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -458,7 +458,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
@@ -491,7 +491,7 @@ export function EventFormLayout({
               </Flex>
             </Flex>
 
-            <Flex gap={24}>
+            <Flex className={cx("form_row")} gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
                 <Flex align="flex-start" gap={8}>
                   <Typography type="body16" weight="bold">
