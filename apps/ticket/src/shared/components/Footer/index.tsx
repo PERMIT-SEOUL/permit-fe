@@ -44,7 +44,7 @@ export const Footer = () => {
           rel="noreferrer"
         >
           <Typography type="body12" color="gray400" style={{ textDecoration: "underline" }}>
-            Instagram_Sunn
+            Instagram_SUNN
           </Typography>
         </a>
         <Typography type="body12" color="gray400">
