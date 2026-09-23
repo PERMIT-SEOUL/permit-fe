@@ -10,6 +10,11 @@
   color: white;
 
   background-color: #000;
+
+  @media (max-width: 768px) {
+    margin-top: 24px;
+    margin-bottom: 40px;
+  }
 }
 
 .main {
@@ -17,6 +22,10 @@
   flex: 1;
   flex-direction: column;
   gap: 48px;
+
+  @media (max-width: 768px) {
+    gap: 32px;
+  }
 }
 
 .add_section {
@@ -44,6 +53,12 @@
   display: flex;
   gap: 24px;
   align-items: flex-end;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
 }
 
 .form_field {
@@ -67,6 +82,10 @@
   background-color: #1a1a1a;
   border: 1px solid #333;
   border-radius: 4px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
   &:focus {
     outline: none;
@@ -140,10 +159,16 @@
 .add_button {
   height: 42px;
   padding: 0 24px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .list_header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
 }
@@ -159,12 +184,20 @@
   background-color: #1a1a1a;
   border: 1px solid #333;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    overflow-x: auto;
+  }
 }
 
 .coupon_table {
   width: 100%;
 
   border-collapse: collapse;
+
+  @media (max-width: 768px) {
+    min-width: 640px;
+  }
 }
 
 .coupon_table th {
@@ -172,10 +205,15 @@
 
   color: white;
   font-weight: 600;
+  white-space: nowrap;
   text-align: left;
 
   background-color: #2a2a2a;
   border-bottom: 1px solid #333;
+
+  @media (max-width: 768px) {
+    padding: 12px 8px;
+  }
 }
 
 .coupon_table td {
@@ -185,6 +223,10 @@
   vertical-align: middle;
 
   border-bottom: 1px solid #333;
+
+  @media (max-width: 768px) {
+    padding: 12px 8px;
+  }
 }
 
 .coupon_table tr:last-child td {

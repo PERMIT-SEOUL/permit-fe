@@ -212,7 +212,7 @@ export function AddRoundFormClient({ eventId }: Props) {
         </div>
 
         <Flex className={cx("form")} direction="column" gap={24}>
-          <Flex gap={24}>
+          <Flex className={cx("form_row")} gap={24}>
             <Flex className={cx("row")} direction="column" gap={12}>
               <Flex align="flex-start" gap={8}>
                 <Typography type="body16" weight="bold">
@@ -238,7 +238,7 @@ export function AddRoundFormClient({ eventId }: Props) {
             </Typography>
           </div>
 
-          <Flex gap={24}>
+          <Flex className={cx("form_row")} gap={24}>
             <Flex className={cx("row")} direction="column" gap={12}>
               <Flex align="flex-start" gap={8}>
                 <Typography type="body16" weight="bold">
@@ -268,7 +268,7 @@ export function AddRoundFormClient({ eventId }: Props) {
             </Flex>
           </Flex>
 
-          <Flex gap={24}>
+          <Flex className={cx("form_row")} gap={24}>
             <Flex className={cx("row")} direction="column" gap={12}>
               <Flex align="flex-start" gap={8}>
                 <Typography type="body16" weight="bold">

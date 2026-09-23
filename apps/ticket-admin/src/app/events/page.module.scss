@@ -138,6 +138,12 @@
     padding: 1rem;
   }
 
+  .header {
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
   .title {
     font-size: 2rem;
   }

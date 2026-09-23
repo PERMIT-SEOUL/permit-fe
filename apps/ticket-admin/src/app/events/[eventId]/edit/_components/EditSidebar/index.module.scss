@@ -1,11 +1,20 @@
 .sidebar {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   gap: 24px;
   align-items: flex-start;
   justify-content: flex-start;
   width: 200px;
   margin-top: 72px;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    margin-top: 24px;
+    overflow-x: auto;
+  }
 }
 
 .sidebar_item {
@@ -18,11 +27,20 @@
   background: none;
   cursor: pointer;
   border: none;
+
+  @media (max-width: 768px) {
+    flex-shrink: 0;
+    width: auto;
+  }
 }
 
 .sidebar_indicator {
   width: 4px;
   height: 28px;
+
+  @media (max-width: 768px) {
+    height: 18px;
+  }
 
   &.active {
     flex-shrink: 0;
@@ -38,6 +56,11 @@
   font-size: 24px;
   font-family: Roboto, sans-serif;
   line-height: 100%;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 
   &.active {
     color: #fafafa;

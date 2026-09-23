@@ -158,7 +158,13 @@
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .container {
-    padding: 16px;
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 40px;
+  }
+
+  .ticketTypeCard {
+    padding: 44px 16px 16px;
   }
 
   .statsSection {
@@ -195,8 +201,12 @@
   .headerCell,
   .dataCell {
     display: flex;
+    gap: 12px;
     align-items: center;
     justify-content: space-between;
+
+    white-space: pre-line;
+    text-align: right;
 
     &::before {
       color: #ccc;

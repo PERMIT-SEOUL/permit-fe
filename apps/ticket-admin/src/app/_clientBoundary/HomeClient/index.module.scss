@@ -7,6 +7,11 @@
   padding: 2rem;
 
   text-align: center;
+
+  @media (max-width: 768px) {
+    min-height: calc(100vh - 56px);
+    padding: 1rem;
+  }
 }
 
 .title {
@@ -15,6 +20,10 @@
   color: #fff;
   font-weight: bold;
   font-size: 3rem;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 }
 
 .description {
