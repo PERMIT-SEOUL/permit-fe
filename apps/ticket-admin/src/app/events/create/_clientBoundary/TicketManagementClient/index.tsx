@@ -9,6 +9,7 @@ import { useDeleteTicketRoundMutation } from "@/data/admin/deleteTicketRound/mut
 import { useDeleteTicketTypeMutation } from "@/data/admin/deleteTicketType/mutation";
 import { useTicketsQuery } from "@/data/admin/getTickets/queries";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
+import { TICKET_REQUIREMENT_NOTICE } from "@/shared/helpers/validation";
 
 import styles from "./index.module.scss";
 
@@ -124,6 +125,9 @@ export function TicketManagementClient({ eventId }: Props) {
     <div className={cx("container")}>
       <div className={cx("headerSection")}>
         <Typography type="title24">Your tickets</Typography>
+        <Typography type="body14" color="red">
+          {TICKET_REQUIREMENT_NOTICE}
+        </Typography>
 
         <div className={cx("statsSection")}>
           <div className={cx("statsGrid")}>

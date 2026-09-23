@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 
 import { Button, Flex, Select, TextField, Typography } from "@permit/design-system";
 import type { UseTextFieldReturn } from "@permit/design-system/hooks";
+import { TICKET_REQUIREMENT_NOTICE, type TicketErrors } from "@/shared/helpers/validation";
 
 import { EventFormData, eventTypeOptions } from "../../_clientBoundary/EventFormClient";
 import ImageUploader, { PreviewMedia } from "../ImageUploader";
@@ -70,6 +71,8 @@ type EventFormLayoutProps = {
   onAddTicket?: () => void;
   onUpdateTicket?: (ticketId: string, updatedTicket: TicketData) => void;
   onDeleteTicket?: (ticketId: string) => void;
+  imageError?: string;
+  ticketErrors?: Record<string, TicketErrors>;
 };
 
 export function EventFormLayout({
@@ -105,11 +108,20 @@ export function EventFormLayout({
   onAddTicket,
   onUpdateTicket,
   onDeleteTicket,
+  imageError,
+  ticketErrors,
 }: EventFormLayoutProps) {
   return (
     <>
       {/* Main */}
       <div className={cx("main")}>
+        <Flex justify="flex-end" align="center" gap={4}>
+          <span className={cx("required")}>*</span>
+          <Typography type="body12" color="gray300">
+            필수 입력 항목
+          </Typography>
+        </Flex>
+
         {currentStep === "basic" && (
           <>
             <Flex gap={24}>
@@ -372,6 +384,11 @@ export function EventFormLayout({
                     onFileSelect={onFileChange}
                     onRemoveOriginalImage={onRemoveOriginalImage}
                   />
+                  {imageError && (
+                    <Typography type="body12" className={cx("error_text")}>
+                      {imageError}
+                    </Typography>
+                  )}
                 </Flex>
               </Flex>
             )}
@@ -419,11 +436,17 @@ export function EventFormLayout({
         )}
         {currentStep === "ticket" && (
           <>
+            <Typography type="body14" color="red">
+              {TICKET_REQUIREMENT_NOTICE}
+            </Typography>
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Ticket Round Name
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Ticket Round Name
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -437,9 +460,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Exposure Start Date
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Exposure Start Date
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <Select
                   disabled={isReadOnlyMode}
                   type="calendar"
@@ -448,9 +474,12 @@ export function EventFormLayout({
                 />
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Exposure Start Time
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Exposure Start Time
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -464,9 +493,12 @@ export function EventFormLayout({
 
             <Flex gap={24}>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Exposure End Date
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Exposure End Date
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <Select
                   disabled={isReadOnlyMode}
                   type="calendar"
@@ -475,9 +507,12 @@ export function EventFormLayout({
                 />
               </Flex>
               <Flex className={cx("row")} direction="column" gap={12}>
-                <Typography type="body16" weight="bold">
-                  Exposure End Time
-                </Typography>
+                <Flex align="flex-start" gap={8}>
+                  <Typography type="body16" weight="bold">
+                    Exposure End Time
+                  </Typography>
+                  <div className={cx("required")}>*</div>
+                </Flex>
                 <TextField
                   readOnly={isReadOnlyMode}
                   showBorderinReadOnly={isReadOnlyMode}
@@ -504,6 +539,7 @@ export function EventFormLayout({
                   ticketData={ticket}
                   onUpdate={(updatedTicket) => onUpdateTicket(ticket.id, updatedTicket)}
                   onDelete={() => onDeleteTicket(ticket.id)}
+                  errors={ticketErrors?.[ticket.id]}
                   ticketNameField={{
                     value: ticket.ticketName,
                     handleChange: (e) => {

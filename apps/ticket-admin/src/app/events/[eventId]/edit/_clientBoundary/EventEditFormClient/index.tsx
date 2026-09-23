@@ -20,6 +20,7 @@ import {
 } from "@/data/admin/postPresignedUrls/mutation";
 import { LoadingWithLayout } from "@/shared/components/LoadingWithLayout";
 import { toCDNUrl } from "@/shared/helpers/toCdnUrl";
+import { isValidTime, REQUIRED_FIELDS_MESSAGE } from "@/shared/helpers/validation";
 
 import { CouponManagementClient } from "../../coupon/_clientBoundary/CouponManagementClient";
 import { TimeTableManagementClient } from "../../timeTable/_clientBoundary/TimeTableManagementClient";
@@ -110,6 +111,7 @@ export function EventEditFormClient({ eventId }: Props) {
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageError, setImageError] = useState<string>();
 
   const { data: eventDetailData } = useEventDetailSuspenseQuery({
     eventId,
@@ -157,9 +159,7 @@ export function EventEditFormClient({ eventId }: Props) {
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 노출 시작 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -177,9 +177,7 @@ export function EventEditFormClient({ eventId }: Props) {
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 노출 종료 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -276,9 +274,7 @@ export function EventEditFormClient({ eventId }: Props) {
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 시작 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -296,9 +292,7 @@ export function EventEditFormClient({ eventId }: Props) {
     validate: (value: string) => {
       if (!value.trim()) return "이벤트 종료 시간을 입력해주세요.";
 
-      const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-      if (!timeRegex.test(value)) return "올바른 시간 형식이 아닙니다.";
+      if (!isValidTime(value)) return "올바른 시간 형식이 아닙니다.";
 
       return undefined;
     },
@@ -357,7 +351,11 @@ export function EventEditFormClient({ eventId }: Props) {
   // 최소 연령
   const minAgeField = useTextField({
     initialValue: "",
-    validate: (_value: string) => {
+    validate: (value: string) => {
+      if (!value.trim()) return "최소 나이를 입력해주세요.";
+
+      if (!/^\d+$/.test(value.trim())) return "숫자만 입력해주세요.";
+
       return undefined;
     },
     onChange: (value: string) => {
@@ -543,6 +541,7 @@ export function EventEditFormClient({ eventId }: Props) {
           images: merged,
         };
       });
+      setImageError(undefined);
     });
   };
 
@@ -555,7 +554,38 @@ export function EventEditFormClient({ eventId }: Props) {
     }));
   };
 
+  // 필수값 검증. 실패하면 각 필드 아래에 에러 표시
+  const validateForm = () => {
+    const results = [
+      eventExposureStartDateField.validateValue(),
+      eventExposureEndDateField.validateValue(),
+      eventExposureStartTimeField.validateValue(),
+      eventExposureEndTimeField.validateValue(),
+      eventTypeSelect.validateValue(),
+      eventVerificationCodeField.validateValue(),
+      eventNameField.validateValue(),
+      eventStartDateField.validateValue(),
+      eventStartTimeField.validateValue(),
+      eventEndDateField.validateValue(),
+      eventEndTimeField.validateValue(),
+      minAgeField.validateValue(),
+    ];
+
+    const nextImageError =
+      formData.images.length === 0 ? "이벤트 이미지를 1개 이상 등록해주세요." : undefined;
+
+    setImageError(nextImageError);
+
+    return results.every(Boolean) && !nextImageError;
+  };
+
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      alert(REQUIRED_FIELDS_MESSAGE);
+
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -734,6 +764,7 @@ export function EventEditFormClient({ eventId }: Props) {
             onDelete={handleDelete}
             isSubmitting={isSubmitting}
             isReadOnlyMode={isReadOnlyMode}
+            imageError={imageError}
           />
         )}
         {currentStep === "ticket" && <TicketManagementClient eventId={eventId} />}
