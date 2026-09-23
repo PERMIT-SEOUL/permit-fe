@@ -5,6 +5,10 @@
   max-width: 1200px;
   margin: 0 auto;
   padding-top: 24px;
+
+  @media (max-width: 768px) {
+    padding: 16px 16px 0;
+  }
 }
 
 .container {
@@ -12,6 +16,11 @@
   max-width: 1200px;
   min-height: 100vh;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 16px;
+  }
 }
 
 .floating {
@@ -31,10 +40,19 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 12px 0;
+
+  @media (max-width: 768px) {
+    padding: 12px 16px;
+  }
 }
 
 .button {
   padding: 0 100px;
 
   @include typography.body-bold-14;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0;
+  }
 }

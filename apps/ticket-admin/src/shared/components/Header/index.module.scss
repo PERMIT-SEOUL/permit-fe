@@ -16,21 +16,20 @@
 
   // Mobile responsive
   @media (max-width: 768px) {
+    gap: 16px;
     height: 56px;
     padding: 14px 16px;
+    overflow-x: auto;
+
+    white-space: nowrap;
   }
 }
 
 .logo {
   position: relative;
+  flex-shrink: 0;
   width: 115.43px;
   height: 17px;
-
-  // Mobile responsive - 데스크톱과 동일한 크기 유지
-  @media (max-width: 768px) {
-    width: 115.43px;
-    height: 17px;
-  }
 }
 
 .logo_image {

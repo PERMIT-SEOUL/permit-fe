@@ -6,11 +6,25 @@
   flex-direction: column;
   gap: 24px;
   width: 100%;
+  min-width: 0;
   margin: 72px 0 120px;
+
+  @media (max-width: 768px) {
+    margin: 24px 0 120px;
+  }
 }
 
 .row {
   width: 100%;
+  min-width: 0;
+}
+
+// design-system Flex 가 inline style 로 방향/간격을 주므로 !important 로 덮어씀
+.form_row {
+  @media (max-width: 768px) {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
 }
 
 .required {

@@ -1,5 +1,6 @@
 .uploader {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -9,6 +10,7 @@
 
 .cameraCard {
   position: relative;
+  flex-shrink: 0;
   width: 120px;
   height: 160px;
 
@@ -17,6 +19,10 @@
   border: 1px dashed #4a4a4a;
   border-radius: 8px;
 
+  @media (max-width: 768px) {
+    width: 90px;
+    height: 120px;
+  }
   transition: background 0.2s ease;
 
   &::before {
@@ -61,6 +67,7 @@
 
 .grid {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -78,6 +85,10 @@
   height: 160px;
   aspect-ratio: 3/4;
   object-fit: cover;
+
+  @media (max-width: 768px) {
+    height: 120px;
+  }
 }
 
 .removeBtn {
@@ -125,4 +136,8 @@
   height: 160px;
   aspect-ratio: 3/4;
   object-fit: cover;
+
+  @media (max-width: 768px) {
+    height: 120px;
+  }
 }

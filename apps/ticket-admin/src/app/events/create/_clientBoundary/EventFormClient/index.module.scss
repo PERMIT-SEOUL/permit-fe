@@ -6,16 +6,30 @@
   max-width: 1200px;
   min-height: 100vh;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 16px;
+  }
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   gap: 24px;
   align-items: flex-start;
   justify-content: flex-start;
   width: 200px;
   margin-top: 72px;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    margin-top: 24px;
+    overflow-x: auto;
+  }
 }
 
 .sidebar_item {
@@ -28,11 +42,20 @@
   background: none;
   cursor: pointer;
   border: none;
+
+  @media (max-width: 768px) {
+    flex-shrink: 0;
+    width: auto;
+  }
 }
 
 .sidebar_indicator {
   width: 4px;
   height: 28px;
+
+  @media (max-width: 768px) {
+    height: 18px;
+  }
 
   &.active {
     flex-shrink: 0;
@@ -48,6 +71,11 @@
   font-size: 24px;
   font-family: Roboto, sans-serif;
   line-height: 100%;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 
   &.active {
     color: #fafafa;
@@ -66,10 +94,19 @@
   background-color: theme.$gray-800;
   box-shadow: 0 -15px 25px 0 rgb(0 0 0 / 60%);
   border-top: 1px solid theme.$gray-600;
+
+  @media (max-width: 768px) {
+    padding: 12px 16px;
+  }
 }
 
 .button {
   padding: 0 100px;
 
   @include typography.body-bold-14;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0;
+  }
 }
