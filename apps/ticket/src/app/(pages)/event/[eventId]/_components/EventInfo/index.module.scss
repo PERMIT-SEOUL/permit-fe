@@ -68,4 +68,10 @@
   max-width: calc(100% - 84px);
 
   white-space: pre-line;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    word-break: break-all;
+  }
 }

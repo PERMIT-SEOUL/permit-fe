@@ -11,6 +11,25 @@ const cx = classNames.bind(styles);
 
 type Props = Omit<EventDetailResponse, "images">;
 
+// URL 시작: http(s):// 또는 www. / 끝: 공백·한글에서 멈추고, 끝에 붙은 문장부호는 링크에서 제외
+const URL_REGEX = /((?:https?:\/\/|www\.)[^\s가-힣]*[^\s가-힣.,!?)\]'"])/g;
+
+const linkify = (text: string) =>
+  text.split(URL_REGEX).map((part, i) =>
+    i % 2 === 1 ? (
+      <a
+        key={i}
+        href={part.startsWith("www.") ? `https://${part}` : part}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {part}
+      </a>
+    ) : (
+      part
+    ),
+  );
+
 export const EventInfo = ({ venue, date, time, minAge, details, lineup }: Props) => {
   return (
     <div className={cx("wrap")}>
@@ -37,7 +56,7 @@ export const EventInfo = ({ venue, date, time, minAge, details, lineup }: Props)
 
         <div className={cx("description")}>
           <Typography type="body14" color="white">
-            {details}
+            {linkify(details)}
           </Typography>
         </div>
       </div>
