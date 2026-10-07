@@ -40,6 +40,8 @@ const nextConfig: NextConfig = {
   },
   // FIXME: 이미지 cdn 도메인으로 수정
   images: {
+    // Vercel 이미지 최적화 한도 초과(402) 방지: 원본 URL 직접 사용
+    unoptimized: true,
     domains: [
       process.env.NEXT_PUBLIC_CDN_DOMAIN || "",
       process.env.NEXT_PUBLIC_CDN_NOTION_DOMAIN || "",
