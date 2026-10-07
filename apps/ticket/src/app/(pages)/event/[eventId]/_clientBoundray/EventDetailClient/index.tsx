@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 type Props = {
   eventId: string;
 };
-// test
+
 export const EventDetailClient = ({ eventId }: Props) => {
   const { data: eventDetailData } = useEventDetailSuspenseQuery({
     eventId,
