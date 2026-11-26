@@ -39,3 +39,4 @@ src/
 └── styles/
     └── globals.scss        # 전역 스타일
 ```
+
